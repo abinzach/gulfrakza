@@ -42,7 +42,7 @@ interface PageProps {
   searchParams: { [key: string]: string | string[] | undefined };
 }
 
-export default function SubcategoryPage({ params, searchParams }: PageProps) {
+export default function SubcategoryPage({ params }: PageProps) {
   const { category: categorySlug, subcategory: subcategorySlug } = params;
   const categoriesData = data as CategoriesData;
   let categoryFound: Category | null = null;
