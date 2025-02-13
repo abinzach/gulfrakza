@@ -1,4 +1,4 @@
-// app/products/[category]/[subcategory]/page.tsx
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import BackButton from "@/app/components/BackButton";
