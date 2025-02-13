@@ -5,6 +5,7 @@ import BackButton from "@/app/components/BackButton";
 import data from "../../../Product_Categories.json";
 import { GridPatternCard, GridPatternCardBody } from "@/components/ui/card-with-grid-ellipsis-pattern";
 import { Badge } from "@/components/ui/badge";
+import Image from "next/image";
 
 interface Item {
   title: string;
@@ -32,8 +33,10 @@ interface CategoriesData {
   categories: Category[];
 }
 
+// Include searchParams in the props
 interface PageProps {
   params: { category: string; subcategory: string };
+  searchParams: { [key: string]: string | string[] | undefined };
 }
 
 // Generate static params for each subcategory page
@@ -52,7 +55,8 @@ export async function generateStaticParams() {
   return paths;
 }
 
-export default function SubcategoryPage({ params }: PageProps) {
+// Mark the component as async so Next.js correctly unwraps the props.
+export default async function SubcategoryPage({ params }: PageProps) {
   const { category: categorySlug, subcategory: subcategorySlug } = params;
   const categoriesData = data as CategoriesData;
   let categoryFound: Category | null = null;
@@ -94,8 +98,7 @@ export default function SubcategoryPage({ params }: PageProps) {
           <h1 className="text-4xl font-bold text-gray-800 dark:text-white">
             {subcategoryFound.title}
           </h1>
-          
-          <p className=" text-gray-700 font-light dark:text-gray-300 mt-2">
+          <p className="text-gray-700 font-light dark:text-gray-300 mt-2">
             {subcategoryFound.description}
           </p>
           <Badge className="mt-2 text-sm ">
@@ -106,29 +109,24 @@ export default function SubcategoryPage({ params }: PageProps) {
         {/* Grid of Products */}
         <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {subcategoryFound.items.map((item, index) => (
-            <GridPatternCard
-              key={index}
-              className=""
-            >
+            <GridPatternCard key={index}>
               <GridPatternCardBody>
-
-            
-              <img
-                src={item.imageSrc}
-                alt={item.title}
-                className="w-full h-40 object-cover rounded"
-              />
-              <h2 className="mt-4 text-2xl font-semibold text-gray-800 dark:text-white">
-                {item.title}
-              </h2>
-              <p className="mt-2 text-gray-600  font-raleway text-sm dark:text-gray-300">
-                {item.description}
-              </p>
-              <Link href={item.link}>
-                <p className="mt-4 text-sm inline-block text-blue-600 dark:text-blue-400 hover:underline">
-                  Learn More &rarr;
+                <Image height={160} width={480} 
+                  src={item.imageSrc}
+                  alt={item.title}
+                  className="w-full h-40 object-cover rounded"
+                />
+                <h2 className="mt-4 text-2xl font-semibold text-gray-800 dark:text-white">
+                  {item.title}
+                </h2>
+                <p className="mt-2 text-gray-600 font-raleway text-sm dark:text-gray-300">
+                  {item.description}
                 </p>
-              </Link>
+                <Link href={item.link}>
+                  <p className="mt-4 text-sm inline-block text-blue-600 dark:text-blue-400 hover:underline">
+                    Learn More &rarr;
+                  </p>
+                </Link>
               </GridPatternCardBody>
             </GridPatternCard>
           ))}

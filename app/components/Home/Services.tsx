@@ -2,6 +2,7 @@
 import React from 'react';
 import { DarkGridHero } from './DarkGrid';
 import { GridPatternCard, GridPatternCardBody } from '@/components/ui/card-with-grid-ellipsis-pattern';
+import Image from 'next/image';
 
 const serviceCategories = [
     {
@@ -88,15 +89,15 @@ export default function ServicesPage() {
                     <div className="flex flex-wrap justify-center gap-8">
                         {/* Example icon block */}
                         <div className="flex flex-col items-center">
-                            <img src="/icons/expertise.svg" alt="Expertise" className="h-12 w-12 mb-2" />
+                            <Image height={48} width={48} src="/icons/expertise.svg" alt="Expertise" className="h-12 w-12 mb-2" />
                             <span className="text-gray-700 font-medium">Expertise</span>
                         </div>
                         <div className="flex flex-col items-center">
-                            <img src="/icons/quality.svg" alt="Quality Assurance" className="h-12 w-12 mb-2" />
+                            <Image height={48} width={48}  src="/icons/quality.svg" alt="Quality Assurance" className="h-12 w-12 mb-2" />
                             <span className="text-gray-700 font-medium">Quality Assurance</span>
                         </div>
                         <div className="flex flex-col items-center">
-                            <img src="/icons/safety.svg" alt="Safety First" className="h-12 w-12 mb-2" />
+                            <Image height={48} width={48}  src="/icons/safety.svg" alt="Safety First" className="h-12 w-12 mb-2" />
                             <span className="text-gray-700 font-medium">Safety First</span>
                         </div>
                     </div>

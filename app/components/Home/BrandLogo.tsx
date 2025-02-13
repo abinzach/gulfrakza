@@ -1,5 +1,6 @@
 'use client'
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { JSX } from "react";
 
 
@@ -59,7 +60,7 @@ const LogoItem = ({ src }: { src: string }) => {
       target="_blank"
       className="w-16 md:w-24 h-16 md:h-24 flex justify-center items-center hover:bg-slate-200 text-black transition-colors"
     >
-      <img loading="lazy" src={`/brands/${src}`} alt={src}/>
+      <Image width={100} height={100} loading="lazy" src={`/brands/${src}`} alt={src}/>
     </a>
   );
 };

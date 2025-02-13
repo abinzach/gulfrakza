@@ -1,5 +1,5 @@
 "use client";
-import React, { ReactNode, useEffect, useState } from "react";
+import React, {  useEffect, useState } from "react";
 import { AnimationProps, motion } from "framer-motion";
 
 

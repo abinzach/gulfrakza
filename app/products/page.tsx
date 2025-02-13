@@ -3,6 +3,7 @@ import Link from "next/link";
 import data from "../Product_Categories.json";
 import { GridPatternCard, GridPatternCardBody } from "@/components/ui/card-with-grid-ellipsis-pattern";
 import BackButton from "../components/BackButton";
+import Image from "next/image";
 
 // Define TypeScript interfaces for our data structure
 interface Item {
@@ -66,9 +67,9 @@ const ProductsPage: React.FC = () => {
             >
               <GridPatternCardBody>
               <div className="flex items-center gap-4">
-                <img
+                <Image height={64} width={64} 
                   src={category.imageSrc}
-                  alt={category.title}
+                  alt={category.title + " image"}
                   className="h-16 w-16 object-cover rounded"
                 />
                 <div>

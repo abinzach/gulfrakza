@@ -2,7 +2,6 @@
 
 import * as React from "react"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import {
@@ -34,7 +33,7 @@ function Footerdemo() {
               Join our newsletter for the latest updates and exclusive offers.
             </p>
             <form className="relative">
-              <Input
+              <input
                 type="email"
                 placeholder="Enter your email"
                 className="pr-12 backdrop-blur-sm"

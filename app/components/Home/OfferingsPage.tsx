@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import data from '../../Product_Categories.json';
-import { ESLINT_DEFAULT_DIRS } from 'next/dist/lib/constants';
+import Image from 'next/image';
 
 interface Item {
   title: string;
@@ -51,7 +51,9 @@ const OfferingsPage: React.FC = () => {
             <Link key={index} href={category.link}>
              
                 <div className="bg-white h-full dark:bg-gray-950 cursor-pointer p-6 rounded border-dashed border-gray-500 border hover:shadow-lg transition-shadow duration-300 group">
-                  <img
+                  <Image
+                    width={64}
+                    height={64}
                     src={category.imageSrc}
                     alt={category.title}
                     className="h-16 mx-auto mb-4"

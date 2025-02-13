@@ -9,6 +9,7 @@ import {
 } from "framer-motion";
 import useMeasure from "react-use-measure";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 
 const FlyoutNav = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -50,7 +51,7 @@ const Logo = () => {
       <span className="text-2xl font-extralight font-inter">
         GULF <span className="font-semibold">RAKZA</span>
       </span>
-      <img src="/logo-rakza.png" alt="logo" className="h-6 w-6" />
+      <Image width={24} height={24} src="/logo-rakza.png" alt="logo" className="h-6 w-6" />
     </div>
   );
 };
