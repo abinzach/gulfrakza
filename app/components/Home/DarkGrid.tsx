@@ -1,8 +1,7 @@
 "use client";
 import React, { ReactNode, useEffect, useState } from "react";
 import { AnimationProps, motion } from "framer-motion";
-import { FiArrowRight } from "react-icons/fi";
-import { twMerge } from "tailwind-merge";
+
 
 export const DarkGridHero = () => {
   return (
@@ -46,15 +45,6 @@ const Content = () => {
     </div>
   );
 }
-
-const GlowingChip = ({ children }: { children: string }) => {
-  return (
-    <span className="relative z-10 mb-4 inline-block rounded-full border border-zinc-700 bg-zinc-900/20 px-3 py-1.5 text-xs text-zinc-50 md:mb-0">
-      {children}
-      <span className="absolute bottom-0 left-3 right-3 h-[1px] bg-gradient-to-r from-zinc-500/0 via-zinc-300 to-zinc-500/0" />
-    </span>
-  );
-};
 
 
 
@@ -217,8 +207,3 @@ type BeamType = {
   left: number;
   transition?: AnimationProps["transition"];
 };
-
-type ButtonProps = {
-  children: ReactNode;
-  className?: string;
-} & React.ButtonHTMLAttributes<HTMLButtonElement>;

@@ -1,31 +1,7 @@
 'use client'
 import { motion } from "framer-motion";
-import {
-  SiNike,
-  Si3M,
-  SiAbstract,
-  SiAdobe,
-  SiAirtable,
-  SiAmazon,
-  SiBox,
-  SiBytedance,
-  SiChase,
-  SiCloudbees,
-  SiBurton,
-  SiBmw,
-  SiHeroku,
-  SiBuildkite,
-  SiCouchbase,
-  SiDailymotion,
-  SiDeliveroo,
-  SiEpicgames,
-  SiGenius,
-  SiGodaddy,
-  SiMitsubishi,
-} from "react-icons/si";
-import { IconType } from "react-icons";
 import { JSX } from "react";
-import Image from "next/image";
+
 
 const DoubleScrollingLogos = () => {
   return (
@@ -103,11 +79,11 @@ const LogoItemsTop = () => (
     
   </>
 );
-const LogoItemsMiddle = () => (
-  <>
-    <LogoItem src="bahco-logo.png" />
+// const LogoItemsMiddle = () => (
+//   <>
+//     <LogoItem src="bahco-logo.png" />
 
-  </>);
+//   </>);
 const LogoItemsBottom = () => (
   <>
     <LogoItem src="Honeywell_logo.png" />

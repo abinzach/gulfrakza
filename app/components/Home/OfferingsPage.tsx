@@ -1,7 +1,9 @@
-// pages/offerings.tsx
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import React from 'react';
 import Link from 'next/link';
 import data from '../../Product_Categories.json';
+import { ESLINT_DEFAULT_DIRS } from 'next/dist/lib/constants';
 
 interface Item {
   title: string;

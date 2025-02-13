@@ -1,7 +1,6 @@
 'use client'
 import React, { Dispatch, SetStateAction, useState } from "react";
 import { FiMenu, FiArrowRight, FiX, FiChevronDown } from "react-icons/fi";
-import { FaUserCircle } from "react-icons/fa";
 import {
   useMotionValueEvent,
   AnimatePresence,
@@ -45,7 +44,7 @@ const FlyoutNav = () => {
   );
 };
 
-const Logo = ({ color = "white" }: { color?: string }) => {
+const Logo = () => {
   return (
     <div className="flex items-center gap-2">
       <span className="text-2xl font-extralight font-inter">
@@ -132,7 +131,7 @@ const AboutUsContent = () => {
         <div>
           <h2 className="mb-2 text-xl font-semibold text-white">About us</h2>
           <p className="mb-6 max-w-xs text-sm text-neutral-400">
-            Placeholder is the world's leading placeholder company.
+            Placeholder is the world&apos;s leading placeholder company.
           </p>
         </div>
         <a
@@ -377,7 +376,7 @@ const MobileMenu = () => {
             className="fixed left-0 top-0 flex h-screen w-full flex-col bg-white"
           >
             <div className="flex items-center justify-between p-6">
-              <Logo color="black" />
+              <Logo />
               <button onClick={() => setOpen(false)}>
                 <FiX className="text-3xl text-neutral-950" />
               </button>
