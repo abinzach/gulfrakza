@@ -1,0 +1,152 @@
+{
+    "title": "Services & Supplies",
+    "description": "A complete range of services and supplies designed to complement industrial operations. Our offerings are engineered for rapid response and reliability in every project.",
+    "imageSrc": "/images/categories/services-supplies.jpg",
+    "link": "/products/services-supplies",
+    "subcategories": [
+      {
+        "title": "Industrial Inspections & Testing",
+        "description": "Professional inspection and testing services designed to ensure compliance, safety, and operational excellence.",
+        "items": [
+          {
+            "title": "Compliance Testing",
+            "description": "Rigorous testing services designed to verify that systems meet industry standards and safety regulations.",
+            "link": "/products/services-supplies/inspections/compliance-testing",
+            "imageSrc": "/images/services-supplies/inspections/compliance-testing.jpg",
+            "specs": {
+              "features": ["Comprehensive analysis", "Certified procedures"]
+            }
+          },
+          {
+            "title": "Performance Testing",
+            "description": "Advanced testing services to evaluate the operational efficiency and durability of industrial equipment.",
+            "link": "/products/services-supplies/inspections/performance-testing",
+            "imageSrc": "/images/services-supplies/inspections/performance-testing.jpg",
+            "specs": {
+              "features": ["Accurate results", "Detailed reports"]
+            }
+          }
+        ]
+      },
+      {
+        "title": "Procurement & Logistics Services",
+        "description": "Efficient services designed to streamline procurement processes and ensure seamless supply chain management.",
+        "items": [
+          {
+            "title": "Supply Chain Management",
+            "description": "Integrated solutions that optimize procurement and logistics, ensuring timely delivery and real-time tracking.",
+            "link": "/products/services-supplies/procurement/supply-chain-management",
+            "imageSrc": "/images/services-supplies/procurement/supply-chain-management.jpg",
+            "specs": {
+              "features": ["End-to-end management", "Real-time tracking"]
+            }
+          }
+        ]
+      },
+      {
+        "title": "Safety Inspections & Audits",
+        "description": "Comprehensive audits and inspections to assess workplace safety and ensure compliance with industry standards.",
+        "items": [
+          {
+            "title": "Workplace Safety Assessments",
+            "description": "Detailed evaluations of workplace safety protocols to identify hazards and recommend improvements.",
+            "link": "/products/services-supplies/safety-audits/workplace-safety-assessments",
+            "imageSrc": "/images/services-supplies/safety-audits/workplace-safety-assessments.jpg",
+            "specs": {
+              "features": ["Thorough evaluation", "Expert recommendations"]
+            }
+          },
+          {
+            "title": "Risk Analysis",
+            "description": "Comprehensive risk assessments to evaluate potential hazards and implement proactive safety measures.",
+            "link": "/products/services-supplies/safety-audits/risk-analysis",
+            "imageSrc": "/images/services-supplies/safety-audits/risk-analysis.jpg",
+            "specs": {
+              "features": ["Detailed reporting", "Proactive solutions"]
+            }
+          }
+        ]
+      },
+      {
+        "title": "Manpower Rentals",
+        "description": "Flexible staffing solutions designed to support both short-term projects and long-term operational needs.",
+        "items": [
+          {
+            "title": "Skilled & Unskilled Labor",
+            "description": "Access to a wide range of labor solutions, including skilled professionals and unskilled workers to meet diverse operational demands.",
+            "link": "/products/services-supplies/manpower-rentals/skilled-unskilled-labor",
+            "imageSrc": "/images/services-supplies/manpower/skilled-unskilled.jpg",
+            "specs": {
+              "features": ["Quick deployment", "Flexible contracts"]
+            }
+          },
+          {
+            "title": "Technical Workforce",
+            "description": "Specialized technical personnel with expertise in industrial operations, ensuring high-quality service and support.",
+            "link": "/products/services-supplies/manpower-rentals/technical-workforce",
+            "imageSrc": "/images/services-supplies/manpower/technical-workforce.jpg",
+            "specs": {
+              "features": ["Certified professionals", "Industry experience"]
+            }
+          },
+          {
+            "title": "Temporary Staffing",
+            "description": "Efficient temporary staffing solutions designed to address short-term labor needs and project-based demands.",
+            "link": "/products/services-supplies/manpower-rentals/temporary-staffing",
+            "imageSrc": "/images/services-supplies/manpower/temporary-staffing.jpg",
+            "specs": {
+              "features": ["Rapid deployment", "Cost effective"]
+            }
+          }
+        ]
+      },
+      {
+        "title": "HVAC Subcontracting",
+        "description": "Expert HVAC services designed for installation, maintenance, and repair to ensure optimal climate control and energy efficiency.",
+        "items": [
+          {
+            "title": "Installation",
+            "description": "Professional installation services for HVAC systems, tailored to meet the specific needs of your facility.",
+            "link": "/products/services-supplies/hvac-subcontracting/installation",
+            "imageSrc": "/images/services-supplies/hvac/installation.jpg",
+            "specs": {
+              "features": ["Custom design", "Efficient setup"]
+            }
+          },
+          {
+            "title": "Maintenance",
+            "description": "Regular maintenance services to ensure HVAC systems operate at peak efficiency and reduce downtime.",
+            "link": "/products/services-supplies/hvac-subcontracting/maintenance",
+            "imageSrc": "/images/services-supplies/hvac/maintenance.jpg",
+            "specs": {
+              "features": ["Scheduled servicing", "Preventive care"]
+            }
+          },
+          {
+            "title": "Repair of HVAC Systems",
+            "description": "Expert repair services to quickly address issues with HVAC systems, ensuring minimal disruption to your operations.",
+            "link": "/products/services-supplies/hvac-subcontracting/repair",
+            "imageSrc": "/images/services-supplies/hvac/repair.jpg",
+            "specs": {
+              "features": ["Rapid response", "Skilled technicians"]
+            }
+          }
+        ]
+      },
+      {
+        "title": "Bolt Torque Testing",
+        "description": "Precision testing services designed to verify the torque of bolts and ensure the safety of industrial assemblies. Our offerings are engineered for rapid performance and reliability.",
+        "items": [
+          {
+            "title": "Torque Calibration",
+            "description": "Accurate torque calibration services to validate the performance of bolt torque tools, ensuring consistency and safety in operations.",
+            "link": "/products/services-supplies/bolt-torque-testing/torque-calibration",
+            "imageSrc": "/images/services-supplies/bolt-torque/torque-calibration.jpg",
+            "specs": {
+              "features": ["Certified calibration", "High accuracy"]
+            }
+          }
+        ]
+      }
+    ]
+  }

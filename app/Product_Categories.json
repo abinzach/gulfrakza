@@ -1,0 +1,1377 @@
+{
+    "categories": [
+      {
+        "title": "Safety",
+        "description": "A complete range of advanced safety solutions designed to protect workers and secure industrial environments. Our products are engineered for rapid performance and durability.",
+        "imageSrc": "/images/categories/safety.png",
+        "link": "/products/safety",
+        "subcategories": [
+          {
+            "title": "Personal Protective Equipment (PPE)",
+            "description": "Essential protective gear to safeguard workers from hazards. Every product is rigorously tested for durability and regulatory compliance.",
+            "items": [
+              {
+                "title": "Helmets",
+                "description": "High-quality industrial helmets designed to protect against head injuries and impacts. Constructed from robust materials and engineered for comfort.",
+                "link": "/products/safety/ppe/helmets",
+                "imageSrc": "/images/safety/ppe/helmets.jpg",
+                "specs": {
+                  "material": "High-density polyethylene",
+                  "certifications": ["CE", "ANSI"],
+                  "features": ["Impact resistance", "Adjustable fit"]
+                }
+              },
+              {
+                "title": "Gloves",
+                "description": "Durable gloves that provide excellent grip and protection against cuts, abrasions, and chemical exposure. Available in multiple materials and sizes.",
+                "link": "/products/safety/ppe/gloves",
+                "imageSrc": "/images/safety/ppe/gloves.jpg",
+                "specs": {
+                  "material": "Nitrile, Leather",
+                  "sizes": ["S", "M", "L", "XL"],
+                  "features": ["Enhanced grip", "Chemical resistance"]
+                }
+              },
+              {
+                "title": "Safety Glasses",
+                "description": "Protective eyewear that shields against flying debris and harmful UV rays. Lightweight and designed for extended use.",
+                "link": "/products/safety/ppe/safety-glasses",
+                "imageSrc": "/images/safety/ppe/safety-glasses.jpg",
+                "specs": {
+                  "material": "Polycarbonate",
+                  "features": ["Anti-scratch coating", "UV protection"]
+                }
+              },
+              {
+                "title": "Ear Protection",
+                "description": "High-fidelity ear protection that minimizes noise exposure while allowing clear communication in high-decibel environments.",
+                "link": "/products/safety/ppe/ear-protection",
+                "imageSrc": "/images/safety/ppe/ear-protection.jpg",
+                "specs": {
+                  "type": "Ear muffs, Ear plugs",
+                  "features": ["Noise reduction", "Comfort fit"]
+                }
+              },
+              {
+                "title": "Safety Shoes",
+                "description": "Rugged safety shoes engineered to protect against impacts, punctures, and slips. Featuring reinforced toes and durable soles for maximum safety.",
+                "link": "/products/safety/ppe/safety-shoes",
+                "imageSrc": "/images/safety/ppe/safety-shoes.jpg",
+                "specs": {
+                  "material": "Leather, Composite",
+                  "features": ["Reinforced toe", "Slip-resistant sole"],
+                  "sizes": ["6", "7", "8", "9", "10", "11", "12"]
+                }
+              }
+            ]
+          },
+          {
+            "title": "Workwear",
+            "description": "A complete range of workwear solutions designed for durability and comfort in harsh industrial settings. Our products are engineered for rapid performance and reliability.",
+            "items": [
+              {
+                "title": "Coveralls",
+                "description": "Robust coveralls offering full-body protection and comfort, ideal for demanding industrial settings.",
+                "link": "/products/safety/workwear/coveralls",
+                "imageSrc": "/images/safety/workwear/coveralls.jpg",
+                "specs": {
+                  "material": "Cotton blend",
+                  "features": ["Durable", "Easy to clean"]
+                }
+              },
+              {
+                "title": "High-Visibility Jackets",
+                "description": "Jackets designed to enhance visibility in low-light conditions, constructed with reflective materials to ensure safety.",
+                "link": "/products/safety/workwear/high-visibility-jackets",
+                "imageSrc": "/images/safety/workwear/high-vis-jackets.jpg",
+                "specs": {
+                  "material": "Polyester",
+                  "features": ["Reflective strips", "Lightweight"]
+                }
+              },
+              {
+                "title": "Fire-Resistant Clothing",
+                "description": "Protective workwear that resists ignition and minimizes burn injuries, perfect for environments with elevated fire risks.",
+                "link": "/products/safety/workwear/fire-resistant-clothing",
+                "imageSrc": "/images/safety/workwear/fire-resistant.jpg",
+                "specs": {
+                  "material": "Nomex",
+                  "features": ["Fire resistance", "Breathable"]
+                }
+              }
+            ]
+          },
+          {
+            "title": "Fall Protection",
+            "description": "A complete range of fall protection equipment designed to safeguard workers at heights. Our products are engineered for rapid performance and durability.",
+            "items": [
+              {
+                "title": "Safety Harnesses",
+                "description": "Adjustable and durable harnesses designed to secure workers during elevated tasks. Engineered for comfort and maximum safety.",
+                "link": "/products/safety/fall-protection/safety-harnesses",
+                "imageSrc": "/images/safety/fall-protection/harnesses.jpg",
+                "specs": {
+                  "material": "Nylon",
+                  "features": ["Ergonomic design", "Multiple adjustment points"]
+                }
+              },
+              {
+                "title": "Lanyards",
+                "description": "High-quality lanyards providing secure attachment and energy absorption, essential for preventing falls from heights.",
+                "link": "/products/safety/fall-protection/lanyards",
+                "imageSrc": "/images/safety/fall-protection/lanyards.jpg",
+                "specs": {
+                  "material": "Kevlar",
+                  "features": ["Shock absorption", "Durability"]
+                }
+              },
+              {
+                "title": "Lifelines",
+                "description": "Reliable lifelines designed to offer continuous safety support for workers at heights.",
+                "link": "/products/safety/fall-protection/lifelines",
+                "imageSrc": "/images/safety/fall-protection/lifelines.jpg",
+                "specs": {
+                  "material": "Steel cable",
+                  "features": ["High tensile strength", "Corrosion-resistant"]
+                }
+              },
+              {
+                "title": "Anchorage Points",
+                "description": "Secure anchorage systems ensuring a stable connection for fall protection equipment.",
+                "link": "/products/safety/fall-protection/anchorage-points",
+                "imageSrc": "/images/safety/fall-protection/anchorage-points.jpg",
+                "specs": {
+                  "material": "Stainless steel",
+                  "features": ["Load tested", "Easy installation"]
+                }
+              }
+            ]
+          },
+          {
+            "title": "Gas Detection",
+            "description": "A complete range of gas detection devices designed to monitor hazardous gases. Our products are engineered for rapid performance and reliability in safety operations.",
+            "items": [
+              {
+                "title": "Portable Gas Detectors",
+                "description": "Compact and reliable detectors for on-the-go monitoring of toxic and combustible gases.",
+                "link": "/products/safety/gas-detection/portable",
+                "imageSrc": "/images/safety/gas-detection/portable-detectors.jpg",
+                "specs": {
+                  "detectionRange": "0-1000 ppm",
+                  "features": ["Alarm alerts", "Digital display"]
+                }
+              },
+              {
+                "title": "Fixed Gas Detectors",
+                "description": "Robust stationary detectors designed for continuous monitoring in industrial settings.",
+                "link": "/products/safety/gas-detection/fixed",
+                "imageSrc": "/images/safety/gas-detection/fixed-detectors.jpg",
+                "specs": {
+                  "detectionRange": "0-5000 ppm",
+                  "features": ["Network integration", "Long-term reliability"]
+                }
+              },
+              {
+                "title": "Respirators",
+                "description": "High-efficiency respirators that provide reliable protection against harmful airborne particles and chemicals.",
+                "link": "/products/safety/gas-detection/respirators",
+                "imageSrc": "/images/safety/gas-detection/respirators.jpg",
+                "specs": {
+                  "features": ["Replaceable filters", "Ergonomic design"]
+                }
+              }
+            ]
+          },
+          {
+            "title": "Lockout Tagout (LOTO) Products",
+            "description": "A complete range of LOTO products designed to secure machinery during maintenance. Our products are engineered for rapid performance and reliability in safety operations.",
+            "items": [
+              {
+                "title": "Lockout Hasps",
+                "description": "Sturdy lockout hasps to prevent accidental startup during maintenance operations.",
+                "link": "/products/safety/loto/lockout-hasp",
+                "imageSrc": "/images/safety/loto/lockout-hasp.jpg",
+                "specs": {
+                  "material": "Steel",
+                  "features": ["Multiple lock points", "User-friendly"]
+                }
+              },
+              {
+                "title": "Padlocks",
+                "description": "High-security padlocks engineered to secure equipment and enforce lockout protocols.",
+                "link": "/products/safety/loto/padlocks",
+                "imageSrc": "/images/safety/loto/padlocks.jpg",
+                "specs": {
+                  "material": "Hardened steel",
+                  "features": ["Weather resistant", "Tamper-proof"]
+                }
+              },
+              {
+                "title": "Tagout Labels",
+                "description": "Durable, high-visibility labels for marking locked-out equipment and ensuring clear communication.",
+                "link": "/products/safety/loto/tagout-labels",
+                "imageSrc": "/images/safety/loto/tagout-labels.jpg",
+                "specs": {
+                  "material": "Polyester",
+                  "features": ["Waterproof", "High visibility"]
+                }
+              },
+              {
+                "title": "Circuit Breaker Lockouts",
+                "description": "Secure devices designed to safely lock out circuit breakers during maintenance.",
+                "link": "/products/safety/loto/circuit-breaker-lockouts",
+                "imageSrc": "/images/safety/loto/circuit-breaker-lockouts.jpg",
+                "specs": {
+                  "features": ["Universal fit", "Easy installation"]
+                }
+              },
+              {
+                "title": "Valve Lockouts",
+                "description": "Reliable valve lockout devices that prevent unauthorized operation of industrial valves.",
+                "link": "/products/safety/loto/valve-lockouts",
+                "imageSrc": "/images/safety/loto/valve-lockouts.jpg",
+                "specs": {
+                  "features": ["Adjustable", "Robust design"]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Fire Safety",
+        "description": "A complete range of fire safety solutions designed to protect lives and assets. Our products are engineered for rapid response and reliability during emergencies.",
+        "imageSrc": "/images/categories/fire_safety.png",
+        "link": "/products/fire-safety",
+        "subcategories": [
+          {
+            "title": "Fire Extinguishers",
+            "description": "Effective extinguishers for various classes of fire, ensuring quick suppression and minimal damage.",
+            "items": [
+              {
+                "title": "CO₂ Extinguishers",
+                "description": "Carbon dioxide extinguishers ideal for electrical and flammable liquid fires. They provide rapid suppression without leaving a residue.",
+                "link": "/products/fire-safety/fire-extinguishers/co2",
+                "imageSrc": "/images/fire-safety/extinguishers/co2.jpg",
+                "specs": {
+                  "capacity": "5kg, 10kg",
+                  "features": ["Residue-free", "Quick response"]
+                }
+              },
+              {
+                "title": "Dry Powder Extinguishers",
+                "description": "Versatile dry powder extinguishers effective against multiple fire classes. They offer robust suppression in industrial environments.",
+                "link": "/products/fire-safety/fire-extinguishers/dry-powder",
+                "imageSrc": "/images/fire-safety/extinguishers/dry-powder.jpg",
+                "specs": {
+                  "capacity": "2kg, 5kg, 10kg",
+                  "features": ["Multi-class effectiveness", "Portable"]
+                }
+              },
+              {
+                "title": "Foam Extinguishers",
+                "description": "Foam extinguishers ideal for liquid fires, providing efficient suppression and a cooling effect to prevent re-ignition.",
+                "link": "/products/fire-safety/fire-extinguishers/foam",
+                "imageSrc": "/images/fire-safety/extinguishers/foam.jpg",
+                "specs": {
+                  "capacity": "4kg, 8kg",
+                  "features": ["Cooling effect", "Easy to operate"]
+                }
+              },
+              {
+                "title": "Water-Based Extinguishers",
+                "description": "Water-based extinguishers designed for class A fires. They effectively cool and suppress fires involving combustible materials.",
+                "link": "/products/fire-safety/fire-extinguishers/water-based",
+                "imageSrc": "/images/fire-safety/extinguishers/water-based.jpg",
+                "specs": {
+                  "capacity": "6kg, 12kg",
+                  "features": ["Cooling effect", "Non-toxic"]
+                }
+              }
+            ]
+          },
+          {
+            "title": "Fire Suppression Systems",
+            "description": "Integrated systems engineered to detect and suppress fires rapidly, minimizing damage and ensuring safety.",
+            "items": [
+              {
+                "title": "Sprinkler Systems",
+                "description": "Automated sprinkler systems that deploy water quickly to control fires and limit spread.",
+                "link": "/products/fire-safety/fire-suppression/sprinkler-systems",
+                "imageSrc": "/images/fire-safety/suppression/sprinkler.jpg",
+                "specs": {
+                  "features": ["Automatic activation", "Wide coverage"]
+                }
+              },
+              {
+                "title": "Gas Suppression Systems",
+                "description": "Advanced systems that release inert gases to displace oxygen and extinguish fires without damaging sensitive equipment.",
+                "link": "/products/fire-safety/fire-suppression/gas-suppression",
+                "imageSrc": "/images/fire-safety/suppression/gas.jpg",
+                "specs": {
+                  "features": ["Fast activation", "Safe for electronics"]
+                }
+              },
+              {
+                "title": "Foam Systems",
+                "description": "Foam suppression systems that create a blanket over flammable liquids, preventing re-ignition and controlling fire spread.",
+                "link": "/products/fire-safety/fire-suppression/foam-systems",
+                "imageSrc": "/images/fire-safety/suppression/foam.jpg",
+                "specs": {
+                  "features": ["Rapid deployment", "Efficient coverage"]
+                }
+              }
+            ]
+          },
+          {
+            "title": "Fire Alarms & Detection",
+            "description": "Comprehensive alarm and detection systems that provide early warnings and enhance safety during fire emergencies.",
+            "items": [
+              {
+                "title": "Smoke Detectors",
+                "description": "High-sensitivity smoke detectors that offer early warning of potential fires, ensuring timely evacuation and response.",
+                "link": "/products/fire-safety/fire-alarms/smoke-detectors",
+                "imageSrc": "/images/fire-safety/alarms/smoke-detectors.jpg",
+                "specs": {
+                  "features": ["Fast response", "Low false alarm rate"]
+                }
+              },
+              {
+                "title": "Heat Detectors",
+                "description": "Reliable detectors that trigger alarms when temperatures exceed safe thresholds, ensuring prompt action.",
+                "link": "/products/fire-safety/fire-alarms/heat-detectors",
+                "imageSrc": "/images/fire-safety/alarms/heat-detectors.jpg",
+                "specs": {
+                  "features": ["Accurate sensing", "Durable design"]
+                }
+              },
+              {
+                "title": "Manual Call Points",
+                "description": "Easy-to-use call points that enable immediate manual triggering of fire alarms in emergencies.",
+                "link": "/products/fire-safety/fire-alarms/manual-call-points",
+                "imageSrc": "/images/fire-safety/alarms/manual-call-points.jpg",
+                "specs": {
+                  "features": ["Simple operation", "High visibility"]
+                }
+              }
+            ]
+          },
+          {
+            "title": "Firefighting Equipment",
+            "description": "A complete range of firefighting equipment designed to combat fires effectively. Our products are engineered for rapid performance and reliability during emergencies.",
+            "items": [
+              {
+                "title": "Fire Hoses",
+                "description": "Durable fire hoses engineered to deliver high-pressure water streams, ensuring effective fire suppression.",
+                "link": "/products/fire-safety/firefighting-equipment/fire-hoses",
+                "imageSrc": "/images/fire-safety/firefighting/hose.jpg",
+                "specs": {
+                  "length": "25m, 50m",
+                  "features": ["High-pressure", "Flexible"]
+                }
+              },
+              {
+                "title": "Hydrants",
+                "description": "Robust fire hydrants designed for quick water access during firefighting operations, ensuring reliability and ease of maintenance.",
+                "link": "/products/fire-safety/firefighting/hydrants",
+                "imageSrc": "/images/fire-safety/firefighting/hydrants.jpg",
+                "specs": {
+                  "material": "Cast iron, Ductile iron",
+                  "features": ["Durable", "Easy maintenance"]
+                }
+              },
+              {
+                "title": "Nozzles",
+                "description": "Precision-engineered nozzles that offer controlled water flow for effective and efficient fire suppression.",
+                "link": "/products/fire-safety/firefighting/nozzles",
+                "imageSrc": "/images/fire-safety/firefighting/nozzles.jpg",
+                "specs": {
+                  "features": ["Adjustable spray patterns", "Corrosion-resistant"]
+                }
+              },
+              {
+                "title": "Fire Blankets",
+                "description": "High-quality fire blankets designed to smother flames quickly and provide immediate protection during small fires.",
+                "link": "/products/fire-safety/firefighting/fire-blankets",
+                "imageSrc": "/images/fire-safety/firefighting/fire-blankets.jpg",
+                "specs": {
+                  "material": "Fiberglass",
+                  "features": ["Heat resistant", "Easy deployment"]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Security",
+        "description": "A complete range of security solutions designed to protect assets and secure premises. Our products are engineered for rapid performance and reliability during operations.",
+        "imageSrc": "/images/categories/security.png",
+        "link": "/products/security",
+        "subcategories": [
+          {
+            "title": "Surveillance Systems",
+            "description": "Advanced surveillance systems designed for continuous monitoring and recording to ensure a secure environment.",
+            "items": [
+              {
+                "title": "CCTV Cameras",
+                "description": "High-resolution CCTV cameras that offer continuous monitoring, ensuring round-the-clock security.",
+                "link": "/products/security/surveillance/cctv-cameras",
+                "imageSrc": "/images/security/surveillance/cctv-cameras.jpg",
+                "specs": {
+                  "resolution": "1080p, 4K",
+                  "features": ["Night vision", "Wide-angle lens"]
+                }
+              },
+              {
+                "title": "Video Recorders",
+                "description": "Reliable video recorders capable of handling large volumes of footage with advanced storage and retrieval features.",
+                "link": "/products/security/surveillance/video-recorders",
+                "imageSrc": "/images/security/surveillance/video-recorders.jpg",
+                "specs": {
+                  "storage": "1TB, 2TB options",
+                  "features": ["Remote access", "Motion detection"]
+                }
+              },
+              {
+                "title": "IP Cameras",
+                "description": "Network-enabled IP cameras delivering high-definition video and seamless connectivity for modern surveillance systems.",
+                "link": "/products/security/surveillance/ip-cameras",
+                "imageSrc": "/images/security/surveillance/ip-cameras.jpg",
+                "specs": {
+                  "resolution": "1080p, 4K",
+                  "features": ["Wireless connectivity", "Pan-tilt-zoom"]
+                }
+              }
+            ]
+          },
+          {
+            "title": "Access Control",
+            "description": "A complete range of access control solutions designed to restrict entry and secure premises. Our products are engineered for rapid performance and reliability during operations.",
+            "items": [
+              {
+                "title": "Biometric Systems",
+                "description": "Advanced biometric systems using fingerprint or facial recognition to provide secure and efficient access control.",
+                "link": "/products/security/access-control/biometric-systems",
+                "imageSrc": "/images/security/access-control/biometric.jpg",
+                "specs": {
+                  "technology": "Fingerprint, Facial Recognition",
+                  "features": ["High accuracy", "Quick verification"]
+                }
+              },
+              {
+                "title": "RFID Card Readers",
+                "description": "Efficient RFID card readers designed for fast, secure access management with durable construction.",
+                "link": "/products/security/access-control/rfid-card-readers",
+                "imageSrc": "/images/security/access-control/rfid.jpg",
+                "specs": {
+                  "technology": "RFID",
+                  "features": ["Fast response", "Reliable performance"]
+                }
+              },
+              {
+                "title": "Smart Locks",
+                "description": "Innovative smart locks offering keyless entry and remote control, enhancing convenience and security.",
+                "link": "/products/security/access-control/smart-locks",
+                "imageSrc": "/images/security/access-control/smart-locks.jpg",
+                "specs": {
+                  "features": ["Remote access", "Audit trail"]
+                }
+              }
+            ]
+          },
+          {
+            "title": "Perimeter Security",
+            "description": "A complete range of perimeter security solutions designed to protect property boundaries. Our products are engineered for rapid performance and reliability during operations.",
+            "items": [
+              {
+                "title": "Barriers",
+                "description": "Sturdy barriers that effectively restrict unauthorized entry and enhance the security of your premises.",
+                "link": "/products/security/perimeter/barriers",
+                "imageSrc": "/images/security/perimeter/barriers.jpg",
+                "specs": {
+                  "material": "Metal",
+                  "features": ["High durability", "Impact resistant"]
+                }
+              },
+              {
+                "title": "Bollards",
+                "description": "Durable bollards serving as physical deterrents to protect vulnerable areas from vehicular intrusion.",
+                "link": "/products/security/perimeter/bollards",
+                "imageSrc": "/images/security/perimeter/bollards.jpg",
+                "specs": {
+                  "material": "Reinforced steel",
+                  "features": ["Tamper-proof", "Weather resistant"]
+                }
+              },
+              {
+                "title": "Electric Fencing",
+                "description": "Reliable electric fencing solutions that act as an active deterrent by delivering a controlled shock to unauthorized intruders.",
+                "link": "/products/security/perimeter/electric-fencing",
+                "imageSrc": "/images/security/perimeter/electric-fencing.jpg",
+                "specs": {
+                  "voltage": "High voltage",
+                  "features": ["Shock deterrent", "Easy installation"]
+                }
+              }
+            ]
+          },
+          {
+            "title": "Intrusion Detection",
+            "description": "A complete range of intrusion detection solutions designed to alert security personnel to unauthorized access. Our products are engineered for rapid performance and reliability during operations.",
+            "items": [
+              {
+                "title": "Motion Sensors",
+                "description": "Highly sensitive motion sensors that detect movement and trigger alarms, ensuring rapid response to potential intrusions.",
+                "link": "/products/security/intrusion-detection/motion-sensors",
+                "imageSrc": "/images/security/intrusion/motion-sensors.jpg",
+                "specs": {
+                  "sensitivity": "Adjustable",
+                  "features": ["Wide detection range", "Low false alarm rate"]
+                }
+              },
+              {
+                "title": "Alarm Systems",
+                "description": "Comprehensive alarm systems that provide immediate notifications in the event of unauthorized access.",
+                "link": "/products/security/intrusion-detection/alarm-systems",
+                "imageSrc": "/images/security/intrusion/alarm-systems.jpg",
+                "specs": {
+                  "features": ["Loud siren", "Remote notification"]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Lifting",
+        "description": "A complete range of lifting solutions designed to handle heavy loads safely. Our products are engineered for rapid performance and reliability in industrial operations.",
+        "imageSrc": "/images/categories/lifting.png",
+        "link": "/products/lifting",
+        "subcategories": [
+          {
+            "title": "Lifting Slings",
+            "description": "High-quality slings designed to support heavy loads with reliability and flexibility. Our products are engineered for rapid performance and durability.",
+            "items": [
+              {
+                "title": "Chain Slings",
+                "description": "Heavy-duty chain slings engineered for rugged lifting tasks, ensuring maximum safety and durability.",
+                "link": "/products/lifting/lifting-slings/chain-slings",
+                "imageSrc": "/images/lifting/slings/chain-slings.jpg",
+                "specs": {
+                  "material": "Alloy Steel",
+                  "features": ["High tensile strength", "Wear-resistant"]
+                }
+              },
+              {
+                "title": "Wire Rope Slings",
+                "description": "Reliable wire rope slings offering flexibility and high load capacity, ideal for diverse lifting scenarios.",
+                "link": "/products/lifting/lifting-slings/wire-rope-slings",
+                "imageSrc": "/images/lifting/slings/wire-rope-slings.jpg",
+                "specs": {
+                  "material": "Galvanized Steel",
+                  "features": ["Corrosion-resistant", "High load capacity"]
+                }
+              },
+              {
+                "title": "Webbing Slings",
+                "description": "Versatile webbing slings designed for lighter loads with exceptional durability and ease of handling.",
+                "link": "/products/lifting/lifting-slings/webbing-slings",
+                "imageSrc": "/images/lifting/slings/webbing-slings.jpg",
+                "specs": {
+                  "material": "Polyester",
+                  "features": ["Lightweight", "Flexible"]
+                }
+              }
+            ]
+          },
+          {
+            "title": "Hoists & Winches",
+            "description": "Efficient hoists and winches engineered for safe lifting and load handling in demanding industrial environments.",
+            "items": [
+              {
+                "title": "Electric Hoists",
+                "description": "High-performance electric hoists designed for smooth lifting operations in heavy-duty applications.",
+                "link": "/products/lifting/hoists-winches/electric-hoists",
+                "imageSrc": "/images/lifting/hoists/electric-hoists.jpg",
+                "specs": {
+                  "power": "3HP, 5HP, 7.5HP",
+                  "features": ["Smooth operation", "Remote control"]
+                }
+              },
+              {
+                "title": "Manual Hoists",
+                "description": "Reliable manual hoists that offer a cost-effective solution for lighter lifting tasks with a durable design.",
+                "link": "/products/lifting/hoists-winches/manual-hoists",
+                "imageSrc": "/images/lifting/hoists/manual-hoists.jpg",
+                "specs": {
+                  "features": ["Compact design", "High efficiency"]
+                }
+              },
+              {
+                "title": "Air Winches",
+                "description": "Robust air winches designed for rapid and efficient lifting in environments with compressed air availability.",
+                "link": "/products/lifting/hoists-winches/air-winches",
+                "imageSrc": "/images/lifting/hoists/air-winches.jpg",
+                "specs": {
+                  "features": ["Fast operation", "Low maintenance"]
+                }
+              }
+            ]
+          },
+          {
+            "title": "Lifting Hooks & Shackles",
+            "description": "A complete range of hooks and shackles designed to provide reliable support and stability during lifting operations. Our products are engineered for rapid performance and durability.",
+            "items": [
+              {
+                "title": "Bow Shackles",
+                "description": "Durable bow shackles designed for versatile lifting applications, ensuring secure load handling and ease of use.",
+                "link": "/products/lifting/lifting-hooks-shackles/bow-shackles",
+                "imageSrc": "/images/lifting/hooks-shackles/bow-shackles.jpg",
+                "specs": {
+                  "material": "Forged Steel",
+                  "features": ["High load capacity", "Corrosion-resistant"]
+                }
+              },
+              {
+                "title": "D Shackles",
+                "description": "Robust D shackles engineered for secure load connections and reliable performance in heavy lifting.",
+                "link": "/products/lifting/lifting-hooks-shackles/d-shackles",
+                "imageSrc": "/images/lifting/hooks-shackles/d-shackles.jpg",
+                "specs": {
+                  "material": "High-strength steel",
+                  "features": ["Reliable", "Durable"]
+                }
+              },
+              {
+                "title": "Swivel Hooks",
+                "description": "Innovative swivel hooks that provide 360° rotation for optimal load balancing during lifting operations.",
+                "link": "/products/lifting/lifting-hooks-shackles/swivel-hooks",
+                "imageSrc": "/images/lifting/hooks-shackles/swivel-hooks.jpg",
+                "specs": {
+                  "features": ["360° rotation", "High stability"]
+                }
+              }
+            ]
+          },
+          {
+            "title": "Cranes & Load Testing Equipment",
+            "description": "A complete range of cranes and load testing equipment designed for heavy lifting and safety verification. Our products are engineered for rapid performance and reliability.",
+            "items": [
+              {
+                "title": "Cranes",
+                "description": "Industrial cranes engineered for handling heavy loads with precision and safety, ideal for large-scale lifting operations.",
+                "link": "/products/lifting/cranes-load-testing/cranes",
+                "imageSrc": "/images/lifting/cranes/cranes.jpg",
+                "specs": {
+                  "capacity": "Up to 50 tons",
+                  "features": ["Remote control", "High stability"]
+                }
+              },
+              {
+                "title": "Load Testing Equipment",
+                "description": "Equipment designed to rigorously test the load capacity of lifting devices, ensuring safety and compliance with industry standards.",
+                "link": "/products/lifting/cranes-load-testing/load-testing-equipment",
+                "imageSrc": "/images/lifting/cranes/load-testing.jpg",
+                "specs": {
+                  "features": ["Accurate measurement", "Durable construction"]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Electrical",
+        "description": "A complete range of electrical solutions designed to power and control industrial systems. Our products are engineered for rapid performance and efficiency in applications.",
+        "imageSrc": "/images/categories/electrical.png",
+        "link": "/products/electrical",
+        "subcategories": [
+          {
+            "title": "Cables & Wires",
+            "description": "Durable cables and wires engineered for safe, efficient power distribution and signal control in industrial settings.",
+            "items": [
+              {
+                "title": "Power Cables",
+                "description": "Heavy-duty power cables designed for efficient energy transmission in demanding industrial environments.",
+                "link": "/products/electrical/cables-wires/power-cables",
+                "imageSrc": "/images/electrical/cables/power-cables.jpg",
+                "specs": {
+                  "material": "Copper",
+                  "features": ["High conductivity", "Durable insulation"]
+                }
+              },
+              {
+                "title": "Control Cables",
+                "description": "Reliable control cables engineered for precise signal transmission in automation and control systems.",
+                "link": "/products/electrical/cables-wires/control-cables",
+                "imageSrc": "/images/electrical/cables/control-cables.jpg",
+                "specs": {
+                  "material": "Copper, PVC",
+                  "features": ["Flexible", "High precision"]
+                }
+              },
+              {
+                "title": "Fiber Optic Cables",
+                "description": "High-speed fiber optic cables engineered for efficient data transmission across industrial networks with minimal signal loss.",
+                "link": "/products/electrical/cables-wires/fiber-optic-cables",
+                "imageSrc": "/images/electrical/cables/fiber-optic-cables.jpg",
+                "specs": {
+                  "material": "Optical fiber",
+                  "features": ["High-speed", "Low signal loss"]
+                }
+              }
+            ]
+          },
+          {
+            "title": "Electrical Panels & Components",
+            "description": "A complete range of electrical panels and components designed for safe and efficient power distribution in industrial systems. Our products are engineered for rapid performance and reliability.",
+            "items": [
+              {
+                "title": "Distribution Boards",
+                "description": "Reliable distribution boards engineered to effectively manage electrical circuits in complex industrial installations.",
+                "link": "/products/electrical/panels-components/distribution-boards",
+                "imageSrc": "/images/electrical/panels/distribution-boards.jpg",
+                "specs": {
+                  "material": "Steel, Plastic",
+                  "features": ["Modular design", "High safety standards"]
+                }
+              },
+              {
+                "title": "Circuit Breakers",
+                "description": "High-quality circuit breakers designed to protect electrical systems from overloads and short circuits.",
+                "link": "/products/electrical/panels-components/circuit-breakers",
+                "imageSrc": "/images/electrical/panels/circuit-breakers.jpg",
+                "specs": {
+                  "features": ["Quick response", "Reliable protection"]
+                }
+              },
+              {
+                "title": "Switches",
+                "description": "Durable electrical switches engineered for efficient power control and management in industrial environments.",
+                "link": "/products/electrical/panels-components/switches",
+                "imageSrc": "/images/electrical/panels/switches.jpg",
+                "specs": {
+                  "material": "High-grade plastic",
+                  "features": ["Long lifespan", "Ease of use"]
+                }
+              }
+            ]
+          },
+          {
+            "title": "Industrial Lighting",
+            "description": "A complete range of industrial lighting solutions designed to illuminate facilities with energy efficiency and optimal brightness. Our products are engineered for rapid performance and reliability.",
+            "items": [
+              {
+                "title": "LED Floodlights",
+                "description": "High-performance LED floodlights engineered for expansive illumination, offering energy efficiency and long-lasting brightness.",
+                "link": "/products/electrical/industrial-lighting/led-floodlights",
+                "imageSrc": "/images/electrical/lighting/led-floodlights.jpg",
+                "specs": {
+                  "wattage": "50W, 100W, 150W",
+                  "features": ["Energy efficient", "High lumen output"]
+                }
+              },
+              {
+                "title": "Explosion-Proof Lights",
+                "description": "Specialized explosion-proof lighting designed for hazardous environments, ensuring safe operation without compromising illumination.",
+                "link": "/products/electrical/industrial-lighting/explosion-proof-lights",
+                "imageSrc": "/images/electrical/lighting/explosion-proof-lights.jpg",
+                "specs": {
+                  "features": ["Rugged construction", "Certified for hazardous areas"]
+                }
+              },
+              {
+                "title": "Bus-bars",
+                "description": "High-quality bus-bars for efficient power distribution, ensuring reliable connectivity and performance in industrial electrical systems.",
+                "link": "/products/electrical/industrial-lighting/bus-bars",
+                "imageSrc": "/images/electrical/lighting/bus-bars.jpg",
+                "specs": {
+                  "material": "Copper, Aluminum",
+                  "features": ["High conductivity", "Durable"]
+                }
+              }
+            ]
+          },
+          {
+            "title": "Transformers & Power Supplies",
+            "description": "A complete range of transformers and power supplies designed to ensure stable power delivery and efficient energy management. Our products are engineered for rapid performance and reliability.",
+            "items": [
+              {
+                "title": "Transformers",
+                "description": "High-efficiency transformers designed to regulate voltage and ensure seamless power transmission in industrial applications.",
+                "link": "/products/electrical/transformers-power-supplies/transformers",
+                "imageSrc": "/images/electrical/transformers/transformers.jpg",
+                "specs": {
+                  "capacity": "50kVA, 100kVA, 250kVA",
+                  "features": ["Voltage regulation", "High efficiency"]
+                }
+              },
+              {
+                "title": "Power Supplies",
+                "description": "Robust power supplies engineered for industrial applications, providing stable and reliable power to critical systems.",
+                "link": "/products/electrical/transformers-power-supplies/power-supplies",
+                "imageSrc": "/images/electrical/transformers/power-supplies.jpg",
+                "specs": {
+                  "output": "24V, 48V",
+                  "features": ["Stable output", "Compact design"]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Welding",
+        "description": "A complete range of welding solutions designed for precision and durability in fabrication. Our products are engineered for rapid performance and reliability during welding.",
+        "imageSrc": "/images/categories/welding.png",
+        "link": "/products/welding",
+        "subcategories": [
+          {
+            "title": "Welding Machines",
+            "description": "High-performance welding machines designed for various welding techniques, ensuring precision and reliable performance.",
+            "items": [
+              {
+                "title": "Arc Welders",
+                "description": "Efficient arc welders that provide strong and durable welds, ideal for various metal fabrication applications.",
+                "link": "/products/welding/welding-machines/arc-welders",
+                "imageSrc": "/images/welding/machines/arc-welders.jpg",
+                "specs": {
+                  "power": "220V, 380V",
+                  "features": ["High duty cycle", "User-friendly interface"]
+                }
+              },
+              {
+                "title": "MIG/TIG Welders",
+                "description": "Versatile MIG/TIG welders offering flexibility for both light and heavy-duty welding tasks with precise control.",
+                "link": "/products/welding/welding-machines/mig-tig-welders",
+                "imageSrc": "/images/welding/machines/mig-tig-welders.jpg",
+                "specs": {
+                  "power": "110V, 220V",
+                  "features": ["Dual functionality", "Precise control"]
+                }
+              },
+              {
+                "title": "Plasma Cutters",
+                "description": "High-precision plasma cutters engineered to deliver clean and accurate cuts on a variety of metals.",
+                "link": "/products/welding/welding-machines/plasma-cutters",
+                "imageSrc": "/images/welding/machines/plasma-cutters.jpg",
+                "specs": {
+                  "power": "220V, 380V",
+                  "features": ["Fast cutting speed", "High accuracy"]
+                }
+              }
+            ]
+          },
+          {
+            "title": "Welding Consumables",
+            "description": "High-quality consumables essential for efficient welding operations, including electrodes, filler wires, and fluxes.",
+            "items": [
+              {
+                "title": "Electrodes",
+                "description": "Premium electrodes designed for strong and consistent welds across various welding processes.",
+                "link": "/products/welding/welding-consumables/electrodes",
+                "imageSrc": "/images/welding/consumables/electrodes.jpg",
+                "specs": {
+                  "material": "Steel, Aluminum",
+                  "features": ["Consistent performance", "High deposition rate"]
+                }
+              },
+              {
+                "title": "Filler Wires",
+                "description": "Reliable filler wires engineered to provide optimal deposition and create strong, durable weld joints.",
+                "link": "/products/welding/welding-consumables/filler-wires",
+                "imageSrc": "/images/welding/consumables/filler-wires.jpg",
+                "specs": {
+                  "material": "Mild Steel, Stainless Steel",
+                  "features": ["Smooth flow", "High strength welds"]
+                }
+              },
+              {
+                "title": "Fluxes",
+                "description": "High-quality fluxes formulated to ensure clean, efficient welds by promoting smooth fusion and preventing oxidation.",
+                "link": "/products/welding/welding-consumables/fluxes",
+                "imageSrc": "/images/welding/consumables/fluxes.jpg",
+                "specs": {
+                  "features": ["Easy to apply", "Enhanced fusion"]
+                }
+              }
+            ]
+          },
+          {
+            "title": "Welding Safety Gear",
+            "description": "Protective gear for welders designed to ensure maximum safety during welding operations. Our products are engineered for rapid performance and reliability during welding.",
+            "items": [
+              {
+                "title": "Welding Helmets",
+                "description": "Advanced welding helmets featuring auto-darkening technology to provide optimum protection against intense light and sparks.",
+                "link": "/products/welding/welding-safety/welding-helmets",
+                "imageSrc": "/images/welding/safety/welding-helmets.jpg",
+                "specs": {
+                  "features": ["Auto-darkening", "Lightweight design"]
+                }
+              },
+              {
+                "title": "Welding Gloves",
+                "description": "Durable welding gloves engineered for comfort and safety, offering excellent protection against heat and sparks.",
+                "link": "/products/welding/welding-safety/welding-gloves",
+                "imageSrc": "/images/welding/safety/welding-gloves.jpg",
+                "specs": {
+                  "material": "Leather",
+                  "features": ["Heat resistance", "Enhanced grip"]
+                }
+              },
+              {
+                "title": "Welding Jackets",
+                "description": "Protective welding jackets designed to shield the wearer from heat, sparks, and UV radiation while ensuring mobility and comfort.",
+                "link": "/products/welding/welding-safety/welding-jackets",
+                "imageSrc": "/images/welding/safety/welding-jackets.jpg",
+                "specs": {
+                  "material": "Leather, Flame-resistant fabric",
+                  "features": ["Durable", "Comfortable fit"]
+                }
+              }
+            ]
+          },
+          {
+            "title": "Gas Welding Equipment",
+            "description": "A complete range of gas welding equipment designed to ensure safe and efficient welding operations. Our products are engineered for rapid performance and reliability.",
+            "items": [
+              {
+                "title": "Regulators",
+                "description": "Precision regulators designed to control gas flow accurately for consistent and safe welding.",
+                "link": "/products/welding/gas-welding-equipment/regulators",
+                "imageSrc": "/images/welding/gas/regulators.jpg",
+                "specs": {
+                  "features": ["Accurate control", "Durable construction"]
+                }
+              },
+              {
+                "title": "Torches",
+                "description": "High-performance welding torches engineered for efficient gas welding, providing a stable flame and precise control.",
+                "link": "/products/welding/gas-welding-equipment/torches",
+                "imageSrc": "/images/welding/gas/torches.jpg",
+                "specs": {
+                  "features": ["Steady flame", "Ergonomic design"]
+                }
+              },
+              {
+                "title": "Hoses",
+                "description": "Robust hoses designed to deliver gas reliably during welding operations, ensuring consistent performance and safety.",
+                "link": "/products/welding/gas-welding-equipment/hoses",
+                "imageSrc": "/images/welding/gas/hoses.jpg",
+                "specs": {
+                  "features": ["Flexible", "High-pressure resistance"]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Marine Equipments",
+        "description": "A complete range of marine equipment solutions designed for challenging maritime environments. Our products are engineered for rapid performance and reliability during sea operations.",
+        "imageSrc": "/images/categories/marine.png",
+        "link": "/products/marine",
+        "subcategories": [
+          {
+            "title": "Navigation & Communication",
+            "description": "Advanced navigation and communication tools designed for reliable operation at sea. Our products are engineered for rapid performance and reliability.",
+            "items": [
+              {
+                "title": "GPS",
+                "description": "High-precision GPS devices for accurate positioning and navigation in marine environments.",
+                "link": "/products/marine/navigation-communication/gps",
+                "imageSrc": "/images/marine/navigation/gps.jpg",
+                "specs": {
+                  "features": ["Accurate", "User-friendly"]
+                }
+              },
+              {
+                "title": "Radars",
+                "description": "State-of-the-art radar systems for detecting objects and ensuring safe navigation under all weather conditions.",
+                "link": "/products/marine/navigation-communication/radars",
+                "imageSrc": "/images/marine/navigation/radars.jpg",
+                "specs": {
+                  "features": ["High sensitivity", "Real-time data"]
+                }
+              },
+              {
+                "title": "VHF Radios",
+                "description": "Reliable VHF radios for clear communication and emergency coordination at sea.",
+                "link": "/products/marine/navigation-communication/vhf-radios",
+                "imageSrc": "/images/marine/navigation/vhf-radios.jpg",
+                "specs": {
+                  "features": ["Long range", "Durable design"]
+                }
+              }
+            ]
+          },
+          {
+            "title": "Deck & Mooring Equipment",
+            "description": "A complete range of deck and mooring equipment designed to secure vessels and support safe marine operations. Our products are engineered for rapid performance and reliability.",
+            "items": [
+              {
+                "title": "Anchors",
+                "description": "Heavy-duty anchors engineered to secure vessels firmly even under challenging sea conditions.",
+                "link": "/products/marine/deck-mooring/anchors",
+                "imageSrc": "/images/marine/deck-mooring/anchors.jpg",
+                "specs": {
+                  "material": "Galvanized Steel",
+                  "features": ["High holding power", "Corrosion resistant"]
+                }
+              },
+              {
+                "title": "Ropes",
+                "description": "Durable marine ropes designed for mooring and towing, offering high strength and resistance to abrasion.",
+                "link": "/products/marine/deck-mooring/ropes",
+                "imageSrc": "/images/marine/deck-mooring/ropes.jpg",
+                "specs": {
+                  "material": "Polyester",
+                  "features": ["High tensile strength", "UV resistant"]
+                }
+              },
+              {
+                "title": "Chains",
+                "description": "Robust chains engineered for marine applications, ensuring secure mooring and reliable towing performance.",
+                "link": "/products/marine/deck-mooring/chains",
+                "imageSrc": "/images/marine/deck-mooring/chains.jpg",
+                "specs": {
+                  "material": "Alloy Steel",
+                  "features": ["High durability", "Corrosion resistant"]
+                }
+              },
+              {
+                "title": "Winches",
+                "description": "Reliable winches designed for marine deck operations, providing efficient and safe handling of heavy loads.",
+                "link": "/products/marine/deck-mooring/winches",
+                "imageSrc": "/images/marine/deck-mooring/winches.jpg",
+                "specs": {
+                  "features": ["High torque", "Easy to operate"]
+                }
+              }
+            ]
+          },
+          {
+            "title": "Safety & Survival Equipment",
+            "description": "A complete range of safety and survival equipment designed to protect lives at sea. Our products are engineered for rapid performance and reliability during emergencies.",
+            "items": [
+              {
+                "title": "Life Jackets",
+                "description": "High-quality life jackets engineered for buoyancy and durability, ensuring the safety of crew and passengers.",
+                "link": "/products/marine/safety-survival/life-jackets",
+                "imageSrc": "/images/marine/safety-survival/life-jackets.jpg",
+                "specs": {
+                  "features": ["High buoyancy", "Ergonomic design"]
+                }
+              },
+              {
+                "title": "Lifeboats",
+                "description": "Reliable lifeboats designed for emergency evacuation and survival in harsh marine conditions.",
+                "link": "/products/marine/safety-survival/lifeboats",
+                "imageSrc": "/images/marine/safety-survival/lifeboats.jpg",
+                "specs": {
+                  "capacity": "Up to 50 persons",
+                  "features": ["Durable", "Easy deployment"]
+                }
+              },
+              {
+                "title": "Emergency Beacons",
+                "description": "High-intensity emergency beacons designed for rapid location and rescue in distress situations at sea.",
+                "link": "/products/marine/safety-survival/emergency-beacons",
+                "imageSrc": "/images/marine/safety-survival/emergency-beacons.jpg",
+                "specs": {
+                  "features": ["Long battery life", "GPS-enabled"]
+                }
+              }
+            ]
+          },
+          {
+            "title": "Marine Engines & Spare Parts",
+            "description": "A complete range of marine engine components and spare parts designed to ensure optimal performance. Our products are engineered for rapid performance and reliability.",
+            "items": []
+          }
+        ]
+      },
+      {
+        "title": "Pneumatic & Hydraulic Fittings",
+        "description": "A complete range of pneumatic and hydraulic fittings designed for fluid control and power transmission. Our products are engineered for rapid performance and durability.",
+        "imageSrc": "/images/categories/hydraulic.png",
+        "link": "/products/pneumatic-hydraulic",
+        "subcategories": [
+          {
+            "title": "Pneumatic Valves & Actuators",
+            "description": "Precision valves and actuators designed for controlling compressed air flow in industrial applications. Our products are engineered for rapid performance and reliability.",
+            "items": [
+              {
+                "title": "Solenoid Valves",
+                "description": "Efficient solenoid valves that provide rapid, precise control of pneumatic systems, ensuring smooth operation.",
+                "link": "/products/pneumatic-hydraulic/pneumatic-valves/solenoid-valves",
+                "imageSrc": "/images/pneumatic-hydraulic/valves/solenoid-valves.jpg",
+                "specs": {
+                  "features": ["Fast switching", "Low power consumption"]
+                }
+              },
+              {
+                "title": "Air Cylinders",
+                "description": "Durable air cylinders engineered for high-pressure applications, offering smooth and controlled motion.",
+                "link": "/products/pneumatic-hydraulic/pneumatic-valves/air-cylinders",
+                "imageSrc": "/images/pneumatic-hydraulic/valves/air-cylinders.jpg",
+                "specs": {
+                  "features": ["High precision", "Long service life"]
+                }
+              },
+              {
+                "title": "Control Valves",
+                "description": "Reliable control valves designed for accurate modulation of airflow in pneumatic systems.",
+                "link": "/products/pneumatic-hydraulic/pneumatic-valves/control-valves",
+                "imageSrc": "/images/pneumatic-hydraulic/valves/control-valves.jpg",
+                "specs": {
+                  "features": ["Accurate control", "Robust design"]
+                }
+              }
+            ]
+          },
+          {
+            "title": "Hydraulic Hoses & Fittings",
+            "description": "High-pressure hydraulic hoses and fittings engineered for maximum durability and performance in industrial applications. Our products are engineered for rapid performance and reliability.",
+            "items": [
+              {
+                "title": "High-Pressure Hoses",
+                "description": "Durable hoses designed to withstand high pressures and harsh operating conditions.",
+                "link": "/products/pneumatic-hydraulic/hydraulic-hoses/high-pressure-hoses",
+                "imageSrc": "/images/pneumatic-hydraulic/hoses/high-pressure-hoses.jpg",
+                "specs": {
+                  "material": "Rubber",
+                  "features": ["High durability", "Flexibility"]
+                }
+              },
+              {
+                "title": "Couplings",
+                "description": "Reliable hydraulic couplings engineered for secure, leak-free connections between hoses and equipment.",
+                "link": "/products/pneumatic-hydraulic/hydraulic-hoses/couplings",
+                "imageSrc": "/images/pneumatic-hydraulic/hoses/couplings.jpg",
+                "specs": {
+                  "material": "Stainless Steel",
+                  "features": ["Secure connection", "Corrosion resistant"]
+                }
+              },
+              {
+                "title": "Adapters",
+                "description": "Versatile adapters designed to facilitate seamless connections in hydraulic systems, ensuring compatibility and performance.",
+                "link": "/products/pneumatic-hydraulic/hydraulic-hoses/adapters",
+                "imageSrc": "/images/pneumatic-hydraulic/hoses/adapters.jpg",
+                "specs": {
+                  "features": ["Flexible compatibility", "Easy installation"]
+                }
+              }
+            ]
+          },
+          {
+            "title": "Air Compressors & Filters",
+            "description": "Efficient air compressors and filters engineered to provide clean, consistent compressed air for industrial applications. Our products are engineered for rapid performance and reliability.",
+            "items": [
+              {
+                "title": "Air Dryers",
+                "description": "Advanced air dryers designed to remove moisture from compressed air systems, ensuring optimal performance and longevity.",
+                "link": "/products/pneumatic-hydraulic/air-compressors/air-dryers",
+                "imageSrc": "/images/pneumatic-hydraulic/compressors/air-dryers.jpg",
+                "specs": {
+                  "features": ["Moisture removal", "Energy efficient"]
+                }
+              },
+              {
+                "title": "Regulators",
+                "description": "Precision regulators that maintain consistent air pressure levels for efficient operation of pneumatic systems.",
+                "link": "/products/pneumatic-hydraulic/air-compressors/regulators",
+                "imageSrc": "/images/pneumatic-hydraulic/compressors/regulators.jpg",
+                "specs": {
+                  "features": ["Stable output", "Durable construction"]
+                }
+              },
+              {
+                "title": "Lubricators",
+                "description": "Essential lubricators designed to reduce friction and wear in air compressor systems, ensuring smooth operation.",
+                "link": "/products/pneumatic-hydraulic/air-compressors/lubricators",
+                "imageSrc": "/images/pneumatic-hydraulic/compressors/lubricators.jpg",
+                "specs": {
+                  "features": ["Enhanced longevity", "Easy maintenance"]
+                }
+              }
+            ]
+          },
+          {
+            "title": "Pumps & Motors",
+            "description": "High-performance pumps and motors designed for efficient fluid transfer in industrial settings. Our products are engineered for rapid performance and reliability.",
+            "items": [
+              {
+                "title": "Industrial Pumps",
+                "description": "Reliable pumps engineered for continuous operation in demanding environments.",
+                "link": "/products/pneumatic-hydraulic/pumps-motors/industrial-pumps",
+                "imageSrc": "/images/pneumatic-hydraulic/pumps/industrial-pumps.jpg",
+                "specs": {
+                  "capacity": "Variable",
+                  "features": ["High efficiency", "Durable construction"]
+                }
+              },
+              {
+                "title": "Electric Motors",
+                "description": "High-torque motors designed for robust industrial applications, offering reliable performance and longevity.",
+                "link": "/products/pneumatic-hydraulic/pumps-motors/electric-motors",
+                "imageSrc": "/images/pneumatic-hydraulic/motors/electric-motors.jpg",
+                "specs": {
+                  "power": "1HP, 3HP, 5HP",
+                  "features": ["Energy efficient", "Long service life"]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Industrial",
+        "description": "A complete range of industrial products designed to support diverse operational needs. Our products are engineered for rapid performance and efficiency in every application.",
+        "imageSrc": "/images/categories/industry.png",
+        "link": "/products/industrial",
+        "subcategories": [
+          {
+            "title": "Industrial Tools",
+            "description": "A diverse selection of hand, power, and cutting tools designed for precision and durability in daily industrial tasks.",
+            "items": [
+              {
+                "title": "Hand Tools",
+                "description": "Reliable hand tools designed for precision and durability in daily industrial tasks.",
+                "link": "/products/industrial/tools/hand-tools",
+                "imageSrc": "/images/industrial/tools/hand-tools.jpg",
+                "specs": {
+                  "features": ["Ergonomic design", "High durability"]
+                }
+              },
+              {
+                "title": "Power Tools",
+                "description": "High-performance power tools engineered to enhance productivity and efficiency.",
+                "link": "/products/industrial/tools/power-tools",
+                "imageSrc": "/images/industrial/tools/power-tools.jpg",
+                "specs": {
+                  "features": ["High power output", "Long-lasting"]
+                }
+              },
+              {
+                "title": "Cutting Tools",
+                "description": "Precision cutting tools designed for accuracy and durability in various industrial applications.",
+                "link": "/products/industrial/tools/cutting-tools",
+                "imageSrc": "/images/industrial/tools/cutting-tools.jpg",
+                "specs": {
+                  "features": ["Sharp blades", "Long-lasting performance"]
+                }
+              }
+            ]
+          },
+          {
+            "title": "Bearings & Mechanical Components",
+            "description": "High-quality bearings and mechanical components designed for performance, efficiency, and longevity in industrial machinery.",
+            "items": [
+              {
+                "title": "Ball Bearings",
+                "description": "Precision ball bearings designed for smooth, efficient operation of rotating machinery.",
+                "link": "/products/industrial/bearings/ball-bearings",
+                "imageSrc": "/images/industrial/bearings/ball-bearings.jpg",
+                "specs": {
+                  "material": "Chrome Steel",
+                  "features": ["Low friction", "High durability"]
+                }
+              },
+              {
+                "title": "Gearboxes",
+                "description": "Robust gearboxes engineered to provide reliable torque transmission and power conversion.",
+                "link": "/products/industrial/bearings/gearboxes",
+                "imageSrc": "/images/industrial/bearings/gearboxes.jpg",
+                "specs": {
+                  "features": ["High efficiency", "Durable design"]
+                }
+              },
+              {
+                "title": "Shafts",
+                "description": "Precision-engineered shafts designed for power transmission and rotational stability.",
+                "link": "/products/industrial/bearings/shafts",
+                "imageSrc": "/images/industrial/bearings/shafts.jpg",
+                "specs": {
+                  "material": "Stainless Steel",
+                  "features": ["Corrosion resistant", "High tensile strength"]
+                }
+              }
+            ]
+          },
+          {
+            "title": "Material Handling Equipment",
+            "description": "Efficient equipment designed to facilitate the movement, storage, and management of industrial materials.",
+            "items": [
+              {
+                "title": "Forklifts",
+                "description": "High-capacity forklifts engineered for safe and efficient material lifting and transport.",
+                "link": "/products/industrial/material-handling/forklifts",
+                "imageSrc": "/images/industrial/material-handling/forklifts.jpg",
+                "specs": {
+                  "capacity": "2 ton, 3 ton, 5 ton",
+                  "features": ["Stable operation", "Energy efficient"]
+                }
+              },
+              {
+                "title": "Conveyor Belts",
+                "description": "Durable conveyor belts designed for smooth, reliable material transport in industrial environments.",
+                "link": "/products/industrial/material-handling/conveyor-belts",
+                "imageSrc": "/images/industrial/material-handling/conveyor-belts.jpg",
+                "specs": {
+                  "features": ["Continuous operation", "Low maintenance"]
+                }
+              },
+              {
+                "title": "Pallet Jacks",
+                "description": "Efficient pallet jacks engineered for easy maneuvering and transport of heavy loads in warehouses and factories.",
+                "link": "/products/industrial/material-handling/pallet-jacks",
+                "imageSrc": "/images/industrial/material-handling/pallet-jacks.jpg",
+                "specs": {
+                  "features": ["Ergonomic design", "High durability"]
+                }
+              }
+            ]
+          },
+          {
+            "title": "Industrial Chemicals",
+            "description": "Specialized chemicals formulated for industrial applications including lubrication, adhesion, and cleaning. Our products are engineered for rapid performance and efficiency.",
+            "items": [
+              {
+                "title": "Lubricants",
+                "description": "High-quality lubricants designed to reduce friction and extend the lifespan of industrial machinery.",
+                "link": "/products/industrial/chemicals/lubricants",
+                "imageSrc": "/images/industrial/chemicals/lubricants.jpg",
+                "specs": {
+                  "features": ["High viscosity", "Long-lasting performance"]
+                }
+              },
+              {
+                "title": "Adhesives",
+                "description": "Industrial-grade adhesives formulated for strong bonding and durability across a range of applications.",
+                "link": "/products/industrial/chemicals/adhesives",
+                "imageSrc": "/images/industrial/chemicals/adhesives.jpg",
+                "specs": {
+                  "features": ["High bonding strength", "Versatile"]
+                }
+              },
+              {
+                "title": "Cleaning Solvents",
+                "description": "Effective solvents designed to remove grease, oil, and contaminants from industrial equipment and surfaces.",
+                "link": "/products/industrial/chemicals/cleaning-solvents",
+                "imageSrc": "/images/industrial/chemicals/cleaning-solvents.jpg",
+                "specs": {
+                  "features": ["Fast acting", "Eco-friendly options"]
+                }
+              }
+            ]
+          }
+        ]
+      }
+      
+    ]
+  }
+  
