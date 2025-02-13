@@ -33,36 +33,22 @@ interface CategoriesData {
   categories: Category[];
 }
 
-// Include searchParams in the props
+// Updated PageProps interface including searchParams
 interface PageProps {
-  params: { category: string; subcategory: string };
+  params: {
+    category: string;
+    subcategory: string;
+  };
   searchParams: { [key: string]: string | string[] | undefined };
 }
 
-// Generate static params for each subcategory page
-export async function generateStaticParams() {
-  const categoriesData = data as CategoriesData;
-  const paths: { category: string; subcategory: string }[] = [];
-  categoriesData.categories.forEach((cat) => {
-    if (cat.subcategories) {
-      cat.subcategories.forEach((subcat) => {
-        const categorySlug = cat.title.toLowerCase().replace(/\s+/g, '-');
-        const subcategorySlug = subcat.title.toLowerCase().replace(/\s+/g, '-');
-        paths.push({ category: categorySlug, subcategory: subcategorySlug });
-      });
-    }
-  });
-  return paths;
-}
-
-// Mark the component as async so Next.js correctly unwraps the props.
-export default async function SubcategoryPage({ params }: PageProps) {
+export default function SubcategoryPage({ params, searchParams }: PageProps) {
   const { category: categorySlug, subcategory: subcategorySlug } = params;
   const categoriesData = data as CategoriesData;
   let categoryFound: Category | null = null;
   let subcategoryFound: Subcategory | null = null;
 
-  // Find the matching category and subcategory using simple slugification
+  // Find the matching category and subcategory using slugification
   for (const cat of categoriesData.categories) {
     const catSlug = cat.title.toLowerCase().replace(/\s+/g, '-');
     if (catSlug === categorySlug) {
@@ -101,7 +87,7 @@ export default async function SubcategoryPage({ params }: PageProps) {
           <p className="text-gray-700 font-light dark:text-gray-300 mt-2">
             {subcategoryFound.description}
           </p>
-          <Badge className="mt-2 text-sm ">
+          <Badge className="mt-2 text-sm">
             {categoryFound.title}
           </Badge>
         </header>
@@ -111,8 +97,10 @@ export default async function SubcategoryPage({ params }: PageProps) {
           {subcategoryFound.items.map((item, index) => (
             <GridPatternCard key={index}>
               <GridPatternCardBody>
-                <Image height={160} width={480} 
-                  src={item.imageSrc}
+                <Image 
+                  height={160} 
+                  width={480} 
+                  src={"/logo-rakza.png"}
                   alt={item.title}
                   className="w-full h-40 object-cover rounded"
                 />
