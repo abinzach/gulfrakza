@@ -1,12 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import BackButton from "@/app/components/BackButton";
-import data from "../../../Product_Categories.json";
 import { GridPatternCard, GridPatternCardBody } from "@/components/ui/card-with-grid-ellipsis-pattern";
 import { Badge } from "@/components/ui/badge";
-import Image from "next/image";
+import data from "../../../Product_Categories.json";
 
+// Data interfaces
 interface Item {
   title: string;
   description: string;
@@ -33,29 +35,47 @@ interface CategoriesData {
   categories: Category[];
 }
 
-// Updated PageProps interface including searchParams
-interface PageProps {
-  params: {
-    category: string;
-    subcategory: string;
-  };
-  searchParams: { [key: string]: string | string[] | undefined };
+// If you need `generateStaticParams`:
+export async function generateStaticParams() {
+  const categoriesData = data as CategoriesData;
+  const paramsArray: { category: string; subcategory: string }[] = [];
+
+  for (const category of categoriesData.categories) {
+    const categorySlug = category.title.toLowerCase().replace(/\s+/g, "-");
+
+    if (category.subcategories) {
+      for (const subcategory of category.subcategories) {
+        const subcategorySlug = subcategory.title.toLowerCase().replace(/\s+/g, "-");
+        paramsArray.push({ category: categorySlug, subcategory: subcategorySlug });
+      }
+    }
+  }
+
+  return paramsArray;
 }
 
-export default function SubcategoryPage({ params }: PageProps) {
-  const { category: categorySlug, subcategory: subcategorySlug } = params;
+// Main Page component
+export default async function SubcategoryPage({
+  params
+}: {
+  params: Promise<{category:string,subcategory:string}>;
+}) {
+  // `params` is not a promise, so do NOT do `await params;`
+  const categorySlug=(await params).category
+  const subcategorySlug=(await params).subcategory
   const categoriesData = data as CategoriesData;
+
+  // Locate the matching category/subcategory
   let categoryFound: Category | null = null;
   let subcategoryFound: Subcategory | null = null;
 
-  // Find the matching category and subcategory using slugification
   for (const cat of categoriesData.categories) {
-    const catSlug = cat.title.toLowerCase().replace(/\s+/g, '-');
+    const catSlug = cat.title.toLowerCase().replace(/\s+/g, "-");
     if (catSlug === categorySlug) {
       categoryFound = cat;
       if (cat.subcategories) {
         for (const subcat of cat.subcategories) {
-          const subcatSlug = subcat.title.toLowerCase().replace(/\s+/g, '-');
+          const subcatSlug = subcat.title.toLowerCase().replace(/\s+/g, "-");
           if (subcatSlug === subcategorySlug) {
             subcategoryFound = subcat;
             break;
@@ -66,6 +86,7 @@ export default function SubcategoryPage({ params }: PageProps) {
     }
   }
 
+  // Show 404 if not found
   if (!categoryFound || !subcategoryFound) {
     notFound();
   }
@@ -76,10 +97,7 @@ export default function SubcategoryPage({ params }: PageProps) {
       style={{ scrollPaddingTop: "40px" }}
     >
       <div className="max-w-6xl mx-auto px-4 py-8">
-        {/* Back Button */}
         <BackButton />
-
-        {/* Header Section */}
         <header className="mb-8">
           <h1 className="text-4xl font-bold text-gray-800 dark:text-white">
             {subcategoryFound.title}
@@ -87,21 +105,17 @@ export default function SubcategoryPage({ params }: PageProps) {
           <p className="text-gray-700 font-light dark:text-gray-300 mt-2">
             {subcategoryFound.description}
           </p>
-          <Badge className="mt-2 text-sm">
-            {categoryFound.title}
-          </Badge>
+          <Badge className="mt-2 text-sm">{categoryFound.title}</Badge>
         </header>
-
-        {/* Grid of Products */}
         <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {subcategoryFound.items.map((item, index) => (
             <GridPatternCard key={index}>
               <GridPatternCardBody>
-                <Image 
-                  height={160} 
-                  width={480} 
-                  src={"/logo-rakza.png"}
+                <Image
+                  src={item.imageSrc || "/logo-rakza.png"}
                   alt={item.title}
+                  width={480}
+                  height={160}
                   className="w-full h-40 object-cover rounded"
                 />
                 <h2 className="mt-4 text-2xl font-semibold text-gray-800 dark:text-white">

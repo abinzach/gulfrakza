@@ -3,7 +3,10 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import BackButton from "@/app/components/BackButton";
 import data from "../../Product_Categories.json";
-import { GridPatternCard, GridPatternCardBody } from "@/components/ui/card-with-grid-ellipsis-pattern";
+import {
+  GridPatternCard,
+  GridPatternCardBody,
+} from "@/components/ui/card-with-grid-ellipsis-pattern";
 
 interface Item {
   title: string;
@@ -31,33 +34,51 @@ interface CategoriesData {
   categories: Category[];
 }
 
-interface PageProps {
-  params: { category: string };
+// --------------------------------------------
+// 1) Generate static params for each category
+// --------------------------------------------
+export async function generateStaticParams() {
+  const categoriesData = data as CategoriesData;
+
+  // Return an array of { category: "...slug..." }
+  return categoriesData.categories.map((cat) => ({
+    category: cat.title.toLowerCase().replace(/\s+/g, "-"),
+  }));
 }
 
-export default function CategoryPage({ params }: PageProps) {
-  const { category: categorySlug } = params;
+// ------------------------------------------------
+// 2) The Page Component (async if you need it)
+// ------------------------------------------------
+export default async function CategoryPage({
+  params,
+}: {
+  params: Promise<{ category: string }>;
+}) {
+  // Destructure the slug (no `await` needed)
+  const  categorySlug  = (await params).category;
   const categoriesData = data as CategoriesData;
+
   let categoryFound: Category | null = null;
 
-  // Find the matching category using simple slugification:
-  // Convert title to lowercase and replace spaces with hyphens.
+  // Find matching category by slug
   for (const cat of categoriesData.categories) {
-    const catSlug = cat.title.toLowerCase().replace(/\s+/g, '-');
+    const catSlug = cat.title.toLowerCase().replace(/\s+/g, "-");
     if (catSlug === categorySlug) {
       categoryFound = cat;
       break;
     }
   }
 
-  // If no matching category is found, return a 404
+  // If no match, show 404
   if (!categoryFound) {
     notFound();
   }
 
   return (
-    <main className="min-h-screen bg-gray-50 dark:bg-gray-900 font-inter pt-16"
-    style={{ scrollPaddingTop: "40px" }}>
+    <main
+      className="min-h-screen bg-gray-50 dark:bg-gray-900 font-inter pt-16"
+      style={{ scrollPaddingTop: "40px" }}
+    >
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Back Button */}
         <BackButton />
@@ -67,7 +88,7 @@ export default function CategoryPage({ params }: PageProps) {
           <h1 className="text-4xl font-bold text-gray-800 dark:text-white">
             {categoryFound.title}
           </h1>
-          <p className=" text-gray-700 font-light  dark:text-gray-300 mt-2">
+          <p className="text-gray-700 font-light dark:text-gray-300 mt-2">
             {categoryFound.description}
           </p>
         </header>
@@ -76,21 +97,23 @@ export default function CategoryPage({ params }: PageProps) {
         {categoryFound.subcategories && categoryFound.subcategories.length > 0 ? (
           <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {categoryFound.subcategories.map((subcat, index) => {
-              // Create a slug for the subcategory title
-              const subcatSlug = subcat.title.toLowerCase().replace(/\s+/g, '-');
+              // Slugify subcategory title
+              const subcatSlug = subcat.title
+                .toLowerCase()
+                .replace(/\s+/g, "-");
+
               return (
                 <Link key={index} href={`${categoryFound.link}/${subcatSlug}`}>
                   <GridPatternCard className="h-full group hover:shadow-md transition-all duration-300">
                     <GridPatternCardBody className="h-full">
-                    <h2 className="text-2xl font-semibold text-gray-800 dark:text-white transition-colors duration-300 group-hover:text-blue-600">
-                      {subcat.title}
-                    </h2>
-                    <p className="mt-2 text-gray-600 font-raleway text-sm dark:text-gray-300">
-                      {subcat.description}
-                    </p>
+                      <h2 className="text-2xl font-semibold text-gray-800 dark:text-white transition-colors duration-300 group-hover:text-blue-600">
+                        {subcat.title}
+                      </h2>
+                      <p className="mt-2 text-gray-600 font-raleway text-sm dark:text-gray-300">
+                        {subcat.description}
+                      </p>
                     </GridPatternCardBody>
                   </GridPatternCard>
-                  
                 </Link>
               );
             })}
@@ -102,4 +125,3 @@ export default function CategoryPage({ params }: PageProps) {
     </main>
   );
 }
-

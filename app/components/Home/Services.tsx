@@ -105,13 +105,13 @@ export default function ServicesPage() {
             </section>
 
             {/* Call-to-Action Section */}
-            <section className="py-12 bg-blue-600 text-center text-white">
+            <section className="py-12 bg-black text-center text-white">
                 <div className="max-w-7xl mx-auto px-4">
-                    <h3 className="text-2xl font-bold mb-4">Ready to Elevate Your Operations?</h3>
-                    <p className="mb-6">
+                    <h3 className="text-4xl font-inter text-white font-bold mb-4">Ready to Elevate Your Operations?</h3>
+                    <p className="mb-6 ">
                         Our experts are ready to provide personalized solutions to drive your industrial success.
                     </p>
-                    <a href="/contact" className="inline-block px-6 py-3 bg-white text-blue-600 rounded font-medium hover:bg-gray-100">
+                    <a href="/contact" className="inline-block px-6 py-3 bg-white text-cyan-600 rounded font-medium hover:bg-gray-100">
                         Request a Quote
                     </a>
                 </div>

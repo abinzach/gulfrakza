@@ -10,6 +10,7 @@ import {
 import useMeasure from "react-use-measure";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 
 const FlyoutNav = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -47,12 +48,12 @@ const FlyoutNav = () => {
 
 const Logo = () => {
   return (
-    <div className="flex items-center gap-2">
+    <Link href="/" className="flex items-center gap-2">
       <span className="text-2xl font-extralight font-inter">
-        GULF <span className="font-semibold">RAKZA</span>
+        GULF<span className="font-semibold">RAKZA</span>
       </span>
       <Image width={24} height={24} src="/logo-rakza.png" alt="logo" className="h-6 w-6" />
-    </div>
+    </Link>
   );
 };
 

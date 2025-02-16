@@ -101,7 +101,7 @@ const ProductsPage: React.FC = () => {
                       return (
                         <li key={subIndex}>
                           <Link href={linkHref}>
-                            <p className="text-blue-600 text-sm transition-all duration-300 dark:text-blue-400 hover:underline">
+                            <p className="text-cyan-600 text-sm transition-all duration-300 dark:text-cyan-400 hover:underline">
                               {subcat.title}
                             </p>
                           </Link>

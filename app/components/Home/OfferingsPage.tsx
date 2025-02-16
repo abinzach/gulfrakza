@@ -40,7 +40,7 @@ const OfferingsPage: React.FC = () => {
         <h2 className="text-5xl font-semibold text-left mb-4">
           Empower your operations with
         </h2>
-        <h2 className="text-5xl font-semibold text-blue-600 text-left mb-4">
+        <h2 className="text-5xl font-semibold text-cyan-600 text-left mb-4">
           our state-of-the-art solutions
         </h2>
         <p className="text-left text-lg max-w-2xl text-gray-800 mb-12">
@@ -58,7 +58,7 @@ const OfferingsPage: React.FC = () => {
                     alt={category.title}
                     className="h-16 mx-auto mb-4"
                   />
-                  <h3 className="text-xl font-semibold mb-2 text-left group-hover:text-blue-600 transition-colors duration-300">
+                  <h3 className="text-xl font-semibold font-raleway mb-2 text-left uppercase group-hover:text-cyan-600 transition-colors duration-300">
                     {category.title}
                   </h3>
                   <p className="text-gray-700 text-sm mb-4 font-raleway text-left">

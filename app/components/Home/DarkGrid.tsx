@@ -34,7 +34,7 @@ const Content = () => {
         <div className="relative z-10 max-w-5xl px-4">
           <h1 className="text-4xl md:text-5xl font-semibold text-white leading-relaxed mb-4">
             Elevating Your Industry with Integrated Services,
-            <span className="text-blue-500"> Tailored Solutions That Drive Efficiency and Growth</span>
+            <span className="text-cyan-600"> Tailored Solutions That Drive Efficiency and Growth</span>
           </h1>
           <p className="text-lg md:text-xl font-light text-gray-300">
             Our comprehensive suite of services is designed to streamline operations, enhance safety, and boost productivity. Explore our expert solutions that cater to every facet of your industrial needs.
@@ -163,7 +163,7 @@ const Beam = ({ top, left, transition = {} }: BeamType) => {
         top,
         left,
       }}
-      className="absolute z-10 h-[64px] w-[1px] bg-gradient-to-b from-blue-500/0 to-blue-500"
+      className="absolute z-10 h-[64px] w-[1px] bg-gradient-to-b from-blue-500/0 to-cyan-500"
     />
   );
 };
