@@ -1,15 +1,6 @@
 'use client'
 import { Dispatch, SetStateAction, useState } from "react";
 import { motion } from "framer-motion";
-import { IconType } from "react-icons";
-import {
-  SiAtlassian,
-  SiDribbble,
-  SiGrubhub,
-  SiKaggle,
-  SiSlack,
-  SiNike,
-} from "react-icons/si";
 
 const StackedCardTestimonials = () => {
   const [selected, setSelected] = useState(0);
@@ -18,10 +9,8 @@ const StackedCardTestimonials = () => {
     <section className="bg-white py-24 px-4 lg:px-8 grid items-center grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-4 overflow-hidden">
       <div className="p-4">
         <h3 className="text-5xl font-inter font-semibold">What our customers think</h3>
-        <p className="text-slate-500 my-4">
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Minus
-          commodi sint, similique cupiditate possimus suscipit delectus illum
-          eos iure magnam!
+        <p className="text-slate-500 my-4 font-inter">
+                    At Gulf Rakza, our commitment to excellence is reflected in every interaction. We pride ourselves on delivering exceptional service and high-quality products, ensuring our customers receive nothing but the best.
         </p>
         <SelectBtns
           numTracks={testimonials.length}
@@ -59,15 +48,9 @@ const SelectBtns = ({
             {selected === n ? (
               <motion.span
                 className="absolute top-0 left-0 bottom-0 bg-slate-950"
-                initial={{
-                  width: "0%",
-                }}
-                animate={{
-                  width: "100%",
-                }}
-                transition={{
-                  duration: 5,
-                }}
+                initial={{ width: "0%" }}
+                animate={{ width: "100%" }}
+                transition={{ duration: 5 }}
                 onAnimationComplete={() => {
                   setSelected(selected === numTracks - 1 ? 0 : selected + 1);
                 }}
@@ -75,9 +58,7 @@ const SelectBtns = ({
             ) : (
               <span
                 className="absolute top-0 left-0 bottom-0 bg-slate-950"
-                style={{
-                  width: selected > n ? "100%" : "0%",
-                }}
+                style={{ width: selected > n ? "100%" : "0%" }}
               />
             )}
           </button>
@@ -114,7 +95,8 @@ const Cards = ({
 };
 
 const Card = ({
-  Icon,
+  rating,
+  headline,
   description,
   name,
   title,
@@ -140,24 +122,27 @@ const Card = ({
         background,
         color,
       }}
-      animate={{
-        x: `${offset}%`,
-        scale,
-      }}
-      whileHover={{
-        translateX: position === selected ? 0 : -3,
-      }}
-      transition={{
-        duration: 0.25,
-        ease: "easeOut",
-      }}
+      animate={{ x: `${offset}%`, scale }}
+      whileHover={{ translateX: position === selected ? 0 : -3 }}
+      transition={{ duration: 0.25, ease: "easeOut" }}
       onClick={() => setSelected(position)}
       className="absolute top-0 left-0 w-full min-h-full p-8 lg:p-12 cursor-pointer flex flex-col justify-between"
     >
-      <Icon className="text-7xl mx-auto" />
+      {/* Company logo */}
+      <img src="/logo-rakza.png" alt="Gulf Rakza Logo" className="mx-auto h-12" />
+      
+      {/* Rating & Headline */}
+      <div className="text-center mt-4">
+        <p className="text-xl font-bold">{rating}</p>
+        <p className="text-lg">{headline}</p>
+      </div>
+      
+      {/* Testimonial quote */}
       <p className="text-lg lg:text-xl font-light italic my-8">
-      &quot;{description}&quot;
+        &quot;{description}&quot;
       </p>
+      
+      {/* Author info */}
       <div>
         <span className="block font-semibold text-lg">{name}</span>
         <span className="block text-sm">{title}</span>
@@ -169,53 +154,52 @@ const Card = ({
 export default StackedCardTestimonials;
 
 interface Testimonial {
-  Icon: IconType;
-  title: string;
-  name: string;
+  rating: string;
+  headline: string;
   description: string;
+  name: string;
+  title: string;
 }
 
-const testimonials = [
+const testimonials: Testimonial[] = [
   {
-    Icon: SiNike,
+    rating: "⭐⭐⭐⭐⭐",
+    headline: "Impressive Service & Fast Delivery",
     description:
-      "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Expedita sequi cupiditate harum repellendus ipsum dignissimos? Officiis ipsam dolorum magnam assumenda.",
-    name: "Jane Dodson",
-    title: "Marketing Director, Nike",
+      "We've been working with Gulf Rakza for our safety and industrial equipment needs, and their service has been outstanding. Orders are always delivered on time, and the quality is top-notch. A reliable partner we highly recommend!",
+    name: "Mohammed A.",
+    title: "Construction Contractor",
   },
   {
-    Icon: SiAtlassian,
+    rating: "⭐⭐⭐⭐⭐",
+    headline: "Dependable & Professional",
     description:
-      "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Expedita sequi cupiditate harum repellendus ipsum dignissimos? Officiis ipsam dolorum magnam assumenda.",
-    name: "Johnathan Rodriguez",
-    title: "UX Research, Atlassian",
+      "Gulf Rakza has quickly become one of our trusted suppliers. Their team is professional, responsive, and ensures we get the right products at competitive prices. Great service!",
+    name: "Sara K.",
+    title: "Procurement Manager",
   },
   {
-    Icon: SiDribbble,
+    rating: "⭐⭐⭐⭐⭐",
+    headline: "Customer-Focused & Efficient",
     description:
-      "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Expedita sequi cupiditate harum repellendus ipsum dignissimos? Officiis ipsam dolorum magnam assumenda.",
-    name: "Phil Heath",
-    title: "Staff Engineer, Dribbble",
+      "The team at Gulf Rakza is always ready to assist with our orders, offering quick responses and efficient service. Their product range is exactly what we need, and their reliability makes them a great business partner.",
+    name: "Ahmed R.",
+    title: "Industrial Equipment Distributor",
   },
   {
-    Icon: SiGrubhub,
+    rating: "⭐⭐⭐⭐⭐",
+    headline: "High-Quality Products & Great Pricing",
     description:
-      "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Expedita sequi cupiditate harum repellendus ipsum dignissimos? Officiis ipsam dolorum magnam assumenda.",
-    name: "Andrea Beck",
-    title: "Marketing Manager, GrubHub",
+      "We've been sourcing safety and electrical supplies from Gulf Rakza, and we’re very satisfied. Their products are of excellent quality, pricing is fair, and their service is professional. Highly recommended!",
+    name: "Faisal M.",
+    title: "Manufacturing Plant Manager",
   },
   {
-    Icon: SiKaggle,
+    rating: "⭐⭐⭐⭐⭐",
+    headline: "Trustworthy Supplier & Excellent Support",
     description:
-      "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Expedita sequi cupiditate harum repellendus ipsum dignissimos? Officiis ipsam dolorum magnam assumenda.",
-    name: "Daniel Henderson",
-    title: "Engineering Manager, Kaggle",
-  },
-  {
-    Icon: SiSlack,
-    description:
-      "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Expedita sequi cupiditate harum repellendus ipsum dignissimos? Officiis ipsam dolorum magnam assumenda.",
-    name: "Anderson Lima",
-    title: "Product Manager, Slack",
+      "Working with Gulf Rakza has been a great experience. Their quick response, attention to detail, and commitment to quality make them a supplier we can rely on. Looking forward to a long-term partnership!",
+    name: "Omar H.",
+    title: "Project Engineer",
   },
 ];

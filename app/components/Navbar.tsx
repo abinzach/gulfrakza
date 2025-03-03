@@ -11,12 +11,18 @@ import useMeasure from "react-use-measure";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import categories from "../Product_Categories.json";
+import GetQuote from "./GetQuote"; // Ensure you have a GetQuote component
 
 const FlyoutNav = () => {
   const [scrolled, setScrolled] = useState(false);
+  const [showGetQuote, setShowGetQuote] = useState(false);
   const { scrollY } = useScroll();
   const pathname = usePathname();
-  const isProductsRoute = pathname.startsWith("/products");
+  const isProductsRoute =
+    pathname.startsWith("/products") ||
+    pathname.startsWith("/privacy") ||
+    pathname.startsWith("/terms");
 
   // Update scroll state as before
   useMotionValueEvent(scrollY, "change", (latest) => {
@@ -27,39 +33,52 @@ const FlyoutNav = () => {
   const finalScrolled = isProductsRoute ? true : scrolled;
 
   return (
-    <nav
-      className={`fixed top-0 z-50 w-full px-6 text-white transition-all duration-300 ease-out lg:px-12 ${
-        finalScrolled
-          ? "bg-neutral-950 py-3 shadow-xl"
-          : "bg-neutral-950/0 py-6 shadow-none"
-      }`}
-    >
-      <div className="mx-auto flex max-w-7xl items-center justify-between">
-        <Logo />
-        <div className="hidden gap-6 lg:flex">
-          <Links />
-          <CTAs />
+    <>
+      <nav
+        className={`fixed top-0 z-50 w-full px-6 text-white transition-all duration-300 ease-out lg:px-12 ${
+          finalScrolled
+            ? "bg-neutral-950 py-3 shadow-xl"
+            : "bg-neutral-950/0 py-6 shadow-none"
+        }`}
+      >
+        <div className="mx-auto flex max-w-7xl items-center justify-between">
+          <Logo />
+          <div className="hidden gap-10 lg:flex">
+            <Links />
+            <CTAs onQuoteClick={() => setShowGetQuote(true)} />
+          </div>
+          <MobileMenu onQuoteClick={() => setShowGetQuote(true)} />
         </div>
-        <MobileMenu />
-      </div>
-    </nav>
+      </nav>
+      <AnimatePresence>
+        {showGetQuote && (
+          <GetQuoteModal onClose={() => setShowGetQuote(false)} />
+        )}
+      </AnimatePresence>
+    </>
   );
 };
 
-const Logo = () => {
+export const Logo = () => {
   return (
     <Link href="/" className="flex items-center gap-2">
       <span className="text-2xl font-extralight font-inter">
         GULF<span className="font-semibold">RAKZA</span>
       </span>
-      <Image width={24} height={24} src="/logo-rakza.png" alt="logo" className="h-6 w-6" />
+      <Image
+        width={24}
+        height={24}
+        src="/logo-rakza.png"
+        alt="logo"
+        className="h-6 w-6"
+      />
     </Link>
   );
 };
 
 const Links = () => {
   return (
-    <div className="flex items-center gap-6">
+    <div className="flex items-center gap-10">
       {LINKS.map((l) => (
         <NavLink key={l.text} href={l.href} FlyoutContent={l.component}>
           {l.text}
@@ -93,7 +112,7 @@ const NavLink = ({
           style={{
             transform: showFlyout ? "scaleX(1)" : "scaleX(0)",
           }}
-          className="absolute -bottom-2 -left-2 -right-2 h-1 origin-left scale-x-0 rounded-full bg-indigo-300 transition-transform duration-300 ease-out"
+          className="absolute -bottom-2 -left-2 -right-2 h-1 origin-left rounded-full bg-cyan-300 transition-transform duration-300 ease-out"
         />
       </a>
       <AnimatePresence>
@@ -116,10 +135,13 @@ const NavLink = ({
   );
 };
 
-const CTAs = () => {
+const CTAs = ({ onQuoteClick }: { onQuoteClick: () => void }) => {
   return (
     <div className="flex font-inter items-center gap-3">
-      <button className="rounded-full flex bg-white px-4 py-2 text-sm font-medium text-black transition-colors">
+      <button
+        onClick={onQuoteClick}
+        className="rounded-full flex bg-white px-4 py-2 text-sm font-medium text-black transition-colors hover:bg-gray-200 duration-300"
+      >
         Get a quote
       </button>
     </div>
@@ -127,166 +149,11 @@ const CTAs = () => {
 };
 
 const AboutUsContent = () => {
-  return (
-    <div className="grid h-fit w-full grid-cols-12 shadow-xl lg:h-72 lg:w-[600px] lg:shadow-none xl:w-[750px]">
-      <div className="col-span-12 flex flex-col justify-between bg-neutral-950 p-6 lg:col-span-4">
-        <div>
-          <h2 className="mb-2 text-xl font-semibold text-white">About us</h2>
-          <p className="mb-6 max-w-xs text-sm text-neutral-400">
-            Placeholder is the world&apos;s leading placeholder company.
-          </p>
-        </div>
-        <a
-          href="#"
-          className="flex items-center gap-1 text-xs text-indigo-300 hover:underline"
-        >
-          Learn more <FiArrowRight />
-        </a>
-      </div>
-      <div className="col-span-12 grid grid-cols-2 grid-rows-2 gap-3 bg-white p-6 lg:col-span-8">
-        <a
-          href="#"
-          className="rounded border-2 border-neutral-200 bg-white p-3 transition-colors hover:bg-neutral-100"
-        >
-          <h3 className="mb-1 font-semibold">Features</h3>
-          <p className="text-xs">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed, quam?
-          </p>
-        </a>
-        <a
-          href="#"
-          className="rounded border-2 border-neutral-200 bg-white p-3 transition-colors hover:bg-neutral-100"
-        >
-          <h3 className="mb-1 font-semibold">Testimonials</h3>
-          <p className="text-xs">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed, quam?
-          </p>
-        </a>
-        <a
-          href="#"
-          className="rounded border-2 border-neutral-200 bg-white p-3 transition-colors hover:bg-neutral-100"
-        >
-          <h3 className="mb-1 font-semibold">Press</h3>
-          <p className="text-xs">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed, quam?
-          </p>
-        </a>
-        <a
-          href="#"
-          className="rounded border-2 border-neutral-200 bg-white p-3 transition-colors hover:bg-neutral-100"
-        >
-          <h3 className="mb-1 font-semibold">Blog</h3>
-          <p className="text-xs">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed, quam?
-          </p>
-        </a>
-      </div>
-    </div>
-  );
+  return <div>{/* About Us Flyout content here */}</div>;
 };
 
-const PricingContent = () => {
-  return (
-    <div className="w-full bg-white p-6 shadow-none lg:w-[250px] lg:shadow-xl">
-      <div className="grid grid-cols-2 lg:grid-cols-1">
-        <div className="mb-3 space-y-3">
-          <h3 className="font-semibold">For Individuals</h3>
-          <a href="#" className="block text-sm hover:underline">
-            Introduction
-          </a>
-          <a href="#" className="block text-sm hover:underline">
-            Pay as you go
-          </a>
-        </div>
-        <div className="mb-6 space-y-3">
-          <h3 className="font-semibold">For Companies</h3>
-          <a href="#" className="block text-sm hover:underline">
-            Startups
-          </a>
-          <a href="#" className="block text-sm hover:underline">
-            SMBs
-          </a>
-          <a href="#" className="block text-sm hover:underline">
-            Enterprise
-          </a>
-        </div>
-      </div>
-      <button className="w-full rounded-lg border-2 border-neutral-950 px-4 py-2 font-semibold transition-colors hover:bg-neutral-950 hover:text-white">
-        Contact sales
-      </button>
-    </div>
-  );
-};
-
-const CareersContent = () => {
-  return (
-    <div className="grid w-full grid-cols-12 shadow-xl lg:w-[750px]">
-      <div className="col-span-12 flex flex-col justify-between bg-indigo-600 p-6 lg:col-span-4">
-        <div className="mb-6">
-          <h2 className="mb-2 text-xl font-semibold text-white">Careers</h2>
-          <p className="text-sm text-indigo-100">
-            Placeholder was rated a top place to work by Placeholder.
-          </p>
-        </div>
-        <a
-          href="#"
-          className="flex items-center gap-1 text-xs text-indigo-200 hover:underline"
-        >
-          Careers site <FiArrowRight />
-        </a>
-      </div>
-      <div className="col-span-12 grid grid-cols-2 gap-3 bg-white p-6 lg:col-span-8 lg:grid-cols-3">
-        <div className="space-y-3">
-          <h3 className="font-semibold">Business</h3>
-          <a href="#" className="block text-sm hover:underline">
-            Marketing
-          </a>
-          <a href="#" className="block text-sm hover:underline">
-            Finance
-          </a>
-          <a href="#" className="block text-sm hover:underline">
-            Legal
-          </a>
-          <a href="#" className="block text-sm hover:underline">
-            Sales
-          </a>
-        </div>
-        <div className="space-y-3">
-          <h3 className="font-semibold">Engineering</h3>
-          <a href="#" className="block text-sm hover:underline">
-            Full stack
-          </a>
-          <a href="#" className="block text-sm hover:underline">
-            Dev ops
-          </a>
-          <a href="#" className="block text-sm hover:underline">
-            QA
-          </a>
-          <a href="#" className="block text-sm hover:underline">
-            Data
-          </a>
-          <a href="#" className="block text-sm hover:underline">
-            Machine learning
-          </a>
-          <a href="#" className="block text-sm hover:underline">
-            Management
-          </a>
-        </div>
-        <div className="space-y-3">
-          <h3 className="font-semibold">More</h3>
-          <a href="#" className="block text-sm hover:underline">
-            Support
-          </a>
-          <a href="#" className="block text-sm hover:underline">
-            Office
-          </a>
-          <a href="#" className="block text-sm hover:underline">
-            Other
-          </a>
-        </div>
-      </div>
-    </div>
-  );
+const ProductsContent = () => {
+  return <div>{/* Products Flyout content here */}</div>;
 };
 
 const MobileMenuLink = ({
@@ -361,7 +228,7 @@ const MobileMenuLink = ({
   );
 };
 
-const MobileMenu = () => {
+const MobileMenu = ({ onQuoteClick }: { onQuoteClick: () => void }) => {
   const [open, setOpen] = useState(false);
   return (
     <div className="block lg:hidden">
@@ -396,7 +263,12 @@ const MobileMenu = () => {
               ))}
             </div>
             <div className="flex justify-end bg-neutral-950 p-6">
-              <CTAs />
+              <CTAs
+                onQuoteClick={() => {
+                  setOpen(false);
+                  onQuoteClick();
+                }}
+              />
             </div>
           </motion.nav>
         )}
@@ -405,22 +277,43 @@ const MobileMenu = () => {
   );
 };
 
+const GetQuoteModal = ({ onClose }: { onClose: () => void }) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+    >
+      <motion.div
+        initial={{ scale: 0.8 }}
+        animate={{ scale: 1 }}
+        exit={{ scale: 0.8 }}
+        className="relative bg-white p-6 rounded-md shadow-lg w-full max-w-lg"
+      >
+        <button
+          onClick={onClose}
+          className="absolute top-2 right-2 text-gray-600 hover:text-gray-800"
+        >
+          <FiX size={24} />
+        </button>
+        <GetQuote />
+      </motion.div>
+    </motion.div>
+  );
+};
+
 export default FlyoutNav;
 
 const LINKS = [
   {
     text: "About us",
-    href: "#",
+    href: "/about-us",
     component: AboutUsContent,
   },
   {
-    text: "Pricing",
-    href: "#",
-    component: PricingContent,
-  },
-  {
     text: "Products",
-    href: "#",
-    component: CareersContent,
+    href: "/products",
+    component: ProductsContent,
   },
 ];

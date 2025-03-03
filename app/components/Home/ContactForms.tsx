@@ -22,7 +22,7 @@ const ContactForm: React.FC = () => {
   };
 
   return (
-    <section className="bg-white dark:bg-gray-900">
+    <section id="contact-us" className="bg-white dark:bg-gray-900">
       <div className="py-8 lg:py-16 px-4 mx-auto max-w-screen-md">
         <h2 className="mb-4 font-inter text-5xl tracking-tight font-bold text-center text-gray-900 dark:text-white">
           Contact Us
@@ -92,7 +92,7 @@ const ContactForm: React.FC = () => {
           </div>
           <button
             type="submit"
-            className="py-3 px-5 text-sm font-medium text-center text-white dark:text-black rounded-lg bg-black 
+            className="py-3 px-5 text-sm font-medium font-inter text-center text-white dark:text-black rounded-full bg-cyan-600 
                        sm:w-fit hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 
                        dark:bg-white dark:hover:bg-primary-700 dark:focus:ring-primary-800"
           >

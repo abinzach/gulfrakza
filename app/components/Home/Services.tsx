@@ -3,6 +3,8 @@ import React from 'react';
 import { DarkGridHero } from './DarkGrid';
 import { GridPatternCard, GridPatternCardBody } from '@/components/ui/card-with-grid-ellipsis-pattern';
 import Image from 'next/image';
+import { FaHelmetSafety, FaPeopleGroup } from "react-icons/fa6";
+import { TbChecklist } from "react-icons/tb";
 
 const serviceCategories = [
     {
@@ -47,7 +49,7 @@ export default function ServicesPage() {
     return (
         <>
             {/* Hero Section */}
-            <section className="relative font-inter h-[60vh] flex items-center justify-center bg-gray-900 text-center">
+            <section id='services' className="relative font-inter h-[60vh] flex items-center justify-center bg-gray-900 text-center">
                 <div className="absolute inset-0 bg-cover bg-center" ></div>
                 <div className="absolute inset-0 bg-black opacity-50"></div>
                 <DarkGridHero />
@@ -79,39 +81,39 @@ export default function ServicesPage() {
             </section>
 
             {/* Why Choose Our Services */}
-            <section className="py-16">
+            <section className="py-24">
                 <div className="max-w-7xl mx-auto px-4">
                     <h2 className="text-5xl font-semibold text-left font-inter mb-4">Why Choose Our Services?</h2>
-                    <p className="text-left font-raleway text-lg text-gray-600 mb-12">
+                    <p className="text-left font-raleway text-lg text-gray-600 ">
                         At Gulf Rakza, our services are backed by industry-leading expertise, a commitment to quality, and a tailored approach to meet your unique needs. From rapid response times to uncompromised safety standards, we are your trusted partner for industrial excellence.
                     </p>
                     {/* Optionally add icons/infographics here */}
-                    <div className="flex flex-wrap justify-center gap-8">
+                    <div className="flex flex-wrap font-inter justify-center gap-32 mt-20">
                         {/* Example icon block */}
                         <div className="flex flex-col items-center">
-                            <Image height={48} width={48} src="/icons/expertise.svg" alt="Expertise" className="h-12 w-12 mb-2" />
-                            <span className="text-gray-700 font-medium">Expertise</span>
+                            <FaPeopleGroup className="h-24 w-24 mb-2 text-cyan-600"/>
+                            <span className="text-gray-700 font-bold">Expertise</span>
                         </div>
                         <div className="flex flex-col items-center">
-                            <Image height={48} width={48}  src="/icons/quality.svg" alt="Quality Assurance" className="h-12 w-12 mb-2" />
-                            <span className="text-gray-700 font-medium">Quality Assurance</span>
+                        <TbChecklist className="h-24 w-24 mb-2  text-cyan-600"/>
+                            <span className="text-gray-700 font-bold">Quality Assurance</span>
                         </div>
                         <div className="flex flex-col items-center">
-                            <Image height={48} width={48}  src="/icons/safety.svg" alt="Safety First" className="h-12 w-12 mb-2" />
-                            <span className="text-gray-700 font-medium">Safety First</span>
+                        <FaHelmetSafety className="h-24 w-24 mb-2 text-cyan-600"/>
+                            <span className="text-gray-700 font-bold">Safety First</span>
                         </div>
                     </div>
                 </div>
             </section>
 
             {/* Call-to-Action Section */}
-            <section className="py-12 bg-black text-center text-white">
+            <section className="py-12 bg-black font-inter text-center text-white">
                 <div className="max-w-7xl mx-auto px-4">
-                    <h3 className="text-4xl font-inter text-white font-bold mb-4">Ready to Elevate Your Operations?</h3>
+                    <h3 className="text-4xl  text-white font-bold mb-4">Ready to Elevate Your Operations?</h3>
                     <p className="mb-6 ">
                         Our experts are ready to provide personalized solutions to drive your industrial success.
                     </p>
-                    <a href="/contact" className="inline-block px-6 py-3 bg-white text-cyan-600 rounded font-medium hover:bg-gray-100">
+                    <a href="/contact" className="inline-block rounded-full px-6 py-3 bg-white text-black font-medium hover:bg-gray-100">
                         Request a Quote
                     </a>
                 </div>

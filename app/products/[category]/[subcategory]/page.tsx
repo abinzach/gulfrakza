@@ -105,7 +105,7 @@ export default async function SubcategoryPage({
           <p className="text-gray-700 font-light dark:text-gray-300 mt-2">
             {subcategoryFound.description}
           </p>
-          <Badge className="mt-2 text-sm">{categoryFound.title}</Badge>
+          <Badge className="mt-2 text-sm bg-cyan-700">{categoryFound.title}</Badge>
         </header>
         <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {subcategoryFound.items.map((item, index) => (

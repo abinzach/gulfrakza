@@ -17,6 +17,29 @@
   font-family: "Hanken Grotesk", sans-serif;
 }
 
+/* Firefox */
+* {
+  scrollbar-width: thin;             /* "auto" or "thin" */
+  scrollbar-color: #888 transparent;  /* thumb and track colors */
+}
+
+/* Chrome, Edge, Safari */
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 10px;
+  border: 2px solid transparent; /* creates spacing around thumb */
+  background-clip: content-box;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -86,4 +109,15 @@
 
   }
 
+}
+
+
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
 }
