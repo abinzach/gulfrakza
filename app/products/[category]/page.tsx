@@ -57,13 +57,13 @@ export async function generateStaticParams() {
 // ------------------------------------------------
 // 2) The Page Component
 // ------------------------------------------------
-export default function CategoryPage({
+export default async function CategoryPage({  
   params,
 }: {
-  params: { category: string };
+  params: Promise<{ category: string }>;
 }) {
   // Get the category slug from params
-  const { category: categorySlug } = params;
+  const { category: categorySlug } = await params;
   const categoriesData = data as CategoriesData;
 
   let categoryFound: Category | null = null;

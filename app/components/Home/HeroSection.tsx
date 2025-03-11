@@ -2,6 +2,7 @@
 
 import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button";
 import Link from "next/link";
+import Image from "next/image";
 import React from "react";
 
 export default function HeroSection() {
@@ -31,11 +32,15 @@ export default function HeroSection() {
       
       {/* Fallback image for no-JS or unsupported video */}
       <noscript>
-        <img
-          src="/images/video-poster.jpg"
-          alt="Gulf Rakza hero background image"
-          className="absolute top-0 left-0 w-full h-full object-cover"
-        />
+        <div className="absolute top-0 left-0 w-full h-full">
+          <Image
+            src="/images/video-poster.jpg"
+            alt="Gulf Rakza hero background image"
+            fill
+            className="object-cover"
+            priority
+          />
+        </div>
       </noscript>
 
       {/* Overlay for Darkening the Background */}

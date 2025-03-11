@@ -49,26 +49,27 @@ export async function generateStaticParams() {
   const paramsArray: { category: string; subcategory: string }[] = [];
 
   for (const category of categoriesData.categories) {
-    const categorySlug = slugify(category.title);
+    const categorySlug = category.title.toLowerCase().replace(/\s+/g, "-");
 
     if (category.subcategories) {
       for (const subcategory of category.subcategories) {
-        const subcategorySlug = slugify(subcategory.title);
+        const subcategorySlug = subcategory.title.toLowerCase().replace(/\s+/g, "-");
         paramsArray.push({ category: categorySlug, subcategory: subcategorySlug });
       }
     }
   }
 
   return paramsArray;
+
 }
 
 // Main Page component
-export default function SubcategoryPage({
-  params
-}: {
-  params: { category: string, subcategory: string };
+
+
+export default async function SubcategoryPage({ params }: {
+  params: Promise<{category:string,subcategory:string}>;
 }) {
-  const { category: categorySlug, subcategory: subcategorySlug } = params;
+  const { category: categorySlug, subcategory: subcategorySlug } = await params;
   const categoriesData = data as CategoriesData;
 
   // Locate the matching category/subcategory

@@ -70,9 +70,9 @@ export default function PrivacyPolicyPage() {
       <section className="mb-6">
         <h2 className="text-lg font-semibold mb-2">Changes to This Privacy Policy</h2>
         <p className="mb-2 text-sm">
-          We may update our Privacy Policy from time to time. When we make changes, we will update the "Last updated" date at the top of this page. Your continued use of the website after any changes signifies your acceptance of the updated policy.
+          We may update our Privacy Policy from time to time. When we make changes, we will update the &quot;Last updated&quot; date at the top of this page. Your continued use of the website after any changes signifies your acceptance of the updated policy.
         </p>
-      </section>
+      </section>  
 
       <section className="mb-6">
         <h2 className="text-lg font-semibold mb-2">Contact Us</h2>

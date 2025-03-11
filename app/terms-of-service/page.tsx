@@ -9,7 +9,7 @@ export default function TermsOfServicePage() {
       <section className="mb-6">
         <h2 className="text-lg font-semibold mb-2">Acceptance of Terms</h2>
         <p className="mb-2 text-sm text-gray-900">
-          By accessing or using the Gulf Rakza website (the "Service"), you agree to be bound by these Terms of Service and all applicable laws and regulations. If you do not agree with any of these terms, you are prohibited from using or accessing the Service.
+          By accessing or using the Gulf Rakza website (the &quot;Service&quot;), you agree to be bound by these Terms of Service and all applicable laws and regulations. If you do not agree with any of these terms, you are prohibited from using or accessing the Service.
         </p>
       </section>
 
@@ -37,7 +37,7 @@ export default function TermsOfServicePage() {
       <section className="mb-6">
         <h2 className="text-lg font-semibold mb-2">Disclaimers and Limitation of Liability</h2>
         <p className="mb-2 text-sm text-gray-900">
-          The Service is provided on an "as is" and "as available" basis without warranties of any kind, either express or implied. Gulf Rakza will not be liable for any damages arising from your use of the Service.
+          The Service is provided on an &quot;as is&quot; and &quot;as available&quot; basis without warranties of any kind, either express or implied. Gulf Rakza will not be liable for any damages arising from your use of the Service.
         </p>
       </section>
 
