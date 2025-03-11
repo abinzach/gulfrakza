@@ -1,29 +1,20 @@
 "use client"
 
+
 import * as React from "react"
 import { Button } from "@/components/ui/button"
-import { Label } from "@/components/ui/label"
-import { Switch } from "@/components/ui/switch"
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { Facebook, Instagram, Linkedin, Moon, Send, Sun, Twitter } from "lucide-react"
+import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react"
 import { Logo } from "@/app/components/Navbar"
 import Link from "next/link"
 
-function Footerdemo() {
-  const [isDarkMode, setIsDarkMode] = React.useState(false)
 
-  React.useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add("dark")
-    } else {
-      document.documentElement.classList.remove("dark")
-    }
-  }, [isDarkMode])
+function Footerdemo() {
 
   return (
     <footer className="relative border-t px-4  md:px-6 bg-background text-foreground transition-colors duration-300">
@@ -35,7 +26,11 @@ function Footerdemo() {
             <p className="mb-6 text-xs font-inter text-gray-800 ">
               Connecting <span className="font-semibold">Markets</span>, Empowering <span className="font-semibold">Growth</span>
             </p>
-            
+            <p  className="text-sm  font-inter text-gray-800 ">Rakzah Gulf Trading Establishment</p>
+            <p  className="text-xl font-inter text-gray-800 ">مؤسسة ركزة الخليج للتجارة
+            </p>
+
+            <p  className="mb-6 text-sm  font-inter text-gray-800 "> C.R. 2050194171</p>
            
             <div className="absolute -right-4 top-0 h-24 w-24 rounded-full bg-primary/10 blur-2xl" />
           </div>
@@ -64,10 +59,10 @@ function Footerdemo() {
             <address className="space-y-2 text-sm not-italic">
                           <p>Salem Balhamer Building,              </p>
               <p>2nd Floor, Room 9,</p>
-              <p>Al Tubaysh District,</p>
-              <p>Dammam 3241</p>
+              <p>Al Tubayshi District,</p>
+              <p>Dammam 32233</p>
               <p>Phone: +966 - 558 975 494</p>
-              <p>Email: sale@gulfrakza.com</p>
+              <p>Email: sales@gulfrakza.com</p>
             </address>
           </div>
           <div className="relative">
@@ -134,15 +129,13 @@ function Footerdemo() {
             © 2024 GulfRakza. All rights reserved.
           </p>
           <nav className="flex gap-4 text-sm">
-            <a href="/privacy-policy" className="transition-colors hover:text-primary">
+            <Link href="/privacy-policy" className="transition-colors hover:text-primary">
               Privacy Policy
-            </a>
-            <a href="/terms-of-service" className="transition-colors hover:text-primary">
+            </Link>
+            <Link href="/terms-of-service" className="transition-colors hover:text-primary">
               Terms of Service
-            </a>
-            <a href="#" className="transition-colors hover:text-primary">
-              Cookie Settings
-            </a>
+            </Link>
+      
           </nav>
         </div>
       </div>

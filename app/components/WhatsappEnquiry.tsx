@@ -5,7 +5,7 @@ import Link from "next/link";
 
 const WhatsAppInquiry: React.FC = () => {
   // Replace with your actual WhatsApp number (in international format without +)
-  const phoneNumber = "1234567890"; 
+  const phoneNumber = "+966557197311"; 
   // Pre-filled message (URL-encoded)
   const message = "Hello, I would like to inquire about your services.";
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;

@@ -36,7 +36,10 @@ interface CategoriesData {
 
 // Utility function to create a URL-friendly slug from a string.
 function slugify(text: string): string {
-  return text.toLowerCase().replace(/\s+/g, '-');
+  return text
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, '') // Remove special characters
+    .replace(/\s+/g, '-');     // Replace spaces with hyphens
 }
 
 const ProductsPage: React.FC = () => {
@@ -54,7 +57,7 @@ const ProductsPage: React.FC = () => {
           <h1 className="text-4xl font-bold text-gray-800 dark:text-white">
             Products
           </h1>
-          <p className="mt-4  text-gray-700 font-light dark:text-gray-300">
+          <p className="mt-4 text-gray-700 font-light dark:text-gray-300">
             Explore our categories and subcategories to discover our wide range
             of industrial products and solutions.
           </p>
@@ -69,10 +72,13 @@ const ProductsPage: React.FC = () => {
             >
               <GridPatternCardBody>
               <div className="flex items-center gap-4">
-                <Image height={64} width={64} 
-                  src={category.imageSrc}
+                <Image 
+                  height={64} 
+                  width={64} 
+                  src={category.imageSrc || "/logo-rakza.png"} // Add fallback image
                   alt={category.title + " image"}
                   className="h-16 w-16 object-cover rounded"
+                  
                 />
                 <div>
                   <h2 className="text-2xl font-semibold text-gray-800 dark:text-white">
@@ -85,9 +91,6 @@ const ProductsPage: React.FC = () => {
               </div>
               {category.subcategories && category.subcategories.length > 0 && (
                 <div className="mt-4">
-                  {/* <h3 className="text-lg font-medium text-gray-800 dark:text-white mb-2">
-                    Categories
-                  </h3> */}
                   <ul className="space-y-2">
                     {category.subcategories.map((subcat, subIndex) => {
                       // Create slugs for category and subcategory
@@ -95,9 +98,11 @@ const ProductsPage: React.FC = () => {
                       const subcatSlug = slugify(subcat.title);
                       // Use the category link from JSON if provided,
                       // otherwise generate based on slug.
-                      const linkHref = category.link
-                        ? `${category.link}/${subcatSlug}`
-                        : `/products/${categorySlug}/${subcatSlug}`;
+                      const basePath = category.link 
+                        ? category.link.endsWith('/') ? category.link.slice(0, -1) : category.link 
+                        : `/products/${categorySlug}`;
+                      const linkHref = `${basePath}/${subcatSlug}`;
+                      
                       return (
                         <li key={subIndex}>
                           <Link href={linkHref}>

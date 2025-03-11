@@ -1,11 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -22,6 +17,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogClose,
+} from "@/components/ui/dialog";
 
 const categoryOptions = [
   {
@@ -117,7 +119,13 @@ const categoryOptions = [
   },
 ];
 
-export default function GetQuote() {
+// Props for the modal component
+interface QuoteModalProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}
+
+export default function QuoteModal({ open, onOpenChange }: QuoteModalProps) {
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -130,19 +138,38 @@ export default function GetQuote() {
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  // Update subcategories when productCategory changes.
+  // Update subcategories when productCategory changes
   useEffect(() => {
     const selected = categoryOptions.find(
       (cat) => cat.value === formData.productCategory
     );
     if (selected) {
       setSubcategories(selected.subcategories);
-      // Reset subcategory when category changes.
+      // Reset subcategory when category changes
       setFormData((prev) => ({ ...prev, productSubcategory: "" }));
     } else {
       setSubcategories([]);
     }
   }, [formData.productCategory]);
+
+  // Reset form when modal closes
+  useEffect(() => {
+    if (!open) {
+      // Short delay to ensure animation completes before resetting form
+      const timer = setTimeout(() => {
+        setFormData({
+          fullName: "",
+          email: "",
+          phone: "",
+          productCategory: "",
+          productSubcategory: "",
+          message: "",
+        });
+        setSuccess(false);
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [open]);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -161,17 +188,37 @@ export default function GetQuote() {
     setSuccess(false);
 
     try {
-      // Simulate API call delay. Replace with your API call.
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      setSuccess(true);
-      setFormData({
-        fullName: "",
-        email: "",
-        phone: "",
-        productCategory: "",
-        productSubcategory: "",
-        message: "",
+      // Construct subject from form details
+      const subject = `Quote Request: ${formData.productCategory}${
+        formData.productSubcategory
+          ? " - " + formData.productSubcategory
+          : ""
+      } from ${formData.fullName} (phone: ${formData.phone})`;
+
+      const payload = {
+        email: formData.email,
+        subject,
+        message: formData.message,
+      };
+
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
       });
+
+      if (response.ok) {
+        setSuccess(true);
+        
+        // Close modal after short delay to show success message
+        setTimeout(() => {
+          onOpenChange(false);
+        }, 2000);
+      } else {
+        console.error("API Error:", await response.text());
+      }
     } catch (error) {
       console.error("Error submitting quote request:", error);
     }
@@ -179,120 +226,126 @@ export default function GetQuote() {
   };
 
   return (
-    <Card className="max-w-3xl mx-auto shadow-lg rounded-md">
-      <CardHeader>
-        <CardTitle>Get a Quote</CardTitle>
-      </CardHeader>
-      <CardContent>
-        {success && (
-          <Alert className="mb-6 border border-cyan-600 bg-cyan-100 text-cyan-800">
-            <AlertTitle>Success!</AlertTitle>
-            <AlertDescription>
-              Thank you! Your quote request has been submitted.
-            </AlertDescription>
-          </Alert>
-        )}
-        <form onSubmit={handleSubmit} className="space-y-5">
-          <div>
-            <Label htmlFor="fullName">Full Name</Label>
-            <Input
-              id="fullName"
-              name="fullName"
-              value={formData.fullName}
-              onChange={handleChange}
-              required
-              className="mt-1"
-            />
-          </div>
-          <div>
-            <Label htmlFor="email">Email Address</Label>
-            <Input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-              className="mt-1"
-            />
-          </div>
-          <div>
-            <Label htmlFor="phone">Phone Number</Label>
-            <Input
-              type="tel"
-              id="phone"
-              name="phone"
-              value={formData.phone}
-              onChange={handleChange}
-              required
-              className="mt-1"
-            />
-          </div>
-          <div>
-            <Label htmlFor="productCategory">Product Category</Label>
-            <Select
-              value={formData.productCategory}
-              onValueChange={(value) =>
-                setFormData((prev) => ({ ...prev, productCategory: value }))
-              }
-            >
-              <SelectTrigger className="mt-1 w-full">
-                <SelectValue placeholder="Select a category" />
-              </SelectTrigger>
-              <SelectContent>
-                {categoryOptions.map((cat) => (
-                  <SelectItem key={cat.value} value={cat.value}>
-                    {cat.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-          {subcategories.length > 0 && (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+        <DialogHeader className="flex flex-row items-center justify-between">
+          <DialogTitle>Get a Quote</DialogTitle>
+          <DialogClose className="rounded-full p-1.5 hover:bg-gray-100">
+           
+          </DialogClose>
+        </DialogHeader>
+        
+        <div className="mt-4">
+          {success && (
+            <Alert className="mb-6 border border-cyan-600 bg-cyan-100 text-cyan-800">
+              <AlertTitle>Success!</AlertTitle>
+              <AlertDescription>
+                Thank you! Your quote request has been submitted.
+              </AlertDescription>
+            </Alert>
+          )}
+          <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <Label htmlFor="productSubcategory">Subcategory</Label>
+              <Label htmlFor="fullName">Full Name</Label>
+              <Input
+                id="fullName"
+                name="fullName"
+                value={formData.fullName}
+                onChange={handleChange}
+                required
+                className="mt-1"
+              />
+            </div>
+            <div>
+              <Label htmlFor="email">Email Address</Label>
+              <Input
+                type="email"
+                id="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+                className="mt-1"
+              />
+            </div>
+            <div>
+              <Label htmlFor="phone">Phone Number</Label>
+              <Input
+                type="tel"
+                id="phone"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                required
+                className="mt-1"
+              />
+            </div>
+            <div>
+              <Label htmlFor="productCategory">Product Category</Label>
               <Select
-                value={formData.productSubcategory}
+                value={formData.productCategory}
                 onValueChange={(value) =>
-                  setFormData((prev) => ({ ...prev, productSubcategory: value }))
+                  setFormData((prev) => ({ ...prev, productCategory: value }))
                 }
               >
                 <SelectTrigger className="mt-1 w-full">
-                  <SelectValue placeholder="Select a subcategory" />
+                  <SelectValue placeholder="Select a category" />
                 </SelectTrigger>
                 <SelectContent>
-                  {subcategories.map((sub, index) => (
-                    <SelectItem key={index} value={sub}>
-                      {sub}
+                  {categoryOptions.map((cat) => (
+                    <SelectItem key={cat.value} value={cat.value}>
+                      {cat.label}
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
-          )}
-          <div>
-            <Label htmlFor="message">Message</Label>
-            <Textarea
-              id="message"
-              name="message"
-              rows={4}
-              value={formData.message}
-              onChange={handleChange}
-              placeholder="Tell us more about your requirements"
-              className="mt-1"
-            />
-          </div>
-          <div>
-            <Button
-              type="submit"
-              disabled={submitting}
-              className="w-full bg-cyan-600 hover:bg-cyan-700"
-            >
-              {submitting ? "Submitting..." : "Submit Quote Request"}
-            </Button>
-          </div>
-        </form>
-      </CardContent>
-    </Card>
+            {subcategories.length > 0 && (
+              <div>
+                <Label htmlFor="productSubcategory">Subcategory</Label>
+                <Select
+                  value={formData.productSubcategory}
+                  onValueChange={(value) =>
+                    setFormData((prev) => ({ ...prev, productSubcategory: value }))
+                  }
+                >
+                  <SelectTrigger className="mt-1 w-full">
+                    <SelectValue placeholder="Select a subcategory" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {subcategories.map((sub, index) => (
+                      <SelectItem key={index} value={sub}>
+                        {sub}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
+            <div>
+              <Label htmlFor="message">Message</Label>
+              <Textarea
+                id="message"
+                name="message"
+                rows={4}
+                value={formData.message}
+                onChange={handleChange}
+                placeholder="Tell us more about your requirements"
+                className="mt-1"
+              />
+            </div>
+            <div>
+              <Button
+                type="submit"
+                disabled={submitting}
+                className="w-full bg-cyan-600 hover:bg-cyan-700"
+              >
+                {submitting ? "Submitting..." : "Submit Quote Request"}
+              </Button>
+            </div>
+          </form>
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 }

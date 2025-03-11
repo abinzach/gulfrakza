@@ -1,6 +1,6 @@
 'use client'
 import React, { Dispatch, SetStateAction, useState } from "react";
-import { FiMenu, FiArrowRight, FiX, FiChevronDown } from "react-icons/fi";
+import { FiMenu, FiArrowRight, FiX } from "react-icons/fi";
 import {
   useMotionValueEvent,
   AnimatePresence,
@@ -11,8 +11,7 @@ import useMeasure from "react-use-measure";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import categories from "../Product_Categories.json";
-import GetQuote from "./GetQuote"; // Ensure you have a GetQuote component
+import QuoteModal from "./GetQuote";
 
 const FlyoutNav = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -51,9 +50,10 @@ const FlyoutNav = () => {
         </div>
       </nav>
       <AnimatePresence>
-        {showGetQuote && (
-          <GetQuoteModal onClose={() => setShowGetQuote(false)} />
-        )}
+      <QuoteModal 
+  open={showGetQuote} 
+  onOpenChange={setShowGetQuote} 
+/>
       </AnimatePresence>
     </>
   );
@@ -186,15 +186,7 @@ const MobileMenuLink = ({
           >
             {children}
           </a>
-          <motion.div
-            animate={{ rotate: open ? "180deg" : "0deg" }}
-            transition={{
-              duration: 0.3,
-              ease: "easeOut",
-            }}
-          >
-            <FiChevronDown />
-          </motion.div>
+        
         </div>
       ) : (
         <a
@@ -277,31 +269,6 @@ const MobileMenu = ({ onQuoteClick }: { onQuoteClick: () => void }) => {
   );
 };
 
-const GetQuoteModal = ({ onClose }: { onClose: () => void }) => {
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
-    >
-      <motion.div
-        initial={{ scale: 0.8 }}
-        animate={{ scale: 1 }}
-        exit={{ scale: 0.8 }}
-        className="relative bg-white p-6 rounded-md shadow-lg w-full max-w-lg"
-      >
-        <button
-          onClick={onClose}
-          className="absolute top-2 right-2 text-gray-600 hover:text-gray-800"
-        >
-          <FiX size={24} />
-        </button>
-        <GetQuote />
-      </motion.div>
-    </motion.div>
-  );
-};
 
 export default FlyoutNav;
 

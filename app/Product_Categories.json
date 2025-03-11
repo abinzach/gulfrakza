@@ -14,7 +14,7 @@
                 "title": "Helmets",
                 "description": "High-quality industrial helmets designed to protect against head injuries and impacts. Constructed from robust materials and engineered for comfort.",
                 "link": "/products/safety/ppe/helmets",
-                "imageSrc": "/images/safety/ppe/helmets.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Helmet.avif?updatedAt=1741627132323",
                 "specs": {
                   "material": "High-density polyethylene",
                   "certifications": ["CE", "ANSI"],
@@ -25,7 +25,7 @@
                 "title": "Gloves",
                 "description": "Durable gloves that provide excellent grip and protection against cuts, abrasions, and chemical exposure. Available in multiple materials and sizes.",
                 "link": "/products/safety/ppe/gloves",
-                "imageSrc": "/images/safety/ppe/gloves.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Gloves.avif?updatedAt=1741627131067",
                 "specs": {
                   "material": "Nitrile, Leather",
                   "sizes": ["S", "M", "L", "XL"],
@@ -36,7 +36,7 @@
                 "title": "Safety Glasses",
                 "description": "Protective eyewear that shields against flying debris and harmful UV rays. Lightweight and designed for extended use.",
                 "link": "/products/safety/ppe/safety-glasses",
-                "imageSrc": "/images/safety/ppe/safety-glasses.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Safety%20Eyewear.avif?updatedAt=1741627132726",
                 "specs": {
                   "material": "Polycarbonate",
                   "features": ["Anti-scratch coating", "UV protection"]
@@ -56,7 +56,7 @@
                 "title": "Safety Shoes",
                 "description": "Rugged safety shoes engineered to protect against impacts, punctures, and slips. Featuring reinforced toes and durable soles for maximum safety.",
                 "link": "/products/safety/ppe/safety-shoes",
-                "imageSrc": "/images/safety/ppe/safety-shoes.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Safety%20Shoes.avif?updatedAt=1741627133581",
                 "specs": {
                   "material": "Leather, Composite",
                   "features": ["Reinforced toe", "Slip-resistant sole"],
@@ -109,7 +109,7 @@
                 "title": "Safety Harnesses",
                 "description": "Adjustable and durable harnesses designed to secure workers during elevated tasks. Engineered for comfort and maximum safety.",
                 "link": "/products/safety/fall-protection/safety-harnesses",
-                "imageSrc": "/images/safety/fall-protection/harnesses.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Harness.avif?updatedAt=1741627132396",
                 "specs": {
                   "material": "Nylon",
                   "features": ["Ergonomic design", "Multiple adjustment points"]
@@ -210,7 +210,7 @@
                 "title": "Tagout Labels",
                 "description": "Durable, high-visibility labels for marking locked-out equipment and ensuring clear communication.",
                 "link": "/products/safety/loto/tagout-labels",
-                "imageSrc": "/images/safety/loto/tagout-labels.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Lockout%20Tagout.avif?updatedAt=1741627127868",
                 "specs": {
                   "material": "Polyester",
                   "features": ["Waterproof", "High visibility"]
@@ -557,7 +557,7 @@
                 "title": "Chain Slings",
                 "description": "Heavy-duty chain slings engineered for rugged lifting tasks, ensuring maximum safety and durability.",
                 "link": "/products/lifting/lifting-slings/chain-slings",
-                "imageSrc": "/images/lifting/slings/chain-slings.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Chain%20Slings.avif?updatedAt=1741627128923",
                 "specs": {
                   "material": "Alloy Steel",
                   "features": ["High tensile strength", "Wear-resistant"]
@@ -567,7 +567,7 @@
                 "title": "Wire Rope Slings",
                 "description": "Reliable wire rope slings offering flexibility and high load capacity, ideal for diverse lifting scenarios.",
                 "link": "/products/lifting/lifting-slings/wire-rope-slings",
-                "imageSrc": "/images/lifting/slings/wire-rope-slings.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Wire%20Rope%20slings.avif?updatedAt=1741627123955",
                 "specs": {
                   "material": "Galvanized Steel",
                   "features": ["Corrosion-resistant", "High load capacity"]
@@ -577,7 +577,7 @@
                 "title": "Webbing Slings",
                 "description": "Versatile webbing slings designed for lighter loads with exceptional durability and ease of handling.",
                 "link": "/products/lifting/lifting-slings/webbing-slings",
-                "imageSrc": "/images/lifting/slings/webbing-slings.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Lifting%20Sling.avif?updatedAt=1741627123670",
                 "specs": {
                   "material": "Polyester",
                   "features": ["Lightweight", "Flexible"]
@@ -593,7 +593,7 @@
                 "title": "Electric Hoists",
                 "description": "High-performance electric hoists designed for smooth lifting operations in heavy-duty applications.",
                 "link": "/products/lifting/hoists-winches/electric-hoists",
-                "imageSrc": "/images/lifting/hoists/electric-hoists.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Electric%20Hoist.avif?updatedAt=1741627123824",
                 "specs": {
                   "power": "3HP, 5HP, 7.5HP",
                   "features": ["Smooth operation", "Remote control"]
@@ -603,7 +603,7 @@
                 "title": "Manual Hoists",
                 "description": "Reliable manual hoists that offer a cost-effective solution for lighter lifting tasks with a durable design.",
                 "link": "/products/lifting/hoists-winches/manual-hoists",
-                "imageSrc": "/images/lifting/hoists/manual-hoists.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Manual%20Hoist.avif?updatedAt=1741627123760",
                 "specs": {
                   "features": ["Compact design", "High efficiency"]
                 }
@@ -621,13 +621,14 @@
           },
           {
             "title": "Lifting Hooks & Shackles",
+            "link": "products/lifting/lifting-hooks-shackles",
             "description": "A complete range of hooks and shackles designed to provide reliable support and stability during lifting operations. Our products are engineered for rapid performance and durability.",
             "items": [
               {
                 "title": "Bow Shackles",
                 "description": "Durable bow shackles designed for versatile lifting applications, ensuring secure load handling and ease of use.",
                 "link": "/products/lifting/lifting-hooks-shackles/bow-shackles",
-                "imageSrc": "/images/lifting/hooks-shackles/bow-shackles.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Bow%20Shackles.avif?updatedAt=1741627128606",
                 "specs": {
                   "material": "Forged Steel",
                   "features": ["High load capacity", "Corrosion-resistant"]
@@ -637,7 +638,7 @@
                 "title": "D Shackles",
                 "description": "Robust D shackles engineered for secure load connections and reliable performance in heavy lifting.",
                 "link": "/products/lifting/lifting-hooks-shackles/d-shackles",
-                "imageSrc": "/images/lifting/hooks-shackles/d-shackles.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/D%20shackles.avif?updatedAt=1741627129328",
                 "specs": {
                   "material": "High-strength steel",
                   "features": ["Reliable", "Durable"]
@@ -647,7 +648,7 @@
                 "title": "Swivel Hooks",
                 "description": "Innovative swivel hooks that provide 360° rotation for optimal load balancing during lifting operations.",
                 "link": "/products/lifting/lifting-hooks-shackles/swivel-hooks",
-                "imageSrc": "/images/lifting/hooks-shackles/swivel-hooks.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Swivel%20Hooks.avif?updatedAt=1741627135382",
                 "specs": {
                   "features": ["360° rotation", "High stability"]
                 }
@@ -695,7 +696,7 @@
                 "title": "Power Cables",
                 "description": "Heavy-duty power cables designed for efficient energy transmission in demanding industrial environments.",
                 "link": "/products/electrical/cables-wires/power-cables",
-                "imageSrc": "/images/electrical/cables/power-cables.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Cables.avif?updatedAt=1741627128885",
                 "specs": {
                   "material": "Copper",
                   "features": ["High conductivity", "Durable insulation"]
@@ -731,7 +732,7 @@
                 "title": "Distribution Boards",
                 "description": "Reliable distribution boards engineered to effectively manage electrical circuits in complex industrial installations.",
                 "link": "/products/electrical/panels-components/distribution-boards",
-                "imageSrc": "/images/electrical/panels/distribution-boards.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Electrical%20Panels.avif?updatedAt=1741627131307",
                 "specs": {
                   "material": "Steel, Plastic",
                   "features": ["Modular design", "High safety standards"]
@@ -750,7 +751,7 @@
                 "title": "Switches",
                 "description": "Durable electrical switches engineered for efficient power control and management in industrial environments.",
                 "link": "/products/electrical/panels-components/switches",
-                "imageSrc": "/images/electrical/panels/switches.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Switches.avif?updatedAt=1741627134346",
                 "specs": {
                   "material": "High-grade plastic",
                   "features": ["Long lifespan", "Ease of use"]
@@ -766,7 +767,7 @@
                 "title": "LED Floodlights",
                 "description": "High-performance LED floodlights engineered for expansive illumination, offering energy efficiency and long-lasting brightness.",
                 "link": "/products/electrical/industrial-lighting/led-floodlights",
-                "imageSrc": "/images/electrical/lighting/led-floodlights.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Industrial%20Lighting.avif?updatedAt=1741627132354",
                 "specs": {
                   "wattage": "50W, 100W, 150W",
                   "features": ["Energy efficient", "High lumen output"]
@@ -776,7 +777,7 @@
                 "title": "Explosion-Proof Lights",
                 "description": "Specialized explosion-proof lighting designed for hazardous environments, ensuring safe operation without compromising illumination.",
                 "link": "/products/electrical/industrial-lighting/explosion-proof-lights",
-                "imageSrc": "/images/electrical/lighting/explosion-proof-lights.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Explosion%20proof%20lights.avif?updatedAt=1741627127923",
                 "specs": {
                   "features": ["Rugged construction", "Certified for hazardous areas"]
                 }
@@ -801,7 +802,7 @@
                 "title": "Transformers",
                 "description": "High-efficiency transformers designed to regulate voltage and ensure seamless power transmission in industrial applications.",
                 "link": "/products/electrical/transformers-power-supplies/transformers",
-                "imageSrc": "/images/electrical/transformers/transformers.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Transformer.avif?updatedAt=1741627128786",
                 "specs": {
                   "capacity": "50kVA, 100kVA, 250kVA",
                   "features": ["Voltage regulation", "High efficiency"]
@@ -811,7 +812,7 @@
                 "title": "Power Supplies",
                 "description": "Robust power supplies engineered for industrial applications, providing stable and reliable power to critical systems.",
                 "link": "/products/electrical/transformers-power-supplies/power-supplies",
-                "imageSrc": "/images/electrical/transformers/power-supplies.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Power%20supplies.avif?updatedAt=1741627128169",
                 "specs": {
                   "output": "24V, 48V",
                   "features": ["Stable output", "Compact design"]
@@ -871,7 +872,7 @@
                 "title": "Electrodes",
                 "description": "Premium electrodes designed for strong and consistent welds across various welding processes.",
                 "link": "/products/welding/welding-consumables/electrodes",
-                "imageSrc": "/images/welding/consumables/electrodes.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Electrodes.avif?updatedAt=1741627123658",
                 "specs": {
                   "material": "Steel, Aluminum",
                   "features": ["Consistent performance", "High deposition rate"]
@@ -906,7 +907,7 @@
                 "title": "Welding Helmets",
                 "description": "Advanced welding helmets featuring auto-darkening technology to provide optimum protection against intense light and sparks.",
                 "link": "/products/welding/welding-safety/welding-helmets",
-                "imageSrc": "/images/welding/safety/welding-helmets.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Safety%20Helmets.avif?updatedAt=1741627128325",
                 "specs": {
                   "features": ["Auto-darkening", "Lightweight design"]
                 }
@@ -941,7 +942,7 @@
                 "title": "Regulators",
                 "description": "Precision regulators designed to control gas flow accurately for consistent and safe welding.",
                 "link": "/products/welding/gas-welding-equipment/regulators",
-                "imageSrc": "/images/welding/gas/regulators.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Regulators.avif?updatedAt=1741627123977",
                 "specs": {
                   "features": ["Accurate control", "Durable construction"]
                 }
@@ -959,7 +960,7 @@
                 "title": "Hoses",
                 "description": "Robust hoses designed to deliver gas reliably during welding operations, ensuring consistent performance and safety.",
                 "link": "/products/welding/gas-welding-equipment/hoses",
-                "imageSrc": "/images/welding/gas/hoses.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Welding%20Hoses.avif?updatedAt=1741627123721",
                 "specs": {
                   "features": ["Flexible", "High-pressure resistance"]
                 }
@@ -1242,7 +1243,7 @@
                 "title": "Hand Tools",
                 "description": "Reliable hand tools designed for precision and durability in daily industrial tasks.",
                 "link": "/products/industrial/tools/hand-tools",
-                "imageSrc": "/images/industrial/tools/hand-tools.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Hand%20tools.avif?updatedAt=1741627123761",
                 "specs": {
                   "features": ["Ergonomic design", "High durability"]
                 }
@@ -1251,7 +1252,7 @@
                 "title": "Power Tools",
                 "description": "High-performance power tools engineered to enhance productivity and efficiency.",
                 "link": "/products/industrial/tools/power-tools",
-                "imageSrc": "/images/industrial/tools/power-tools.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Power%20tools.avif?updatedAt=1741627132368",
                 "specs": {
                   "features": ["High power output", "Long-lasting"]
                 }
@@ -1260,7 +1261,7 @@
                 "title": "Cutting Tools",
                 "description": "Precision cutting tools designed for accuracy and durability in various industrial applications.",
                 "link": "/products/industrial/tools/cutting-tools",
-                "imageSrc": "/images/industrial/tools/cutting-tools.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Cutting%20Tools.avif?updatedAt=1741627129394",
                 "specs": {
                   "features": ["Sharp blades", "Long-lasting performance"]
                 }

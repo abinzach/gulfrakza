@@ -15,7 +15,7 @@ export const DarkGridHero = () => {
 
 const Content = () => {
   return (
-    <div className="relative z-20 mx-auto flex w-screen flex-col items-center justify-center px-4 py-24 md:px-8 ">
+    <div className="relative z-20 mx-auto flex w-screen flex-col items-center justify-center px-4 lg:py-24 py-10 md:px-8 ">
       <motion.div
         initial={{
           y: 25,
@@ -32,11 +32,11 @@ const Content = () => {
         className="relative"
       >
         <div className="relative z-10 max-w-5xl px-4">
-          <h1 className="text-4xl md:text-5xl font-semibold text-white leading-relaxed mb-4">
+          <h1 className="text-2xl md:text-5xl font-semibold text-white leading-relaxed mb-4">
             Elevating Your Industry with Integrated Services,
             <span className="text-cyan-600"> Tailored Solutions That Drive Efficiency and Growth</span>
           </h1>
-          <p className="text-lg md:text-xl font-light text-gray-300">
+          <p className=" md:text-xl font-light text-gray-300">
             Our comprehensive suite of services is designed to streamline operations, enhance safety, and boost productivity. Explore our expert solutions that cater to every facet of your industrial needs.
           </p>
         </div>

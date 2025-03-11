@@ -31,7 +31,7 @@ const AboutUsPage: React.FC = () => {
             Our Vision & Mission
           </h2>
           <p className="mb-4 text-lg text-gray-700 dark:text-gray-300">
-            Driven by the vision of <span className="font-semibold">'Connecting Markets, Empowering Growth'</span>, we focus on driving growth and fostering long-term partnerships built on trust, integrity, and reliability. Our skilled team delivers personalized and efficient service to meet the unique needs of every client.
+            Driven by the vision of <span className="font-semibold">&apos;Connecting Markets, Empowering Growth&apos;</span>, we focus on driving growth and fostering long-term partnerships built on trust, integrity, and reliability. Our skilled team delivers personalized and efficient service to meet the unique needs of every client.
           </p>
           <p className="text-gray-700 text-lg dark:text-gray-300">
             At Gulf Rakza, our vision is to consistently deliver exceptional performance by providing innovative products, services, EPC projects, and turnkey solutions across the Kingdom of Saudi Arabia. As a leader in material supply, we proudly offer reliable, high-quality, and cost-effective spare parts and materials, catering to industries from general manufacturing to aviation. We build strategic partnerships with global manufacturers, distributors, and service providers, embracing new business perspectives to ensure we continue to exceed client expectations.

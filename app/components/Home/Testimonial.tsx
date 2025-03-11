@@ -129,12 +129,11 @@ const Card = ({
       className="absolute top-0 left-0 w-full min-h-full p-8 lg:p-12 cursor-pointer flex flex-col justify-between"
     >
       {/* Company logo */}
-      <img src="/logo-rakza.png" alt="Gulf Rakza Logo" className="mx-auto h-12" />
       
       {/* Rating & Headline */}
-      <div className="text-center mt-4">
-        <p className="text-xl font-bold">{rating}</p>
-        <p className="text-lg">{headline}</p>
+      <div className="text-left mt-4">
+        <p className="text-xl font-bold ">{rating}</p>
+        <p className="text-xl font-semibold">{headline}</p>
       </div>
       
       {/* Testimonial quote */}

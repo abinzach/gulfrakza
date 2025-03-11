@@ -34,6 +34,14 @@ interface CategoriesData {
   categories: Category[];
 }
 
+// Utility function to create consistent slugs
+function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, '') // Remove special characters
+    .replace(/\s+/g, '-');     // Replace spaces with hyphens
+}
+
 // --------------------------------------------
 // 1) Generate static params for each category
 // --------------------------------------------
@@ -42,27 +50,27 @@ export async function generateStaticParams() {
 
   // Return an array of { category: "...slug..." }
   return categoriesData.categories.map((cat) => ({
-    category: cat.title.toLowerCase().replace(/\s+/g, "-"),
+    category: slugify(cat.title),
   }));
 }
 
 // ------------------------------------------------
-// 2) The Page Component (async if you need it)
+// 2) The Page Component
 // ------------------------------------------------
-export default async function CategoryPage({
+export default function CategoryPage({
   params,
 }: {
-  params: Promise<{ category: string }>;
+  params: { category: string };
 }) {
-  // Destructure the slug (no `await` needed)
-  const  categorySlug  = (await params).category;
+  // Get the category slug from params
+  const { category: categorySlug } = params;
   const categoriesData = data as CategoriesData;
 
   let categoryFound: Category | null = null;
 
   // Find matching category by slug
   for (const cat of categoriesData.categories) {
-    const catSlug = cat.title.toLowerCase().replace(/\s+/g, "-");
+    const catSlug = slugify(cat.title);
     if (catSlug === categorySlug) {
       categoryFound = cat;
       break;
@@ -98,12 +106,16 @@ export default async function CategoryPage({
           <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {categoryFound.subcategories.map((subcat, index) => {
               // Slugify subcategory title
-              const subcatSlug = subcat.title
-                .toLowerCase()
-                .replace(/\s+/g, "-");
-
+              const subcatSlug = slugify(subcat.title);
+              
+              // Construct the link path
+              const basePath = categoryFound.link 
+                ? (categoryFound.link.endsWith('/') ? categoryFound.link.slice(0, -1) : categoryFound.link)
+                : `/products/${categorySlug}`;
+              const linkHref = `${basePath}/${subcatSlug}`;
+          
               return (
-                <Link key={index} href={`${categoryFound.link}/${subcatSlug}`}>
+                <Link key={index} href={linkHref}>
                   <GridPatternCard className="h-full group hover:shadow-md transition-all duration-300">
                     <GridPatternCardBody className="h-full">
                       <h2 className="text-2xl font-semibold text-gray-800 dark:text-white transition-colors duration-300 group-hover:text-blue-600">

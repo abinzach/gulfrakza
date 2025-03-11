@@ -54,7 +54,7 @@ export default function HeroSection() {
           At Gulf Rakza, we specialize in top-quality industrial supplies and
           turnkey solutions to keep your operations running smoothly.
         </p>
-        <div className="space-x-4">
+        <div className="space-x-4 flex flex-col md:flex-row gap-5 items-center justify-center"> 
           <InteractiveHoverButton />
           <button
             className="inline-block px-6 py-3 text-white rounded-full border-2 font-medium hover:bg-black transition-all duration-300"

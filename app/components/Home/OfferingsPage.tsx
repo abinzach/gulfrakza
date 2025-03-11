@@ -35,15 +35,15 @@ const OfferingsPage: React.FC = () => {
   const { categories } = data as CategoriesData;
 
   return (
-    <section className="py-32 font-inter bg-gray-50 dark:bg-gray-900">
-      <div className="max-w-7xl mx-auto px-4">
-        <h2 className="text-5xl font-semibold text-left mb-4">
+    <section className="lg:py-32 py-10 font-inter bg-gray-50 dark:bg-gray-900">
+      <div className="max-w-7xl mx-auto px-4  text-center lg:text-left">
+        <h2 className="lg:text-5xl text-4xl font-semibold text-center lg:text-left lg:mb-4">
           Empower your operations with
         </h2>
-        <h2 className="text-5xl font-semibold text-cyan-600 text-left mb-4">
+        <h2 className="lg:text-5xl text-4xl font-semibold text-cyan-600 text-center lg:text-left mb-4 ">
           our state-of-the-art solutions
         </h2>
-        <p className="text-left text-lg max-w-2xl text-gray-800 mb-12">
+        <p className="text-center lg:text-left text-lg max-w-2xl text-gray-800 mb-12">
           From safety equipment to hydraulic systems, we offer a comprehensive selection of products tailored to meet your industrial needs.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
