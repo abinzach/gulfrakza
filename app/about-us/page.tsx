@@ -14,7 +14,7 @@ const AboutUsPage: React.FC = () => {
           src="/images/about-us/about-us-hero.avif"
           alt="Gulf Rakza about us image"
           fill
-          className="object-cover "
+          className="object-cover brightness-50"
           priority
         />
       </div>

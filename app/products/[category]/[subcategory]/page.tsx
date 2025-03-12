@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { notFound } from "next/navigation";
-import Link from "next/link";
 import Image from "next/image";
 import BackButton from "@/app/components/BackButton";
 import { GridPatternCard, GridPatternCardBody } from "@/components/ui/card-with-grid-ellipsis-pattern";
 import { Badge } from "@/components/ui/badge";
+import GetQuoteButton from "@/app/components/GetQuoteButton";
 import data from "../../../Product_Categories.json";
 
 // Data interfaces
@@ -132,7 +132,7 @@ export default async function SubcategoryPage({ params }: {
                     alt={item.title}
                     width={580}
                     height={360}
-                    className="w-full h-48 object-cover rounded"
+                    className="w-full h-48 object-contain rounded"
                   
                   />
                   <h2 className="mt-4 text-2xl font-semibold text-gray-800 dark:text-white">
@@ -141,11 +141,11 @@ export default async function SubcategoryPage({ params }: {
                   <p className="mt-2 text-gray-600 font-raleway text-sm dark:text-gray-300">
                     {item.description}
                   </p>
-                  <Link href={"#"}>
-                    <p className="mt-4 text-sm inline-block text-blue-600 dark:text-blue-400 hover:underline">
-                      Learn More &rarr;
-                    </p>
-                  </Link>
+                  <GetQuoteButton 
+                    productName={item.title}
+                    productCategory={categoryFound.title}
+                    productSubcategory={subcategoryFound.title}
+                  />
                 </GridPatternCardBody>
               </GridPatternCard>
             ))

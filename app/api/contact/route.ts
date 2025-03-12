@@ -5,7 +5,7 @@ import { createEmailContent } from './emailtemplate';
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
-  const { email, subject, message } = body;
+  const { email, subject, message, formType = 'contact' } = body;
 
   const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -17,9 +17,11 @@ export async function POST(req: NextRequest) {
 
   const mailOptions = {
     from: email,
-    to: "mail@gulfrakza.com",
-    subject: `New message from ${email}: ${subject}`,
-    html: createEmailContent(email, subject, message), // Use HTML instead of text
+    to: "info@gulfrakza.com",
+    subject: formType === 'quote' 
+      ? `Quote Request from ${email}: ${subject}`
+      : `New message from ${email}: ${subject}`,
+    html: createEmailContent(email, subject, message, formType), // Pass formType to the template
   };
 
   try {

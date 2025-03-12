@@ -2,7 +2,6 @@
 
 import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button";
 import Link from "next/link";
-import Image from "next/image";
 import React from "react";
 
 export default function HeroSection() {
@@ -19,10 +18,8 @@ export default function HeroSection() {
         loop
         muted
         playsInline
-        poster="/images/video-poster.jpg"
         aria-hidden="true"
       >
-        <source src="/videos/hero-video.webm" type="video/webm" />
         <source
           src="https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/hero_vid?updatedAt=1739108938597"
           type="video/mp4"
@@ -33,13 +30,7 @@ export default function HeroSection() {
       {/* Fallback image for no-JS or unsupported video */}
       <noscript>
         <div className="absolute top-0 left-0 w-full h-full">
-          <Image
-            src="/images/video-poster.jpg"
-            alt="Gulf Rakza hero background image"
-            fill
-            className="object-cover"
-            priority
-          />
+          <div className="w-full h-full bg-gray-800"></div>
         </div>
       </noscript>
 

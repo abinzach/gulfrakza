@@ -123,34 +123,41 @@ const categoryOptions = [
 interface QuoteModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  initialProduct?: {
+    name: string;
+    category: string;
+    subcategory: string;
+  };
 }
 
-export default function QuoteModal({ open, onOpenChange }: QuoteModalProps) {
+export default function QuoteModal({ open, onOpenChange, initialProduct }: QuoteModalProps) {
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
     phone: "",
-    productCategory: "",
-    productSubcategory: "",
-    message: "",
+    productCategory: initialProduct?.category || "",
+    productSubcategory: initialProduct?.subcategory || "",
+    message: initialProduct ? `I'm interested in getting a quote for ${initialProduct.name}.` : "",
   });
   const [subcategories, setSubcategories] = useState<string[]>([]);
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  // Update subcategories when productCategory changes
+  // Update subcategories when productCategory changes or when initialProduct is provided
   useEffect(() => {
     const selected = categoryOptions.find(
       (cat) => cat.value === formData.productCategory
     );
     if (selected) {
       setSubcategories(selected.subcategories);
-      // Reset subcategory when category changes
-      setFormData((prev) => ({ ...prev, productSubcategory: "" }));
+      // Only reset subcategory when category changes manually, not on initial load with initialProduct
+      if (!initialProduct) {
+        setFormData((prev) => ({ ...prev, productSubcategory: "" }));
+      }
     } else {
       setSubcategories([]);
     }
-  }, [formData.productCategory]);
+  }, [formData.productCategory, initialProduct]);
 
   // Reset form when modal closes
   useEffect(() => {
@@ -199,6 +206,7 @@ export default function QuoteModal({ open, onOpenChange }: QuoteModalProps) {
         email: formData.email,
         subject,
         message: formData.message,
+        formType: 'quote'
       };
 
       const response = await fetch("/api/contact", {

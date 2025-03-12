@@ -14,7 +14,7 @@
                 "title": "Helmets",
                 "description": "High-quality industrial helmets designed to protect against head injuries and impacts. Constructed from robust materials and engineered for comfort.",
                 "link": "/products/safety/ppe/helmets",
-                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Helmet.avif?updatedAt=1741627132323",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Safety%20Helmets.avif?updatedAt=1741627128325",
                 "specs": {
                   "material": "High-density polyethylene",
                   "certifications": ["CE", "ANSI"],
@@ -46,7 +46,7 @@
                 "title": "Ear Protection",
                 "description": "High-fidelity ear protection that minimizes noise exposure while allowing clear communication in high-decibel environments.",
                 "link": "/products/safety/ppe/ear-protection",
-                "imageSrc": "/images/safety/ppe/ear-protection.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Ear%20Protection.avif?updatedAt=1741818782542",
                 "specs": {
                   "type": "Ear muffs, Ear plugs",
                   "features": ["Noise reduction", "Comfort fit"]
@@ -73,7 +73,7 @@
                 "title": "Coveralls",
                 "description": "Robust coveralls offering full-body protection and comfort, ideal for demanding industrial settings.",
                 "link": "/products/safety/workwear/coveralls",
-                "imageSrc": "/images/safety/workwear/coveralls.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Coveralls.webp?updatedAt=1741818794300",
                 "specs": {
                   "material": "Cotton blend",
                   "features": ["Durable", "Easy to clean"]
@@ -83,7 +83,7 @@
                 "title": "High-Visibility Jackets",
                 "description": "Jackets designed to enhance visibility in low-light conditions, constructed with reflective materials to ensure safety.",
                 "link": "/products/safety/workwear/high-visibility-jackets",
-                "imageSrc": "/images/safety/workwear/high-vis-jackets.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/High-Visibility%20Jackets.avif?updatedAt=1741818783494",
                 "specs": {
                   "material": "Polyester",
                   "features": ["Reflective strips", "Lightweight"]
@@ -93,7 +93,7 @@
                 "title": "Fire-Resistant Clothing",
                 "description": "Protective workwear that resists ignition and minimizes burn injuries, perfect for environments with elevated fire risks.",
                 "link": "/products/safety/workwear/fire-resistant-clothing",
-                "imageSrc": "/images/safety/workwear/fire-resistant.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Fire-Resistant%20Clothing.avif?updatedAt=1741818783439",
                 "specs": {
                   "material": "Nomex",
                   "features": ["Fire resistance", "Breathable"]
@@ -119,7 +119,7 @@
                 "title": "Lanyards",
                 "description": "High-quality lanyards providing secure attachment and energy absorption, essential for preventing falls from heights.",
                 "link": "/products/safety/fall-protection/lanyards",
-                "imageSrc": "/images/safety/fall-protection/lanyards.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Safety%20Lanyard.avif?updatedAt=1741818787987",
                 "specs": {
                   "material": "Kevlar",
                   "features": ["Shock absorption", "Durability"]
@@ -129,7 +129,7 @@
                 "title": "Lifelines",
                 "description": "Reliable lifelines designed to offer continuous safety support for workers at heights.",
                 "link": "/products/safety/fall-protection/lifelines",
-                "imageSrc": "/images/safety/fall-protection/lifelines.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Lifelines.avif?updatedAt=1741818786204",
                 "specs": {
                   "material": "Steel cable",
                   "features": ["High tensile strength", "Corrosion-resistant"]
@@ -139,7 +139,7 @@
                 "title": "Anchorage Points",
                 "description": "Secure anchorage systems ensuring a stable connection for fall protection equipment.",
                 "link": "/products/safety/fall-protection/anchorage-points",
-                "imageSrc": "/images/safety/fall-protection/anchorage-points.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Anchorage%20Points.avif?updatedAt=1741818793738",
                 "specs": {
                   "material": "Stainless steel",
                   "features": ["Load tested", "Easy installation"]
@@ -190,7 +190,7 @@
                 "title": "Lockout Hasps",
                 "description": "Sturdy lockout hasps to prevent accidental startup during maintenance operations.",
                 "link": "/products/safety/loto/lockout-hasp",
-                "imageSrc": "/images/safety/loto/lockout-hasp.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Lockout%20Hasps.webp?updatedAt=1741818796854",
                 "specs": {
                   "material": "Steel",
                   "features": ["Multiple lock points", "User-friendly"]
@@ -200,7 +200,7 @@
                 "title": "Padlocks",
                 "description": "High-security padlocks engineered to secure equipment and enforce lockout protocols.",
                 "link": "/products/safety/loto/padlocks",
-                "imageSrc": "/images/safety/loto/padlocks.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Padlocks.webp?updatedAt=1741818795338",
                 "specs": {
                   "material": "Hardened steel",
                   "features": ["Weather resistant", "Tamper-proof"]
@@ -220,7 +220,7 @@
                 "title": "Circuit Breaker Lockouts",
                 "description": "Secure devices designed to safely lock out circuit breakers during maintenance.",
                 "link": "/products/safety/loto/circuit-breaker-lockouts",
-                "imageSrc": "/images/safety/loto/circuit-breaker-lockouts.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Circuit%20Breaker%20Lockouts.avif?updatedAt=1741818794268",
                 "specs": {
                   "features": ["Universal fit", "Easy installation"]
                 }
@@ -229,7 +229,7 @@
                 "title": "Valve Lockouts",
                 "description": "Reliable valve lockout devices that prevent unauthorized operation of industrial valves.",
                 "link": "/products/safety/loto/valve-lockouts",
-                "imageSrc": "/images/safety/loto/valve-lockouts.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Valve%20Lockouts.avif?updatedAt=1741818790014",
                 "specs": {
                   "features": ["Adjustable", "Robust design"]
                 }
@@ -252,7 +252,7 @@
                 "title": "CO₂ Extinguishers",
                 "description": "Carbon dioxide extinguishers ideal for electrical and flammable liquid fires. They provide rapid suppression without leaving a residue.",
                 "link": "/products/fire-safety/fire-extinguishers/co2",
-                "imageSrc": "/images/fire-safety/extinguishers/co2.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/CO2%20FIre%20Extinguishers.avif?updatedAt=1741818779065",
                 "specs": {
                   "capacity": "5kg, 10kg",
                   "features": ["Residue-free", "Quick response"]
@@ -262,7 +262,7 @@
                 "title": "Dry Powder Extinguishers",
                 "description": "Versatile dry powder extinguishers effective against multiple fire classes. They offer robust suppression in industrial environments.",
                 "link": "/products/fire-safety/fire-extinguishers/dry-powder",
-                "imageSrc": "/images/fire-safety/extinguishers/dry-powder.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Dry%20Powder%20Extinguishers.avif?updatedAt=1741818779018",
                 "specs": {
                   "capacity": "2kg, 5kg, 10kg",
                   "features": ["Multi-class effectiveness", "Portable"]
@@ -272,7 +272,7 @@
                 "title": "Foam Extinguishers",
                 "description": "Foam extinguishers ideal for liquid fires, providing efficient suppression and a cooling effect to prevent re-ignition.",
                 "link": "/products/fire-safety/fire-extinguishers/foam",
-                "imageSrc": "/images/fire-safety/extinguishers/foam.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Foam%20Extinguishers.webp?updatedAt=1741818797911",
                 "specs": {
                   "capacity": "4kg, 8kg",
                   "features": ["Cooling effect", "Easy to operate"]
@@ -282,7 +282,7 @@
                 "title": "Water-Based Extinguishers",
                 "description": "Water-based extinguishers designed for class A fires. They effectively cool and suppress fires involving combustible materials.",
                 "link": "/products/fire-safety/fire-extinguishers/water-based",
-                "imageSrc": "/images/fire-safety/extinguishers/water-based.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Water-Based%20Extinguishers.avif?updatedAt=1741818790460",
                 "specs": {
                   "capacity": "6kg, 12kg",
                   "features": ["Cooling effect", "Non-toxic"]
@@ -298,7 +298,7 @@
                 "title": "Sprinkler Systems",
                 "description": "Automated sprinkler systems that deploy water quickly to control fires and limit spread.",
                 "link": "/products/fire-safety/fire-suppression/sprinkler-systems",
-                "imageSrc": "/images/fire-safety/suppression/sprinkler.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Sprinkler%20Systems.avif?updatedAt=1741818790037",
                 "specs": {
                   "features": ["Automatic activation", "Wide coverage"]
                 }
@@ -307,7 +307,7 @@
                 "title": "Gas Suppression Systems",
                 "description": "Advanced systems that release inert gases to displace oxygen and extinguish fires without damaging sensitive equipment.",
                 "link": "/products/fire-safety/fire-suppression/gas-suppression",
-                "imageSrc": "/images/fire-safety/suppression/gas.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Gas-Fire-Suppression.avif?updatedAt=1741818783550",
                 "specs": {
                   "features": ["Fast activation", "Safe for electronics"]
                 }
@@ -316,7 +316,7 @@
                 "title": "Foam Systems",
                 "description": "Foam suppression systems that create a blanket over flammable liquids, preventing re-ignition and controlling fire spread.",
                 "link": "/products/fire-safety/fire-suppression/foam-systems",
-                "imageSrc": "/images/fire-safety/suppression/foam.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Foam%20Systems.avif?updatedAt=1741818779057",
                 "specs": {
                   "features": ["Rapid deployment", "Efficient coverage"]
                 }
@@ -331,7 +331,7 @@
                 "title": "Smoke Detectors",
                 "description": "High-sensitivity smoke detectors that offer early warning of potential fires, ensuring timely evacuation and response.",
                 "link": "/products/fire-safety/fire-alarms/smoke-detectors",
-                "imageSrc": "/images/fire-safety/alarms/smoke-detectors.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Smoke_detector.avif?updatedAt=1741818790147",
                 "specs": {
                   "features": ["Fast response", "Low false alarm rate"]
                 }
@@ -340,7 +340,7 @@
                 "title": "Heat Detectors",
                 "description": "Reliable detectors that trigger alarms when temperatures exceed safe thresholds, ensuring prompt action.",
                 "link": "/products/fire-safety/fire-alarms/heat-detectors",
-                "imageSrc": "/images/fire-safety/alarms/heat-detectors.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Heat%20Detectors.webp?updatedAt=1741818797960",
                 "specs": {
                   "features": ["Accurate sensing", "Durable design"]
                 }
@@ -349,7 +349,7 @@
                 "title": "Manual Call Points",
                 "description": "Easy-to-use call points that enable immediate manual triggering of fire alarms in emergencies.",
                 "link": "/products/fire-safety/fire-alarms/manual-call-points",
-                "imageSrc": "/images/fire-safety/alarms/manual-call-points.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Manual%20Call%20Points.avif?updatedAt=1741818786756",
                 "specs": {
                   "features": ["Simple operation", "High visibility"]
                 }
@@ -364,7 +364,7 @@
                 "title": "Fire Hoses",
                 "description": "Durable fire hoses engineered to deliver high-pressure water streams, ensuring effective fire suppression.",
                 "link": "/products/fire-safety/firefighting-equipment/fire-hoses",
-                "imageSrc": "/images/fire-safety/firefighting/hose.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Fire%20Hoses.webp?updatedAt=1741818797518",
                 "specs": {
                   "length": "25m, 50m",
                   "features": ["High-pressure", "Flexible"]
@@ -374,7 +374,7 @@
                 "title": "Hydrants",
                 "description": "Robust fire hydrants designed for quick water access during firefighting operations, ensuring reliability and ease of maintenance.",
                 "link": "/products/fire-safety/firefighting/hydrants",
-                "imageSrc": "/images/fire-safety/firefighting/hydrants.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Hydrants.avif?updatedAt=1741818779082",
                 "specs": {
                   "material": "Cast iron, Ductile iron",
                   "features": ["Durable", "Easy maintenance"]
@@ -384,7 +384,7 @@
                 "title": "Nozzles",
                 "description": "Precision-engineered nozzles that offer controlled water flow for effective and efficient fire suppression.",
                 "link": "/products/fire-safety/firefighting/nozzles",
-                "imageSrc": "/images/fire-safety/firefighting/nozzles.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Nozzles.avif?updatedAt=1741818786739",
                 "specs": {
                   "features": ["Adjustable spray patterns", "Corrosion-resistant"]
                 }
@@ -393,7 +393,7 @@
                 "title": "Fire Blankets",
                 "description": "High-quality fire blankets designed to smother flames quickly and provide immediate protection during small fires.",
                 "link": "/products/fire-safety/firefighting/fire-blankets",
-                "imageSrc": "/images/fire-safety/firefighting/fire-blankets.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Fire%20Blankets.avif?updatedAt=1741818783085",
                 "specs": {
                   "material": "Fiberglass",
                   "features": ["Heat resistant", "Easy deployment"]
@@ -417,7 +417,7 @@
                 "title": "CCTV Cameras",
                 "description": "High-resolution CCTV cameras that offer continuous monitoring, ensuring round-the-clock security.",
                 "link": "/products/security/surveillance/cctv-cameras",
-                "imageSrc": "/images/security/surveillance/cctv-cameras.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/CCTV%20Cameras.avif?updatedAt=1741818796279",
                 "specs": {
                   "resolution": "1080p, 4K",
                   "features": ["Night vision", "Wide-angle lens"]
@@ -427,7 +427,7 @@
                 "title": "Video Recorders",
                 "description": "Reliable video recorders capable of handling large volumes of footage with advanced storage and retrieval features.",
                 "link": "/products/security/surveillance/video-recorders",
-                "imageSrc": "/images/security/surveillance/video-recorders.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Video%20Recorders.avif?updatedAt=1741818790055",
                 "specs": {
                   "storage": "1TB, 2TB options",
                   "features": ["Remote access", "Motion detection"]
@@ -437,7 +437,7 @@
                 "title": "IP Cameras",
                 "description": "Network-enabled IP cameras delivering high-definition video and seamless connectivity for modern surveillance systems.",
                 "link": "/products/security/surveillance/ip-cameras",
-                "imageSrc": "/images/security/surveillance/ip-cameras.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/IP%20Cameras.avif?updatedAt=1741818784044",
                 "specs": {
                   "resolution": "1080p, 4K",
                   "features": ["Wireless connectivity", "Pan-tilt-zoom"]
@@ -453,7 +453,7 @@
                 "title": "Biometric Systems",
                 "description": "Advanced biometric systems using fingerprint or facial recognition to provide secure and efficient access control.",
                 "link": "/products/security/access-control/biometric-systems",
-                "imageSrc": "/images/security/access-control/biometric.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Biometric%20Systems.avif?updatedAt=1741818793254",
                 "specs": {
                   "technology": "Fingerprint, Facial Recognition",
                   "features": ["High accuracy", "Quick verification"]
@@ -463,7 +463,7 @@
                 "title": "RFID Card Readers",
                 "description": "Efficient RFID card readers designed for fast, secure access management with durable construction.",
                 "link": "/products/security/access-control/rfid-card-readers",
-                "imageSrc": "/images/security/access-control/rfid.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/RFID%20Card%20Readers.avif?updatedAt=1741818778889",
                 "specs": {
                   "technology": "RFID",
                   "features": ["Fast response", "Reliable performance"]
@@ -473,7 +473,7 @@
                 "title": "Smart Locks",
                 "description": "Innovative smart locks offering keyless entry and remote control, enhancing convenience and security.",
                 "link": "/products/security/access-control/smart-locks",
-                "imageSrc": "/images/security/access-control/smart-locks.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Smart%20Locks.avif?updatedAt=1741818796378",
                 "specs": {
                   "features": ["Remote access", "Audit trail"]
                 }
@@ -488,7 +488,7 @@
                 "title": "Barriers",
                 "description": "Sturdy barriers that effectively restrict unauthorized entry and enhance the security of your premises.",
                 "link": "/products/security/perimeter/barriers",
-                "imageSrc": "/images/security/perimeter/barriers.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Barriers.avif?updatedAt=1741818793394",
                 "specs": {
                   "material": "Metal",
                   "features": ["High durability", "Impact resistant"]
@@ -498,7 +498,7 @@
                 "title": "Bollards",
                 "description": "Durable bollards serving as physical deterrents to protect vulnerable areas from vehicular intrusion.",
                 "link": "/products/security/perimeter/bollards",
-                "imageSrc": "/images/security/perimeter/bollards.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Bollards.avif?updatedAt=1741818794072",
                 "specs": {
                   "material": "Reinforced steel",
                   "features": ["Tamper-proof", "Weather resistant"]
@@ -508,7 +508,7 @@
                 "title": "Electric Fencing",
                 "description": "Reliable electric fencing solutions that act as an active deterrent by delivering a controlled shock to unauthorized intruders.",
                 "link": "/products/security/perimeter/electric-fencing",
-                "imageSrc": "/images/security/perimeter/electric-fencing.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Electric%20Fencing.avif?updatedAt=1741818783071",
                 "specs": {
                   "voltage": "High voltage",
                   "features": ["Shock deterrent", "Easy installation"]
@@ -524,7 +524,7 @@
                 "title": "Motion Sensors",
                 "description": "Highly sensitive motion sensors that detect movement and trigger alarms, ensuring rapid response to potential intrusions.",
                 "link": "/products/security/intrusion-detection/motion-sensors",
-                "imageSrc": "/images/security/intrusion/motion-sensors.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Motion%20Sensors.avif?updatedAt=1741818787269",
                 "specs": {
                   "sensitivity": "Adjustable",
                   "features": ["Wide detection range", "Low false alarm rate"]
@@ -534,7 +534,7 @@
                 "title": "Alarm Systems",
                 "description": "Comprehensive alarm systems that provide immediate notifications in the event of unauthorized access.",
                 "link": "/products/security/intrusion-detection/alarm-systems",
-                "imageSrc": "/images/security/intrusion/alarm-systems.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Alarm%20Systems.avif?updatedAt=1741818793065",
                 "specs": {
                   "features": ["Loud siren", "Remote notification"]
                 }
@@ -612,7 +612,7 @@
                 "title": "Air Winches",
                 "description": "Robust air winches designed for rapid and efficient lifting in environments with compressed air availability.",
                 "link": "/products/lifting/hoists-winches/air-winches",
-                "imageSrc": "/images/lifting/hoists/air-winches.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Air%20Winches.avif?updatedAt=1741818793568",
                 "specs": {
                   "features": ["Fast operation", "Low maintenance"]
                 }
@@ -663,7 +663,7 @@
                 "title": "Cranes",
                 "description": "Industrial cranes engineered for handling heavy loads with precision and safety, ideal for large-scale lifting operations.",
                 "link": "/products/lifting/cranes-load-testing/cranes",
-                "imageSrc": "/images/lifting/cranes/cranes.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Cranes.avif?updatedAt=1741818778818",
                 "specs": {
                   "capacity": "Up to 50 tons",
                   "features": ["Remote control", "High stability"]
@@ -673,7 +673,7 @@
                 "title": "Load Testing Equipment",
                 "description": "Equipment designed to rigorously test the load capacity of lifting devices, ensuring safety and compliance with industry standards.",
                 "link": "/products/lifting/cranes-load-testing/load-testing-equipment",
-                "imageSrc": "/images/lifting/cranes/load-testing.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Load%20Testing%20Equipments.avif?updatedAt=1741818786751",
                 "specs": {
                   "features": ["Accurate measurement", "Durable construction"]
                 }
@@ -706,7 +706,7 @@
                 "title": "Control Cables",
                 "description": "Reliable control cables engineered for precise signal transmission in automation and control systems.",
                 "link": "/products/electrical/cables-wires/control-cables",
-                "imageSrc": "/images/electrical/cables/control-cables.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Control%20Cables.webp?updatedAt=1741818797403",
                 "specs": {
                   "material": "Copper, PVC",
                   "features": ["Flexible", "High precision"]
@@ -716,7 +716,7 @@
                 "title": "Fiber Optic Cables",
                 "description": "High-speed fiber optic cables engineered for efficient data transmission across industrial networks with minimal signal loss.",
                 "link": "/products/electrical/cables-wires/fiber-optic-cables",
-                "imageSrc": "/images/electrical/cables/fiber-optic-cables.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Fiber%20Optic%20Cables.avif?updatedAt=1741818782778",
                 "specs": {
                   "material": "Optical fiber",
                   "features": ["High-speed", "Low signal loss"]
@@ -742,7 +742,7 @@
                 "title": "Circuit Breakers",
                 "description": "High-quality circuit breakers designed to protect electrical systems from overloads and short circuits.",
                 "link": "/products/electrical/panels-components/circuit-breakers",
-                "imageSrc": "/images/electrical/panels/circuit-breakers.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Circuit%20Breakers.webp?updatedAt=1741818797521",
                 "specs": {
                   "features": ["Quick response", "Reliable protection"]
                 }
@@ -786,7 +786,7 @@
                 "title": "Bus-bars",
                 "description": "High-quality bus-bars for efficient power distribution, ensuring reliable connectivity and performance in industrial electrical systems.",
                 "link": "/products/electrical/industrial-lighting/bus-bars",
-                "imageSrc": "/images/electrical/lighting/bus-bars.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Bus%20Bars.avif?updatedAt=1741627124102",
                 "specs": {
                   "material": "Copper, Aluminum",
                   "features": ["High conductivity", "Durable"]
@@ -836,7 +836,7 @@
                 "title": "Arc Welders",
                 "description": "Efficient arc welders that provide strong and durable welds, ideal for various metal fabrication applications.",
                 "link": "/products/welding/welding-machines/arc-welders",
-                "imageSrc": "/images/welding/machines/arc-welders.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Arc%20Welders.avif?updatedAt=1741818779016",
                 "specs": {
                   "power": "220V, 380V",
                   "features": ["High duty cycle", "User-friendly interface"]
@@ -846,7 +846,7 @@
                 "title": "MIG/TIG Welders",
                 "description": "Versatile MIG/TIG welders offering flexibility for both light and heavy-duty welding tasks with precise control.",
                 "link": "/products/welding/welding-machines/mig-tig-welders",
-                "imageSrc": "/images/welding/machines/mig-tig-welders.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/MIG-TIG%20Welders.avif?updatedAt=1741818786839",
                 "specs": {
                   "power": "110V, 220V",
                   "features": ["Dual functionality", "Precise control"]
@@ -856,7 +856,7 @@
                 "title": "Plasma Cutters",
                 "description": "High-precision plasma cutters engineered to deliver clean and accurate cuts on a variety of metals.",
                 "link": "/products/welding/welding-machines/plasma-cutters",
-                "imageSrc": "/images/welding/machines/plasma-cutters.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Plasma%20Cutters.avif?updatedAt=1741818788028",
                 "specs": {
                   "power": "220V, 380V",
                   "features": ["Fast cutting speed", "High accuracy"]
@@ -882,7 +882,7 @@
                 "title": "Filler Wires",
                 "description": "Reliable filler wires engineered to provide optimal deposition and create strong, durable weld joints.",
                 "link": "/products/welding/welding-consumables/filler-wires",
-                "imageSrc": "/images/welding/consumables/filler-wires.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Wires.avif?updatedAt=1741627136290",
                 "specs": {
                   "material": "Mild Steel, Stainless Steel",
                   "features": ["Smooth flow", "High strength welds"]
@@ -892,7 +892,7 @@
                 "title": "Fluxes",
                 "description": "High-quality fluxes formulated to ensure clean, efficient welds by promoting smooth fusion and preventing oxidation.",
                 "link": "/products/welding/welding-consumables/fluxes",
-                "imageSrc": "/images/welding/consumables/fluxes.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Fluxes.avif?updatedAt=1741818779055",
                 "specs": {
                   "features": ["Easy to apply", "Enhanced fusion"]
                 }
@@ -907,7 +907,7 @@
                 "title": "Welding Helmets",
                 "description": "Advanced welding helmets featuring auto-darkening technology to provide optimum protection against intense light and sparks.",
                 "link": "/products/welding/welding-safety/welding-helmets",
-                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Safety%20Helmets.avif?updatedAt=1741627128325",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Welding%20Helmets.avif?updatedAt=1741818791211",
                 "specs": {
                   "features": ["Auto-darkening", "Lightweight design"]
                 }
@@ -916,7 +916,7 @@
                 "title": "Welding Gloves",
                 "description": "Durable welding gloves engineered for comfort and safety, offering excellent protection against heat and sparks.",
                 "link": "/products/welding/welding-safety/welding-gloves",
-                "imageSrc": "/images/welding/safety/welding-gloves.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Welding%20Gloves.avif?updatedAt=1741818790298",
                 "specs": {
                   "material": "Leather",
                   "features": ["Heat resistance", "Enhanced grip"]
@@ -926,7 +926,7 @@
                 "title": "Welding Jackets",
                 "description": "Protective welding jackets designed to shield the wearer from heat, sparks, and UV radiation while ensuring mobility and comfort.",
                 "link": "/products/welding/welding-safety/welding-jackets",
-                "imageSrc": "/images/welding/safety/welding-jackets.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Welding%20Jackets.avif?updatedAt=1741818791150",
                 "specs": {
                   "material": "Leather, Flame-resistant fabric",
                   "features": ["Durable", "Comfortable fit"]
@@ -951,7 +951,7 @@
                 "title": "Torches",
                 "description": "High-performance welding torches engineered for efficient gas welding, providing a stable flame and precise control.",
                 "link": "/products/welding/gas-welding-equipment/torches",
-                "imageSrc": "/images/welding/gas/torches.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Welding%20Torches.avif?updatedAt=1741818791913",
                 "specs": {
                   "features": ["Steady flame", "Ergonomic design"]
                 }
@@ -1276,7 +1276,7 @@
                 "title": "Ball Bearings",
                 "description": "Precision ball bearings designed for smooth, efficient operation of rotating machinery.",
                 "link": "/products/industrial/bearings/ball-bearings",
-                "imageSrc": "/images/industrial/bearings/ball-bearings.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Ball%20Bearings.avif?updatedAt=1741818778823",
                 "specs": {
                   "material": "Chrome Steel",
                   "features": ["Low friction", "High durability"]
@@ -1286,7 +1286,7 @@
                 "title": "Gearboxes",
                 "description": "Robust gearboxes engineered to provide reliable torque transmission and power conversion.",
                 "link": "/products/industrial/bearings/gearboxes",
-                "imageSrc": "/images/industrial/bearings/gearboxes.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Gearboxes.avif?updatedAt=1741818784074",
                 "specs": {
                   "features": ["High efficiency", "Durable design"]
                 }
@@ -1295,7 +1295,7 @@
                 "title": "Shafts",
                 "description": "Precision-engineered shafts designed for power transmission and rotational stability.",
                 "link": "/products/industrial/bearings/shafts",
-                "imageSrc": "/images/industrial/bearings/shafts.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Shafts.avif?updatedAt=1741818789947",
                 "specs": {
                   "material": "Stainless Steel",
                   "features": ["Corrosion resistant", "High tensile strength"]
@@ -1311,7 +1311,7 @@
                 "title": "Forklifts",
                 "description": "High-capacity forklifts engineered for safe and efficient material lifting and transport.",
                 "link": "/products/industrial/material-handling/forklifts",
-                "imageSrc": "/images/industrial/material-handling/forklifts.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Forklifts.avif?updatedAt=1741818783477",
                 "specs": {
                   "capacity": "2 ton, 3 ton, 5 ton",
                   "features": ["Stable operation", "Energy efficient"]
@@ -1321,7 +1321,7 @@
                 "title": "Conveyor Belts",
                 "description": "Durable conveyor belts designed for smooth, reliable material transport in industrial environments.",
                 "link": "/products/industrial/material-handling/conveyor-belts",
-                "imageSrc": "/images/industrial/material-handling/conveyor-belts.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Conveyor%20Belts.avif?updatedAt=1741818778841",
                 "specs": {
                   "features": ["Continuous operation", "Low maintenance"]
                 }
@@ -1330,7 +1330,7 @@
                 "title": "Pallet Jacks",
                 "description": "Efficient pallet jacks engineered for easy maneuvering and transport of heavy loads in warehouses and factories.",
                 "link": "/products/industrial/material-handling/pallet-jacks",
-                "imageSrc": "/images/industrial/material-handling/pallet-jacks.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Pallet%20Jacks.avif?updatedAt=1741818786784",
                 "specs": {
                   "features": ["Ergonomic design", "High durability"]
                 }
@@ -1345,7 +1345,7 @@
                 "title": "Lubricants",
                 "description": "High-quality lubricants designed to reduce friction and extend the lifespan of industrial machinery.",
                 "link": "/products/industrial/chemicals/lubricants",
-                "imageSrc": "/images/industrial/chemicals/lubricants.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Lubricants.avif?updatedAt=1741818786796",
                 "specs": {
                   "features": ["High viscosity", "Long-lasting performance"]
                 }
@@ -1354,7 +1354,7 @@
                 "title": "Adhesives",
                 "description": "Industrial-grade adhesives formulated for strong bonding and durability across a range of applications.",
                 "link": "/products/industrial/chemicals/adhesives",
-                "imageSrc": "/images/industrial/chemicals/adhesives.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Adhesives.avif?updatedAt=1741818797443",
                 "specs": {
                   "features": ["High bonding strength", "Versatile"]
                 }
@@ -1363,7 +1363,7 @@
                 "title": "Cleaning Solvents",
                 "description": "Effective solvents designed to remove grease, oil, and contaminants from industrial equipment and surfaces.",
                 "link": "/products/industrial/chemicals/cleaning-solvents",
-                "imageSrc": "/images/industrial/chemicals/cleaning-solvents.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Cleaning%20Solvents.avif?updatedAt=1741818794228",
                 "specs": {
                   "features": ["Fast acting", "Eco-friendly options"]
                 }
