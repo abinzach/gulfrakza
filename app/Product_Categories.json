@@ -973,7 +973,7 @@
         "title": "Marine Equipments",
         "description": "A complete range of marine equipment solutions designed for challenging maritime environments. Our products are engineered for rapid performance and reliability during sea operations.",
         "imageSrc": "/images/categories/marine.png",
-        "link": "/products/marine",
+        "link": "/products/marine-equipments",
         "subcategories": [
           {
             "title": "Navigation & Communication",
@@ -1098,7 +1098,7 @@
         "title": "Pneumatic & Hydraulic Fittings",
         "description": "A complete range of pneumatic and hydraulic fittings designed for fluid control and power transmission. Our products are engineered for rapid performance and durability.",
         "imageSrc": "/images/categories/hydraulic.png",
-        "link": "/products/pneumatic-hydraulic",
+        "link": "/products/pneumatic-hydraulic-fittings",
         "subcategories": [
           {
             "title": "Pneumatic Valves & Actuators",
