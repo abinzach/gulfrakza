@@ -36,7 +36,7 @@
                 "title": "Safety Glasses",
                 "description": "Protective eyewear that shields against flying debris and harmful UV rays. Lightweight and designed for extended use.",
                 "link": "/products/safety/ppe/safety-glasses",
-                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Safety%20Eyewear.avif?updatedAt=1741627132726",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Safety%20Eyewear.avif",
                 "specs": {
                   "material": "Polycarbonate",
                   "features": ["Anti-scratch coating", "UV protection"]
@@ -110,6 +110,16 @@
                 "description": "Adjustable and durable harnesses designed to secure workers during elevated tasks. Engineered for comfort and maximum safety.",
                 "link": "/products/safety/fall-protection/safety-harnesses",
                 "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Harness.avif?updatedAt=1741627132396",
+                "specs": {
+                  "material": "Nylon",
+                  "features": ["Ergonomic design", "Multiple adjustment points"]
+                }
+              },
+              {
+                "title": "Retractable Blocks",
+                "description": "Adjustable and durable PCGS-16(IS) ISI certified retractable blocks designed to secure workers during elevated tasks. Engineered for comfort and maximum safety.",
+                "link": "/products/safety/fall-protection/safety-harnesses",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Retractable%20blocks.avif?updatedAt=1741898600404",
                 "specs": {
                   "material": "Nylon",
                   "features": ["Ergonomic design", "Multiple adjustment points"]
@@ -1016,7 +1026,7 @@
                 "title": "Anchors",
                 "description": "Heavy-duty anchors engineered to secure vessels firmly even under challenging sea conditions.",
                 "link": "/products/marine/deck-mooring/anchors",
-                "imageSrc": "/images/marine/deck-mooring/anchors.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Anchors.avif",
                 "specs": {
                   "material": "Galvanized Steel",
                   "features": ["High holding power", "Corrosion resistant"]
