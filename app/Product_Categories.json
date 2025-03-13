@@ -155,7 +155,7 @@
                 "title": "Portable Gas Detectors",
                 "description": "Compact and reliable detectors for on-the-go monitoring of toxic and combustible gases.",
                 "link": "/products/safety/gas-detection/portable",
-                "imageSrc": "/images/safety/gas-detection/portable-detectors.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Portable%20Gas%20Detectors.avif",
                 "specs": {
                   "detectionRange": "0-1000 ppm",
                   "features": ["Alarm alerts", "Digital display"]
@@ -165,7 +165,7 @@
                 "title": "Fixed Gas Detectors",
                 "description": "Robust stationary detectors designed for continuous monitoring in industrial settings.",
                 "link": "/products/safety/gas-detection/fixed",
-                "imageSrc": "/images/safety/gas-detection/fixed-detectors.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Fixed%20Gas%20Detectors.avif",
                 "specs": {
                   "detectionRange": "0-5000 ppm",
                   "features": ["Network integration", "Long-term reliability"]
@@ -175,7 +175,7 @@
                 "title": "Respirators",
                 "description": "High-efficiency respirators that provide reliable protection against harmful airborne particles and chemicals.",
                 "link": "/products/safety/gas-detection/respirators",
-                "imageSrc": "/images/safety/gas-detection/respirators.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Respirators.avif",
                 "specs": {
                   "features": ["Replaceable filters", "Ergonomic design"]
                 }
@@ -756,6 +756,16 @@
                   "material": "High-grade plastic",
                   "features": ["Long lifespan", "Ease of use"]
                 }
+              },
+              {
+                "title": "Bus-bars",
+                "description": "High-quality bus-bars for efficient power distribution, ensuring reliable connectivity and performance in industrial electrical systems.",
+                "link": "/products/electrical/panels-components/bus-bars",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Bus%20Bars.avif?updatedAt=1741627124102",
+                "specs": {
+                  "material": "Copper, Aluminum",
+                  "features": ["High conductivity", "Durable"]
+                }
               }
             ]
           },
@@ -780,16 +790,6 @@
                 "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Explosion%20proof%20lights.avif?updatedAt=1741627127923",
                 "specs": {
                   "features": ["Rugged construction", "Certified for hazardous areas"]
-                }
-              },
-              {
-                "title": "Bus-bars",
-                "description": "High-quality bus-bars for efficient power distribution, ensuring reliable connectivity and performance in industrial electrical systems.",
-                "link": "/products/electrical/industrial-lighting/bus-bars",
-                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Bus%20Bars.avif?updatedAt=1741627124102",
-                "specs": {
-                  "material": "Copper, Aluminum",
-                  "features": ["High conductivity", "Durable"]
                 }
               }
             ]
@@ -983,7 +983,7 @@
                 "title": "GPS",
                 "description": "High-precision GPS devices for accurate positioning and navigation in marine environments.",
                 "link": "/products/marine/navigation-communication/gps",
-                "imageSrc": "/images/marine/navigation/gps.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Navigation%20GPS.avif",
                 "specs": {
                   "features": ["Accurate", "User-friendly"]
                 }
@@ -992,7 +992,7 @@
                 "title": "Radars",
                 "description": "State-of-the-art radar systems for detecting objects and ensuring safe navigation under all weather conditions.",
                 "link": "/products/marine/navigation-communication/radars",
-                "imageSrc": "/images/marine/navigation/radars.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Radars.avif",
                 "specs": {
                   "features": ["High sensitivity", "Real-time data"]
                 }
@@ -1001,7 +1001,7 @@
                 "title": "VHF Radios",
                 "description": "Reliable VHF radios for clear communication and emergency coordination at sea.",
                 "link": "/products/marine/navigation-communication/vhf-radios",
-                "imageSrc": "/images/marine/navigation/vhf-radios.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/VHF%20Radios.avif",
                 "specs": {
                   "features": ["Long range", "Durable design"]
                 }
@@ -1026,7 +1026,7 @@
                 "title": "Ropes",
                 "description": "Durable marine ropes designed for mooring and towing, offering high strength and resistance to abrasion.",
                 "link": "/products/marine/deck-mooring/ropes",
-                "imageSrc": "/images/marine/deck-mooring/ropes.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Ropes.avif",
                 "specs": {
                   "material": "Polyester",
                   "features": ["High tensile strength", "UV resistant"]
@@ -1036,7 +1036,7 @@
                 "title": "Chains",
                 "description": "Robust chains engineered for marine applications, ensuring secure mooring and reliable towing performance.",
                 "link": "/products/marine/deck-mooring/chains",
-                "imageSrc": "/images/marine/deck-mooring/chains.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Chains.avif",
                 "specs": {
                   "material": "Alloy Steel",
                   "features": ["High durability", "Corrosion resistant"]
@@ -1046,7 +1046,7 @@
                 "title": "Winches",
                 "description": "Reliable winches designed for marine deck operations, providing efficient and safe handling of heavy loads.",
                 "link": "/products/marine/deck-mooring/winches",
-                "imageSrc": "/images/marine/deck-mooring/winches.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Marine%20Winches.avif",
                 "specs": {
                   "features": ["High torque", "Easy to operate"]
                 }
@@ -1061,7 +1061,7 @@
                 "title": "Life Jackets",
                 "description": "High-quality life jackets engineered for buoyancy and durability, ensuring the safety of crew and passengers.",
                 "link": "/products/marine/safety-survival/life-jackets",
-                "imageSrc": "/images/marine/safety-survival/life-jackets.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Life%20Jacket.avif",
                 "specs": {
                   "features": ["High buoyancy", "Ergonomic design"]
                 }
@@ -1070,7 +1070,7 @@
                 "title": "Lifeboats",
                 "description": "Reliable lifeboats designed for emergency evacuation and survival in harsh marine conditions.",
                 "link": "/products/marine/safety-survival/lifeboats",
-                "imageSrc": "/images/marine/safety-survival/lifeboats.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Lifeboats.avif",
                 "specs": {
                   "capacity": "Up to 50 persons",
                   "features": ["Durable", "Easy deployment"]
@@ -1080,17 +1080,12 @@
                 "title": "Emergency Beacons",
                 "description": "High-intensity emergency beacons designed for rapid location and rescue in distress situations at sea.",
                 "link": "/products/marine/safety-survival/emergency-beacons",
-                "imageSrc": "/images/marine/safety-survival/emergency-beacons.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Emergency-Beacons-.avif",
                 "specs": {
                   "features": ["Long battery life", "GPS-enabled"]
                 }
               }
             ]
-          },
-          {
-            "title": "Marine Engines & Spare Parts",
-            "description": "A complete range of marine engine components and spare parts designed to ensure optimal performance. Our products are engineered for rapid performance and reliability.",
-            "items": []
           }
         ]
       },
@@ -1108,7 +1103,7 @@
                 "title": "Solenoid Valves",
                 "description": "Efficient solenoid valves that provide rapid, precise control of pneumatic systems, ensuring smooth operation.",
                 "link": "/products/pneumatic-hydraulic/pneumatic-valves/solenoid-valves",
-                "imageSrc": "/images/pneumatic-hydraulic/valves/solenoid-valves.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Solenoid%20Valves.avif",
                 "specs": {
                   "features": ["Fast switching", "Low power consumption"]
                 }
@@ -1117,7 +1112,7 @@
                 "title": "Air Cylinders",
                 "description": "Durable air cylinders engineered for high-pressure applications, offering smooth and controlled motion.",
                 "link": "/products/pneumatic-hydraulic/pneumatic-valves/air-cylinders",
-                "imageSrc": "/images/pneumatic-hydraulic/valves/air-cylinders.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/air-cylinder.avif",
                 "specs": {
                   "features": ["High precision", "Long service life"]
                 }
@@ -1126,7 +1121,7 @@
                 "title": "Control Valves",
                 "description": "Reliable control valves designed for accurate modulation of airflow in pneumatic systems.",
                 "link": "/products/pneumatic-hydraulic/pneumatic-valves/control-valves",
-                "imageSrc": "/images/pneumatic-hydraulic/valves/control-valves.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Control%20Valves.webp",
                 "specs": {
                   "features": ["Accurate control", "Robust design"]
                 }
@@ -1141,7 +1136,7 @@
                 "title": "High-Pressure Hoses",
                 "description": "Durable hoses designed to withstand high pressures and harsh operating conditions.",
                 "link": "/products/pneumatic-hydraulic/hydraulic-hoses/high-pressure-hoses",
-                "imageSrc": "/images/pneumatic-hydraulic/hoses/high-pressure-hoses.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/High-Pressure%20Hoses.avif",
                 "specs": {
                   "material": "Rubber",
                   "features": ["High durability", "Flexibility"]
@@ -1151,7 +1146,7 @@
                 "title": "Couplings",
                 "description": "Reliable hydraulic couplings engineered for secure, leak-free connections between hoses and equipment.",
                 "link": "/products/pneumatic-hydraulic/hydraulic-hoses/couplings",
-                "imageSrc": "/images/pneumatic-hydraulic/hoses/couplings.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Couplings.webp",
                 "specs": {
                   "material": "Stainless Steel",
                   "features": ["Secure connection", "Corrosion resistant"]
@@ -1161,7 +1156,7 @@
                 "title": "Adapters",
                 "description": "Versatile adapters designed to facilitate seamless connections in hydraulic systems, ensuring compatibility and performance.",
                 "link": "/products/pneumatic-hydraulic/hydraulic-hoses/adapters",
-                "imageSrc": "/images/pneumatic-hydraulic/hoses/adapters.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Adapters.avif",
                 "specs": {
                   "features": ["Flexible compatibility", "Easy installation"]
                 }
@@ -1176,7 +1171,7 @@
                 "title": "Air Dryers",
                 "description": "Advanced air dryers designed to remove moisture from compressed air systems, ensuring optimal performance and longevity.",
                 "link": "/products/pneumatic-hydraulic/air-compressors/air-dryers",
-                "imageSrc": "/images/pneumatic-hydraulic/compressors/air-dryers.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Air%20Dryers.avif",
                 "specs": {
                   "features": ["Moisture removal", "Energy efficient"]
                 }
@@ -1185,18 +1180,18 @@
                 "title": "Regulators",
                 "description": "Precision regulators that maintain consistent air pressure levels for efficient operation of pneumatic systems.",
                 "link": "/products/pneumatic-hydraulic/air-compressors/regulators",
-                "imageSrc": "/images/pneumatic-hydraulic/compressors/regulators.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Regulators.avif",
                 "specs": {
-                  "features": ["Stable output", "Durable construction"]
+                  "features": ["Precise control", "Durable construction"]
                 }
               },
               {
                 "title": "Lubricators",
-                "description": "Essential lubricators designed to reduce friction and wear in air compressor systems, ensuring smooth operation.",
+                "description": "Efficient lubricators designed to deliver precise amounts of oil to pneumatic systems, extending equipment life.",
                 "link": "/products/pneumatic-hydraulic/air-compressors/lubricators",
-                "imageSrc": "/images/pneumatic-hydraulic/compressors/lubricators.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Lubricators.avif",
                 "specs": {
-                  "features": ["Enhanced longevity", "Easy maintenance"]
+                  "features": ["Consistent lubrication", "Easy adjustment"]
                 }
               }
             ]
@@ -1209,7 +1204,7 @@
                 "title": "Industrial Pumps",
                 "description": "Reliable pumps engineered for continuous operation in demanding environments.",
                 "link": "/products/pneumatic-hydraulic/pumps-motors/industrial-pumps",
-                "imageSrc": "/images/pneumatic-hydraulic/pumps/industrial-pumps.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Industrial%20Pumps.webp",
                 "specs": {
                   "capacity": "Variable",
                   "features": ["High efficiency", "Durable construction"]
@@ -1219,7 +1214,7 @@
                 "title": "Electric Motors",
                 "description": "High-torque motors designed for robust industrial applications, offering reliable performance and longevity.",
                 "link": "/products/pneumatic-hydraulic/pumps-motors/electric-motors",
-                "imageSrc": "/images/pneumatic-hydraulic/motors/electric-motors.jpg",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Electric%20Motors.avif",
                 "specs": {
                   "power": "1HP, 3HP, 5HP",
                   "features": ["Energy efficient", "Long service life"]
@@ -1372,7 +1367,6 @@
           }
         ]
       }
-      
     ]
   }
   

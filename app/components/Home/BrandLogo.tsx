@@ -7,7 +7,7 @@ import { JSX } from "react";
 const DoubleScrollingLogos = () => {
   return (
     <section className="bg-white py-4">
-      <div className="flex  overflow-hidden">
+      <div className="flex overflow-hidden">
         <TranslateWrapper>
           <LogoItemsTop />
         </TranslateWrapper>
@@ -20,12 +20,23 @@ const DoubleScrollingLogos = () => {
       </div>
       <div className="flex overflow-hidden mt-4">
         <TranslateWrapper reverse>
-          <LogoItemsBottom />
+          <LogoItemsMiddle />
         </TranslateWrapper>
         <TranslateWrapper reverse>
-          <LogoItemsBottom />
+          <LogoItemsMiddle />
         </TranslateWrapper>
         <TranslateWrapper reverse>
+          <LogoItemsMiddle />
+        </TranslateWrapper>
+      </div>
+      <div className="flex overflow-hidden mt-4">
+        <TranslateWrapper>
+          <LogoItemsBottom />
+        </TranslateWrapper>
+        <TranslateWrapper>
+          <LogoItemsBottom />
+        </TranslateWrapper>
+        <TranslateWrapper>
           <LogoItemsBottom />
         </TranslateWrapper>
       </div>
@@ -54,49 +65,65 @@ const TranslateWrapper = ({
 
 const LogoItem = ({ src }: { src: string }) => {
   return (
-    <a
-      href="/"
-      rel="nofollow"
-      target="_blank"
-      className="w-16 md:w-24 h-16 md:h-24 flex justify-center items-center hover:bg-slate-200 text-black transition-colors"
+    <div
+    
+      className="w-16 md:w-24 h-16 md:h-24 flex justify-center items-center text-black transition-colors"
     >
       <Image width={100} height={100} loading="lazy" src={`/brands/${src}`} alt={src}/>
-    </a>
+    </div>
   );
 };
 
+// New AVIF format logos
 const LogoItemsTop = () => (
   <>
-    <LogoItem src="Mitsubishi_Electric_Logo.png" />
-    <LogoItem src="powerliftlogo.png" />
-    <LogoItem src="miller-logo.png" />
-    <LogoItem src="3M-logo.png" />
-    <LogoItem src="legrand-logo.png" />
-    <LogoItem src="fastclamp-logo.svg" />
-    <LogoItem src="bosch-logo.png" />
-    <LogoItem src="lgh-logo.png" />
-    <LogoItem src="Ingersoll_Rand_logo.png" />
-    <LogoItem src="jazeera_logo.png" />
-    
+    <LogoItem src="Mitsubishi_Electric_logo.svg.avif" />
+    <LogoItem src="DeWalt_Logo.svg.avif" />
+    <LogoItem src="Hilti-Logo.avif" />
+    <LogoItem src="Karam.avif" />
+    <LogoItem src="Makita-logo.avif" />
+    <LogoItem src="NoTrax_Logo_CMYK.avif" />
+    <LogoItem src="parker-logo-600.avif" />
+    <LogoItem src="Spanset.avif" />
+    <LogoItem src="Stanley-Logo.avif" />
+    <LogoItem src="tractel-logo-vector.avif" />
+    <LogoItem src="brand_oryx_400x400.avif" />
+    <LogoItem src="Justrite_Logo_CMYK.avif" />
   </>
 );
-// const LogoItemsMiddle = () => (
-//   <>
-//     <LogoItem src="bahco-logo.png" />
 
-//   </>);
+// Mix of PNG and other format logos
+const LogoItemsMiddle = () => (
+  <>
+    <LogoItem src="shopify_eyevex_logo_500x250.avif" />
+    <LogoItem src="Viraj-Logo_page-0001-1-2.avif" />
+    <LogoItem src="simplified-logo.webp" />
+    <LogoItem src="tweco-logo.png" />
+    <LogoItem src="powerliftlogo.png" />
+    <LogoItem src="miller-sperian-logo.png" />
+    <LogoItem src="molyslip-logo.png" />
+    <LogoItem src="loctite-logo.png" />
+    <LogoItem src="miller-logo.png" />
+    <LogoItem src="lgh-logo.png" />
+    <LogoItem src="legrand-logo.avif" />
+    <LogoItem src="jazeera_logo.png" />
+  </>
+);
+
+// More PNG format logos
 const LogoItemsBottom = () => (
   <>
-    <LogoItem src="Honeywell_logo.png" />
-    <LogoItem src="ABB_logo.png" />
-    <LogoItem src="Henkel-Logo.png" />
-    <LogoItem src="Lalizas_logo.png" />
     <LogoItem src="kee-systems-logo.png" />
-    <LogoItem src="miller-sperian-logo.png" />
-    <LogoItem src="tweco-logo.png" />
-    <LogoItem src="loctite-logo.png" />
-    <LogoItem src="molyslip-logo.png" />
-    <LogoItem src="simplified-logo.webp" />
+    <LogoItem src="fastclamp-logo.svg" />
+    <LogoItem src="bahco-logo.png" />
+    <LogoItem src="bosch-logo.png" />
+    <LogoItem src="Mitsubishi_Electric_logo.png" />
+    <LogoItem src="Lalizas_logo.png" />
+    <LogoItem src="Ingersoll_Rand_logo.png" />
+    <LogoItem src="Honeywell_logo.png" />
+    <LogoItem src="Henkel-Logo.png" />
+    <LogoItem src="ABB_logo.png" />
+    <LogoItem src="3M-logo.png" />
   </>
 );
 
