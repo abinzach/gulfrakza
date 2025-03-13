@@ -24,7 +24,7 @@ function Footerdemo() {
           <Logo/>
           
             <p className="mb-6 text-xs font-inter text-gray-800 ">
-              Connecting <span className="font-semibold">Markets</span>, Empowering <span className="font-semibold">Growth</span>
+              Connecting Markets, Empowering Growth
             </p>
             <p  className="text-sm  font-inter text-gray-800 ">Rakzah Gulf Trading Establishment</p>
             <p  className="text-xl font-inter text-gray-800 ">مؤسسة ركزة الخليج للتجارة
