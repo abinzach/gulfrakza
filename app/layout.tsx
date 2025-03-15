@@ -14,7 +14,24 @@ export const metadata: Metadata = {
   description:
     "Based in Dammam, Saudi Arabia, Gulf Rakza is a trusted partner offering top-quality industrial supplies and turnkey solutions that drive operational efficiency and growth.",
   keywords:
-    "industrial supplies, trading company, spare parts, consumables, lubricants, chemicals, safety equipment, hydraulic components, Gulf Rakza, Dammam, Saudi Arabia, connecting markets, empowering growth",
+  [
+    "Safety tools",
+    "Safety gear",
+    "PPE",
+    "Coveralls",
+    "Helmets",
+    "Gloves",
+    "Harness",
+    "Lanyards",
+    "Welding Tools & equipment",
+    "Lifting tools",
+    "Fire safety",
+    "Industrial chemicals",
+    "Industrial supplies",
+    "Top quality industrial supplies in Saudi Arabia",
+    "Top quality industrial supplies in Dammam",
+    "Top quality industrial supplies in the Middle East"
+  ],
   openGraph: {
     title: "GulfRakza | Connecting Markets, Empowering Growth",
     description:
@@ -53,7 +70,7 @@ export default function RootLayout({
         {/* Google Site Verification */}
         <meta
           name="google-site-verification"
-          content="your-google-site-verification-code"
+          content="yOVCMHesyWms8TWeRX-79cIke_xi-07BdN_cfV25MeI"
         />
         {/* Favicon & Icons */}
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />

@@ -16,9 +16,9 @@ const WhatsAppInquiry: React.FC = () => {
       href={whatsappUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="flex fixed border-4 border-white w-16 rounded-full h-16 bottom-10 right-10 items-center space-x-2 bg-green-500 px-4 py-2  hover:bg-green-600 transition-colors cursor-pointer z-20 shadow-xl"
+        className="flex fixed border-4 border-white w-16 rounded-full h-16 bottom-10 right-10 items-center space-x-2 bg-white px-4 py-2  hover:bg-gray-100 transition-colors cursor-pointer z-20 shadow-xl"
       >
-        <FaWhatsapp size={50} className="text-white" />
+        <FaWhatsapp size={50} className="text-black" />
       </Link>
   );
 };

@@ -18,9 +18,9 @@ const EmailInquiry: React.FC = () => {
       href={mailtoUrl}
       target="_blank"
       rel="noopener noreferrer"
-      className="flex fixed border-4 border-white w-16 rounded-full h-16 bottom-32 right-10 items-center justify-center bg-blue-500 hover:bg-blue-600 transition-colors  px-4 py-2  cursor-pointer z-20 shadow-xl"
+      className="flex fixed border-4 border-white w-16 rounded-full h-16 bottom-32 right-10 items-center justify-center bg-white hover:bg-gray-100 transition-colors  px-4 py-2  cursor-pointer z-20 shadow-xl"
     >
-      <FaEnvelope size={50} className="text-white" />
+      <FaEnvelope size={50} className="text-black" />
     </Link>
   );
 };
