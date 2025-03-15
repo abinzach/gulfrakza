@@ -10,9 +10,9 @@ import Script from "next/script";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "GulfRakza | Connecting Markets, Empowering Growth",
+  title: "Rakzah Gulf Trading Establishment | Connecting Markets, Empowering Growth",
   description:
-    "Based in Dammam, Saudi Arabia, Gulf Rakza is a trusted partner offering top-quality industrial supplies and turnkey solutions that drive operational efficiency and growth.",
+    "Based in Dammam, Saudi Arabia, Gulf Rakza Trading Company is a trusted partner offering top-quality industrial supplies and turnkey solutions that drive operational efficiency and growth.",
   keywords:
   [
     "Safety tools",
@@ -33,17 +33,17 @@ export const metadata: Metadata = {
     "Top quality industrial supplies in the Middle East"
   ],
   openGraph: {
-    title: "GulfRakza | Connecting Markets, Empowering Growth",
+    title: "Rakzah Gulf Trading Establishment | Connecting Markets, Empowering Growth",
     description:
       "Discover high-quality industrial supplies and turnkey solutions from Gulf Rakza – your trusted partner for operational excellence.",
     url: "https://www.gulfrakza.com",
-    siteName: "GulfRakza",
+    siteName: "Rakzah Gulf Trading Establishment",
     images: [
       {
         url: "https://www.gulfrakza.com/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "GulfRakza Industrial Solutions",
+        alt: "Rakzah Gulf Trading Establishment",
       },
     ],
     locale: "en_US",
@@ -51,7 +51,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "GulfRakza | Connecting Markets, Empowering Growth",
+    title: "Rakzah Gulf Trading Establishment",
     description:
       "Gulf Rakza is your trusted partner for industrial supplies and turnkey solutions – connecting markets and empowering growth.",
     images: ["https://www.gulfrakza.com/twitter-og-image.jpg"],
@@ -88,8 +88,8 @@ export default function RootLayout({
             {
               "@context": "https://schema.org",
               "@type": "Organization",
-              "name": "Gulf Rakza",
-              "description": "Gulf Rakza is a trusted partner for industrial supplies and turnkey solutions, connecting markets and empowering growth.",
+              "name": "Rakzah Gulf Trading Establishment",
+              "description": "Rakzah Gulf Trading Establishment is a trusted partner for industrial supplies and turnkey solutions, connecting markets and empowering growth.",
               "url": "https://www.gulfrakza.com",
               "logo": "https://www.gulfrakza.com/logo.png",
               "address": {
