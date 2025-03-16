@@ -53,6 +53,17 @@
                 }
               },
               {
+                "title": "Safety Showers",
+                "description": "High-quality safety showers designed to provide immediate and effective emergency cooling and flushing in hazardous environments.",
+                "link": "/products/safety/ppe/safety-showers",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Safety%20Showers.avif",
+                "specs": {
+                  "material": "Nitrile, Leather",
+                  "sizes": ["S", "M", "L", "XL"],
+                  "features": ["Enhanced grip", "Chemical resistance"]
+                }
+              },
+              {
                 "title": "Safety Shoes",
                 "description": "Rugged safety shoes engineered to protect against impacts, punctures, and slips. Featuring reinforced toes and durable soles for maximum safety.",
                 "link": "/products/safety/ppe/safety-shoes",
@@ -110,6 +121,16 @@
                 "description": "Adjustable and durable harnesses designed to secure workers during elevated tasks. Engineered for comfort and maximum safety.",
                 "link": "/products/safety/fall-protection/safety-harnesses",
                 "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Harness.avif?updatedAt=1741627132396",
+                "specs": {
+                  "material": "Nylon",
+                  "features": ["Ergonomic design", "Multiple adjustment points"]
+                }
+              },
+              {
+                "title": "Tripod",
+                "description": "High quality tripods to stabilize and elevate workers during elevated tasks. It provides a stable platform for safe work at heights.",
+                "link": "/products/safety/fall-protection/tripod",
+                "imageSrc": "https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/Products/Tripod.avif",
                 "specs": {
                   "material": "Nylon",
                   "features": ["Ergonomic design", "Multiple adjustment points"]

@@ -118,7 +118,7 @@ export default async function CategoryPage({
                 <Link key={index} href={linkHref}>
                   <GridPatternCard className="h-full group hover:shadow-md transition-all duration-300">
                     <GridPatternCardBody className="h-full">
-                      <h2 className="text-2xl font-semibold text-gray-800 dark:text-white transition-colors duration-300 group-hover:text-blue-600">
+                      <h2 className="text-2xl font-semibold text-gray-800 dark:text-white transition-colors duration-300 group-hover:text-cyan-700">
                         {subcat.title}
                       </h2>
                       <p className="mt-2 text-gray-600 font-raleway text-sm dark:text-gray-300">
