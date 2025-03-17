@@ -58,9 +58,10 @@ function Footerdemo() {
             <h3 className="mb-4 text-lg font-semibold">Contact Us</h3>
             <address className="space-y-2 text-sm not-italic">
                           <p>Salem Balhamer Building,              </p>
-              <p>2nd Floor, Room 9,</p>
+              <p>2nd Floor, Office #9,</p>
               <p>Al Tubayshi District,</p>
               <p>Dammam 32233</p>
+              <p>Phone: (013) 881 6957</p>
               <p>Phone: +966 - 558 975 494</p>
               <p>Email: sales@gulfrakza.com</p>
             </address>
