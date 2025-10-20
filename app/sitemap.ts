@@ -1,57 +1,73 @@
-import { MetadataRoute } from 'next';
-import productsData from './Product_Categories.json';
+import { MetadataRoute } from "next"
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const urls: MetadataRoute.Sitemap = [];
+import { fetchCatalogData } from "@/lib/catalog"
 
-  // Add homepage and about page
-  urls.push({
-    url: 'https://gulfrakza.com',
-    lastModified: new Date(),
-    changeFrequency: 'yearly',
-    priority: 1,
-  });
-  urls.push({
-    url: 'https://gulfrakza.com/about',
-    lastModified: new Date(),
-    changeFrequency: 'monthly',
-    priority: 0.8,
-  });
+const baseUrl = "https://www.gulfrakza.com"
 
-  // Helper function to add a URL
-  const addUrl = (
-    path: string,
-    priority: number = 0.7,
-    frequency: "yearly" | "always" | "hourly" | "daily" | "weekly" | "monthly" | "never" = "monthly"
+const toAbsoluteUrl = (path: string) => {
+  if (path.startsWith("http")) {
+    return path
+  }
+  return `${baseUrl}${path.startsWith("/") ? path : `/${path}`}`
+}
+
+const flattenCategories = <T extends { children: T[] }>(nodes: T[]): T[] => {
+  const list: T[] = []
+  const walk = (items: T[]) => {
+    items.forEach((item) => {
+      list.push(item)
+      if (item.children.length > 0) {
+        walk(item.children)
+      }
+    })
+  }
+  walk(nodes)
+  return list
+}
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const { categoryTree, products } = await fetchCatalogData()
+
+  const entries: MetadataRoute.Sitemap = []
+  const seen = new Set<string>()
+  const lastModified = new Date()
+
+  const pushEntry = (
+    url: string,
+    priority: number,
+    changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"],
   ) => {
-    urls.push({
-      url: `https://gulfrakza.com${path}`,
-      lastModified: new Date(),
-      changeFrequency: frequency,
+    if (seen.has(url)) return
+    seen.add(url)
+    entries.push({
+      url,
+      lastModified,
+      changeFrequency,
       priority,
-    });
-  };
+    })
+  }
 
-  // Loop through categories, subcategories, and items to add their routes
-  productsData.categories.forEach(category => {
-    if (category.link) {
-      addUrl(category.link, 0.9);
-    }
-    if (category.subcategories) {
-      category.subcategories.forEach(subcat => {
-        // Check if the subcategory has items to process
-        if (subcat.items) {
-          subcat.items.forEach(item => {
-            // If an item has a link, add it.
-            if (item.link) {
-              addUrl(item.link, 0.85);
-            }
-            addUrl(item.link, 0.7);
-          });
-        }
-      });
-    }
-  });
+  pushEntry(`${baseUrl}/`, 1, "monthly")
+  pushEntry(`${baseUrl}/about-us`, 0.8, "monthly")
+  pushEntry(`${baseUrl}/products`, 0.8, "weekly")
+  pushEntry(`${baseUrl}/products/catalog`, 0.9, "weekly")
+  pushEntry(`${baseUrl}/privacy-policy`, 0.4, "yearly")
+  pushEntry(`${baseUrl}/terms-of-service`, 0.4, "yearly")
 
-  return urls;
+  const allCategories = flattenCategories(categoryTree)
+
+  allCategories.forEach((category) => {
+    const pathSegments = category.path.map((segment) => segment.slug).filter(Boolean)
+    if (pathSegments.length === 0) return
+
+    const categoryPath = `/products/${pathSegments.join("/")}`
+    pushEntry(toAbsoluteUrl(categoryPath), 0.6, "monthly")
+  })
+
+  products.forEach((product) => {
+    if (!product.detailsHref) return
+    pushEntry(toAbsoluteUrl(product.detailsHref), 0.5, "monthly")
+  })
+
+  return entries
 }

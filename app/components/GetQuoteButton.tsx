@@ -2,17 +2,20 @@
 
 import { useState } from "react";
 import GetQuote from "./GetQuote";
+import { Button } from "@/components/ui/button";
 
 interface GetQuoteButtonProps {
   productName: string;
   productCategory: string;
   productSubcategory: string;
+  productItemCategory: string;
 }
 
 export default function GetQuoteButton({
   productName,
   productCategory,
   productSubcategory,
+  productItemCategory,
 }: GetQuoteButtonProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -22,12 +25,13 @@ export default function GetQuoteButton({
 
   return (
     <>
-      <p 
+      <Button
         onClick={handleOpenModal}
-        className="mt-4 text-sm inline-block text-blue-600 dark:text-blue-400 hover:underline cursor-pointer"
+        variant="default"
+        className="w-full bg-cyan-600 text-sm font-medium text-white hover:bg-cyan-700"
       >
-        Get Quote &rarr;
-      </p>
+        Get Quote
+      </Button>
       
       <GetQuote 
         open={isModalOpen} 
@@ -35,7 +39,8 @@ export default function GetQuoteButton({
         initialProduct={{
           name: productName,
           category: productCategory,
-          subcategory: productSubcategory
+          subcategory: productSubcategory,
+          itemCategory: productItemCategory
         }}
       />
     </>

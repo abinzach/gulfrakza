@@ -61,6 +61,14 @@ const ProductsPage: React.FC = () => {
             Explore our categories and subcategories to discover our wide range
             of industrial products and solutions.
           </p>
+          <div className="mt-6">
+            <Link
+              href="/products/catalog"
+              className="inline-flex items-center rounded-full border border-cyan-600 px-4 py-2 text-sm font-medium text-cyan-700 transition-colors hover:bg-cyan-600 hover:text-white dark:border-cyan-400 dark:text-cyan-300 dark:hover:bg-cyan-400 dark:hover:text-slate-900"
+            >
+              Browse full product catalog &rarr;
+            </Link>
+          </div>
         </header>
 
         {/* Categories Grid */}

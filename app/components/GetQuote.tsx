@@ -11,113 +11,12 @@ import {
   AlertDescription,
 } from "@/components/ui/alert";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogClose,
 } from "@/components/ui/dialog";
-
-const categoryOptions = [
-  {
-    value: "Safety",
-    label: "Safety",
-    subcategories: [
-      "Personal Protective Equipment (PPE)",
-      "Workwear",
-      "Fall Protection",
-      "Gas Detection",
-      "Lockout Tagout (LOTO) Products",
-    ],
-  },
-  {
-    value: "Fire Safety",
-    label: "Fire Safety",
-    subcategories: [
-      "Fire Extinguishers",
-      "Fire Suppression Systems",
-      "Fire Alarms & Detection",
-      "Firefighting Equipment",
-    ],
-  },
-  {
-    value: "Security",
-    label: "Security",
-    subcategories: [
-      "Surveillance Systems",
-      "Access Control",
-      "Perimeter Security",
-      "Intrusion Detection",
-    ],
-  },
-  {
-    value: "Lifting",
-    label: "Lifting",
-    subcategories: [
-      "Lifting Slings",
-      "Hoists & Winches",
-      "Lifting Hooks & Shackles",
-      "Cranes & Load Testing Equipment",
-    ],
-  },
-  {
-    value: "Electrical",
-    label: "Electrical",
-    subcategories: [
-      "Cables & Wires",
-      "Electrical Panels & Components",
-      "Industrial Lighting",
-      "Transformers & Power Supplies",
-    ],
-  },
-  {
-    value: "Welding",
-    label: "Welding",
-    subcategories: [
-      "Welding Machines",
-      "Welding Consumables",
-      "Welding Safety Gear",
-      "Gas Welding Equipment",
-    ],
-  },
-  {
-    value: "Marine Equipments",
-    label: "Marine Equipments",
-    subcategories: [
-      "Navigation & Communication",
-      "Deck & Mooring Equipment",
-      "Safety & Survival Equipment",
-      "Marine Engines & Spare Parts",
-    ],
-  },
-  {
-    value: "Pneumatic & Hydraulic Fittings",
-    label: "Pneumatic & Hydraulic Fittings",
-    subcategories: [
-      "Pneumatic Valves & Actuators",
-      "Hydraulic Hoses & Fittings",
-      "Air Compressors & Filters",
-      "Pumps & Motors",
-    ],
-  },
-  {
-    value: "Industrial",
-    label: "Industrial",
-    subcategories: [
-      "Industrial Tools",
-      "Bearings & Mechanical Components",
-      "Material Handling Equipment",
-      "Industrial Chemicals",
-    ],
-  },
-];
 
 // Props for the modal component
 interface QuoteModalProps {
@@ -127,37 +26,57 @@ interface QuoteModalProps {
     name: string;
     category: string;
     subcategory: string;
+    itemCategory: string;
   };
 }
 
 export default function QuoteModal({ open, onOpenChange, initialProduct }: QuoteModalProps) {
+  const getInitialMessage = () => {
+    if (!initialProduct) return "";
+    
+    const subcategoryLine = initialProduct.subcategory ? `Subcategory: ${initialProduct.subcategory}\n` : "";
+    
+    return `I'm interested in getting a quote for the following product:
+
+Product: ${initialProduct.name}
+Category: ${initialProduct.category}
+${subcategoryLine}Item Category: ${initialProduct.itemCategory}
+
+Please provide pricing, availability, and any additional product details.`;
+  };
+
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
     phone: "",
     productCategory: initialProduct?.category || "",
     productSubcategory: initialProduct?.subcategory || "",
-    message: initialProduct ? `I'm interested in getting a quote for ${initialProduct.name}.` : "",
+    productItemCategory: initialProduct?.itemCategory || "",
+    message: getInitialMessage(),
   });
-  const [subcategories, setSubcategories] = useState<string[]>([]);
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  // Update subcategories when productCategory changes or when initialProduct is provided
+  // Update form when initialProduct changes (when modal opens with new product)
   useEffect(() => {
-    const selected = categoryOptions.find(
-      (cat) => cat.value === formData.productCategory
-    );
-    if (selected) {
-      setSubcategories(selected.subcategories);
-      // Only reset subcategory when category changes manually, not on initial load with initialProduct
-      if (!initialProduct) {
-        setFormData((prev) => ({ ...prev, productSubcategory: "" }));
-      }
-    } else {
-      setSubcategories([]);
+    if (open && initialProduct) {
+      const subcategoryLine = initialProduct.subcategory ? `Subcategory: ${initialProduct.subcategory}\n` : "";
+      
+      setFormData((prev) => ({
+        ...prev,
+        productCategory: initialProduct.category,
+        productSubcategory: initialProduct.subcategory,
+        productItemCategory: initialProduct.itemCategory,
+        message: `I'm interested in getting a quote for the following product:
+
+Product: ${initialProduct.name}
+Category: ${initialProduct.category}
+${subcategoryLine}Item Category: ${initialProduct.itemCategory}
+
+Please provide pricing, availability, and any additional product details.`,
+      }));
     }
-  }, [formData.productCategory, initialProduct]);
+  }, [open, initialProduct]);
 
   // Reset form when modal closes
   useEffect(() => {
@@ -168,15 +87,16 @@ export default function QuoteModal({ open, onOpenChange, initialProduct }: Quote
           fullName: "",
           email: "",
           phone: "",
-          productCategory: "",
-          productSubcategory: "",
-          message: "",
+          productCategory: initialProduct?.category || "",
+          productSubcategory: initialProduct?.subcategory || "",
+          productItemCategory: initialProduct?.itemCategory || "",
+          message: getInitialMessage(),
         });
         setSuccess(false);
       }, 300);
       return () => clearTimeout(timer);
     }
-  }, [open]);
+  }, [open, initialProduct]);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -196,11 +116,13 @@ export default function QuoteModal({ open, onOpenChange, initialProduct }: Quote
 
     try {
       // Construct subject from form details
-      const subject = `Quote Request: ${formData.productCategory}${
-        formData.productSubcategory
-          ? " - " + formData.productSubcategory
-          : ""
-      } from ${formData.fullName} (phone: ${formData.phone})`;
+      const categoryParts = [
+        formData.productCategory,
+        formData.productSubcategory,
+        formData.productItemCategory
+      ].filter(Boolean).join(" > ");
+      
+      const subject = `Quote Request: ${categoryParts} from ${formData.fullName} (phone: ${formData.phone})`;
 
       const payload = {
         email: formData.email,
@@ -237,7 +159,14 @@ export default function QuoteModal({ open, onOpenChange, initialProduct }: Quote
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
         <DialogHeader className="flex flex-row items-center justify-between">
-          <DialogTitle>Get a Quote</DialogTitle>
+          <div>
+            <DialogTitle>Get a Quote</DialogTitle>
+            {initialProduct && (
+              <p className="mt-1 text-sm font-normal text-gray-600 dark:text-gray-400">
+                For: <span className="font-medium text-gray-900 dark:text-gray-100">{initialProduct.name}</span>
+              </p>
+            )}
+          </div>
           <DialogClose className="rounded-full p-1.5 hover:bg-gray-100">
            
           </DialogClose>
@@ -289,47 +218,38 @@ export default function QuoteModal({ open, onOpenChange, initialProduct }: Quote
               />
             </div>
             <div>
-              <Label htmlFor="productCategory">Product Category</Label>
-              <Select
+              <Label htmlFor="productCategory">Category</Label>
+              <Input
+                id="productCategory"
                 value={formData.productCategory}
-                onValueChange={(value) =>
-                  setFormData((prev) => ({ ...prev, productCategory: value }))
-                }
-              >
-                <SelectTrigger className="mt-1 w-full">
-                  <SelectValue placeholder="Select a category" />
-                </SelectTrigger>
-                <SelectContent>
-                  {categoryOptions.map((cat) => (
-                    <SelectItem key={cat.value} value={cat.value}>
-                      {cat.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+                onChange={handleChange}
+                name="productCategory"
+                placeholder="e.g., Safety, Lifting, etc."
+                className="mt-1"
+              />
             </div>
-            {subcategories.length > 0 && (
-              <div>
-                <Label htmlFor="productSubcategory">Subcategory</Label>
-                <Select
-                  value={formData.productSubcategory}
-                  onValueChange={(value) =>
-                    setFormData((prev) => ({ ...prev, productSubcategory: value }))
-                  }
-                >
-                  <SelectTrigger className="mt-1 w-full">
-                    <SelectValue placeholder="Select a subcategory" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {subcategories.map((sub, index) => (
-                      <SelectItem key={index} value={sub}>
-                        {sub}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            )}
+            <div>
+              <Label htmlFor="productSubcategory">Subcategory</Label>
+              <Input
+                id="productSubcategory"
+                value={formData.productSubcategory}
+                onChange={handleChange}
+                name="productSubcategory"
+                placeholder="e.g., PPE, Hoists, etc."
+                className="mt-1"
+              />
+            </div>
+            <div>
+              <Label htmlFor="productItemCategory">Item Category</Label>
+              <Input
+                id="productItemCategory"
+                value={formData.productItemCategory}
+                onChange={handleChange}
+                name="productItemCategory"
+                placeholder="e.g., Face Protection, Manual Hoists, etc."
+                className="mt-1"
+              />
+            </div>
             <div>
               <Label htmlFor="message">Message</Label>
               <Textarea
