@@ -278,10 +278,12 @@ const normalizeProduct = (
     const ancestors = context.getAncestors(leafNode)
     const normalized = [
       ...ancestors.map((ancestor) => ({
+        id: ancestor.id,
         slug: ancestor.slug,
         title: ancestor.title,
       })),
       {
+        id: leafNode.id,
         slug: leafNode.slug,
         title: leafNode.title,
       },

@@ -1,0 +1,85 @@
+{
+  "privacyPolicy": {
+    "title": "Privacy Policy",
+    "lastUpdated": "Last updated: 26-02-2025",
+    "introduction": "At Gulf Rakza, we value your privacy and are committed to protecting your personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website.",
+    "informationWeCollect": {
+      "title": "Information We Collect",
+      "personalData": "Personal Data: We may collect personal information such as your name, email address, phone number, and other contact details when you voluntarily provide them to us.",
+      "usageData": "Usage Data: We automatically collect information on how you access and use our website, including your IP address, browser type, pages visited, and time spent on our site.",
+      "cookies": "Cookies and Tracking Technologies: We use cookies to enhance your browsing experience, analyze website traffic, and understand where our visitors are coming from."
+    },
+    "howWeUse": {
+      "title": "How We Use Your Information",
+      "intro": "We may use the information we collect to:",
+      "items": [
+        "Provide, operate, and maintain our website.",
+        "Improve, personalize, and expand our website.",
+        "Understand and analyze how you use our website.",
+        "Develop new products, services, features, and functionality.",
+        "Communicate with you regarding updates, offers, or other relevant information."
+      ]
+    },
+    "disclosure": {
+      "title": "Disclosure of Your Information",
+      "intro": "We may share your information in the following circumstances:",
+      "items": [
+        "With service providers who perform services on our behalf.",
+        "In response to legal requests or to comply with legal obligations.",
+        "In connection with a merger, acquisition, or sale of all or part of our assets."
+      ]
+    },
+    "rights": {
+      "title": "Your Rights and Choices",
+      "body": "You have the right to access, correct, or delete your personal information. You may also opt out of receiving marketing communications from us. To exercise these rights, please contact us at privacy@gulfrakza.com."
+    },
+    "security": {
+      "title": "Security",
+      "body": "We take reasonable steps to protect your personal information from unauthorized access, use, or disclosure. However, no method of transmission over the internet is completely secure."
+    },
+    "changes": {
+      "title": "Changes to This Privacy Policy",
+      "body": "We may update our Privacy Policy from time to time. When we make changes, we will update the \"Last updated\" date at the top of this page. Your continued use of the website after any changes signifies your acceptance of the updated policy."
+    },
+    "contact": {
+      "title": "Contact Us",
+      "body": "If you have any questions about this Privacy Policy, please contact us at privacy@gulfrakza.com."
+    }
+  },
+  "termsOfService": {
+    "title": "Terms of Service",
+    "lastUpdated": "Last updated: 26-02-2025",
+    "acceptance": {
+      "title": "Acceptance of Terms",
+      "body": "By accessing or using the Gulf Rakza website (the \"Service\"), you agree to be bound by these Terms of Service and all applicable laws and regulations. If you do not agree with any of these terms, you are prohibited from using or accessing the Service."
+    },
+    "use": {
+      "title": "Use of the Service",
+      "body": "Gulf Rakza grants you a limited, non-exclusive, non-transferable license to access and use the Service for your personal and commercial purposes in accordance with these Terms."
+    },
+    "responsibilities": {
+      "title": "User Responsibilities",
+      "body": "You are responsible for your conduct while using the Service. You agree not to use the Service for any unlawful or prohibited purpose, and to comply with all applicable local, state, national, and international laws."
+    },
+    "intellectualProperty": {
+      "title": "Intellectual Property",
+      "body": "The content on the Gulf Rakza website, including text, graphics, logos, images, and software, is the property of Gulf Rakza or its licensors and is protected by applicable intellectual property laws."
+    },
+    "disclaimer": {
+      "title": "Disclaimers and Limitation of Liability",
+      "body": "The Service is provided on an \"as is\" and \"as available\" basis without warranties of any kind, either express or implied. Gulf Rakza will not be liable for any damages arising from your use of the Service."
+    },
+    "law": {
+      "title": "Governing Law",
+      "body": "These Terms shall be governed by and construed in accordance with the laws of [Your Jurisdiction], without regard to its conflict of law provisions."
+    },
+    "changes": {
+      "title": "Changes to Terms",
+      "body": "Gulf Rakza reserves the right to modify these Terms at any time. Changes will be posted on this page, and your continued use of the Service constitutes acceptance of the updated terms."
+    },
+    "contact": {
+      "title": "Contact Information",
+      "body": "If you have any questions about these Terms, please contact us at info@gulfrakza.com."
+    }
+  }
+}

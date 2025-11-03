@@ -1,6 +1,6 @@
 import { groq } from 'next-sanity';
 
-export const categoryTreeQuery = groq
+export const categoryTreeQuery = groq`
   *[_type == 'category']{
     _id,
     title,
@@ -13,19 +13,19 @@ export const categoryTreeQuery = groq
       'slug': slug.current
     }
   }
-;
+`;
 
-export const productSlugsQuery = groq
+export const productSlugsQuery = groq`
   *[_type == 'product' && defined(slug.current)]{
     'slug': slug.current,
     categoryPath[]->{
       'slug': slug.current
     }
   }
-;
+`;
 
-export const productDetailQuery = groq
-  *[_type == 'product' && slug.current == ][0]{
+export const productDetailQuery = groq`
+  *[_type == 'product' && slug.current == $slug][0]{
     _id,
     title,
     'slug': slug.current,
@@ -52,4 +52,4 @@ export const productDetailQuery = groq
       }
     }
   }
-;
+`;

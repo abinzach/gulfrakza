@@ -1,0 +1,61 @@
+{
+  "contactForm": {
+    "labels": {
+      "email": "بريدك الإلكتروني",
+      "subject": "الموضوع",
+      "message": "رسالتك"
+    },
+    "placeholders": {
+      "email": "name@example.com",
+      "subject": "أخبرنا كيف يمكننا مساعدتك",
+      "message": "اترك تعليقًا..."
+    },
+    "errors": {
+      "emailRequired": "البريد الإلكتروني مطلوب",
+      "emailFormat": "القيمة المدخلة لا تطابق تنسيق البريد الإلكتروني",
+      "subjectRequired": "الموضوع مطلوب",
+      "messageRequired": "الرسالة مطلوبة"
+    },
+    "submit": "إرسال الرسالة",
+    "loading": "جارٍ الإرسال...",
+    "successTitle": "شكرًا لك!",
+    "successBody": "تم إرسال استفسارك بنجاح. سنعود إليك قريبًا.",
+    "successNote": "ستختفي هذه الرسالة خلال ثوانٍ قليلة...",
+    "errorTitle": "عفوًا!",
+    "errorNote": "يرجى المحاولة مرة أخرى لاحقًا."
+  },
+  "quoteForm": {
+    "modalTitle": "اطلب عرض سعر",
+    "forLabel": "بخصوص:",
+    "successTitle": "تم بنجاح!",
+    "successMessage": "شكرًا لك! تم إرسال طلب عرض السعر.",
+    "fields": {
+      "fullName": "الاسم الكامل",
+      "email": "البريد الإلكتروني",
+      "phone": "رقم الهاتف",
+      "category": "الفئة",
+      "subcategory": "الفئة الفرعية",
+      "itemCategory": "فئة الصنف",
+      "message": "الرسالة"
+    },
+    "placeholders": {
+      "category": "مثال: سلامة، رفع، إلخ.",
+      "subcategory": "مثال: معدات حماية شخصية، رافعات، إلخ.",
+      "itemCategory": "مثال: حماية الوجه، رافعات يدوية، إلخ.",
+      "message": "أخبرنا المزيد عن متطلباتك"
+    },
+    "buttons": {
+      "submit": "إرسال طلب عرض السعر",
+      "submitting": "جارٍ الإرسال..."
+    },
+    "template": {
+      "intro": "أرغب في الحصول على عرض سعر للمنتج التالي:",
+      "product": "المنتج:",
+      "category": "الفئة:",
+      "subcategory": "الفئة الفرعية:",
+      "itemCategory": "فئة الصنف:",
+      "outro": "يرجى تزويدي بالسعر والتوافر وأي تفاصيل إضافية عن المنتج."
+    },
+    "emailSubject": "طلب عرض سعر: {categoryParts} من {name} (الهاتف: {phone})"
+  }
+}

@@ -1,5 +1,6 @@
-'use client'
-import React, { Dispatch, SetStateAction, useState } from "react";
+'use client';
+
+import React, { Dispatch, SetStateAction, useMemo, useState } from "react";
 import { FiMenu, FiArrowRight, FiX } from "react-icons/fi";
 import {
   useMotionValueEvent,
@@ -8,28 +9,67 @@ import {
   motion,
 } from "framer-motion";
 import useMeasure from "react-use-measure";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/navigation";
+import { useLocale, useTranslations } from "@/i18n/provider";
 import QuoteModal from "./GetQuote";
+import { locales } from "@/i18n/config";
+import { cn } from "@/lib/utils";
+
+const NAV_LINKS = [
+  {
+    key: "about",
+    href: "/about-us",
+    component: AboutUsContent,
+  },
+  {
+    key: "products",
+    href: "/products",
+    component: ProductsContent,
+  },
+] as const;
 
 const FlyoutNav = () => {
   const [scrolled, setScrolled] = useState(false);
   const [showGetQuote, setShowGetQuote] = useState(false);
   const { scrollY } = useScroll();
   const pathname = usePathname();
-  const isProductsRoute =
-    pathname.startsWith("/products") ||
-    pathname.startsWith("/privacy") ||
-    pathname.startsWith("/terms");
+  const searchParams = useSearchParams();
+  const locale = useLocale();
+  const tNav = useTranslations("common.nav");
+  const searchParamsString = searchParams?.toString() ?? "";
 
-  // Update scroll state as before
   useMotionValueEvent(scrollY, "change", (latest) => {
-    setScrolled(latest > 250 ? true : false);
+    setScrolled(latest > 250);
   });
 
-  // Force sticky state (black bg, minimal padding) on products routes
+  const normalizedPath = useMemo(() => {
+    if (!pathname) return "/";
+    const prefix = `/${locale}`;
+    if (pathname === prefix) return "/";
+    return pathname.startsWith(prefix) ? pathname.slice(prefix.length) || "/" : pathname;
+  }, [pathname, locale]);
+
+  const isProductsRoute =
+    normalizedPath.startsWith("/products") ||
+    normalizedPath.startsWith("/privacy") ||
+    normalizedPath.startsWith("/terms");
+
   const finalScrolled = isProductsRoute ? true : scrolled;
+
+  const links = useMemo(
+    () =>
+      NAV_LINKS.map((link) => ({
+        ...link,
+        label: tNav(link.key),
+      })),
+    [tNav],
+  );
+
+  const pathnameWithQuery = useMemo(() => {
+    return searchParamsString ? `${pathname}?${searchParamsString}` : pathname;
+  }, [pathname, searchParamsString]);
 
   return (
     <>
@@ -40,20 +80,24 @@ const FlyoutNav = () => {
             : "bg-neutral-950/0 py-6 shadow-none"
         }`}
       >
-        <div className="mx-auto flex max-w-7xl items-center justify-between">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-6">
           <Logo />
-          <div className="hidden gap-10 lg:flex">
-            <Links />
-            <CTAs onQuoteClick={() => setShowGetQuote(true)} />
+          <div className="hidden items-center gap-6 lg:flex">
+            <Links items={links} />
+            <LocaleSwitcher currentLocale={locale} pathname={pathnameWithQuery} />
+            <CTAs label={tNav("getQuote")} onQuoteClick={() => setShowGetQuote(true)} />
           </div>
-          <MobileMenu onQuoteClick={() => setShowGetQuote(true)} />
+          <MobileMenu
+            items={links}
+            ctaLabel={tNav("getQuote")}
+            currentLocale={locale}
+            pathname={pathnameWithQuery}
+            onQuoteClick={() => setShowGetQuote(true)}
+          />
         </div>
       </nav>
       <AnimatePresence>
-      <QuoteModal 
-  open={showGetQuote} 
-  onOpenChange={setShowGetQuote} 
-/>
+        <QuoteModal open={showGetQuote} onOpenChange={setShowGetQuote} />
       </AnimatePresence>
     </>
   );
@@ -62,7 +106,7 @@ const FlyoutNav = () => {
 export const Logo = () => {
   return (
     <Link href="/" className="flex items-center gap-2">
-      <span className="text-2xl font-extralight font-inter">
+      <span className="text-2xl font-inter font-extralight">
         GULF<span className="font-semibold">RAKZA</span>
       </span>
       <Image
@@ -76,12 +120,19 @@ export const Logo = () => {
   );
 };
 
-const Links = () => {
+type NavItem = {
+  key: string;
+  href: string;
+  label: string;
+  component?: React.ElementType;
+};
+
+const Links = ({ items }: { items: NavItem[] }) => {
   return (
     <div className="flex items-center gap-10">
-      {LINKS.map((l) => (
-        <NavLink key={l.text} href={l.href} FlyoutContent={l.component}>
-          {l.text}
+      {items.map((item) => (
+        <NavLink key={item.key} href={item.href} FlyoutContent={item.component}>
+          {item.label}
         </NavLink>
       ))}
     </div>
@@ -106,7 +157,7 @@ const NavLink = ({
       onMouseLeave={() => setOpen(false)}
       className="relative h-fit w-fit"
     >
-      <a href={href} className="relative">
+      <Link href={href} className="relative">
         {children}
         <span
           style={{
@@ -114,7 +165,7 @@ const NavLink = ({
           }}
           className="absolute -bottom-2 -left-2 -right-2 h-1 origin-left rounded-full bg-cyan-300 transition-transform duration-300 ease-out"
         />
-      </a>
+      </Link>
       <AnimatePresence>
         {showFlyout && (
           <motion.div
@@ -135,25 +186,77 @@ const NavLink = ({
   );
 };
 
-const CTAs = ({ onQuoteClick }: { onQuoteClick: () => void }) => {
+const CTAs = ({
+  label,
+  onQuoteClick,
+}: {
+  label: string;
+  onQuoteClick: () => void;
+}) => {
   return (
-    <div className="flex font-inter items-center gap-3">
+    <div className="flex items-center gap-3 font-inter">
       <button
         onClick={onQuoteClick}
-        className="rounded-full flex bg-white px-4 py-2 text-sm font-medium text-black transition-colors hover:bg-gray-200 duration-300"
+        className="flex rounded-full bg-white px-4 py-2 text-sm font-medium text-black transition-colors duration-300 hover:bg-gray-200"
       >
-        Get a quote
+        {label}
       </button>
     </div>
   );
 };
 
-const AboutUsContent = () => {
-  return <div>{/* About Us Flyout content here */}</div>;
-};
+function AboutUsContent() {
+  return <div />;
+}
 
-const ProductsContent = () => {
-  return <div>{/* Products Flyout content here */}</div>;
+function ProductsContent() {
+  return <div />;
+}
+
+const LocaleSwitcher = ({
+  currentLocale,
+  pathname,
+  variant = "desktop",
+}: {
+  currentLocale: string;
+  pathname: string;
+  variant?: "desktop" | "mobile";
+}) => {
+  const t = useTranslations("common.localeSwitcher");
+  const isMobile = variant === "mobile";
+
+  return (
+    <div
+      className={cn(
+        "inline-flex items-center rounded-full border border-white/15 bg-white/10 p-1 text-xs font-medium uppercase tracking-wide text-white shadow-sm backdrop-blur",
+        isMobile ? "w-full max-w-[180px] justify-between text-sm" : "gap-1",
+      )}
+      aria-label={t("label")}
+      role="group"
+    >
+      {locales.map((loc) => {
+        const isActive = loc === currentLocale;
+        return (
+          <Link
+            key={loc}
+            href={pathname}
+            locale={loc}
+            aria-label={t(`switchTo.${loc}`)}
+            className={cn(
+              "flex-1 rounded-full text-center transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",
+              isMobile ? "px-4 py-1.5 text-sm" : "px-3 py-1 text-xs",
+              isActive
+                ? "bg-white text-neutral-950 shadow-sm"
+                : "bg-transparent text-white/70 hover:text-white",
+            )}
+            aria-current={isActive ? "true" : undefined}
+          >
+            {t(`short.${loc}`)}
+          </Link>
+        );
+      })}
+    </div>
+  );
 };
 
 const MobileMenuLink = ({
@@ -177,29 +280,27 @@ const MobileMenuLink = ({
           className="flex w-full cursor-pointer items-center justify-between border-b border-neutral-300 py-6 text-start text-2xl font-semibold"
           onClick={() => setOpen((pv) => !pv)}
         >
-          <a
+          <Link
+            href={href}
             onClick={(e) => {
               e.stopPropagation();
               setMenuOpen(false);
             }}
-            href={href}
           >
             {children}
-          </a>
-        
+          </Link>
         </div>
       ) : (
-        <a
+        <button
           onClick={(e) => {
             e.stopPropagation();
             setMenuOpen(false);
           }}
-          href="#"
           className="flex w-full cursor-pointer items-center justify-between border-b border-neutral-300 py-6 text-start text-2xl font-semibold"
         >
           <span>{children}</span>
           <FiArrowRight />
-        </a>
+        </button>
       )}
       {FoldContent && (
         <motion.div
@@ -220,7 +321,19 @@ const MobileMenuLink = ({
   );
 };
 
-const MobileMenu = ({ onQuoteClick }: { onQuoteClick: () => void }) => {
+const MobileMenu = ({
+  items,
+  ctaLabel,
+  onQuoteClick,
+  currentLocale,
+  pathname,
+}: {
+  items: NavItem[];
+  ctaLabel: string;
+  onQuoteClick: () => void;
+  currentLocale: string;
+  pathname: string;
+}) => {
   const [open, setOpen] = useState(false);
   return (
     <div className="block lg:hidden">
@@ -243,19 +356,23 @@ const MobileMenu = ({ onQuoteClick }: { onQuoteClick: () => void }) => {
               </button>
             </div>
             <div className="h-screen overflow-y-scroll bg-neutral-100 p-6">
-              {LINKS.map((l) => (
+              <div className="mb-6 flex justify-end">
+                <LocaleSwitcher currentLocale={currentLocale} pathname={pathname} variant="mobile" />
+              </div>
+              {items.map((item) => (
                 <MobileMenuLink
-                  key={l.text}
-                  href={l.href}
-                  FoldContent={l.component}
+                  key={item.key}
+                  href={item.href}
+                  FoldContent={item.component}
                   setMenuOpen={setOpen}
                 >
-                  {l.text}
+                  {item.label}
                 </MobileMenuLink>
               ))}
             </div>
             <div className="flex justify-end bg-neutral-950 p-6">
               <CTAs
+                label={ctaLabel}
                 onQuoteClick={() => {
                   setOpen(false);
                   onQuoteClick();
@@ -269,18 +386,4 @@ const MobileMenu = ({ onQuoteClick }: { onQuoteClick: () => void }) => {
   );
 };
 
-
 export default FlyoutNav;
-
-const LINKS = [
-  {
-    text: "About us",
-    href: "/about-us",
-    component: AboutUsContent,
-  },
-  {
-    text: "Products",
-    href: "/products",
-    component: ProductsContent,
-  },
-];

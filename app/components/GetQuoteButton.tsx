@@ -1,8 +1,9 @@
 "use client";
 
+import { useTranslations } from "@/i18n/provider";
 import { useState } from "react";
-import GetQuote from "./GetQuote";
 import { Button } from "@/components/ui/button";
+import GetQuote from "./GetQuote";
 
 interface GetQuoteButtonProps {
   productName: string;
@@ -18,31 +19,28 @@ export default function GetQuoteButton({
   productItemCategory,
 }: GetQuoteButtonProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
-  };
+  const t = useTranslations("common.nav");
 
   return (
     <>
       <Button
-        onClick={handleOpenModal}
+        onClick={() => setIsModalOpen(true)}
         variant="default"
         className="w-full bg-cyan-600 text-sm font-medium text-white hover:bg-cyan-700"
       >
-        Get Quote
+        {t("getQuote")}
       </Button>
-      
-      <GetQuote 
-        open={isModalOpen} 
+
+      <GetQuote
+        open={isModalOpen}
         onOpenChange={setIsModalOpen}
         initialProduct={{
           name: productName,
           category: productCategory,
           subcategory: productSubcategory,
-          itemCategory: productItemCategory
+          itemCategory: productItemCategory,
         }}
       />
     </>
   );
-} 
+}

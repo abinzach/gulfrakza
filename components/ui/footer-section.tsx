@@ -1,147 +1,152 @@
-"use client"
+"use client";
 
-
-import * as React from "react"
-import { Button } from "@/components/ui/button"
+import * as React from "react";
+import { useMessages, useTranslations } from "@/i18n/provider";
+import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip"
-import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react"
-import { Logo } from "@/app/components/Navbar"
-import Link from "next/link"
+} from "@/components/ui/tooltip";
+import { Logo } from "@/app/components/Navbar";
+import { Link } from "@/navigation";
 
+type SocialItem = {
+  icon: React.ReactNode;
+  label: string;
+  href: string;
+  srLabel: string;
+};
 
 function Footerdemo() {
+  const t = useTranslations("common.footer");
+  const messages = useMessages();
+
+  let addressLines: string[] = [];
+  let phoneLines: string[] = [];
+
+  if (messages && typeof messages === "object") {
+    const commonSection = (messages as Record<string, unknown>).common;
+    if (commonSection && typeof commonSection === "object") {
+      const footerSection = (commonSection as Record<string, unknown>).footer;
+      if (footerSection && typeof footerSection === "object") {
+        const footerRecord = footerSection as Record<string, unknown>;
+        if (Array.isArray(footerRecord.address)) {
+          addressLines = footerRecord.address as string[];
+        }
+        if (Array.isArray(footerRecord.phones)) {
+          phoneLines = footerRecord.phones as string[];
+        }
+      }
+    }
+  }
+
+  const quickLinks: { href: string; label: string }[] = [
+    { href: "/", label: t("links.home") },
+    { href: "/about-us", label: t("links.about") },
+    { href: "/#services", label: t("links.services") },
+    { href: "/products", label: t("links.products") },
+    { href: "/#contact-us", label: t("links.contact") },
+  ];
+
+  const socialItems: SocialItem[] = [
+    {
+      icon: <Facebook className="h-4 w-4" />,
+      label: t("social.facebook"),
+      href: "#",
+      srLabel: "Facebook",
+    },
+    {
+      icon: <Twitter className="h-4 w-4" />,
+      label: t("social.twitter"),
+      href: "#",
+      srLabel: "Twitter",
+    },
+    {
+      icon: <Instagram className="h-4 w-4" />,
+      label: t("social.instagram"),
+      href: "#",
+      srLabel: "Instagram",
+    },
+    {
+      icon: <Linkedin className="h-4 w-4" />,
+      label: t("social.linkedin"),
+      href: "#",
+      srLabel: "LinkedIn",
+    },
+  ];
 
   return (
-    <footer className="relative border-t px-4  md:px-6 bg-background text-foreground transition-colors duration-300">
-      <div className="container max-w-7xl mx-auto  py-12 lg:px-8">
+    <footer className="relative border-t bg-background px-4 text-foreground transition-colors duration-300 md:px-6">
+      <div className="container mx-auto max-w-7xl py-12 lg:px-8">
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
           <div className="relative">
-          <Logo/>
-          
-            <p className="mb-6 text-xs font-inter text-gray-800 ">
-              Connecting Markets, Empowering Growth
-            </p>
-            <p  className="text-sm  font-inter text-gray-800 ">Rakzah Gulf Trading Establishment</p>
-            <p  className="text-xl font-inter text-gray-800 ">مؤسسة ركزة الخليج للتجارة
-            </p>
-
-            <p  className="mb-6 text-sm  font-inter text-gray-800 "> C.R. 2050194171</p>
-           
+            <Logo />
+            <p className="mb-6 font-inter text-xs text-gray-800">{t("tagline")}</p>
+            <p className="font-inter text-sm text-gray-800">{t("companyName")}</p>
+            <p className="font-inter text-sm text-gray-800">{t("commercialRegistration")}</p>
             <div className="absolute -right-4 top-0 h-24 w-24 rounded-full bg-primary/10 blur-2xl" />
           </div>
           <div>
-            <h3 className="mb-4 text-lg font-semibold">Quick Links</h3>
+            <h3 className="mb-4 text-lg font-semibold">{t("quickLinks")}</h3>
             <nav className="space-y-2 text-sm">
-              <Link href="/" className="block transition-colors hover:text-primary">
-                Home
-              </Link>
-              <Link href="/about-us" className="block transition-colors hover:text-primary">
-                About Us
-              </Link>
-              <Link href="/#services" className="block transition-colors hover:text-primary">
-                Services
-              </Link>
-              <Link href="/products" className="block transition-colors hover:text-primary">
-                Products
-              </Link>
-              <Link href="#" className="block transition-colors hover:text-primary">
-                Contact
-              </Link>
+              {quickLinks.map((link) => (
+                <Link key={link.href} href={link.href} className="block transition-colors hover:text-primary">
+                  {link.label}
+                </Link>
+              ))}
             </nav>
           </div>
           <div>
-            <h3 className="mb-4 text-lg font-semibold">Contact Us</h3>
+            <h3 className="mb-4 text-lg font-semibold">{t("contactHeading")}</h3>
             <address className="space-y-2 text-sm not-italic">
-                          <p>Salem Balhamer Building,              </p>
-              <p>2nd Floor, Office #9,</p>
-              <p>Al Tubayshi District,</p>
-              <p>Dammam 32233</p>
-              <p>Phone: (013) 881 6957</p>
-              <p>Phone: +966 - 558 975 494</p>
-              <p>Email: sales@gulfrakza.com</p>
+              {addressLines.map((line) => (
+                <p key={line}>{line}</p>
+              ))}
+              {phoneLines.map((line) => (
+                <p key={line}>{line}</p>
+              ))}
+              <p>{t("email")}</p>
             </address>
           </div>
           <div className="relative">
-            <h3 className="mb-4 text-lg font-semibold">Follow Us</h3>
+            <h3 className="mb-4 text-lg font-semibold">{t("followUs")}</h3>
             <div className="mb-6 flex space-x-4">
               <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button variant="outline" size="icon" className="rounded-full">
-                      <Facebook className="h-4 w-4" />
-                      <span className="sr-only">Facebook</span>
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Follow us on Facebook</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button variant="outline" size="icon" className="rounded-full">
-                      <Twitter className="h-4 w-4" />
-                      <span className="sr-only">Twitter</span>
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Follow us on Twitter</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button variant="outline" size="icon" className="rounded-full">
-                      <Instagram className="h-4 w-4" />
-                      <span className="sr-only">Instagram</span>
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Follow us on Instagram</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button variant="outline" size="icon" className="rounded-full">
-                      <Linkedin className="h-4 w-4" />
-                      <span className="sr-only">LinkedIn</span>
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Connect with us on LinkedIn</p>
-                  </TooltipContent>
-                </Tooltip>
+                {socialItems.map((item) => (
+                  <Tooltip key={item.srLabel}>
+                    <TooltipTrigger asChild>
+                      <Button variant="outline" size="icon" className="rounded-full" asChild>
+                        <a href={item.href} aria-label={item.srLabel}>
+                          {item.icon}
+                        </a>
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>{item.label}</p>
+                    </TooltipContent>
+                  </Tooltip>
+                ))}
               </TooltipProvider>
             </div>
-           
           </div>
         </div>
         <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t pt-8 text-center md:flex-row">
-          <p className="text-sm text-muted-foreground">
-            © 2024 GulfRakza. All rights reserved.
-          </p>
+          <p className="text-sm text-muted-foreground">{t("copyright")}</p>
           <nav className="flex gap-4 text-sm">
             <Link href="/privacy-policy" className="transition-colors hover:text-primary">
-              Privacy Policy
+              {t("links.privacy")}
             </Link>
             <Link href="/terms-of-service" className="transition-colors hover:text-primary">
-              Terms of Service
+              {t("links.terms")}
             </Link>
-      
           </nav>
         </div>
       </div>
     </footer>
-  )
+  );
 }
 
-export { Footerdemo }
+export { Footerdemo };

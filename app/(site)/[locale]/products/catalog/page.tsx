@@ -46,7 +46,7 @@ export const metadata: Metadata = {
 }
 
 type CatalogPageProps = {
-  searchParams?: Record<string, string | string[] | undefined>
+  searchParams?: Promise<Record<string, string | string[] | undefined>>
 }
 
 const buildURLSearchParams = (params?: Record<string, string | string[] | undefined>) => {
@@ -74,7 +74,9 @@ const buildURLSearchParams = (params?: Record<string, string | string[] | undefi
 export default async function CatalogPage({ searchParams }: CatalogPageProps) {
   const { products, categoryTree, featureFilters, brandFilters } = await fetchCatalogData()
 
-  const initialFilters = parseFiltersFromSearchParams(buildURLSearchParams(searchParams))
+  const resolvedSearchParams = searchParams ? await searchParams : undefined
+
+  const initialFilters = parseFiltersFromSearchParams(buildURLSearchParams(resolvedSearchParams))
 
   return (
     <CatalogPageClient

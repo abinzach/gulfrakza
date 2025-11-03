@@ -1,15 +1,12 @@
 "use client";
-import React, { useState, useEffect } from "react";
 
+import React, { useEffect, useMemo, useState } from "react";
+import { useTranslations } from "@/i18n/provider";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import {
-  Alert,
-  AlertTitle,
-  AlertDescription,
-} from "@/components/ui/alert";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import {
   Dialog,
   DialogContent,
@@ -18,7 +15,6 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 
-// Props for the modal component
 interface QuoteModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -30,58 +26,77 @@ interface QuoteModalProps {
   };
 }
 
-export default function QuoteModal({ open, onOpenChange, initialProduct }: QuoteModalProps) {
-  const getInitialMessage = () => {
-    if (!initialProduct) return "";
-    
-    const subcategoryLine = initialProduct.subcategory ? `Subcategory: ${initialProduct.subcategory}\n` : "";
-    
-    return `I'm interested in getting a quote for the following product:
+type QuoteFormState = {
+  fullName: string;
+  email: string;
+  phone: string;
+  productCategory: string;
+  productSubcategory: string;
+  productItemCategory: string;
+  message: string;
+};
 
-Product: ${initialProduct.name}
-Category: ${initialProduct.category}
-${subcategoryLine}Item Category: ${initialProduct.itemCategory}
+export default function QuoteModal({
+  open,
+  onOpenChange,
+  initialProduct,
+}: QuoteModalProps) {
+  const t = useTranslations("forms.quoteForm");
 
-Please provide pricing, availability, and any additional product details.`;
-  };
+  const initialMessage = useMemo(() => {
+    if (!initialProduct) {
+      return "";
+    }
 
-  const [formData, setFormData] = useState({
+    const templateIntro = t("template.intro");
+    const productLine = `${t("template.product")} ${initialProduct.name}`;
+    const categoryLine = `${t("template.category")} ${initialProduct.category}`;
+    const subcategoryLine = initialProduct.subcategory
+      ? `${t("template.subcategory")} ${initialProduct.subcategory}`
+      : null;
+    const itemCategoryLine = `${t("template.itemCategory")} ${initialProduct.itemCategory}`;
+    const outro = t("template.outro");
+
+    return [
+      templateIntro,
+      "",
+      productLine,
+      categoryLine,
+      subcategoryLine,
+      itemCategoryLine,
+      "",
+      outro,
+    ]
+      .filter(Boolean)
+      .join("\n");
+  }, [initialProduct, t]);
+
+  const [formData, setFormData] = useState<QuoteFormState>({
     fullName: "",
     email: "",
     phone: "",
     productCategory: initialProduct?.category || "",
     productSubcategory: initialProduct?.subcategory || "",
     productItemCategory: initialProduct?.itemCategory || "",
-    message: getInitialMessage(),
+    message: initialMessage,
   });
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  // Update form when initialProduct changes (when modal opens with new product)
   useEffect(() => {
     if (open && initialProduct) {
-      const subcategoryLine = initialProduct.subcategory ? `Subcategory: ${initialProduct.subcategory}\n` : "";
-      
       setFormData((prev) => ({
         ...prev,
         productCategory: initialProduct.category,
         productSubcategory: initialProduct.subcategory,
         productItemCategory: initialProduct.itemCategory,
-        message: `I'm interested in getting a quote for the following product:
-
-Product: ${initialProduct.name}
-Category: ${initialProduct.category}
-${subcategoryLine}Item Category: ${initialProduct.itemCategory}
-
-Please provide pricing, availability, and any additional product details.`,
+        message: initialMessage,
       }));
     }
-  }, [open, initialProduct]);
+  }, [open, initialProduct, initialMessage]);
 
-  // Reset form when modal closes
   useEffect(() => {
     if (!open) {
-      // Short delay to ensure animation completes before resetting form
       const timer = setTimeout(() => {
         setFormData({
           fullName: "",
@@ -90,23 +105,22 @@ Please provide pricing, availability, and any additional product details.`,
           productCategory: initialProduct?.category || "",
           productSubcategory: initialProduct?.subcategory || "",
           productItemCategory: initialProduct?.itemCategory || "",
-          message: getInitialMessage(),
+          message: initialProduct ? initialMessage : "",
         });
         setSuccess(false);
       }, 300);
       return () => clearTimeout(timer);
     }
-  }, [open, initialProduct]);
+  }, [open, initialProduct, initialMessage]);
 
   const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -115,20 +129,25 @@ Please provide pricing, availability, and any additional product details.`,
     setSuccess(false);
 
     try {
-      // Construct subject from form details
-      const categoryParts = [
-        formData.productCategory,
-        formData.productSubcategory,
-        formData.productItemCategory
-      ].filter(Boolean).join(" > ");
-      
-      const subject = `Quote Request: ${categoryParts} from ${formData.fullName} (phone: ${formData.phone})`;
+      const categoryParts = [formData.productCategory, formData.productSubcategory, formData.productItemCategory]
+        .filter(Boolean)
+        .join(" > ");
+
+      const subject = t("emailSubject", {
+        categoryParts: categoryParts || t("fields.category"),
+        name: formData.fullName || t("fields.fullName"),
+        phone: formData.phone || "-",
+      });
 
       const payload = {
         email: formData.email,
         subject,
         message: formData.message,
-        formType: 'quote'
+        fullName: formData.fullName,
+        phone: formData.phone,
+        productCategory: formData.productCategory,
+        productSubcategory: formData.productSubcategory,
+        productItemCategory: formData.productItemCategory,
       };
 
       const response = await fetch("/api/contact", {
@@ -136,54 +155,49 @@ Please provide pricing, availability, and any additional product details.`,
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({ ...payload, formType: "quote" }),
       });
 
-      if (response.ok) {
-        setSuccess(true);
-        
-        // Close modal after short delay to show success message
-        setTimeout(() => {
-          onOpenChange(false);
-        }, 2000);
-      } else {
-        console.error("API Error:", await response.text());
+      if (!response.ok) {
+        throw new Error("Failed to submit quote request");
       }
+
+      setSuccess(true);
     } catch (error) {
       console.error("Error submitting quote request:", error);
     }
+
     setSubmitting(false);
   };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-h-[90vh] max-w-3xl overflow-y-auto">
         <DialogHeader className="flex flex-row items-center justify-between">
           <div>
-            <DialogTitle>Get a Quote</DialogTitle>
+            <DialogTitle>{t("modalTitle")}</DialogTitle>
             {initialProduct && (
               <p className="mt-1 text-sm font-normal text-gray-600 dark:text-gray-400">
-                For: <span className="font-medium text-gray-900 dark:text-gray-100">{initialProduct.name}</span>
+                {t("forLabel")}{" "}
+                <span className="font-medium text-gray-900 dark:text-gray-100">
+                  {initialProduct.name}
+                </span>
               </p>
             )}
           </div>
-          <DialogClose className="rounded-full p-1.5 hover:bg-gray-100">
-           
-          </DialogClose>
+          <DialogClose className="rounded-full p-1.5 hover:bg-gray-100" />
         </DialogHeader>
-        
+
         <div className="mt-4">
           {success && (
             <Alert className="mb-6 border border-cyan-600 bg-cyan-100 text-cyan-800">
-              <AlertTitle>Success!</AlertTitle>
-              <AlertDescription>
-                Thank you! Your quote request has been submitted.
-              </AlertDescription>
+              <AlertTitle>{t("successTitle")}</AlertTitle>
+              <AlertDescription>{t("successMessage")}</AlertDescription>
             </Alert>
           )}
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <Label htmlFor="fullName">Full Name</Label>
+              <Label htmlFor="fullName">{t("fields.fullName")}</Label>
               <Input
                 id="fullName"
                 name="fullName"
@@ -194,7 +208,7 @@ Please provide pricing, availability, and any additional product details.`,
               />
             </div>
             <div>
-              <Label htmlFor="email">Email Address</Label>
+              <Label htmlFor="email">{t("fields.email")}</Label>
               <Input
                 type="email"
                 id="email"
@@ -206,7 +220,7 @@ Please provide pricing, availability, and any additional product details.`,
               />
             </div>
             <div>
-              <Label htmlFor="phone">Phone Number</Label>
+              <Label htmlFor="phone">{t("fields.phone")}</Label>
               <Input
                 type="tel"
                 id="phone"
@@ -218,47 +232,47 @@ Please provide pricing, availability, and any additional product details.`,
               />
             </div>
             <div>
-              <Label htmlFor="productCategory">Category</Label>
+              <Label htmlFor="productCategory">{t("fields.category")}</Label>
               <Input
                 id="productCategory"
                 value={formData.productCategory}
                 onChange={handleChange}
                 name="productCategory"
-                placeholder="e.g., Safety, Lifting, etc."
+                placeholder={t("placeholders.category")}
                 className="mt-1"
               />
             </div>
             <div>
-              <Label htmlFor="productSubcategory">Subcategory</Label>
+              <Label htmlFor="productSubcategory">{t("fields.subcategory")}</Label>
               <Input
                 id="productSubcategory"
                 value={formData.productSubcategory}
                 onChange={handleChange}
                 name="productSubcategory"
-                placeholder="e.g., PPE, Hoists, etc."
+                placeholder={t("placeholders.subcategory")}
                 className="mt-1"
               />
             </div>
             <div>
-              <Label htmlFor="productItemCategory">Item Category</Label>
+              <Label htmlFor="productItemCategory">{t("fields.itemCategory")}</Label>
               <Input
                 id="productItemCategory"
                 value={formData.productItemCategory}
                 onChange={handleChange}
                 name="productItemCategory"
-                placeholder="e.g., Face Protection, Manual Hoists, etc."
+                placeholder={t("placeholders.itemCategory")}
                 className="mt-1"
               />
             </div>
             <div>
-              <Label htmlFor="message">Message</Label>
+              <Label htmlFor="message">{t("fields.message")}</Label>
               <Textarea
                 id="message"
                 name="message"
                 rows={4}
                 value={formData.message}
                 onChange={handleChange}
-                placeholder="Tell us more about your requirements"
+                placeholder={t("placeholders.message")}
                 className="mt-1"
               />
             </div>
@@ -268,7 +282,7 @@ Please provide pricing, availability, and any additional product details.`,
                 disabled={submitting}
                 className="w-full bg-cyan-600 hover:bg-cyan-700"
               >
-                {submitting ? "Submitting..." : "Submit Quote Request"}
+                {submitting ? t("buttons.submitting") : t("buttons.submit")}
               </Button>
             </div>
           </form>

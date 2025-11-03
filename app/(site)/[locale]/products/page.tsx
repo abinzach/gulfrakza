@@ -1,11 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import React from "react";
-import Link from "next/link";
-import data from "../Product_Categories.json";
-import { GridPatternCard, GridPatternCardBody } from "@/components/ui/card-with-grid-ellipsis-pattern";
-import BackButton from "../components/BackButton";
 import Image from "next/image";
+import data from "../../../Product_Categories.json";
+import BackButton from "@/app/components/BackButton";
+import {
+  GridPatternCard,
+  GridPatternCardBody,
+} from "@/components/ui/card-with-grid-ellipsis-pattern";
+import { Link } from "@/navigation";
 
 // Define TypeScript interfaces for our data structure
 interface Item {
@@ -114,7 +117,7 @@ const ProductsPage: React.FC = () => {
                       return (
                         <li key={subIndex}>
                           <Link href={linkHref}>
-                            <p className="text-cyan-600 text-sm transition-all duration-300 dark:text-cyan-400 hover:underline">
+                            <p className="text-sm text-cyan-600 transition-all duration-300 hover:underline dark:text-cyan-400">
                               {subcat.title}
                             </p>
                           </Link>

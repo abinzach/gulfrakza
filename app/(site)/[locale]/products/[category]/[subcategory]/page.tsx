@@ -6,7 +6,7 @@ import BackButton from "@/app/components/BackButton";
 import { GridPatternCard, GridPatternCardBody } from "@/components/ui/card-with-grid-ellipsis-pattern";
 import { Badge } from "@/components/ui/badge";
 import GetQuoteButton from "@/app/components/GetQuoteButton";
-import data from "../../../Product_Categories.json";
+import data from "../../../../../Product_Categories.json";
 
 // Data interfaces
 interface Item {
@@ -145,6 +145,7 @@ export default async function SubcategoryPage({ params }: {
                     productName={item.title}
                     productCategory={categoryFound.title}
                     productSubcategory={subcategoryFound.title}
+                    productItemCategory={item.title}
                   />
                 </GridPatternCardBody>
               </GridPatternCard>

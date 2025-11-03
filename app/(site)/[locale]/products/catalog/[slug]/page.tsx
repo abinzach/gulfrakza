@@ -1,14 +1,13 @@
 import type { Metadata } from "next"
 import Image from "next/image"
-import Link from "next/link"
 import { notFound } from "next/navigation"
 
 import GetQuoteButton from "@/app/components/GetQuoteButton"
-import { Badge } from "@/components/ui/badge"
 import { fetchCatalogData, fetchProductDetail } from "@/lib/catalog"
+import { Link } from "@/navigation"
 
 interface ProductPageProps {
-  params: { slug: string }
+  params: Promise<{ slug: string }>
 }
 
 export async function generateStaticParams() {
@@ -17,7 +16,8 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
-  const product = await fetchProductDetail(params.slug)
+  const { slug } = await params
+  const product = await fetchProductDetail(slug)
 
   if (!product) {
     return {
@@ -52,7 +52,8 @@ const stockStatusStyles = {
 }
 
 export default async function ProductDetailPage({ params }: ProductPageProps) {
-  const product = await fetchProductDetail(params.slug)
+  const { slug } = await params
+  const product = await fetchProductDetail(slug)
 
   if (!product) {
     notFound()
@@ -61,10 +62,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
   // Fetch related products from catalog
   const { products: allProducts } = await fetchCatalogData()
   const relatedProducts = allProducts
-    .filter(p => 
-      p.id !== product.id && 
-      p.primaryCategory === product.primaryCategory
-    )
+    .filter((p) => p.id !== product.id && p.primaryCategory === product.primaryCategory)
     .slice(0, 8)
 
   const stockBadgeClass = stockStatusStyles[product.stockStatus]
@@ -275,10 +273,6 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
             </h2>
             <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
               {relatedProducts.map((relatedProduct) => {
-                const relCategory = relatedProduct.categoryTrail[0]?.title || relatedProduct.primaryCategory || "General"
-                const relSubcategory = relatedProduct.categoryTrail[1]?.title || ""
-                const relItemCategory = relatedProduct.categoryTrail[2]?.title || relatedProduct.leafCategory || relCategory
-
                 return (
                   <Link
                     key={relatedProduct.id}

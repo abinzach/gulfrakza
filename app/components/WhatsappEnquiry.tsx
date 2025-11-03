@@ -1,25 +1,25 @@
 // app/components/WhatsAppInquiry.tsx
+"use client";
+
 import React from "react";
+import { useTranslations } from "@/i18n/provider";
 import { FaWhatsapp } from "react-icons/fa";
-import Link from "next/link";
 
 const WhatsAppInquiry: React.FC = () => {
-  // Replace with your actual WhatsApp number (in international format without +)
-  const phoneNumber = "+966557197311"; 
-  // Pre-filled message (URL-encoded)
-  const message = "Hello, I would like to inquire about your services.";
+  const t = useTranslations("common.contactPresets");
+  const phoneNumber = "+966557197311";
+  const message = t("whatsappMessage");
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
 
   return (
-    
-      <Link
+    <a
       href={whatsappUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="flex fixed border-4 border-white w-16 rounded-full h-16 bottom-10 right-10 items-center space-x-2 bg-white px-4 py-2  hover:bg-gray-100 transition-colors cursor-pointer z-20 shadow-xl"
-      >
-        <FaWhatsapp size={50} className="text-black" />
-      </Link>
+      target="_blank"
+      rel="noopener noreferrer"
+      className="fixed bottom-10 right-10 z-20 flex h-16 w-16 cursor-pointer items-center justify-center rounded-full border-4 border-white bg-white px-4 py-2 shadow-xl transition-colors hover:bg-gray-100"
+    >
+      <FaWhatsapp size={50} className="text-black" />
+    </a>
   );
 };
 

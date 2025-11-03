@@ -1,19 +1,23 @@
 "use client";
-import React, {  useEffect, useState } from "react";
-import { AnimationProps, motion } from "framer-motion";
+import React, { useEffect, useState } from "react";
+import { motion, type Transition } from "framer-motion";
 
+type DarkGridHeroProps = {
+  title: string;
+  description: string;
+};
 
-export const DarkGridHero = () => {
+export const DarkGridHero = ({ title, description }: DarkGridHeroProps) => {
   return (
     <section className="relative overflow-hidden bg-zinc-950">
-      <Content />
+      <Content title={title} description={description} />
       <Beams />
       <GradientGrid />
     </section>
   );
 };
 
-const Content = () => {
+const Content = ({ title, description }: DarkGridHeroProps) => {
   return (
     <div className="relative z-20 mx-auto flex w-screen flex-col items-center justify-center px-4 lg:py-24 py-10 md:px-8 ">
       <motion.div
@@ -32,16 +36,13 @@ const Content = () => {
         className="relative"
       >
         <div className="relative z-10 max-w-5xl px-4">
-          <h1 className="text-2xl md:text-5xl font-semibold text-white leading-relaxed mb-4">
-            Elevating Your Industry with Integrated Services,
-            <span className="text-cyan-600"> Tailored Solutions That Drive Efficiency and Growth</span>
+          <h1 className="mb-4 text-2xl font-semibold leading-relaxed text-white md:text-5xl">
+            {title}
           </h1>
-          <p className=" md:text-xl font-light text-gray-300">
-            Our comprehensive suite of services is designed to streamline operations, enhance safety, and boost productivity. Explore our expert solutions that cater to every facet of your industrial needs.
-          </p>
+          <p className="md:text-xl font-light text-gray-300">{description}</p>
         </div>
-        
-        </motion.div>
+
+      </motion.div>
     </div>
   );
 }
@@ -205,5 +206,5 @@ type WindowSize = {
 type BeamType = {
   top: number;
   left: number;
-  transition?: AnimationProps["transition"];
+  transition?: Transition;
 };

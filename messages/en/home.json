@@ -1,0 +1,81 @@
+{
+  "hero": {
+    "ariaLabel": "Gulf Rakza Hero Section",
+    "titlePrefix": "Connecting",
+    "titleMid1": "Markets,",
+    "titleMid2": " Empowering",
+    "titleSuffix": "Growth",
+    "description": "At Gulf Rakza, we specialize in top-quality industrial supplies and turnkey solutions to keep your operations running smoothly.",
+    "primaryCta": "Explore our products",
+    "secondaryCta": "Contact Us"
+  },
+  "offerings": {
+    "headingLine1": "Empower your operations with",
+    "headingLine2": "our state-of-the-art solutions",
+    "description": "From safety equipment to hydraulic systems, we offer a comprehensive selection of products tailored to meet your industrial needs."
+  },
+  "services": {
+    "heroHeading": "Elevating Your Industry with Integrated Services, Tailored Solutions That Drive Efficiency and Growth",
+    "heroDescription": "Our comprehensive suite of services is designed to streamline operations, enhance safety, and boost productivity. Explore our expert solutions that cater to every facet of your industrial needs.",
+    "sectionHeading": "Our Service Offerings",
+    "cards": [
+      { "title": "Scaffolding Services", "description": "Safe, compliant scaffolding solutions for every worksite." },
+      { "title": "PEB Shed Fabrication", "description": "Custom pre-engineered building solutions designed to your specifications." },
+      { "title": "Civil Works", "description": "Comprehensive civil engineering services that support infrastructure development." },
+      { "title": "Steel & Aluminium Fabrication", "description": "Precision fabrication services for durable, industrial-grade builds." },
+      { "title": "Rope Access & Safety Training", "description": "Expert training and rope access solutions to ensure safe, efficient operations." },
+      { "title": "Industrial Trading", "description": "A curated selection of industrial products to complement our service offerings." }
+    ],
+    "whyHeading": "Why Choose Our Services?",
+    "whyDescription": "At Gulf Rakza, our services are backed by industry-leading expertise, a commitment to quality, and a tailored approach to meet your unique needs. From rapid response times to uncompromised safety standards, we are your trusted partner for industrial excellence.",
+    "pillars": {
+      "expertise": "Expertise",
+      "quality": "Quality Assurance",
+      "safety": "Safety First"
+    },
+    "ctaHeading": "Ready to Elevate Your Operations?",
+    "ctaDescription": "Our experts are ready to provide personalized solutions to drive your industrial success.",
+    "ctaButton": "Get a Quote"
+  },
+  "testimonials": {
+    "sectionHeading": "What our customers think",
+    "sectionDescription": "At Gulf Rakza, our commitment to excellence is reflected in every interaction. We pride ourselves on delivering exceptional service and high-quality products, ensuring our customers receive nothing but the best.",
+    "rating": "★★★★★",
+    "items": [
+      {
+        "headline": "Impressive Service & Fast Delivery",
+        "description": "We've been working with Gulf Rakza for our safety and industrial equipment needs, and their service has been outstanding. Orders are always delivered on time, and the quality is top-notch. A reliable partner we highly recommend!",
+        "name": "Mohammed A.",
+        "title": "Construction Contractor"
+      },
+      {
+        "headline": "Dependable & Professional",
+        "description": "Gulf Rakza has quickly become one of our trusted suppliers. Their team is professional, responsive, and ensures we get the right products at competitive prices. Great service!",
+        "name": "Sara K.",
+        "title": "Procurement Manager"
+      },
+      {
+        "headline": "Customer-Focused & Efficient",
+        "description": "The team at Gulf Rakza is always ready to assist with our orders, offering quick responses and efficient service. Their product range is exactly what we need, and their reliability makes them a great business partner.",
+        "name": "Ahmed R.",
+        "title": "Industrial Equipment Distributor"
+      },
+      {
+        "headline": "High-Quality Products & Great Pricing",
+        "description": "We've been sourcing safety and electrical supplies from Gulf Rakza, and we're very satisfied. Their products are of excellent quality, pricing is fair, and their service is professional. Highly recommended!",
+        "name": "Faisal M.",
+        "title": "Manufacturing Plant Manager"
+      },
+      {
+        "headline": "Trustworthy Supplier & Excellent Support",
+        "description": "Working with Gulf Rakza has been a great experience. Their quick response, attention to detail, and commitment to quality make them a supplier we can rely on. Looking forward to a long-term partnership!",
+        "name": "Omar H.",
+        "title": "Project Engineer"
+      }
+    ]
+  },
+  "contact": {
+    "heading": "Contact Us",
+    "description": "Have an enquiry about our products or services? We are here to help. Please fill out the form below and our team will get back to you shortly."
+  }
+}

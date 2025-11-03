@@ -1,17 +1,15 @@
 "use client"
 
 import { useEffect, useMemo, useRef, useState } from "react"
-import Link from "next/link"
 import Image from "next/image"
 import { usePathname, useRouter } from "next/navigation"
 import { ArrowUpRight, ChevronDown, ChevronRight, Search, SlidersHorizontal, X } from "lucide-react"
 
 import GetQuoteButton from "@/app/components/GetQuoteButton"
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
+import { Link } from "@/navigation"
 
 import type { CatalogCategoryNode, CatalogProduct } from "@/lib/catalog/types"
 import {
@@ -548,46 +546,18 @@ export default function CatalogPageClient({
             ) : (
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {sortedProducts.map((product) => {
-                  const categoryBreadcrumb =
-                    product.categoryTrail.length > 0
-                      ? product.categoryTrail.map((segment) => segment.title).join(" / ")
-                      : "Uncategorized"
-
                   // Extract 3-level category hierarchy from categoryTrail
                   const category = product.categoryTrail[0]?.title || product.primaryCategory || "General"
                   const subcategory = product.categoryTrail[1]?.title || ""
                   const itemCategory = product.categoryTrail[2]?.title || product.leafCategory || category
-                  
-                  const primaryCategory = product.primaryCategory ?? "General"
-                  const leafCategory = product.leafCategory ?? primaryCategory
 
                   const baseFeatureList =
                     product.features.length > 0 ? product.features : product.featureTokens
                   const featureHighlights = baseFeatureList.slice(0, 3)
-                  const extraFeatureCount = Math.max(
-                    baseFeatureList.length - featureHighlights.length,
-                    0,
-                  )
-                  const specHighlights = product.specs
-                    .filter((spec) => spec.values.length > 0)
-                    .slice(0, 2)
-                    .map((spec) => ({
-                      key: spec.key,
-                      value: spec.values.slice(0, 2).join(", "),
-                    }))
-                  const stockLabel = product.isInStock ? "In stock" : "Out of stock"
-                  const stockBadgeClasses = product.isInStock
-                    ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-200"
-                    : "bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-200"
                   const stockQuantityDisplay =
                     product.usesVariantStock && product.totalStock !== null
                       ? `${product.totalStock} unit${product.totalStock === 1 ? "" : "s"} available`
                       : null
-                  const displayedSizeVariants = product.sizeVariants.slice(0, 4)
-                  const extraSizeCount = Math.max(
-                    product.sizeVariants.length - displayedSizeVariants.length,
-                    0,
-                  )
 
                   return (
                     <div

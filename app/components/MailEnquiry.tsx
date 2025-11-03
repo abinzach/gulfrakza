@@ -1,27 +1,30 @@
 // app/components/EmailInquiry.tsx
+"use client";
+
 import React from "react";
+
+
+import { useTranslations } from "@/i18n/provider";
 import { FaEnvelope } from "react-icons/fa";
-import Link from "next/link";
 
 const EmailInquiry: React.FC = () => {
-  // Replace with your actual email address
+  const t = useTranslations("common.contactPresets");
   const emailAddress = "info@gulfrakza.com";
-  // Pre-filled subject and body
-  const subject = "Inquiry about your services";
-  const body = "Hello, I would like to inquire about your services.";
+  const subject = t("emailSubject");
+  const body = t("emailBody");
   const mailtoUrl = `mailto:${emailAddress}?subject=${encodeURIComponent(
-    subject
+    subject,
   )}&body=${encodeURIComponent(body)}`;
 
   return (
-    <Link
+    <a
       href={mailtoUrl}
       target="_blank"
       rel="noopener noreferrer"
-      className="flex fixed border-4 border-white w-16 rounded-full h-16 bottom-32 right-10 items-center justify-center bg-white hover:bg-gray-100 transition-colors  px-4 py-2  cursor-pointer z-20 shadow-xl"
+      className="fixed bottom-32 right-10 z-20 flex h-16 w-16 cursor-pointer items-center justify-center rounded-full border-4 border-white bg-white px-4 py-2 shadow-xl transition-colors hover:bg-gray-100"
     >
       <FaEnvelope size={50} className="text-black" />
-    </Link>
+    </a>
   );
 };
 
