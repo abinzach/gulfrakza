@@ -1,3 +1,5 @@
+import type { PortableTextBlock } from "next-sanity"
+
 export type CatalogStockStatus = "in_stock" | "out_of_stock"
 
 export interface CatalogSpec {
@@ -18,6 +20,15 @@ export interface CatalogCategoryNode {
 export interface CatalogSizeVariant {
   label: string
   stock: number | null
+}
+
+export interface CatalogResourceAsset {
+  title: string
+  url: string
+  filename?: string
+  extension?: string
+  size?: number
+  mimeType?: string
 }
 
 export interface CatalogProduct {
@@ -49,6 +60,7 @@ export interface CatalogProductDetail {
   title: string
   description: string
   brand: string | null
+  sku: string | null
   primaryCategory?: string
   leafCategory?: string
   imageSrc: string
@@ -62,6 +74,10 @@ export interface CatalogProductDetail {
   totalStock: number | null
   sizeVariants: CatalogSizeVariant[]
   detailsHref: string
+  richBody: PortableTextBlock[]
+  resources: CatalogResourceAsset[]
+  seoTitle?: string | null
+  seoDescription?: string | null
 }
 
 export interface CatalogData {

@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 
 import { fetchCatalogData } from "@/lib/catalog"
+import { isLocale, type Locale } from "@/i18n/config"
 
 import CatalogPageClient from "./catalog-client"
 import { parseFiltersFromSearchParams } from "./filter-helpers"
@@ -46,6 +47,7 @@ export const metadata: Metadata = {
 }
 
 type CatalogPageProps = {
+  params: Promise<{ locale: string }>
   searchParams?: Promise<Record<string, string | string[] | undefined>>
 }
 
@@ -71,8 +73,12 @@ const buildURLSearchParams = (params?: Record<string, string | string[] | undefi
   return searchParams
 }
 
-export default async function CatalogPage({ searchParams }: CatalogPageProps) {
-  const { products, categoryTree, featureFilters, brandFilters } = await fetchCatalogData()
+export default async function CatalogPage({ params, searchParams }: CatalogPageProps) {
+  const { locale } = await params
+  const activeLocale: Locale = isLocale(locale) ? locale : "en"
+
+  const { products, categoryTree, featureFilters, brandFilters } =
+    await fetchCatalogData(activeLocale)
 
   const resolvedSearchParams = searchParams ? await searchParams : undefined
 

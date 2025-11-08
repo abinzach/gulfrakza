@@ -1,7 +1,9 @@
 import { groq } from "next-sanity"
+import type { PortableTextBlock } from "next-sanity"
 
 import { client } from "@/sanity/lib/client"
 import { urlFor } from "@/sanity/lib/image"
+import type { Locale } from "@/i18n/config"
 
 import type {
   CatalogCategoryNode,
@@ -9,11 +11,26 @@ import type {
   CatalogProduct,
   CatalogProductDetail,
   CatalogSpec,
+  CatalogResourceAsset,
 } from "./types"
 
 interface RawLocalizedString {
   en?: string | null
   ar?: string | null
+}
+
+interface RawLocalizedBlocks {
+  en?: PortableTextBlock[] | null
+  ar?: PortableTextBlock[] | null
+}
+
+interface RawResourceAsset {
+  title?: RawLocalizedString | null
+  url?: string | null
+  originalFilename?: string | null
+  extension?: string | null
+  size?: number | null
+  mimeType?: string | null
 }
 
 interface RawCategory {
@@ -44,10 +61,13 @@ interface RawProduct {
   title?: RawLocalizedString | null
   summary?: RawLocalizedString | null
   brand?: RawLocalizedString | null
+  sku?: string | null
   heroImage?: unknown
   gallery?: Array<unknown> | null
   features?: Array<RawLocalizedString | null> | null
   specifications?: Array<RawProductSpecification | null> | null
+  body?: RawLocalizedBlocks | null
+  resources?: Array<RawResourceAsset | null> | null
   categoryPath?: Array<{
     _id: string
     slug?: string | null
@@ -57,6 +77,8 @@ interface RawProduct {
   status?: string | null
   stockStatus?: string | null
   sizeVariants?: Array<RawSizeVariant | null> | null
+  seoTitle?: RawLocalizedString | null
+  seoDescription?: RawLocalizedString | null
 }
 
 interface CategoryNodeRecord {
@@ -115,6 +137,8 @@ const productDetailQuery = groq`
     title,
     brand,
     summary,
+    sku,
+    body,
     heroImage,
     gallery[]{
       ...
@@ -126,21 +150,75 @@ const productDetailQuery = groq`
       label,
       stock
     },
+    resources[]{
+      title,
+      "url": file.asset->url,
+      "originalFilename": file.asset->originalFilename,
+      "extension": file.asset->extension,
+      "size": file.asset->size,
+      "mimeType": file.asset->mimeType
+    },
     categoryPath[]->{
       _id,
       "slug": slug.current,
       title,
       parent->{ _id }
     },
+    seoTitle,
+    seoDescription,
     status
   }
 `
 
-const pickLocalizedString = (value?: RawLocalizedString | null) => {
+const pickLocalizedString = (value?: RawLocalizedString | null, locale: Locale = "en") => {
   if (!value) return undefined
   const english = value.en?.trim()
   const arabic = value.ar?.trim()
+
+  if (locale === "ar") {
+    return arabic || english || undefined
+  }
+
   return english || arabic || undefined
+}
+
+const pickLocalizedBlocks = (
+  value?: RawLocalizedBlocks | null,
+  locale: Locale = "en",
+): PortableTextBlock[] => {
+  if (!value) return []
+  const english = Array.isArray(value.en) ? (value.en as PortableTextBlock[]) : []
+  const arabic = Array.isArray(value.ar) ? (value.ar as PortableTextBlock[]) : []
+
+  if (locale === "ar") {
+    return arabic.length > 0 ? arabic : english
+  }
+
+  return english.length > 0 ? english : arabic
+}
+
+const normalizeResources = (
+  resources: Array<RawResourceAsset | null> | null | undefined,
+  locale: Locale,
+): CatalogResourceAsset[] => {
+  if (!resources) return []
+
+  return resources
+    .map((entry) => {
+      if (!entry) return null
+      const title = pickLocalizedString(entry.title, locale)
+      const url = entry.url?.trim()
+      if (!title || !url) return null
+      return {
+        title,
+        url,
+        filename: entry.originalFilename ?? undefined,
+        extension: entry.extension ?? undefined,
+        size: typeof entry.size === "number" ? entry.size : undefined,
+        mimeType: entry.mimeType ?? undefined,
+      }
+    })
+    .filter((item): item is CatalogResourceAsset => Boolean(item))
 }
 
 const buildImageUrl = (source: unknown) => {
@@ -152,7 +230,11 @@ const buildImageUrl = (source: unknown) => {
   }
 }
 
-const sortByOrderAndTitle = (a: CategoryNodeRecord, b: CategoryNodeRecord) => {
+const sortByOrderAndTitle = (
+  a: CategoryNodeRecord,
+  b: CategoryNodeRecord,
+  locale: Locale = "en",
+) => {
   const orderA = Number.isFinite(a.order) ? (a.order as number) : Number.POSITIVE_INFINITY
   const orderB = Number.isFinite(b.order) ? (b.order as number) : Number.POSITIVE_INFINITY
 
@@ -160,7 +242,7 @@ const sortByOrderAndTitle = (a: CategoryNodeRecord, b: CategoryNodeRecord) => {
     return orderA - orderB
   }
 
-  return a.title.localeCompare(b.title)
+  return a.title.localeCompare(b.title, locale)
 }
 
 interface CatalogContext {
@@ -170,12 +252,14 @@ interface CatalogContext {
   getAncestors: (node: CategoryNodeRecord) => CategoryNodeRecord[]
 }
 
-const buildCatalogContext = (rawCategories: RawCategory[]): CatalogContext => {
+const buildCatalogContext = (rawCategories: RawCategory[], locale: Locale): CatalogContext => {
   const categoryRecords: CategoryNodeRecord[] = []
+  const localeAwareSort = (a: CategoryNodeRecord, b: CategoryNodeRecord) =>
+    sortByOrderAndTitle(a, b, locale)
 
   rawCategories.forEach((category) => {
     const slug = category.slug?.trim()
-    const title = pickLocalizedString(category.title)
+    const title = pickLocalizedString(category.title, locale)
 
     if (!category._id || !slug || !title) {
       return
@@ -187,7 +271,7 @@ const buildCatalogContext = (rawCategories: RawCategory[]): CatalogContext => {
       id: category._id,
       slug,
       title,
-      summary: pickLocalizedString(category.summary),
+      summary: pickLocalizedString(category.summary, locale),
       order: typeof category.order === "number" ? (category.order as number) : Number.POSITIVE_INFINITY,
       parentId: category.parent?._id ?? null,
       heroImage: category.heroImage,
@@ -233,7 +317,7 @@ const buildCatalogContext = (rawCategories: RawCategory[]): CatalogContext => {
     return ancestors
   }
 
-  const topLevelNodes = categoryRecords.filter((node) => !node.parentId).sort(sortByOrderAndTitle)
+  const topLevelNodes = categoryRecords.filter((node) => !node.parentId).sort(localeAwareSort)
 
   return { nodeById, nodeBySlug, topLevelNodes, getAncestors }
 }
@@ -247,9 +331,10 @@ interface NormalizeOptions {
 const normalizeProduct = (
   product: RawProduct,
   context: CatalogContext,
+  locale: Locale,
   options: NormalizeOptions = {},
 ): CatalogProduct | null => {
-  const title = pickLocalizedString(product.title)
+  const title = pickLocalizedString(product.title, locale)
   const slug = product.slug?.trim()
 
   if (!product._id || !title || !slug) {
@@ -259,7 +344,7 @@ const normalizeProduct = (
   const rawTrail = (product.categoryPath ?? [])
     .map((category) => {
       if (!category?._id || !category.slug) return null
-      const categoryTitle = pickLocalizedString(category.title)
+      const categoryTitle = pickLocalizedString(category.title, locale)
       if (!categoryTitle) return null
       return {
         id: category._id,
@@ -314,7 +399,7 @@ const normalizeProduct = (
     "/logo-rakza.png"
 
   const description =
-    pickLocalizedString(product.summary) ||
+    pickLocalizedString(product.summary, locale) ||
     categoryNodesForTrail.find((node) => node.summary)?.summary ||
     `${title} supplied by Gulf Rakza Trading.`
 
@@ -322,7 +407,7 @@ const normalizeProduct = (
   const featureList: string[] = []
 
   ;(product.features ?? []).forEach((feature) => {
-    const token = pickLocalizedString(feature)
+    const token = pickLocalizedString(feature, locale)
     if (token) {
       productFeatureTokens.add(token)
       if (!featureList.includes(token)) {
@@ -334,8 +419,8 @@ const normalizeProduct = (
 
   const specifications: CatalogSpec[] = []
   ;(product.specifications ?? []).forEach((spec) => {
-    const label = pickLocalizedString(spec?.label)
-    const value = pickLocalizedString(spec?.value)
+    const label = pickLocalizedString(spec?.label, locale)
+    const value = pickLocalizedString(spec?.value, locale)
     if (!label || !value) return
     specifications.push({
       key: label,
@@ -365,7 +450,7 @@ const normalizeProduct = (
     ? sizeVariants.reduce((sum, variant) => sum + (variant.stock ?? 0), 0)
     : null
 
-  const brand = pickLocalizedString(product.brand) ?? null
+  const brand = pickLocalizedString(product.brand, locale) ?? null
   if (brand) {
     options.brandSet?.add(brand)
   }
@@ -406,7 +491,7 @@ const normalizeProduct = (
   }
 }
 
-export const fetchCatalogData = async (): Promise<CatalogData> => {
+export const fetchCatalogData = async (locale: Locale = "en"): Promise<CatalogData> => {
   const [rawCategories, rawProducts] = await Promise.all([
     client.fetch<RawCategory[]>(
       categoriesQuery,
@@ -420,7 +505,7 @@ export const fetchCatalogData = async (): Promise<CatalogData> => {
     ),
   ])
 
-  const context = buildCatalogContext(rawCategories)
+  const context = buildCatalogContext(rawCategories, locale)
   const featureSet = new Set<string>()
   const brandSet = new Set<string>()
   const productCountMap = new Map<string, number>()
@@ -428,7 +513,7 @@ export const fetchCatalogData = async (): Promise<CatalogData> => {
   const productEntries: CatalogProduct[] = []
 
   rawProducts.forEach((rawProduct) => {
-    const normalized = normalizeProduct(rawProduct, context, {
+    const normalized = normalizeProduct(rawProduct, context, locale, {
       featureSet,
       brandSet,
       productCountMap,
@@ -440,7 +525,7 @@ export const fetchCatalogData = async (): Promise<CatalogData> => {
     }
   })
 
-  const sortedProducts = productEntries.sort((a, b) => a.title.localeCompare(b.title))
+  const sortedProducts = productEntries.sort((a, b) => a.title.localeCompare(b.title, locale))
   sortedProducts.forEach((product, index) => {
     product.position = index
   })
@@ -460,7 +545,7 @@ export const fetchCatalogData = async (): Promise<CatalogData> => {
     const children = node.children
       .map((childId) => context.nodeById.get(childId))
       .filter((child): child is CategoryNodeRecord => Boolean(child))
-      .sort(sortByOrderAndTitle)
+      .sort((a, b) => sortByOrderAndTitle(a, b, locale))
       .map((child) => buildTreeNode(child, path))
 
     return {
@@ -476,8 +561,8 @@ export const fetchCatalogData = async (): Promise<CatalogData> => {
 
   const categoryTree = context.topLevelNodes.map((node) => buildTreeNode(node, []))
 
-  const featureFilters = Array.from(featureSet).sort((a, b) => a.localeCompare(b))
-  const brandFilters = Array.from(brandSet).sort((a, b) => a.localeCompare(b))
+  const featureFilters = Array.from(featureSet).sort((a, b) => a.localeCompare(b, locale))
+  const brandFilters = Array.from(brandSet).sort((a, b) => a.localeCompare(b, locale))
 
   return {
     categoryTree,
@@ -487,7 +572,10 @@ export const fetchCatalogData = async (): Promise<CatalogData> => {
   }
 }
 
-export const fetchProductDetail = async (slug: string): Promise<CatalogProductDetail | null> => {
+export const fetchProductDetail = async (
+  slug: string,
+  locale: Locale = "en",
+): Promise<CatalogProductDetail | null> => {
   const [rawCategories, rawProduct] = await Promise.all([
     client.fetch<RawCategory[]>(
       categoriesQuery,
@@ -505,12 +593,18 @@ export const fetchProductDetail = async (slug: string): Promise<CatalogProductDe
     return null
   }
 
-  const context = buildCatalogContext(rawCategories)
-  const baseProduct = normalizeProduct(rawProduct, context)
+  const context = buildCatalogContext(rawCategories, locale)
+  const baseProduct = normalizeProduct(rawProduct, context, locale)
 
   if (!baseProduct) {
     return null
   }
+
+  const sku = rawProduct.sku?.trim() || null
+  const richBody = pickLocalizedBlocks(rawProduct.body, locale)
+  const resources = normalizeResources(rawProduct.resources, locale)
+  const seoTitle = pickLocalizedString(rawProduct.seoTitle, locale) ?? null
+  const seoDescription = pickLocalizedString(rawProduct.seoDescription, locale) ?? null
 
   const gallerySources = rawProduct.gallery ?? []
   const galleryUrls = gallerySources
@@ -539,5 +633,10 @@ export const fetchProductDetail = async (slug: string): Promise<CatalogProductDe
     totalStock: baseProduct.totalStock,
     sizeVariants: baseProduct.sizeVariants,
     detailsHref: baseProduct.detailsHref ?? `/products/catalog/${baseProduct.slug}`,
+    sku,
+    richBody,
+    resources,
+    seoTitle,
+    seoDescription,
   }
 }

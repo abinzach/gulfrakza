@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: LayoutParams): Promise<Metada
   const messages = await getMessages(locale);
   const common = messages.common;
 
-  const headersList = headers();
+  const headersList = await headers();
   const pathname = headersList.get("x-pathname") || "/";
   const normalizedPath = pathname.startsWith("/") ? pathname : `/${pathname}`;
   const localePrefix = `/${locale}`;

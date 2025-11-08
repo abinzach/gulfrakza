@@ -1,13 +1,17 @@
+import { PortableText, type PortableTextComponents } from "@portabletext/react"
+import { Download } from "lucide-react"
 import type { Metadata } from "next"
 import Image from "next/image"
 import { notFound } from "next/navigation"
 
 import GetQuoteButton from "@/app/components/GetQuoteButton"
 import { fetchCatalogData, fetchProductDetail } from "@/lib/catalog"
+import { isLocale, type Locale } from "@/i18n/config"
 import { Link } from "@/navigation"
+import { urlFor } from "@/sanity/lib/image"
 
 interface ProductPageProps {
-  params: Promise<{ slug: string }>
+  params: Promise<{ slug: string; locale: string }>
 }
 
 export async function generateStaticParams() {
@@ -16,8 +20,9 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
-  const { slug } = await params
-  const product = await fetchProductDetail(slug)
+  const { slug, locale } = await params
+  const activeLocale: Locale = isLocale(locale) ? locale : "en"
+  const product = await fetchProductDetail(slug, activeLocale)
 
   if (!product) {
     return {
@@ -25,8 +30,9 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
     }
   }
 
-  const title = `${product.title} | Gulf Rakza Trading`
-  const description = product.description
+  const fallbackTitle = `${product.title} | Gulf Rakza Trading`
+  const title = product.seoTitle || fallbackTitle
+  const description = product.seoDescription || product.description
   const image = product.imageSrc
 
   return {
@@ -51,16 +57,89 @@ const stockStatusStyles = {
   out_of_stock: "bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-200",
 }
 
+const portableTextComponents: PortableTextComponents = {
+  types: {
+    image: ({ value }) => {
+      const imageValue = value as { asset?: unknown; alt?: string }
+      if (!imageValue?.asset) return null
+      const imageUrl = urlFor(imageValue).width(1400).fit("max").quality(85).url()
+      if (!imageUrl) return null
+      return (
+        <div className="relative my-6 h-0 overflow-hidden rounded-xl border border-gray-200 bg-white pb-[56.25%] dark:border-gray-700 dark:bg-gray-900">
+          <Image
+            src={imageUrl}
+            alt={imageValue.alt || "Product media"}
+            fill
+            sizes="(max-width: 1024px) 100vw, 70vw"
+            className="object-contain"
+          />
+        </div>
+      )
+    },
+  },
+  block: {
+    normal: ({ children }) => (
+      <p className="text-base leading-relaxed text-gray-700 dark:text-gray-300">{children}</p>
+    ),
+    h2: ({ children }) => (
+      <h3 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">{children}</h3>
+    ),
+    h3: ({ children }) => (
+      <h4 className="text-xl font-semibold text-gray-900 dark:text-gray-100">{children}</h4>
+    ),
+  },
+  list: {
+    bullet: ({ children }) => (
+      <ul className="ml-6 list-disc space-y-2 text-gray-700 dark:text-gray-300">{children}</ul>
+    ),
+    number: ({ children }) => (
+      <ol className="ml-6 list-decimal space-y-2 text-gray-700 dark:text-gray-300">{children}</ol>
+    ),
+  },
+  marks: {
+    externalLink: ({ children, value }) => {
+      const linkValue = value as { href?: string; openInNewTab?: boolean } | undefined
+      if (!linkValue?.href) {
+        return <span>{children}</span>
+      }
+      return (
+        <a
+          href={linkValue.href}
+          target={linkValue.openInNewTab ? "_blank" : undefined}
+          rel={linkValue.openInNewTab ? "noopener noreferrer" : undefined}
+          className="text-cyan-600 underline decoration-dotted underline-offset-4 transition hover:text-cyan-500"
+        >
+          {children}
+        </a>
+      )
+    },
+  },
+}
+
+const formatFileSize = (bytes?: number | null) => {
+  if (!bytes || bytes <= 0) return ""
+  const units = ["B", "KB", "MB", "GB"]
+  let size = bytes
+  let unitIndex = 0
+  while (size >= 1024 && unitIndex < units.length - 1) {
+    size /= 1024
+    unitIndex++
+  }
+  const value = size % 1 === 0 ? size.toFixed(0) : size.toFixed(1)
+  return `${value} ${units[unitIndex]}`
+}
+
 export default async function ProductDetailPage({ params }: ProductPageProps) {
-  const { slug } = await params
-  const product = await fetchProductDetail(slug)
+  const { slug, locale } = await params
+  const activeLocale: Locale = isLocale(locale) ? locale : "en"
+  const product = await fetchProductDetail(slug, activeLocale)
 
   if (!product) {
     notFound()
   }
 
   // Fetch related products from catalog
-  const { products: allProducts } = await fetchCatalogData()
+  const { products: allProducts } = await fetchCatalogData(activeLocale)
   const relatedProducts = allProducts
     .filter((p) => p.id !== product.id && p.primaryCategory === product.primaryCategory)
     .slice(0, 8)
@@ -168,6 +247,48 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
               <p className="text-base leading-relaxed text-gray-600 dark:text-gray-300">
                 {product.description}
               </p>
+
+              <div className="grid grid-cols-1 gap-4 rounded-lg border border-gray-200 bg-gray-50 p-4 text-sm dark:border-gray-700 dark:bg-gray-800/50 sm:grid-cols-2">
+                <div>
+                  <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                    SKU / Model
+                  </p>
+                  <p className="mt-1 font-medium text-gray-900 dark:text-gray-100">
+                    {product.sku ?? "—"}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                    Primary Category
+                  </p>
+                  <p className="mt-1 font-medium text-gray-900 dark:text-gray-100">
+                    {category}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                    Category Path
+                  </p>
+                  <p className="mt-1 font-medium text-gray-900 dark:text-gray-100">
+                    {product.categoryTrail.length > 0
+                      ? product.categoryTrail.map((segment) => segment.title).join(" / ")
+                      : category}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                    Availability
+                  </p>
+                  <p className="mt-1 font-medium text-gray-900 dark:text-gray-100">
+                    {product.stockStatus === "in_stock" ? "In stock" : "Out of stock"}
+                    {product.totalStock !== null && (
+                      <span className="ml-2 text-xs text-gray-500 dark:text-gray-400">
+                        ({product.totalStock} unit{product.totalStock === 1 ? "" : "s"})
+                      </span>
+                    )}
+                  </p>
+                </div>
+              </div>
             </div>
 
             {/* CTA Section */}
@@ -185,6 +306,17 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
                 ← Back to Catalog
               </Link>
             </div>
+
+            {product.richBody.length > 0 && (
+              <div className="space-y-4">
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+                  Detailed Overview
+                </h2>
+                <div className="space-y-4">
+                  <PortableText value={product.richBody} components={portableTextComponents} />
+                </div>
+              </div>
+            )}
 
             {/* Features */}
             {product.features.length > 0 && (
@@ -258,6 +390,52 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
                     </tbody>
                   </table>
                 </div>
+              </div>
+            )}
+
+            {product.resources.length > 0 && (
+              <div className="space-y-4">
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+                  Downloads & Resources
+                </h2>
+                <ul className="space-y-3">
+                  {product.resources.map((resource) => {
+                    const metaParts = [
+                      resource.filename,
+                      resource.extension ? resource.extension.toUpperCase() : undefined,
+                      formatFileSize(resource.size),
+                    ].filter(Boolean)
+
+                    return (
+                      <li key={resource.url}>
+                        <a
+                          href={resource.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          download={resource.filename}
+                          className="flex items-center gap-4 rounded-lg border border-gray-200 bg-white p-4 transition hover:border-cyan-500 dark:border-gray-700 dark:bg-gray-800"
+                        >
+                          <span className="flex h-12 w-12 items-center justify-center rounded-lg bg-cyan-50 text-cyan-700 dark:bg-cyan-900/30 dark:text-cyan-300">
+                            <Download className="h-5 w-5" />
+                          </span>
+                          <div className="flex-1">
+                            <p className="font-medium text-gray-900 dark:text-gray-100">
+                              {resource.title}
+                            </p>
+                            {metaParts.length > 0 && (
+                              <p className="text-xs text-gray-500 dark:text-gray-400">
+                                {metaParts.join(" • ")}
+                              </p>
+                            )}
+                          </div>
+                          <span className="text-sm font-semibold text-cyan-600 dark:text-cyan-400">
+                            Download
+                          </span>
+                        </a>
+                      </li>
+                    )
+                  })}
+                </ul>
               </div>
             )}
           </div>
