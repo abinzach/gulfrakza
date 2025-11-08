@@ -1,3 +1,4 @@
+import { Fragment } from "react"
 import { PortableText, type PortableTextComponents } from "@portabletext/react"
 import { Download } from "lucide-react"
 import type { Metadata } from "next"
@@ -5,6 +6,14 @@ import Image from "next/image"
 import { notFound } from "next/navigation"
 
 import GetQuoteButton from "@/app/components/GetQuoteButton"
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb"
 import { fetchCatalogData, fetchProductDetail } from "@/lib/catalog"
 import { isLocale, type Locale } from "@/i18n/config"
 import { Link } from "@/navigation"
@@ -145,7 +154,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
     .slice(0, 8)
 
   const stockBadgeClass = stockStatusStyles[product.stockStatus]
-  const breadcrumb = [
+  const catalogBreadcrumb = [
     { label: "Products", href: "/products/catalog" },
     ...product.categoryTrail
       .filter((segment) => Boolean(segment.slug))
@@ -153,7 +162,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
         label: segment.title,
         href: `/products/catalog?category=${encodeURIComponent(segment.slug)}`,
       })),
-    { label: product.title },
+    { label: product.title, href: null },
   ]
 
   const category = product.categoryTrail[0]?.title || product.primaryCategory || "General"
@@ -161,35 +170,39 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
   const itemCategory = product.categoryTrail[2]?.title || product.leafCategory || category
 
   return (
-    <main className="min-h-screen bg-white dark:bg-gray-900">
+    <main className="min-h-screen bg-white pt-12 dark:bg-gray-900 lg:pt-16">
       {/* Breadcrumb */}
       <div className="border-b border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900">
-        <div className="mx-auto max-w-[1600px] px-6 py-4">
-          <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-sm">
-            {breadcrumb.map((item, index) => (
-              <span key={`${item.label}-${index}`} className="flex items-center gap-2">
-                {item.href ? (
-                  <Link
-                    href={item.href}
-                    className="text-gray-500 transition hover:text-cyan-600 dark:text-gray-400 dark:hover:text-cyan-400"
-                  >
-                    {item.label}
-                  </Link>
-                ) : (
-                  <span className="text-gray-900 dark:text-gray-100">{item.label}</span>
-                )}
-                {index < breadcrumb.length - 1 && (
-                  <span className="text-gray-300 dark:text-gray-700">/</span>
-                )}
-              </span>
-            ))}
-          </nav>
+        <div className="mx-auto max-w-[1600px] px-4 py-3 sm:px-6 sm:py-4">
+          <Breadcrumb>
+            <BreadcrumbList>
+              {catalogBreadcrumb.map((item, index) => {
+                const isLast = index === catalogBreadcrumb.length - 1
+                return (
+                  <Fragment key={`${item.label}-${index}`}>
+                    <BreadcrumbItem>
+                      {isLast || !item.href ? (
+                        <BreadcrumbPage className="text-xs sm:text-sm">{item.label}</BreadcrumbPage>
+                      ) : (
+                        <BreadcrumbLink asChild>
+                          <Link href={item.href} className="text-xs sm:text-sm" scroll={false}>
+                            {item.label}
+                          </Link>
+                        </BreadcrumbLink>
+                      )}
+                    </BreadcrumbItem>
+                    {index < catalogBreadcrumb.length - 1 && <BreadcrumbSeparator />}
+                  </Fragment>
+                )
+              })}
+            </BreadcrumbList>
+          </Breadcrumb>
         </div>
       </div>
 
       {/* Product Detail */}
-      <div className="mx-auto max-w-[1600px] px-6 py-8">
-        <div className="grid gap-8 lg:grid-cols-2">
+      <div className="mx-auto max-w-[1600px] px-4 py-8 sm:px-6">
+        <div className="grid gap-6 lg:grid-cols-2 lg:gap-10">
           {/* Left: Sticky Image */}
           <div className="lg:sticky lg:top-8 lg:h-fit">
             <div className="relative aspect-square overflow-hidden rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
@@ -198,12 +211,12 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
                 alt={product.title}
                 fill
                 priority
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                className="object-contain p-8"
+                sizes="(max-width: 640px) 90vw, (max-width: 1024px) 60vw, 50vw"
+                className="object-contain p-4 sm:p-8"
               />
             </div>
             {product.gallery.length > 1 && (
-              <div className="mt-4 grid grid-cols-4 gap-2">
+              <div className="mt-4 grid grid-cols-3 gap-2 sm:grid-cols-4">
                 {product.gallery.slice(0, 4).map((imageUrl) => (
                   <div
                     key={imageUrl}
@@ -217,7 +230,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
           </div>
 
           {/* Right: Scrollable Content */}
-          <div className="space-y-8">
+          <div className="space-y-6 sm:space-y-8">
             {/* Product Info */}
             <div className="space-y-4">
               {product.brand && (
@@ -225,7 +238,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
                   {product.brand}
                 </p>
               )}
-              <h1 className="text-3xl font-semibold text-gray-900 dark:text-gray-100">
+              <h1 className="text-2xl font-semibold text-gray-900 sm:text-3xl dark:text-gray-100">
                 {product.title}
               </h1>
               
@@ -244,7 +257,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
               </div>
 
               {/* Description */}
-              <p className="text-base leading-relaxed text-gray-600 dark:text-gray-300">
+              <p className="text-sm leading-relaxed text-gray-600 sm:text-base dark:text-gray-300">
                 {product.description}
               </p>
 
@@ -292,7 +305,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
             </div>
 
             {/* CTA Section */}
-            <div className="space-y-3 border-y border-gray-200 py-6 dark:border-gray-700">
+            <div className="space-y-3 border-y border-gray-200 py-5 dark:border-gray-700 sm:py-6">
               <GetQuoteButton
                 productName={product.title}
                 productCategory={category}
@@ -301,7 +314,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
               />
               <Link
                 href="/products/catalog"
-                className="flex w-full items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
+                className="flex w-full items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 sm:text-base"
               >
                 ← Back to Catalog
               </Link>
@@ -309,7 +322,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
 
             {product.richBody.length > 0 && (
               <div className="space-y-4">
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+                <h2 className="text-lg font-semibold text-gray-900 sm:text-xl dark:text-gray-100">
                   Detailed Overview
                 </h2>
                 <div className="space-y-4">
@@ -321,13 +334,13 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
             {/* Features */}
             {product.features.length > 0 && (
               <div className="space-y-4">
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+                <h2 className="text-lg font-semibold text-gray-900 sm:text-xl dark:text-gray-100">
                   Key Features
                 </h2>
                 <ul className="space-y-3">
                   {product.features.map((feature) => (
                     <li key={feature} className="flex items-start gap-3 text-gray-700 dark:text-gray-300">
-                      <svg className="mt-1 h-5 w-5 flex-shrink-0 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                      <svg className="mt-1 h-4 w-4 flex-shrink-0 text-green-500 sm:h-5 sm:w-5" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                       </svg>
                       <span>{feature}</span>
@@ -340,16 +353,19 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
             {/* Specifications */}
             {product.specs.length > 0 && (
               <div className="space-y-4">
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+                <h2 className="text-lg font-semibold text-gray-900 sm:text-xl dark:text-gray-100">
                   Specifications
                 </h2>
                 <div className="divide-y divide-gray-200 rounded-lg border border-gray-200 dark:divide-gray-700 dark:border-gray-700">
                   {product.specs.map((spec) => (
-                    <div key={spec.key} className="grid grid-cols-3 gap-4 px-4 py-3">
-                      <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                    <div
+                      key={spec.key}
+                      className="flex flex-col gap-1 px-4 py-3 sm:grid sm:grid-cols-3 sm:items-start sm:gap-4"
+                    >
+                      <dt className="text-sm font-medium text-gray-500 dark:text-gray-400 sm:text-base">
                         {spec.key}
                       </dt>
-                      <dd className="col-span-2 text-sm text-gray-900 dark:text-gray-100">
+                      <dd className="text-sm text-gray-900 sm:col-span-2 sm:text-base dark:text-gray-100">
                         {spec.values.join(", ")}
                       </dd>
                     </div>
@@ -361,41 +377,43 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
             {/* Size Variants */}
             {product.sizeVariants.length > 0 && (
               <div className="space-y-4">
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+                <h2 className="text-lg font-semibold text-gray-900 sm:text-xl dark:text-gray-100">
                   Available Sizes
                 </h2>
                 <div className="overflow-hidden rounded-lg border border-gray-200 dark:border-gray-700">
-                  <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                    <thead className="bg-gray-50 dark:bg-gray-800">
-                      <tr>
-                        <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-gray-100">
-                          Size
-                        </th>
-                        <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-gray-100">
-                          Stock
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-900">
-                      {product.sizeVariants.map((variant) => (
-                        <tr key={variant.label}>
-                          <td className="px-4 py-3 text-sm font-medium text-gray-900 dark:text-gray-100">
-                            {variant.label}
-                          </td>
-                          <td className="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">
-                            {variant.stock !== null ? `${variant.stock} units` : "Contact for availability"}
-                          </td>
+                  <div className="w-full overflow-x-auto">
+                    <table className="min-w-[360px] divide-y divide-gray-200 dark:divide-gray-700">
+                      <thead className="bg-gray-50 dark:bg-gray-800">
+                        <tr>
+                          <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-700 dark:text-gray-200">
+                            Size
+                          </th>
+                          <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-700 dark:text-gray-200">
+                            Stock
+                          </th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-900">
+                        {product.sizeVariants.map((variant) => (
+                          <tr key={variant.label}>
+                            <td className="px-4 py-3 text-sm font-medium text-gray-900 dark:text-gray-100">
+                              {variant.label}
+                            </td>
+                            <td className="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">
+                              {variant.stock !== null ? `${variant.stock} units` : "Contact for availability"}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
             )}
 
             {product.resources.length > 0 && (
               <div className="space-y-4">
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+                <h2 className="text-lg font-semibold text-gray-900 sm:text-xl dark:text-gray-100">
                   Downloads & Resources
                 </h2>
                 <ul className="space-y-3">
@@ -413,13 +431,13 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
                           target="_blank"
                           rel="noopener noreferrer"
                           download={resource.filename}
-                          className="flex items-center gap-4 rounded-lg border border-gray-200 bg-white p-4 transition hover:border-cyan-500 dark:border-gray-700 dark:bg-gray-800"
+                          className="flex items-center gap-3 rounded-lg border border-gray-200 bg-white p-3 transition hover:border-cyan-500 dark:border-gray-700 dark:bg-gray-800 sm:gap-4 sm:p-4"
                         >
-                          <span className="flex h-12 w-12 items-center justify-center rounded-lg bg-cyan-50 text-cyan-700 dark:bg-cyan-900/30 dark:text-cyan-300">
+                          <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-cyan-50 text-cyan-700 dark:bg-cyan-900/30 dark:text-cyan-300 sm:h-12 sm:w-12">
                             <Download className="h-5 w-5" />
                           </span>
                           <div className="flex-1">
-                            <p className="font-medium text-gray-900 dark:text-gray-100">
+                            <p className="text-sm font-medium text-gray-900 sm:text-base dark:text-gray-100">
                               {resource.title}
                             </p>
                             {metaParts.length > 0 && (
@@ -428,7 +446,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
                               </p>
                             )}
                           </div>
-                          <span className="text-sm font-semibold text-cyan-600 dark:text-cyan-400">
+                          <span className="text-xs font-semibold uppercase tracking-wide text-cyan-600 dark:text-cyan-400 sm:text-sm">
                             Download
                           </span>
                         </a>
@@ -445,8 +463,8 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
       {/* Related Products */}
       {relatedProducts.length > 0 && (
         <div className="border-t border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800/50">
-          <div className="mx-auto max-w-[1600px] px-6 py-12">
-            <h2 className="mb-6 text-2xl font-semibold text-gray-900 dark:text-gray-100">
+          <div className="mx-auto max-w-[1600px] px-4 py-10 sm:px-6 sm:py-12">
+            <h2 className="mb-6 text-xl font-semibold text-gray-900 dark:text-gray-100 sm:text-2xl">
               Related Products
             </h2>
             <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
