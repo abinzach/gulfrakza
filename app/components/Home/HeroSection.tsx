@@ -1,19 +1,21 @@
 "use client";
 
 import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button";
-import Link from "next/link";
+import { useTranslations } from "@/i18n/provider";
 import React from "react";
 
 export default function HeroSection() {
+  const t = useTranslations("home.hero");
+  const misc = useTranslations("common.misc");
+
   return (
     <section
       className="relative h-screen w-full overflow-hidden"
       role="banner"
-      aria-label="Gulf Rakza Hero Section"
+      aria-label={t("ariaLabel")}
     >
-      {/* Background Video Container */}
       <video
-        className="absolute top-0 left-0 w-full h-full object-cover"
+        className="absolute top-0 left-0 h-full w-full object-cover"
         autoPlay
         loop
         muted
@@ -24,40 +26,34 @@ export default function HeroSection() {
           src="https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/hero_vid?updatedAt=1739108938597"
           type="video/mp4"
         />
-        Your browser does not support the video tag.
+        {misc("videoFallback")}
       </video>
-      
-      {/* Fallback image for no-JS or unsupported video */}
+
       <noscript>
-        <div className="absolute top-0 left-0 w-full h-full">
-          <div className="w-full h-full bg-gray-800"></div>
+        <div className="absolute left-0 top-0 h-full w-full">
+          <div className="h-full w-full bg-gray-800" />
         </div>
       </noscript>
 
-      {/* Overlay for Darkening the Background */}
-      <div
-        className="absolute inset-0 bg-black bg-opacity-50"
-        aria-hidden="true"
-      ></div>
+      <div className="absolute inset-0 bg-black bg-opacity-50" aria-hidden="true" />
 
-      {/* Content Over the Video */}
-      <div className="relative z-10 flex flex-col items-center justify-center h-full text-center text-white px-4">
-        <h1 className="text-4xl md:text-5xl font-semibold mb-4">
-          <span className="font-light">Connecting</span> Markets
-          <span className="font-light">, Empowering</span> Growth
+      <div className="relative z-10 flex h-full flex-col items-center justify-center px-4 text-center text-white">
+        <h1 className="mb-4 text-4xl font-semibold md:text-5xl">
+          <span className="font-light">{t("titlePrefix")}</span>{" "}
+          {t("titleMid1")}{" "}
+          <span className="font-light">{t("titleMid2")}</span>{" "}
+         {t("titleSuffix")}
         </h1>
-        <p className="text font-raleway md:text-lg max-w-2xl mb-6">
-          At Gulf Rakza, we specialize in top-quality industrial supplies and
-          turnkey solutions to keep your operations running smoothly.
-        </p>
-        <div className="space-x-4 flex flex-col md:flex-row gap-5 items-center justify-center"> 
-          <InteractiveHoverButton />
-          <button
-            className="inline-block px-6 py-3 text-white rounded-full border-2 font-medium hover:bg-black transition-all duration-300"
-            title="Contact us for more information"
+        <p className="max-w-2xl text font-raleway md:text-lg">{t("description")}</p>
+        <div className="mt-6 flex flex-col items-center justify-center gap-5 md:flex-row md:gap-4">
+          <InteractiveHoverButton text={t("primaryCta")} />
+          <a
+            href="#contact-us"
+            className="inline-block rounded-full border-2 px-6 py-3 text-white transition-all duration-300 hover:bg-black"
+            title={misc("contactTitle")}
           >
-            <Link href={"#contact-us"}>Contact Us</Link>
-          </button>
+            {t("secondaryCta")}
+          </a>
         </div>
       </div>
     </section>

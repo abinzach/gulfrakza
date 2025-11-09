@@ -1,0 +1,649 @@
+[
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "title",
+        "type": "localizedString"
+      },
+      {
+        "options": {
+          "source": "title.en",
+          "maxLength": 80
+        },
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "custom"
+              },
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "slug",
+        "type": "slug"
+      },
+      {
+        "options": {
+          "disableNew": true
+        },
+        "description": "Leave empty for top-level categories. Enables nested hierarchies.",
+        "to": [
+          {
+            "type": "category"
+          }
+        ],
+        "name": "parent",
+        "type": "reference",
+        "title": "Parent category"
+      },
+      {
+        "options": {
+          "hotspot": true
+        },
+        "name": "heroImage",
+        "type": "image",
+        "title": "Hero image"
+      },
+      {
+        "name": "summary",
+        "type": "localizedText"
+      },
+      {
+        "description": "Lower numbers appear first in navigation lists.",
+        "name": "order",
+        "type": "number",
+        "title": "Sort order"
+      },
+      {
+        "name": "seoTitle",
+        "type": "localizedString",
+        "title": "SEO title"
+      },
+      {
+        "name": "seoDescription",
+        "type": "localizedText",
+        "title": "SEO description"
+      }
+    ],
+    "name": "category",
+    "type": "document"
+  },
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "title",
+        "type": "localizedString",
+        "title": "Name"
+      },
+      {
+        "options": {
+          "source": "title.en",
+          "maxLength": 96
+        },
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "custom"
+              },
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "slug",
+        "type": "slug"
+      },
+      {
+        "name": "sku",
+        "type": "string",
+        "title": "SKU / Model number"
+      },
+      {
+        "name": "brand",
+        "type": "localizedString"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              },
+              {
+                "flag": "min",
+                "constraint": 1
+              },
+              {
+                "flag": "max",
+                "constraint": 4
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "description": "Select categories in order (Category > Subcategory > Item category).",
+        "of": [
+          {
+            "to": [
+              {
+                "type": "category"
+              }
+            ],
+            "type": "reference",
+            "title": "Reference to category"
+          }
+        ],
+        "name": "categoryPath",
+        "type": "array",
+        "title": "Category path"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "summary",
+        "type": "localizedText"
+      },
+      {
+        "name": "body",
+        "type": "localizedBlockContent",
+        "title": "Detailed description"
+      },
+      {
+        "of": [
+          {
+            "type": "localizedString",
+            "title": "Localized string"
+          }
+        ],
+        "name": "features",
+        "type": "array",
+        "title": "Key features"
+      },
+      {
+        "of": [
+          {
+            "type": "productSpecification",
+            "title": "Specification"
+          }
+        ],
+        "name": "specifications",
+        "type": "array"
+      },
+      {
+        "options": {
+          "layout": "radio",
+          "list": [
+            {
+              "title": "In stock",
+              "value": "in_stock"
+            },
+            {
+              "title": "Out of stock",
+              "value": "out_of_stock"
+            }
+          ]
+        },
+        "initialValue": "in_stock",
+        "description": "Show whether the product is currently available when not tracking stock per size.",
+        "name": "stockStatus",
+        "type": "string",
+        "title": "Stock status"
+      },
+      {
+        "description": "Add optional size-specific inventory levels for this product.",
+        "of": [
+          {
+            "fields": [
+              {
+                "validation": [
+                  {
+                    "rules": [
+                      {
+                        "flag": "presence",
+                        "constraint": "required"
+                      },
+                      {
+                        "flag": "max",
+                        "constraint": 40
+                      }
+                    ],
+                    "level": "error"
+                  }
+                ],
+                "name": "label",
+                "type": "string",
+                "title": "Size label"
+              },
+              {
+                "validation": [
+                  {
+                    "rules": [
+                      {
+                        "flag": "min",
+                        "constraint": 0
+                      }
+                    ],
+                    "level": "error"
+                  }
+                ],
+                "description": "Leave blank if stock is not tracked for this size.",
+                "name": "stock",
+                "type": "number",
+                "title": "Stock on hand"
+              }
+            ],
+            "type": "object",
+            "name": "sizeVariant"
+          }
+        ],
+        "name": "sizeVariants",
+        "type": "array",
+        "title": "Size variants"
+      },
+      {
+        "of": [
+          {
+            "type": "resourceAsset",
+            "title": "Resource"
+          }
+        ],
+        "name": "resources",
+        "type": "array"
+      },
+      {
+        "of": [
+          {
+            "options": {
+              "hotspot": true
+            },
+            "type": "image"
+          }
+        ],
+        "name": "gallery",
+        "type": "array"
+      },
+      {
+        "options": {
+          "hotspot": true
+        },
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "heroImage",
+        "type": "image",
+        "title": "Primary image"
+      },
+      {
+        "name": "seoTitle",
+        "type": "localizedString",
+        "title": "SEO title"
+      },
+      {
+        "name": "seoDescription",
+        "type": "localizedText",
+        "title": "SEO description"
+      },
+      {
+        "initialValue": "active",
+        "options": {
+          "list": [
+            {
+              "title": "Active",
+              "value": "active"
+            },
+            {
+              "title": "Draft",
+              "value": "draft"
+            },
+            {
+              "title": "Archived",
+              "value": "archived"
+            }
+          ]
+        },
+        "name": "status",
+        "type": "string",
+        "title": "Publishing status"
+      }
+    ],
+    "name": "product",
+    "type": "document"
+  },
+  {
+    "of": [
+      {
+        "marks": {
+          "annotations": [
+            {
+              "fields": [
+                {
+                  "validation": [
+                    {
+                      "rules": [
+                        {
+                          "flag": "uri",
+                          "constraint": {
+                            "options": {
+                              "scheme": [
+                                "/^http$/",
+                                "/^https$/"
+                              ],
+                              "allowRelative": false,
+                              "relativeOnly": false,
+                              "allowCredentials": false
+                            }
+                          }
+                        },
+                        {
+                          "flag": "presence",
+                          "constraint": "required"
+                        }
+                      ],
+                      "level": "error"
+                    }
+                  ],
+                  "name": "href",
+                  "type": "url",
+                  "title": "URL"
+                },
+                {
+                  "initialValue": true,
+                  "name": "openInNewTab",
+                  "type": "boolean",
+                  "title": "Open in new tab"
+                }
+              ],
+              "name": "externalLink",
+              "type": "object",
+              "title": "External link"
+            }
+          ],
+          "decorators": [
+            {
+              "value": "strong",
+              "title": "Strong"
+            },
+            {
+              "value": "em",
+              "title": "Italic"
+            },
+            {
+              "value": "code",
+              "title": "Code"
+            },
+            {
+              "value": "underline",
+              "title": "Underline"
+            },
+            {
+              "value": "strike-through",
+              "title": "Strike"
+            }
+          ]
+        },
+        "lists": [
+          {
+            "value": "bullet",
+            "title": "Bulleted list"
+          },
+          {
+            "value": "number",
+            "title": "Numbered list"
+          }
+        ],
+        "styles": [
+          {
+            "value": "normal",
+            "title": "Normal"
+          },
+          {
+            "value": "h1",
+            "title": "Heading 1"
+          },
+          {
+            "value": "h2",
+            "title": "Heading 2"
+          },
+          {
+            "value": "h3",
+            "title": "Heading 3"
+          },
+          {
+            "value": "h4",
+            "title": "Heading 4"
+          },
+          {
+            "value": "h5",
+            "title": "Heading 5"
+          },
+          {
+            "value": "h6",
+            "title": "Heading 6"
+          },
+          {
+            "value": "blockquote",
+            "title": "Quote"
+          }
+        ],
+        "of": [],
+        "type": "block"
+      },
+      {
+        "options": {
+          "hotspot": true
+        },
+        "type": "image"
+      }
+    ],
+    "name": "blockContent",
+    "type": "array",
+    "title": "Rich Text"
+  },
+  {
+    "fields": [
+      {
+        "name": "en",
+        "type": "blockContent",
+        "title": "English"
+      },
+      {
+        "description": "Use for RTL content as needed.",
+        "name": "ar",
+        "type": "blockContent",
+        "title": "Arabic"
+      }
+    ],
+    "name": "localizedBlockContent",
+    "type": "object",
+    "title": "Localized rich text"
+  },
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "warning",
+            "message": "Consider providing at least an English value"
+          }
+        ],
+        "name": "en",
+        "type": "string",
+        "title": "English"
+      },
+      {
+        "description": "Arabic content (supports RTL input).",
+        "name": "ar",
+        "type": "string",
+        "title": "Arabic"
+      }
+    ],
+    "name": "localizedString",
+    "type": "object",
+    "title": "Localized string"
+  },
+  {
+    "fields": [
+      {
+        "rows": 4,
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "warning",
+            "message": "Consider providing at least an English value"
+          }
+        ],
+        "name": "en",
+        "type": "text",
+        "title": "English"
+      },
+      {
+        "rows": 4,
+        "description": "Arabic content (supports RTL input).",
+        "name": "ar",
+        "type": "text",
+        "title": "Arabic"
+      }
+    ],
+    "name": "localizedText",
+    "type": "object",
+    "title": "Localized text"
+  },
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "label",
+        "type": "localizedString"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "value",
+        "type": "localizedString"
+      }
+    ],
+    "name": "productSpecification",
+    "type": "object",
+    "title": "Specification"
+  },
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "title",
+        "type": "localizedString"
+      },
+      {
+        "options": {
+          "storeOriginalFilename": true
+        },
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "description": "Upload brochures, datasheets, manuals or certifications",
+        "name": "file",
+        "type": "file"
+      }
+    ],
+    "name": "resourceAsset",
+    "type": "object",
+    "title": "Resource"
+  }
+]

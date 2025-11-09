@@ -1,0 +1,61 @@
+{
+  "contactForm": {
+    "labels": {
+      "email": "Your email",
+      "subject": "Subject",
+      "message": "Your message"
+    },
+    "placeholders": {
+      "email": "name@example.com",
+      "subject": "Let us know how we can help you",
+      "message": "Leave a comment..."
+    },
+    "errors": {
+      "emailRequired": "Email is required",
+      "emailFormat": "Entered value does not match email format",
+      "subjectRequired": "Subject is required",
+      "messageRequired": "Message is required"
+    },
+    "submit": "Send Message",
+    "loading": "Sending...",
+    "successTitle": "Thank You!",
+    "successBody": "Your enquiry has been successfully sent. We will get back to you soon.",
+    "successNote": "This message will disappear in a few seconds...",
+    "errorTitle": "Oops!",
+    "errorNote": "Please try again later."
+  },
+  "quoteForm": {
+    "modalTitle": "Get a Quote",
+    "forLabel": "For:",
+    "successTitle": "Success!",
+    "successMessage": "Thank you! Your quote request has been submitted.",
+    "fields": {
+      "fullName": "Full Name",
+      "email": "Email Address",
+      "phone": "Phone Number",
+      "category": "Category",
+      "subcategory": "Subcategory",
+      "itemCategory": "Item Category",
+      "message": "Message"
+    },
+    "placeholders": {
+      "category": "e.g., Safety, Lifting, etc.",
+      "subcategory": "e.g., PPE, Hoists, etc.",
+      "itemCategory": "e.g., Face Protection, Manual Hoists, etc.",
+      "message": "Tell us more about your requirements"
+    },
+    "buttons": {
+      "submit": "Submit Quote Request",
+      "submitting": "Submitting..."
+    },
+    "template": {
+      "intro": "I'm interested in getting a quote for the following product:",
+      "product": "Product:",
+      "category": "Category:",
+      "subcategory": "Subcategory:",
+      "itemCategory": "Item Category:",
+      "outro": "Please provide pricing, availability, and any additional product details."
+    },
+    "emailSubject": "Quote Request: {categoryParts} from {name} (phone: {phone})"
+  }
+}

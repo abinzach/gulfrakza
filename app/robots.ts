@@ -7,6 +7,7 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: '/admin/',
     },
-    sitemap: 'https://gulfrakza.com/sitemap.xml',
+    sitemap: 'https://www.gulfrakza.com/sitemap.xml',
+    host: 'https://www.gulfrakza.com',
   }
 }
