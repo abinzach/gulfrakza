@@ -3,7 +3,15 @@
 import { useEffect, useMemo, useRef, useState } from "react"
 import Image from "next/image"
 import { usePathname, useRouter } from "next/navigation"
-import { ArrowUpRight, ChevronDown, ChevronRight, Search, SlidersHorizontal, X } from "lucide-react"
+import {
+  ArrowUpRight,
+  ChevronDown,
+  ChevronRight,
+  MoveVertical,
+  Search,
+  SlidersHorizontal,
+  X,
+} from "lucide-react"
 
 import GetQuoteButton from "@/app/components/GetQuoteButton"
 import { Button } from "@/components/ui/button"
@@ -135,6 +143,11 @@ export default function CatalogPageClient({
   )
   const [showMobileFilters, setShowMobileFilters] = useState(false)
   const lastQueryRef = useRef(buildSearchParamsFromFilters(initialFilters))
+  const categoryScrollRef = useRef<HTMLDivElement | null>(null)
+  const [categoryScrollIndicators, setCategoryScrollIndicators] = useState({
+    showTop: false,
+    showBottom: false,
+  })
 
   const categoryLookup = useMemo(() => flattenCategoryTree(categoryTree), [categoryTree])
 
@@ -183,6 +196,29 @@ export default function CatalogPageClient({
       return changed ? next : prev
     })
   }, [selectedCategoryNode])
+
+  useEffect(() => {
+    const container = categoryScrollRef.current
+    if (!container) return
+
+    const updateIndicators = () => {
+      const { scrollTop, scrollHeight, clientHeight } = container
+      const maxScroll = Math.max(scrollHeight - clientHeight, 0)
+      setCategoryScrollIndicators({
+        showTop: scrollTop > 4,
+        showBottom: scrollTop < maxScroll - 4,
+      })
+    }
+
+    updateIndicators()
+    container.addEventListener("scroll", updateIndicators)
+    window.addEventListener("resize", updateIndicators)
+
+    return () => {
+      container.removeEventListener("scroll", updateIndicators)
+      window.removeEventListener("resize", updateIndicators)
+    }
+  }, [categoryTree])
 
   const toggleExpandedNode = (slug: string) => {
     setExpandedNodes((prev) => {
@@ -390,21 +426,38 @@ export default function CatalogPageClient({
                     </button>
                   )}
                 </div>
-                <div className="max-h-[360px] overflow-y-auto pr-1">
-                  {categoryTree.length > 0 ? (
-                    renderCategoryTree(
-                      categoryTree,
-                      expandedNodes,
-                      toggleExpandedNode,
-                      handleCategorySelect,
-                      selectedCategorySlug,
-                    )
-                  ) : (
-                    <p className="text-sm text-slate-500 dark:text-slate-400">
-                      No categories found. Set up categories in Sanity to begin filtering.
-                    </p>
+                <div className="relative">
+                  <div
+                    ref={categoryScrollRef}
+                    className="max-h-[360px] overflow-y-auto pr-1"
+                  >
+                    {categoryTree.length > 0 ? (
+                      renderCategoryTree(
+                        categoryTree,
+                        expandedNodes,
+                        toggleExpandedNode,
+                        handleCategorySelect,
+                        selectedCategorySlug,
+                      )
+                    ) : (
+                      <p className="text-sm text-slate-500 dark:text-slate-400">
+                        No categories found. Set up categories in Sanity to begin filtering.
+                      </p>
+                    )}
+                  </div>
+                  {categoryScrollIndicators.showTop && (
+                    <div className="pointer-events-none absolute inset-x-0 top-0 h-6 bg-gradient-to-b from-white via-white/80 to-transparent dark:from-gray-900 dark:via-gray-900/80 lg:from-gray-50 lg:via-gray-50/80" />
+                  )}
+                  {categoryScrollIndicators.showBottom && (
+                    <div className="pointer-events-none absolute inset-x-0 bottom-0 h-6 bg-gradient-to-t from-white via-white/80 to-transparent dark:from-gray-900 dark:via-gray-900/80 lg:from-gray-50 lg:via-gray-50/80" />
                   )}
                 </div>
+                {categoryScrollIndicators.showBottom && (
+                  <p className="mt-2 flex items-center gap-1 text-xs text-slate-400 dark:text-slate-500">
+                    <MoveVertical className="h-3.5 w-3.5" />
+                    Scroll to explore categories
+                  </p>
+                )}
               </div>
               {featureFilters.length > 0 && (
                 <div className="space-y-3">

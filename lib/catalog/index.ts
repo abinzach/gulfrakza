@@ -203,22 +203,25 @@ const normalizeResources = (
 ): CatalogResourceAsset[] => {
   if (!resources) return []
 
-  return resources
-    .map((entry) => {
-      if (!entry) return null
-      const title = pickLocalizedString(entry.title, locale)
-      const url = entry.url?.trim()
-      if (!title || !url) return null
-      return {
-        title,
-        url,
-        filename: entry.originalFilename ?? undefined,
-        extension: entry.extension ?? undefined,
-        size: typeof entry.size === "number" ? entry.size : undefined,
-        mimeType: entry.mimeType ?? undefined,
-      }
+  const normalized: CatalogResourceAsset[] = []
+
+  resources.forEach((entry) => {
+    if (!entry) return
+    const title = pickLocalizedString(entry.title, locale)
+    const url = entry.url?.trim()
+    if (!title || !url) return
+
+    normalized.push({
+      title,
+      url,
+      filename: entry.originalFilename ?? undefined,
+      extension: entry.extension ?? undefined,
+      size: typeof entry.size === "number" ? entry.size : undefined,
+      mimeType: entry.mimeType ?? undefined,
     })
-    .filter((item): item is CatalogResourceAsset => Boolean(item))
+  })
+
+  return normalized
 }
 
 const buildImageUrl = (source: unknown) => {

@@ -2,6 +2,7 @@ import { Fragment } from "react"
 import { PortableText, type PortableTextComponents } from "@portabletext/react"
 import { Download } from "lucide-react"
 import type { Metadata } from "next"
+import Script from "next/script"
 import Image from "next/image"
 import { notFound } from "next/navigation"
 
@@ -15,9 +16,10 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 import { fetchCatalogData, fetchProductDetail } from "@/lib/catalog"
-import { isLocale, type Locale } from "@/i18n/config"
+import { isLocale, type Locale, locales } from "@/i18n/config"
 import { Link } from "@/navigation"
 import { urlFor } from "@/sanity/lib/image"
+import { siteUrl } from "@/lib/constants"
 
 interface ProductPageProps {
   params: Promise<{ slug: string; locale: string }>
@@ -43,13 +45,25 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
   const title = product.seoTitle || fallbackTitle
   const description = product.seoDescription || product.description
   const image = product.imageSrc
+  const baseProductPath = `/${activeLocale}/products/catalog/${slug}`
+  const canonicalUrl = `${siteUrl}${baseProductPath}`
+  const languageAlternates = locales.reduce<Record<string, string>>((acc, loc) => {
+    acc[loc] = `${siteUrl}/${loc}/products/catalog/${slug}`
+    return acc
+  }, {})
+  languageAlternates["x-default"] = `${siteUrl}/en/products/catalog/${slug}`
 
   return {
     title,
     description,
+    alternates: {
+      canonical: canonicalUrl,
+      languages: languageAlternates,
+    },
     openGraph: {
       title,
       description,
+      url: canonicalUrl,
       images: image ? [{ url: image, width: 1200, height: 630, alt: product.title }] : undefined,
     },
     twitter: {
@@ -168,9 +182,67 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
   const category = product.categoryTrail[0]?.title || product.primaryCategory || "General"
   const subcategory = product.categoryTrail[1]?.title || ""
   const itemCategory = product.categoryTrail[2]?.title || product.leafCategory || category
+  const productPath = `/${activeLocale}/products/catalog/${product.slug}`
+  const productUrl = `${siteUrl}${productPath}`
+  const imageGallery = Array.from(new Set([product.imageSrc, ...product.gallery])).filter(Boolean)
+  const productSchema = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.title,
+    description: product.description,
+    sku: product.sku ?? undefined,
+    url: productUrl,
+    image: imageGallery,
+    brand: product.brand
+      ? {
+          "@type": "Brand",
+          name: product.brand,
+        }
+      : undefined,
+    category: product.leafCategory ?? product.primaryCategory ?? undefined,
+    additionalProperty:
+      product.specs.length > 0
+        ? product.specs.map((spec) => ({
+            "@type": "PropertyValue",
+            name: spec.key,
+            value: spec.values.join(", "),
+          }))
+        : undefined,
+  }
+  const breadcrumbItems = [
+    {
+      name: activeLocale === "ar" ? "الرئيسية" : "Home",
+      item: `${siteUrl}/${activeLocale}`,
+    },
+    {
+      name: activeLocale === "ar" ? "كتالوج المنتجات" : "Product Catalog",
+      item: `${siteUrl}/${activeLocale}/products/catalog`,
+    },
+    ...product.categoryTrail
+      .filter((segment) => Boolean(segment.slug))
+      .map((segment) => ({
+        name: segment.title,
+        item: `${siteUrl}/${activeLocale}/products/catalog?category=${encodeURIComponent(segment.slug)}`,
+      })),
+    {
+      name: product.title,
+      item: productUrl,
+    },
+  ]
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: breadcrumbItems.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.name,
+      item: item.item,
+    })),
+  }
 
   return (
-    <main className="min-h-screen bg-white pt-12 dark:bg-gray-900 lg:pt-16">
+    <>
+      <main className="min-h-screen bg-white pt-16 dark:bg-gray-900 sm:pt-20 lg:pt-24">
       {/* Breadcrumb */}
       <div className="border-b border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900">
         <div className="mx-auto max-w-[1600px] px-4 py-3 sm:px-6 sm:py-4">
@@ -511,5 +583,12 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
         </div>
       )}
     </main>
+      <Script id={`product-schema-${product.slug}`} type="application/ld+json">
+        {JSON.stringify(productSchema)}
+      </Script>
+      <Script id={`breadcrumb-schema-${product.slug}`} type="application/ld+json">
+        {JSON.stringify(breadcrumbSchema)}
+      </Script>
+    </>
   )
 }

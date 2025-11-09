@@ -7,6 +7,7 @@ import {
   GridPatternCard,
   GridPatternCardBody,
 } from "@/components/ui/card-with-grid-ellipsis-pattern";
+import { getMessages, isLocale, type Locale, defaultLocale } from "@/i18n/config";
 
 interface Item {
   title: string;
@@ -60,10 +61,17 @@ export async function generateStaticParams() {
 export default async function CategoryPage({  
   params,
 }: {
-  params: Promise<{ category: string }>;
+  params: Promise<{ category: string; locale: string }>;
 }) {
   // Get the category slug from params
-  const { category: categorySlug } = await params;
+  const { category: categorySlug, locale } = await params;
+  const activeLocale: Locale = isLocale(locale) ? locale : defaultLocale;
+  const messages = await getMessages(activeLocale);
+  const categoryCopy =
+    (messages?.home?.offerings?.categoryCards as Record<
+      string,
+      { title?: string; description?: string; subcategories?: Record<string, { title?: string; description?: string }> }
+    >) ?? {};
   const categoriesData = data as CategoriesData;
 
   let categoryFound: Category | null = null;
@@ -81,6 +89,11 @@ export default async function CategoryPage({
   if (!categoryFound) {
     notFound();
   }
+  const categoryKey = slugify(categoryFound.title);
+  const localizedCategory = categoryCopy[categoryKey] ?? null;
+  const localizedCategoryTitle = localizedCategory?.title ?? categoryFound.title;
+  const localizedCategoryDescription =
+    localizedCategory?.description ?? categoryFound.description;
 
   return (
     <main
@@ -94,10 +107,10 @@ export default async function CategoryPage({
         {/* Category Header */}
         <header className="mb-8">
           <h1 className="text-4xl font-bold text-gray-800 dark:text-white">
-            {categoryFound.title}
+            {localizedCategoryTitle}
           </h1>
           <p className="text-gray-700 font-light dark:text-gray-300 mt-2">
-            {categoryFound.description}
+            {localizedCategoryDescription}
           </p>
         </header>
 
@@ -119,10 +132,10 @@ export default async function CategoryPage({
                   <GridPatternCard className="h-full group hover:shadow-md transition-all duration-300">
                     <GridPatternCardBody className="h-full">
                       <h2 className="text-2xl font-semibold text-gray-800 dark:text-white transition-colors duration-300 group-hover:text-cyan-700">
-                        {subcat.title}
+                        {localizedCategory?.subcategories?.[subcatSlug]?.title ?? subcat.title}
                       </h2>
                       <p className="mt-2 text-gray-600 font-raleway text-sm dark:text-gray-300">
-                        {subcat.description}
+                        {localizedCategory?.subcategories?.[subcatSlug]?.description ?? subcat.description}
                       </p>
                     </GridPatternCardBody>
                   </GridPatternCard>

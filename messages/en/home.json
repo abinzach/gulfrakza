@@ -12,7 +12,207 @@
   "offerings": {
     "headingLine1": "Empower your operations with",
     "headingLine2": "our state-of-the-art solutions",
-    "description": "From safety equipment to hydraulic systems, we offer a comprehensive selection of products tailored to meet your industrial needs."
+    "description": "From safety equipment to hydraulic systems, we offer a comprehensive selection of products tailored to meet your industrial needs.",
+    "categoryCards": {
+      "safety": {
+        "title": "Safety",
+        "description": "A complete range of advanced safety solutions designed to protect workers and secure industrial environments. Our products are engineered for rapid performance and durability.",
+        "subcategories": {
+          "personal-protective-equipment-ppe": {
+            "title": "Personal Protective Equipment (PPE)",
+            "description": "Essential protective gear to safeguard workers from hazards. Every product is rigorously tested for durability and regulatory compliance."
+          },
+          "workwear": {
+            "title": "Workwear",
+            "description": "A complete range of workwear solutions designed for durability and comfort in harsh industrial settings. Our products are engineered for rapid performance and reliability."
+          },
+          "fall-protection": {
+            "title": "Fall Protection",
+            "description": "A complete range of fall protection equipment designed to safeguard workers at heights. Our products are engineered for rapid performance and durability."
+          },
+          "gas-detection": {
+            "title": "Gas Detection",
+            "description": "A complete range of gas detection devices designed to monitor hazardous gases. Our products are engineered for rapid performance and reliability in safety operations."
+          },
+          "lockout-tagout-loto-products": {
+            "title": "Lockout Tagout (LOTO) Products",
+            "description": "A complete range of LOTO products designed to secure machinery during maintenance. Our products are engineered for rapid performance and reliability in safety operations."
+          }
+        }
+      },
+      "fire-safety": {
+        "title": "Fire Safety",
+        "description": "A complete range of fire safety solutions designed to protect lives and assets. Our products are engineered for rapid response and reliability during emergencies.",
+        "subcategories": {
+          "fire-extinguishers": {
+            "title": "Fire Extinguishers",
+            "description": "Effective extinguishers for various classes of fire, ensuring quick suppression and minimal damage."
+          },
+          "fire-suppression-systems": {
+            "title": "Fire Suppression Systems",
+            "description": "Integrated systems engineered to detect and suppress fires rapidly, minimizing damage and ensuring safety."
+          },
+          "fire-alarms-detection": {
+            "title": "Fire Alarms & Detection",
+            "description": "Comprehensive alarm and detection systems that provide early warnings and enhance safety during fire emergencies."
+          },
+          "firefighting-equipment": {
+            "title": "Firefighting Equipment",
+            "description": "A complete range of firefighting equipment designed to combat fires effectively. Our products are engineered for rapid performance and reliability during emergencies."
+          }
+        }
+      },
+      "security": {
+        "title": "Security",
+        "description": "A complete range of security solutions designed to protect assets and secure premises. Our products are engineered for rapid performance and reliability during operations.",
+        "subcategories": {
+          "surveillance-systems": {
+            "title": "Surveillance Systems",
+            "description": "Advanced surveillance systems designed for continuous monitoring and recording to ensure a secure environment."
+          },
+          "access-control": {
+            "title": "Access Control",
+            "description": "A complete range of access control solutions designed to restrict entry and secure premises. Our products are engineered for rapid performance and reliability during operations."
+          },
+          "perimeter-security": {
+            "title": "Perimeter Security",
+            "description": "A complete range of perimeter security solutions designed to protect property boundaries. Our products are engineered for rapid performance and reliability during operations."
+          },
+          "intrusion-detection": {
+            "title": "Intrusion Detection",
+            "description": "A complete range of intrusion detection solutions designed to alert security personnel to unauthorized access. Our products are engineered for rapid performance and reliability during operations."
+          }
+        }
+      },
+      "lifting": {
+        "title": "Lifting",
+        "description": "A complete range of lifting solutions designed to handle heavy loads safely. Our products are engineered for rapid performance and reliability in industrial operations.",
+        "subcategories": {
+          "lifting-slings": {
+            "title": "Lifting Slings",
+            "description": "High-quality slings designed to support heavy loads with reliability and flexibility. Our products are engineered for rapid performance and durability."
+          },
+          "hoists-winches": {
+            "title": "Hoists & Winches",
+            "description": "Efficient hoists and winches engineered for safe lifting and load handling in demanding industrial environments."
+          },
+          "lifting-hooks-shackles": {
+            "title": "Lifting Hooks & Shackles",
+            "description": "A complete range of hooks and shackles designed to provide reliable support and stability during lifting operations. Our products are engineered for rapid performance and durability."
+          },
+          "cranes-load-testing-equipment": {
+            "title": "Cranes & Load Testing Equipment",
+            "description": "A complete range of cranes and load testing equipment designed for heavy lifting and safety verification. Our products are engineered for rapid performance and reliability."
+          }
+        }
+      },
+      "electrical": {
+        "title": "Electrical",
+        "description": "A complete range of electrical solutions designed to power and control industrial systems. Our products are engineered for rapid performance and efficiency in applications.",
+        "subcategories": {
+          "cables-wires": {
+            "title": "Cables & Wires",
+            "description": "Durable cables and wires engineered for safe, efficient power distribution and signal control in industrial settings."
+          },
+          "electrical-panels-components": {
+            "title": "Electrical Panels & Components",
+            "description": "A complete range of electrical panels and components designed for safe and efficient power distribution in industrial systems. Our products are engineered for rapid performance and reliability."
+          },
+          "industrial-lighting": {
+            "title": "Industrial Lighting",
+            "description": "A complete range of industrial lighting solutions designed to illuminate facilities with energy efficiency and optimal brightness. Our products are engineered for rapid performance and reliability."
+          },
+          "transformers-power-supplies": {
+            "title": "Transformers & Power Supplies",
+            "description": "A complete range of transformers and power supplies designed to ensure stable power delivery and efficient energy management. Our products are engineered for rapid performance and reliability."
+          }
+        }
+      },
+      "welding": {
+        "title": "Welding",
+        "description": "A complete range of welding solutions designed for precision and durability in fabrication. Our products are engineered for rapid performance and reliability during welding.",
+        "subcategories": {
+          "welding-machines": {
+            "title": "Welding Machines",
+            "description": "High-performance welding machines designed for various welding techniques, ensuring precision and reliable performance."
+          },
+          "welding-consumables": {
+            "title": "Welding Consumables",
+            "description": "High-quality consumables essential for efficient welding operations, including electrodes, filler wires, and fluxes."
+          },
+          "welding-safety-gear": {
+            "title": "Welding Safety Gear",
+            "description": "Protective gear for welders designed to ensure maximum safety during welding operations. Our products are engineered for rapid performance and reliability during welding."
+          },
+          "gas-welding-equipment": {
+            "title": "Gas Welding Equipment",
+            "description": "A complete range of gas welding equipment designed to ensure safe and efficient welding operations. Our products are engineered for rapid performance and reliability."
+          }
+        }
+      },
+      "marine-equipments": {
+        "title": "Marine Equipments",
+        "description": "A complete range of marine equipment solutions designed for challenging maritime environments. Our products are engineered for rapid performance and reliability during sea operations.",
+        "subcategories": {
+          "navigation-communication": {
+            "title": "Navigation & Communication",
+            "description": "Advanced navigation and communication tools designed for reliable operation at sea. Our products are engineered for rapid performance and reliability."
+          },
+          "deck-mooring-equipment": {
+            "title": "Deck & Mooring Equipment",
+            "description": "A complete range of deck and mooring equipment designed to secure vessels and support safe marine operations. Our products are engineered for rapid performance and reliability."
+          },
+          "safety-survival-equipment": {
+            "title": "Safety & Survival Equipment",
+            "description": "A complete range of safety and survival equipment designed to protect lives at sea. Our products are engineered for rapid performance and reliability during emergencies."
+          }
+        }
+      },
+      "pneumatic-hydraulic-fittings": {
+        "title": "Pneumatic & Hydraulic Fittings",
+        "description": "A complete range of pneumatic and hydraulic fittings designed for fluid control and power transmission. Our products are engineered for rapid performance and durability.",
+        "subcategories": {
+          "pneumatic-valves-actuators": {
+            "title": "Pneumatic Valves & Actuators",
+            "description": "Precision valves and actuators designed for controlling compressed air flow in industrial applications. Our products are engineered for rapid performance and reliability."
+          },
+          "hydraulic-hoses-fittings": {
+            "title": "Hydraulic Hoses & Fittings",
+            "description": "High-pressure hydraulic hoses and fittings engineered for maximum durability and performance in industrial applications. Our products are engineered for rapid performance and reliability."
+          },
+          "air-compressors-filters": {
+            "title": "Air Compressors & Filters",
+            "description": "Efficient air compressors and filters engineered to provide clean, consistent compressed air for industrial applications. Our products are engineered for rapid performance and reliability."
+          },
+          "pumps-motors": {
+            "title": "Pumps & Motors",
+            "description": "High-performance pumps and motors designed for efficient fluid transfer in industrial settings. Our products are engineered for rapid performance and reliability."
+          }
+        }
+      },
+      "industrial": {
+        "title": "Industrial",
+        "description": "A complete range of industrial products designed to support diverse operational needs. Our products are engineered for rapid performance and efficiency in every application.",
+        "subcategories": {
+          "industrial-tools": {
+            "title": "Industrial Tools",
+            "description": "A diverse selection of hand, power, and cutting tools designed for precision and durability in daily industrial tasks."
+          },
+          "bearings-mechanical-components": {
+            "title": "Bearings & Mechanical Components",
+            "description": "High-quality bearings and mechanical components designed for performance, efficiency, and longevity in industrial machinery."
+          },
+          "material-handling-equipment": {
+            "title": "Material Handling Equipment",
+            "description": "Efficient equipment designed to facilitate the movement, storage, and management of industrial materials."
+          },
+          "industrial-chemicals": {
+            "title": "Industrial Chemicals",
+            "description": "Specialized chemicals formulated for industrial applications including lubrication, adhesion, and cleaning. Our products are engineered for rapid performance and efficiency."
+          }
+        }
+      }
+    }
   },
   "services": {
     "heroHeading": "Elevating Your Industry with Integrated Services, Tailored Solutions That Drive Efficiency and Growth",

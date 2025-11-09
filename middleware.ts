@@ -24,41 +24,10 @@ function extractLocaleFromPath(pathname: string): Locale | null {
   return locales.includes(potential as Locale) ? (potential as Locale) : null;
 }
 
-function getLocaleFromHeader(headerValue: string | null): Locale | null {
-  if (!headerValue) return null;
-
-  const candidates = headerValue
-    .split(",")
-    .map((part) => {
-      const [tagPart, qPart] = part.trim().split(";q=");
-      const tag = tagPart?.toLowerCase();
-      const q = qPart ? Number.parseFloat(qPart) : 1;
-      return { tag, q: Number.isFinite(q) ? q : 0 };
-    })
-    .sort((a, b) => b.q - a.q);
-
-  for (const candidate of candidates) {
-    if (!candidate.tag) continue;
-    const base = candidate.tag.split("-")[0];
-    if (locales.includes(base as Locale)) {
-      return base as Locale;
-    }
-  }
-
-  return null;
-}
-
 function resolvePreferredLocale(request: NextRequest): Locale {
   const cookieLocale = request.cookies.get(localeCookieName)?.value;
   if (cookieLocale && locales.includes(cookieLocale as Locale)) {
     return cookieLocale as Locale;
-  }
-
-  const headerLocale = getLocaleFromHeader(
-    request.headers.get("accept-language")
-  );
-  if (headerLocale) {
-    return headerLocale;
   }
 
   return defaultLocale;

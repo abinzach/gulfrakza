@@ -8,8 +8,8 @@ import WhatsAppInquiry from "@/app/components/WhatsappEnquiry";
 import { Footerdemo } from "@/components/ui/footer-section";
 import { I18nProvider } from "@/i18n/provider";
 import { getMessages, isLocale, locales } from "@/i18n/config";
-
-const siteUrl = "https://www.gulfrakza.com";
+import { siteUrl } from "@/lib/constants";
+import LocalePreferenceSync from "@/app/components/LocalePreferenceSync";
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -59,7 +59,7 @@ export async function generateMetadata({ params }: LayoutParams): Promise<Metada
     keywords: common.metadata.keywords,
     manifest: "/site.webmanifest",
     verification: {
-      google: "yOVCMHesyWms8TWeRX-79cIke_xi-07BdN_cfV25MeI",
+      google: "ZbwU2zvwMUj6zvUDKN1NnqwHt-jzSE-MZGu9K2jooeA",
     },
     alternates: {
       canonical: `${siteUrl}${canonicalPath}`,
@@ -118,6 +118,7 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
 
   return (
     <I18nProvider locale={locale} messages={messages}>
+      <LocalePreferenceSync locale={locale} />
       <FlyoutNav />
       <main>{children}</main>
       <WhatsAppInquiry />

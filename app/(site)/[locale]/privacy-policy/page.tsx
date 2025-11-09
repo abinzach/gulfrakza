@@ -1,12 +1,13 @@
 "use client";
 
-import { useTranslations } from "@/i18n/provider";
+import { useMessages, useTranslations } from "@/i18n/provider";
 
 export default function PrivacyPolicyPage() {
   const t = useTranslations("legal.privacyPolicy");
-
-  const listItems = t.raw("howWeUse.items") as string[];
-  const disclosureItems = t.raw("disclosure.items") as string[];
+  const messages = useMessages();
+  const privacyMessages = messages?.legal?.privacyPolicy;
+  const listItems = (privacyMessages?.howWeUse?.items as string[]) ?? [];
+  const disclosureItems = (privacyMessages?.disclosure?.items as string[]) ?? [];
 
   return (
     <main className="mx-auto max-w-7xl px-4 pt-20 font-inter py-12">

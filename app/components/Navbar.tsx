@@ -16,6 +16,7 @@ import { useLocale, useTranslations } from "@/i18n/provider";
 import QuoteModal from "./GetQuote";
 import { locales } from "@/i18n/config";
 import { cn } from "@/lib/utils";
+import { localePreferenceStorageKey, localeCookieName } from "@/lib/constants";
 
 const NAV_LINKS = [
   {
@@ -213,6 +214,16 @@ function ProductsContent() {
   return <div />;
 }
 
+const persistLocalePreference = (value: string) => {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.setItem(localePreferenceStorageKey, value);
+    document.cookie = `${localeCookieName}=${value};path=/;max-age=31536000;samesite=lax`;
+  } catch {
+    // ignore
+  }
+};
+
 const LocaleSwitcher = ({
   currentLocale,
   pathname,
@@ -242,6 +253,7 @@ const LocaleSwitcher = ({
             href={pathname}
             locale={loc}
             aria-label={t(`switchTo.${loc}`)}
+            onClick={() => persistLocalePreference(loc)}
             className={cn(
               "flex-1 rounded-full text-center transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",
               isMobile ? "px-4 py-1.5 text-sm" : "px-3 py-1 text-xs",

@@ -7,6 +7,7 @@ import { GridPatternCard, GridPatternCardBody } from "@/components/ui/card-with-
 import { Badge } from "@/components/ui/badge";
 import GetQuoteButton from "@/app/components/GetQuoteButton";
 import data from "../../../../../Product_Categories.json";
+import { getMessages, isLocale, type Locale, defaultLocale } from "@/i18n/config";
 
 // Data interfaces
 interface Item {
@@ -49,27 +50,37 @@ export async function generateStaticParams() {
   const paramsArray: { category: string; subcategory: string }[] = [];
 
   for (const category of categoriesData.categories) {
-    const categorySlug = category.title.toLowerCase().replace(/\s+/g, "-");
+    const categorySlug = slugify(category.title);
 
     if (category.subcategories) {
       for (const subcategory of category.subcategories) {
-        const subcategorySlug = subcategory.title.toLowerCase().replace(/\s+/g, "-");
+        const subcategorySlug = slugify(subcategory.title);
         paramsArray.push({ category: categorySlug, subcategory: subcategorySlug });
       }
     }
   }
 
   return paramsArray;
-
 }
 
 // Main Page component
 
 
 export default async function SubcategoryPage({ params }: {
-  params: Promise<{category:string,subcategory:string}>;
+  params: Promise<{locale: string; category:string; subcategory:string}>;
 }) {
-  const { category: categorySlug, subcategory: subcategorySlug } = await params;
+  const { category: categorySlug, subcategory: subcategorySlug, locale } = await params;
+  const activeLocale: Locale = isLocale(locale) ? locale : defaultLocale;
+  const messages = await getMessages(activeLocale);
+  const categoryCopy =
+    (messages?.home?.offerings?.categoryCards as Record<
+      string,
+      {
+        title?: string
+        description?: string
+        subcategories?: Record<string, { title?: string; description?: string }>
+      }
+    >) ?? {};
   const categoriesData = data as CategoriesData;
 
   // Locate the matching category/subcategory
@@ -106,6 +117,15 @@ export default async function SubcategoryPage({ params }: {
     notFound();
   }
 
+  const categoryKey = categoryFound ? slugify(categoryFound.title) : ""
+  const localizedCategory = categoryCopy[categoryKey] ?? null
+  const subcategoryKey = subcategoryFound ? slugify(subcategoryFound.title) : ""
+  const localizedSubcategory = localizedCategory?.subcategories?.[subcategoryKey] ?? null
+  const localizedCategoryTitle = localizedCategory?.title ?? categoryFound?.title ?? ""
+  const localizedSubcategoryTitle = localizedSubcategory?.title ?? subcategoryFound?.title ?? ""
+  const localizedSubcategoryDescription =
+    localizedSubcategory?.description ?? subcategoryFound?.description ?? ""
+
   return (
     <main
       className="min-h-screen bg-gray-50 dark:bg-gray-900 font-inter pt-16"
@@ -115,12 +135,12 @@ export default async function SubcategoryPage({ params }: {
         <BackButton />
         <header className="mb-8">
           <h1 className="text-4xl font-bold text-gray-800 dark:text-white">
-            {subcategoryFound.title}
+            {localizedSubcategoryTitle}
           </h1>
           <p className="text-gray-700 font-light dark:text-gray-300 mt-2">
-            {subcategoryFound.description}
+            {localizedSubcategoryDescription}
           </p>
-          <Badge className="mt-2 text-sm bg-cyan-700">{categoryFound.title}</Badge>
+          <Badge className="mt-2 text-sm bg-cyan-700">{localizedCategoryTitle}</Badge>
         </header>
         <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {subcategoryFound.items && subcategoryFound.items.length > 0 ? (
@@ -143,8 +163,8 @@ export default async function SubcategoryPage({ params }: {
                   </p>
                   <GetQuoteButton 
                     productName={item.title}
-                    productCategory={categoryFound.title}
-                    productSubcategory={subcategoryFound.title}
+                    productCategory={localizedCategoryTitle || categoryFound.title}
+                    productSubcategory={localizedSubcategoryTitle || subcategoryFound.title}
                     productItemCategory={item.title}
                   />
                 </GridPatternCardBody>

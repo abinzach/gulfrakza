@@ -133,11 +133,11 @@ export default function QuoteModal({
         .filter(Boolean)
         .join(" > ");
 
-      const subject = t("emailSubject", {
-        categoryParts: categoryParts || t("fields.category"),
-        name: formData.fullName || t("fields.fullName"),
-        phone: formData.phone || "-",
-      });
+      const subjectTemplate = t("emailSubject");
+      const subject = subjectTemplate
+        .replace("{categoryParts}", categoryParts || t("fields.category"))
+        .replace("{name}", formData.fullName || t("fields.fullName"))
+        .replace("{phone}", formData.phone || "-");
 
       const payload = {
         email: formData.email,

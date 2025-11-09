@@ -33,10 +33,26 @@ interface CategoriesData {
   categories: Category[];
 }
 
+const getCategorySlug = (link: string, title: string) => {
+  const parts = link?.split("/").filter(Boolean);
+  if (parts && parts.length > 0) {
+    return parts[parts.length - 1];
+  }
+  return title
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-");
+};
+
 const OfferingsPage: React.FC = () => {
   const { categories } = data as CategoriesData;
   const locale = useLocale();
   const t = useTranslations("home.offerings");
+  const getLocalizedText = (relativeKey: string, fallback: string) => {
+    const translation = t(relativeKey);
+    const namespacedKey = `home.offerings.${relativeKey}`;
+    return translation === namespacedKey ? fallback : translation;
+  };
 
   return (
     <section className="bg-gray-50 py-10 font-inter dark:bg-gray-900 lg:py-32">
@@ -49,30 +65,39 @@ const OfferingsPage: React.FC = () => {
           {t("description")}
         </p>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
-          {categories.map((category) => (
-            <Link key={category.title} href={category.link}>
-              <div className="group h-full cursor-pointer rounded border border-dashed border-gray-500 bg-white p-6 transition-shadow duration-300 hover:shadow-lg dark:bg-gray-950">
-                <Image
-                  width={64}
-                  height={64}
-                  src={category.imageSrc}
-                  alt={category.title}
-                  className="mx-auto mb-4 h-16"
-                />
-                <h3
-                  className={cn(
-                    "mb-2 text-left font-raleway text-xl font-semibold transition-colors duration-300 group-hover:text-cyan-600",
-                    locale === "ar" ? undefined : "uppercase",
-                  )}
-                >
-                  {category.title}
-                </h3>
-                <p className="mb-4 text-left font-raleway text-sm text-gray-700">
-                  {category.description}
-                </p>
-              </div>
-            </Link>
-          ))}
+          {categories.map((category) => {
+            const slug = getCategorySlug(category.link, category.title);
+            const localizedTitle = getLocalizedText(`categoryCards.${slug}.title`, category.title);
+            const localizedDescription = getLocalizedText(
+              `categoryCards.${slug}.description`,
+              category.description,
+            );
+
+            return (
+              <Link key={category.title} href={category.link}>
+                <div className="group h-full cursor-pointer rounded border border-dashed border-gray-500 bg-white p-6 transition-shadow duration-300 hover:shadow-lg dark:bg-gray-950">
+                  <Image
+                    width={64}
+                    height={64}
+                    src={category.imageSrc}
+                    alt={localizedTitle}
+                    className="mx-auto mb-4 h-16"
+                  />
+                  <h3
+                    className={cn(
+                      "mb-2 text-left font-raleway text-xl font-semibold transition-colors duration-300 group-hover:text-cyan-600",
+                      locale === "ar" ? undefined : "uppercase",
+                    )}
+                  >
+                    {localizedTitle}
+                  </h3>
+                  <p className="mb-4 text-left font-raleway text-sm text-gray-700">
+                    {localizedDescription}
+                  </p>
+                </div>
+              </Link>
+            );
+          })}
         </div>
       </div>
     </section>
