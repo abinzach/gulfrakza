@@ -607,10 +607,8 @@ export default function CatalogPageClient({
                   const baseFeatureList =
                     product.features.length > 0 ? product.features : product.featureTokens
                   const featureHighlights = baseFeatureList.slice(0, 3)
-                  const stockQuantityDisplay =
-                    product.usesVariantStock && product.totalStock !== null
-                      ? `${product.totalStock} unit${product.totalStock === 1 ? "" : "s"} available`
-                      : null
+                  const stockToneClass = product.isInStock ? "bg-emerald-500" : "bg-gray-400"
+                  const stockToneLabel = product.isInStock ? "Ready to ship" : "Stock refreshes soon"
 
                   return (
                     <div
@@ -629,14 +627,6 @@ export default function CatalogPageClient({
                           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                           className="object-contain transition-transform duration-300 group-hover:scale-105"
                         />
-                        {/* Stock Badge - positioned absolutely */}
-                        {!product.isInStock && (
-                          <div className="absolute right-2 top-2">
-                            <span className="rounded-full bg-red-500 px-3 py-1 text-xs font-semibold text-white">
-                              Out of Stock
-                            </span>
-                        </div>
-                        )}
                       </Link>
 
                       {/* Product Details */}
@@ -669,16 +659,10 @@ export default function CatalogPageClient({
                           )}
 
                         {/* Stock Availability */}
-                        {product.isInStock && (
-                          <p className="mb-3 text-xs font-medium text-green-600 dark:text-green-400">
-                            ✓ In Stock
-                            {stockQuantityDisplay && (
-                              <span className="ml-1 text-gray-500 dark:text-gray-400">
-                                ({stockQuantityDisplay})
-                              </span>
-                            )}
-                          </p>
-                        )}
+                        <div className="mb-3 flex items-center gap-2 text-xs font-medium text-gray-700 dark:text-gray-300">
+                          <span className={`h-2.5 w-2.5 rounded-full ${stockToneClass}`} />
+                          <span>{stockToneLabel}</span>
+                        </div>
 
                         {/* Spacer to push buttons to bottom */}
                         <div className="flex-1" />

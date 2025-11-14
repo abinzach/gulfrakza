@@ -1,6 +1,13 @@
 'use client';
 
-import React, { Dispatch, SetStateAction, useMemo, useState } from "react";
+import React, {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { FiMenu, FiArrowRight, FiX } from "react-icons/fi";
 import {
   useMotionValueEvent,
@@ -17,21 +24,93 @@ import QuoteModal from "./GetQuote";
 import { locales } from "@/i18n/config";
 import { cn } from "@/lib/utils";
 import { localePreferenceStorageKey, localeCookieName } from "@/lib/constants";
+import type { CatalogCategoryNode } from "@/lib/catalog/types";
 
-const NAV_LINKS = [
-  {
-    key: "about",
-    href: "/about-us",
-    component: AboutUsContent,
-  },
-  {
-    key: "products",
-    href: "/products",
-    component: ProductsContent,
-  },
-] as const;
+type FlyoutContentProps = {
+  variant?: "desktop" | "mobile";
+  onNavigate?: () => void;
+};
 
-const FlyoutNav = () => {
+type MegaMenuItem = {
+  title: string;
+  description?: string;
+  slug: string | null;
+  imageSrc?: string;
+};
+
+type MegaMenuSubcategory = {
+  title: string;
+  description?: string;
+  slug: string | null;
+  items: MegaMenuItem[];
+};
+
+type MegaMenuCategory = {
+  title: string;
+  description?: string;
+  slug: string | null;
+  imageSrc?: string;
+  subcategories: MegaMenuSubcategory[];
+};
+
+const slugifyValue = (value?: string | null) => {
+  if (!value) return null;
+  return value
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "")
+    .trim();
+};
+
+const normalizeSlug = (value?: string | null, fallback?: string) => {
+  const trimmed = value?.trim();
+  if (trimmed) return trimmed;
+  return slugifyValue(fallback);
+};
+
+const buildCatalogHref = (slug?: string | null) =>
+  slug ? `/products/catalog?category=${encodeURIComponent(slug)}` : "/products/catalog";
+
+const buildMegaMenuCategories = (categoryTree: CatalogCategoryNode[]): MegaMenuCategory[] => {
+  if (!Array.isArray(categoryTree)) return [];
+
+  return categoryTree
+    .map((category) => {
+      const subcategories: MegaMenuSubcategory[] = category.children.map((child) => {
+        const sourceItems = child.children.length > 0 ? child.children : [child];
+        const items: MegaMenuItem[] = sourceItems.map((entry) => ({
+          title: entry.title,
+          description: entry.description,
+          slug: normalizeSlug(entry.slug, entry.title),
+          imageSrc: entry.heroImageUrl ?? undefined,
+        }));
+
+        return {
+          title: child.title,
+          description: child.description,
+          slug: normalizeSlug(child.slug, child.title),
+          items,
+        };
+      });
+
+      return {
+        title: category.title,
+        description: category.description,
+        slug: normalizeSlug(category.slug, category.title),
+        imageSrc: category.heroImageUrl ?? undefined,
+        subcategories: subcategories.filter((subcategory) => subcategory.items.length > 0),
+      };
+    })
+    .filter((category) => category.subcategories.length > 0);
+};
+
+type FlyoutNavProps = {
+  categoryTree: CatalogCategoryNode[];
+};
+
+const FlyoutNav = ({ categoryTree }: FlyoutNavProps) => {
   const [scrolled, setScrolled] = useState(false);
   const [showGetQuote, setShowGetQuote] = useState(false);
   const { scrollY } = useScroll();
@@ -40,6 +119,17 @@ const FlyoutNav = () => {
   const locale = useLocale();
   const tNav = useTranslations("common.nav");
   const searchParamsString = searchParams?.toString() ?? "";
+  const productNavCategories = useMemo(
+    () => buildMegaMenuCategories(categoryTree),
+    [categoryTree],
+  );
+
+  const ProductsFlyoutContent = useCallback(
+    (props: FlyoutContentProps) => (
+      <ProductsContent {...props} productNavCategories={productNavCategories} />
+    ),
+    [productNavCategories],
+  );
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     setScrolled(latest > 250);
@@ -59,14 +149,24 @@ const FlyoutNav = () => {
 
   const finalScrolled = isProductsRoute ? true : scrolled;
 
-  const links = useMemo(
-    () =>
-      NAV_LINKS.map((link) => ({
-        ...link,
-        label: tNav(link.key),
-      })),
-    [tNav],
-  );
+  const links = useMemo(() => {
+    const baseLinks: NavItem[] = [
+      {
+        key: "about",
+        href: "/about-us",
+        label: tNav("about"),
+        component: AboutUsContent,
+      },
+      {
+        key: "products",
+        href: "/products",
+        label: tNav("products"),
+        component: ProductsFlyoutContent,
+        flyoutAlign: "left",
+      },
+    ];
+    return baseLinks;
+  }, [ProductsFlyoutContent, tNav]);
 
   const pathnameWithQuery = useMemo(() => {
     return searchParamsString ? `${pathname}?${searchParamsString}` : pathname;
@@ -125,14 +225,20 @@ type NavItem = {
   key: string;
   href: string;
   label: string;
-  component?: React.ElementType;
+  component?: React.ComponentType<FlyoutContentProps>;
+  flyoutAlign?: "center" | "left";
 };
 
 const Links = ({ items }: { items: NavItem[] }) => {
   return (
-    <div className="flex items-center gap-10">
+    <div className="flex items-center gap-10 overflow-visible">
       {items.map((item) => (
-        <NavLink key={item.key} href={item.href} FlyoutContent={item.component}>
+        <NavLink
+          key={item.key}
+          href={item.href}
+          FlyoutContent={item.component}
+          flyoutAlign={item.flyoutAlign}
+        >
           {item.label}
         </NavLink>
       ))}
@@ -144,10 +250,12 @@ const NavLink = ({
   children,
   href,
   FlyoutContent,
+  flyoutAlign = "center",
 }: {
   children: React.ReactNode;
   href: string;
-  FlyoutContent?: React.ElementType;
+  FlyoutContent?: React.ComponentType<FlyoutContentProps>;
+  flyoutAlign?: "center" | "left";
 }) => {
   const [open, setOpen] = useState(false);
   const showFlyout = FlyoutContent && open;
@@ -156,7 +264,7 @@ const NavLink = ({
     <div
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
-      className="relative h-fit w-fit"
+      className="relative h-fit w-fit overflow-visible"
     >
       <Link href={href} className="relative">
         {children}
@@ -173,13 +281,15 @@ const NavLink = ({
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 15 }}
-            style={{ translateX: "-50%" }}
+            style={{ translateX: flyoutAlign === "left" ? "-70%" : "-50%" }}
             transition={{ duration: 0.3, ease: "easeOut" }}
-            className="absolute left-1/2 top-12 bg-white text-black"
+            className="absolute left-1/2 top-12 z-50 bg-white text-black"
           >
             <div className="absolute -top-6 left-0 right-0 h-6 bg-transparent" />
             <div className="absolute left-1/2 top-0 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-white" />
-            <FlyoutContent />
+            <div className="overflow-visible">
+              <FlyoutContent variant="desktop" onNavigate={() => setOpen(false)} />
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -206,13 +316,375 @@ const CTAs = ({
   );
 };
 
-function AboutUsContent() {
+function AboutUsContent({}: FlyoutContentProps) {
   return <div />;
 }
 
-function ProductsContent() {
-  return <div />;
+type ProductsContentProps = FlyoutContentProps & {
+  productNavCategories: MegaMenuCategory[];
+};
+
+function ProductsContent({
+  variant = "desktop",
+  productNavCategories,
+  onNavigate,
+}: ProductsContentProps) {
+  if (variant === "mobile") {
+    return (
+      <MobileProductsContent
+        productNavCategories={productNavCategories}
+        onNavigate={onNavigate}
+      />
+    );
+  }
+  return (
+    <DesktopProductsContent
+      productNavCategories={productNavCategories}
+      onNavigate={onNavigate}
+    />
+  );
 }
+
+const DesktopProductsContent = ({
+  productNavCategories,
+  onNavigate,
+}: {
+  productNavCategories: MegaMenuCategory[];
+  onNavigate?: () => void;
+}) => {
+  const initialCategorySlug =
+    productNavCategories[0]?.slug ?? slugifyValue(productNavCategories[0]?.title) ?? null;
+  const initialSubcategorySlug =
+    productNavCategories[0]?.subcategories[0]?.slug ??
+    slugifyValue(productNavCategories[0]?.subcategories[0]?.title) ??
+    null;
+
+  const [activeCategorySlug, setActiveCategorySlug] = useState<string | null>(initialCategorySlug);
+  const [activeSubcategorySlug, setActiveSubcategorySlug] = useState<string | null>(
+    initialSubcategorySlug,
+  );
+
+  useEffect(() => {
+    if (productNavCategories.length === 0) {
+      setActiveCategorySlug(null);
+      setActiveSubcategorySlug(null);
+      return;
+    }
+
+    setActiveCategorySlug((current) => {
+      if (!current) {
+        return productNavCategories[0]?.slug ?? slugifyValue(productNavCategories[0]?.title) ?? null;
+      }
+      const stillExists = productNavCategories.some((category) => category.slug === current);
+      return stillExists
+        ? current
+        : productNavCategories[0]?.slug ?? slugifyValue(productNavCategories[0]?.title) ?? null;
+    });
+  }, [productNavCategories]);
+
+  const activeCategory = useMemo(() => {
+    if (productNavCategories.length === 0) return null;
+    if (!activeCategorySlug) return productNavCategories[0];
+    return (
+      productNavCategories.find((category) => category.slug === activeCategorySlug) ??
+      productNavCategories[0]
+    );
+  }, [activeCategorySlug, productNavCategories]);
+
+  useEffect(() => {
+    if (!activeCategory) {
+      setActiveSubcategorySlug(null);
+      return;
+    }
+
+    setActiveSubcategorySlug((current) => {
+      if (activeCategory.subcategories.length === 0) {
+        return null;
+      }
+
+      const stillExists = current
+        ? activeCategory.subcategories.some((subcategory) => subcategory.slug === current)
+        : false;
+
+      return stillExists
+        ? current
+        : activeCategory.subcategories[0]?.slug ??
+            slugifyValue(activeCategory.subcategories[0]?.title) ??
+            null;
+    });
+  }, [activeCategory]);
+
+  const activeSubcategory = useMemo(() => {
+    if (!activeCategory) return null;
+    if (!activeSubcategorySlug) return activeCategory.subcategories[0] ?? null;
+    return (
+      activeCategory.subcategories.find((subcategory) => subcategory.slug === activeSubcategorySlug) ??
+      activeCategory.subcategories[0] ??
+      null
+    );
+  }, [activeCategory, activeSubcategorySlug]);
+
+  if (!activeCategory) {
+    return (
+      <div className="w-[320px] rounded-2xl bg-white/90 p-6 text-sm text-neutral-500">
+        Catalog navigation coming soon.
+      </div>
+    );
+  }
+
+  const fallbackItems = activeCategory.subcategories.flatMap((subcategory) => subcategory.items);
+  const activeItems = activeSubcategory?.items ?? [];
+  const displayedItems = activeItems.length > 0 ? activeItems : fallbackItems;
+  const highlightedLineCount = displayedItems.length;
+  const supportingGroupCount = activeCategory.subcategories.length;
+
+  return (
+    <div className="w-full max-w-[min(95vw,1400px)] overflow-visible rounded-[28px] border border-white/70 bg-white/95 p-6 text-neutral-900 shadow-[0_25px_70px_rgba(15,23,42,0.18)]">
+      <div className="grid gap-6 lg:[grid-template-columns:260px_280px_minmax(300px,1fr)] xl:[grid-template-columns:300px_340px_minmax(400px,1fr)]">
+        <motion.div className="space-y-3 border-b border-neutral-100 pb-4 lg:max-h-[65vh] lg:border-b-0 lg:border-r lg:pb-0 lg:pr-5 lg:overflow-y-auto">
+          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-neutral-400">
+            Pillars
+          </p>
+          <div className="flex flex-col gap-1.5">
+            {productNavCategories.map((category, index) => {
+              const isActive = activeCategory?.slug === category.slug;
+              const key = `${category.slug ?? slugifyValue(category.title) ?? "category"}-${index}`;
+              return (
+                <motion.div key={key} whileHover={{ scale: 1.01 }}>
+                  <Link
+                    href={buildCatalogHref(category.slug)}
+                    onMouseEnter={() => setActiveCategorySlug(category.slug ?? null)}
+                    onFocus={() => setActiveCategorySlug(category.slug ?? null)}
+                    onClick={() => onNavigate?.()}
+                    className={cn(
+                      "group flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-semibold transition-colors",
+                      isActive
+                        ? "bg-neutral-900 text-white shadow-lg"
+                        : "bg-white/40 text-neutral-600 hover:bg-white",
+                    )}
+                    aria-current={isActive ? "true" : undefined}
+                  >
+                    <span>{category.title}</span>
+                    <FiArrowRight
+                      className={cn(
+                        "h-4 w-4 transition-all",
+                        isActive
+                          ? "text-cyan-200"
+                          : "text-neutral-400 group-hover:translate-x-1 group-hover:text-cyan-600",
+                      )}
+                    />
+                  </Link>
+                </motion.div>
+              );
+            })}
+          </div>
+        </motion.div>
+        <motion.div className="space-y-3 border-b border-neutral-100 pb-4 lg:max-h-[65vh] lg:border-b-0 lg:border-r lg:pb-0 lg:pr-5 lg:overflow-y-auto">
+          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-neutral-400">
+            Focus areas
+          </p>
+          <div className="flex flex-col gap-1.5">
+            {(activeCategory.subcategories ?? []).map((subcategory, index) => {
+              const isActive = activeSubcategory?.slug === subcategory.slug;
+              const key = `${activeCategory.slug ?? slugifyValue(activeCategory.title) ?? "category"}-${subcategory.slug ?? slugifyValue(subcategory.title) ?? "subcategory"}-${index}`;
+              return (
+                <motion.div key={key} whileHover={{ scale: 1.01 }}>
+                  <Link
+                    href={buildCatalogHref(subcategory.slug)}
+                    onMouseEnter={() => setActiveSubcategorySlug(subcategory.slug ?? null)}
+                    onFocus={() => setActiveSubcategorySlug(subcategory.slug ?? null)}
+                    onClick={() => onNavigate?.()}
+                    className={cn(
+                      "block rounded-2xl border px-4 py-3 text-sm font-semibold transition-colors",
+                      isActive
+                        ? "border-cyan-600 bg-cyan-50 text-cyan-900 shadow-sm"
+                        : "border-transparent text-neutral-600 hover:border-neutral-100",
+                    )}
+                    aria-current={isActive ? "true" : undefined}
+                  >
+                    <div className="flex items-center justify-between gap-3">
+                      <span>{subcategory.title}</span>
+                      <span className="text-xs uppercase tracking-wide text-neutral-400">
+                        {subcategory.items.length} lines
+                      </span>
+                    </div>
+                  </Link>
+                </motion.div>
+              );
+            })}
+          </div>
+        </motion.div>
+        <motion.div className="flex min-w-0 flex-1 flex-col space-y-3 overflow-hidden lg:max-h-[65vh]">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-neutral-400">
+              Lines
+            </p>
+            <div className="flex flex-wrap items-center gap-2 text-[11px] font-semibold uppercase tracking-wide text-neutral-400">
+              <span className="rounded-full border border-neutral-200 px-3 py-1">
+                {highlightedLineCount} lines
+              </span>
+              <span className="rounded-full border border-neutral-200 px-3 py-1">
+                {supportingGroupCount} focus groups
+              </span>
+            </div>
+          </div>
+          <div className="min-w-0 flex-1 overflow-y-auto pr-1">
+            <div className="grid grid-cols-1 gap-2">
+              <AnimatePresence mode="popLayout">
+                {displayedItems.length > 0 ? (
+                  displayedItems.map((item, index) => {
+                    const key = `${activeSubcategory?.slug ?? activeCategory.slug ?? "category"}-${item.slug ?? slugifyValue(item.title) ?? "item"}-${index}`;
+                    const initials = item.title
+                      .split(" ")
+                      .filter(Boolean)
+                      .slice(0, 2)
+                      .map((word) => word[0])
+                      .join("")
+                      .toUpperCase();
+                    return (
+                      <motion.div
+                        key={key}
+                        layout
+                        initial={{ opacity: 0, y: 12 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -12 }}
+                        transition={{ duration: 0.25, ease: "easeOut" }}
+                        whileHover={{ scale: 1.01 }}
+                      >
+                        <Link
+                          href={buildCatalogHref(item.slug)}
+                          onClick={() => onNavigate?.()}
+                          className="group flex items-center gap-3 rounded-2xl border border-neutral-100 bg-white/80 px-4 py-3 text-sm font-semibold text-neutral-900 transition-colors hover:border-cyan-200"
+                        >
+                          <div className="relative h-12 w-12 flex-shrink-0 overflow-hidden rounded-2xl border border-neutral-100 bg-neutral-100">
+                            {item.imageSrc ? (
+                              <Image
+                                src={item.imageSrc}
+                                alt={item.title}
+                                fill
+                                sizes="48px"
+                                className="object-cover"
+                              />
+                            ) : (
+                              <div className="flex h-full w-full items-center justify-center text-xs font-semibold text-neutral-500">
+                                {initials || "•"}
+                              </div>
+                            )}
+                          </div>
+                          <span className="flex-1 whitespace-normal text-left leading-snug">
+                            {item.title}
+                          </span>
+                          <FiArrowRight className="h-4 w-4 flex-shrink-0 text-cyan-600 transition group-hover:translate-x-1" />
+                        </Link>
+                      </motion.div>
+                    );
+                  })
+                ) : (
+                  <motion.div
+                    key="lines-empty"
+                    layout
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="col-span-1 rounded-2xl border border-dashed border-neutral-200 p-6 text-sm text-neutral-500 sm:col-span-2"
+                  >
+                    Lines will appear here as categories populate.
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+      <div className="mt-5 flex items-center justify-between text-sm text-neutral-500">
+        <span>{activeCategory.title} • {productNavCategories.length} main groups</span>
+        <Link
+          href="/products/catalog"
+          onClick={() => onNavigate?.()}
+          className="inline-flex items-center gap-2 font-semibold text-cyan-700 hover:text-cyan-600"
+        >
+          View full catalog
+          <FiArrowRight className="h-4 w-4" />
+        </Link>
+      </div>
+    </div>
+  );
+};
+
+const MobileProductsContent = ({
+  productNavCategories,
+  onNavigate,
+}: {
+  productNavCategories: MegaMenuCategory[];
+  onNavigate?: () => void;
+}) => {
+  if (productNavCategories.length === 0) {
+    return (
+      <div className="rounded-2xl bg-white p-4 text-sm text-neutral-500">
+        Catalog navigation coming soon.
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-5 rounded-2xl border border-neutral-200 bg-white p-4">
+      {productNavCategories.map((category, index) => (
+        <div
+          key={`${category.slug ?? slugifyValue(category.title) ?? "category"}-${index}`}
+          className="space-y-3"
+        >
+          <Link
+            href={buildCatalogHref(category.slug)}
+            onClick={() => onNavigate?.()}
+            className="flex items-center justify-between text-base font-semibold text-neutral-900"
+          >
+            {category.title}
+            <FiArrowRight className="h-4 w-4 text-neutral-400" />
+          </Link>
+          {(category.subcategories ?? []).map((subcategory, subIndex) => (
+            <div
+              key={`${category.slug ?? slugifyValue(category.title) ?? "category"}-${subcategory.slug ?? slugifyValue(subcategory.title) ?? "subcategory"}-${subIndex}`}
+              className="rounded-2xl bg-neutral-50 p-3"
+            >
+              <Link
+                href={buildCatalogHref(subcategory.slug)}
+                onClick={() => onNavigate?.()}
+                className="text-sm font-semibold text-neutral-800"
+              >
+                {subcategory.title}
+              </Link>
+              <div className="mt-2 grid gap-1">
+                {subcategory.items.slice(0, 3).map((item, itemIndex) => (
+                  <Link
+                    key={`${subcategory.slug ?? slugifyValue(subcategory.title) ?? "subcategory"}-${item.slug ?? slugifyValue(item.title) ?? "item"}-${itemIndex}`}
+                    href={buildCatalogHref(item.slug)}
+                    onClick={() => onNavigate?.()}
+                    className="flex items-center justify-between text-sm text-neutral-500"
+                  >
+                    <span className="line-clamp-1">{item.title}</span>
+                    <FiArrowRight className="h-3.5 w-3.5 text-neutral-400" />
+                  </Link>
+                ))}
+                {subcategory.items.length > 3 && (
+                  <span className="text-xs uppercase tracking-wide text-neutral-400">
+                    +{subcategory.items.length - 3} more lines
+                  </span>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      ))}
+      <Link
+        href="/products/catalog"
+        onClick={() => onNavigate?.()}
+        className="flex items-center justify-center rounded-2xl border border-cyan-600 px-4 py-2 text-sm font-semibold text-cyan-700 transition hover:bg-cyan-600 hover:text-white"
+      >
+        Explore entire catalog
+      </Link>
+    </div>
+  );
+};
 
 const persistLocalePreference = (value: string) => {
   if (typeof window === "undefined") return;
@@ -279,7 +751,7 @@ const MobileMenuLink = ({
 }: {
   children: React.ReactNode;
   href: string;
-  FoldContent?: React.ElementType;
+  FoldContent?: React.ComponentType<FlyoutContentProps>;
   setMenuOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
   const [ref, { height }] = useMeasure();
@@ -325,7 +797,7 @@ const MobileMenuLink = ({
           className="overflow-hidden"
         >
           <div ref={ref}>
-            <FoldContent />
+            <FoldContent variant="mobile" onNavigate={() => setMenuOpen(false)} />
           </div>
         </motion.div>
       )}

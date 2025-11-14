@@ -556,6 +556,7 @@ export const fetchCatalogData = async (locale: Locale = "en"): Promise<CatalogDa
       title: node.title,
       slug: node.slug,
       description: node.summary,
+      heroImageUrl: node.heroImageUrl,
       path,
       productCount: productCountMap.get(node.slug) ?? 0,
       children,
