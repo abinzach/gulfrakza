@@ -34,6 +34,10 @@ export default async function ServicesPage({ params }: ServicesPageProps) {
   const sectionHeading =
     servicesSection?.sectionHeading || "Our Service Offerings";
 
+  const serviceSlugs = await Promise.all(
+    services.map((_, index) => getServiceSlugByIndex(index)),
+  );
+
   return (
     <main
       className="min-h-screen bg-gray-50 dark:bg-gray-900 font-inter"
@@ -55,10 +59,9 @@ export default async function ServicesPage({ params }: ServicesPageProps) {
           </h2>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
             {services.map((service, index) => {
-              // Use English slug for consistent URLs across all locales
-              const serviceSlug = await getServiceSlugByIndex(index);
+              const serviceSlug = serviceSlugs[index];
               if (!serviceSlug) return null;
-              
+
               return (
                 <Link key={service.title} href={`/services/${serviceSlug}`}>
                   <GridPatternCard className="h-full group hover:shadow-lg transition-all duration-300 cursor-pointer">
@@ -80,4 +83,3 @@ export default async function ServicesPage({ params }: ServicesPageProps) {
     </main>
   );
 }
-

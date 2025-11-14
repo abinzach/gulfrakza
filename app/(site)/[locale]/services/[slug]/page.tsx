@@ -56,10 +56,6 @@ export default async function ServiceDetailPage({
     notFound();
   }
 
-  const heroHeading = servicesSection?.heroHeading || "Our Services";
-  const heroDescription =
-    servicesSection?.heroDescription ||
-    "Explore our comprehensive range of services designed to meet your industrial needs.";
   const whyHeading = servicesSection?.whyHeading || "Why Choose Our Services?";
   const whyDescription =
     servicesSection?.whyDescription ||
@@ -74,8 +70,6 @@ export default async function ServiceDetailPage({
   return (
     <ServicesPageClient
       service={service}
-      heroHeading={heroHeading}
-      heroDescription={heroDescription}
       whyHeading={whyHeading}
       whyDescription={whyDescription}
       ctaHeading={ctaHeading}
@@ -84,4 +78,3 @@ export default async function ServiceDetailPage({
     />
   );
 }
-

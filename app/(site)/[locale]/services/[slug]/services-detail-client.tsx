@@ -15,8 +15,6 @@ interface ServiceCard {
 
 interface ServicesPageClientProps {
   service: ServiceCard;
-  heroHeading: string;
-  heroDescription: string;
   whyHeading: string;
   whyDescription: string;
   ctaHeading: string;
@@ -26,8 +24,6 @@ interface ServicesPageClientProps {
 
 export default function ServicesPageClient({
   service,
-  heroHeading,
-  heroDescription,
   whyHeading,
   whyDescription,
   ctaHeading,
@@ -129,4 +125,3 @@ export default function ServicesPageClient({
     </main>
   );
 }
-

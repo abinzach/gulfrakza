@@ -437,7 +437,6 @@ const DesktopProductsContent = ({
   const displayedItems = activeItems.length > 0 ? activeItems : fallbackItems;
   const highlightedLineCount = displayedItems.length;
   const supportingGroupCount = activeCategory.subcategories.length;
-  const activeKey = activeSubcategory?.slug ?? activeCategory.slug ?? "root";
 
   return (
     <div className="w-full max-w-[min(95vw,1400px)] overflow-visible rounded-[28px] border border-white/70 bg-white/95 p-6 text-neutral-900 shadow-[0_25px_70px_rgba(15,23,42,0.18)]">
