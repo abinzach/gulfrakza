@@ -75,11 +75,6 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
   }
 }
 
-const stockStatusStyles = {
-  in_stock: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-200",
-  out_of_stock: "bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-200",
-}
-
 const portableTextComponents: PortableTextComponents = {
   types: {
     image: ({ value }) => {
@@ -167,7 +162,6 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
     .filter((p) => p.id !== product.id && p.primaryCategory === product.primaryCategory)
     .slice(0, 8)
 
-  const stockBadgeClass = stockStatusStyles[product.stockStatus]
   const catalogBreadcrumb = [
     { label: "Products", href: "/products/catalog" },
     ...product.categoryTrail
@@ -185,6 +179,9 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
   const productPath = `/${activeLocale}/products/catalog/${product.slug}`
   const productUrl = `${siteUrl}${productPath}`
   const imageGallery = Array.from(new Set([product.imageSrc, ...product.gallery])).filter(Boolean)
+  const isProductAvailable = product.stockStatus === "in_stock"
+  const stockDotClass = isProductAvailable ? "bg-emerald-500" : "bg-gray-400"
+  const stockDotLabel = isProductAvailable ? "Ready to ship" : "Stock refreshes soon"
   const productSchema = {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -242,7 +239,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
 
   return (
     <>
-      <main className="min-h-screen bg-white pt-16 dark:bg-gray-900 sm:pt-20 lg:pt-24">
+      <main className="min-h-screen bg-white pt-16 dark:bg-gray-900">
       {/* Breadcrumb */}
       <div className="border-b border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900">
         <div className="mx-auto max-w-[1600px] px-4 py-3 sm:px-6 sm:py-4">
@@ -315,17 +312,9 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
               </h1>
               
               {/* Stock Status */}
-              <div className="flex items-center gap-3">
-                <span
-                  className={`inline-flex items-center rounded-md px-3 py-1 text-xs font-semibold ${stockBadgeClass}`}
-                >
-                  {product.stockStatus === "in_stock" ? "✓ In Stock" : "Out of Stock"}
-                </span>
-                {product.totalStock !== null && (
-                  <span className="text-sm text-gray-600 dark:text-gray-400">
-                    {product.totalStock} unit{product.totalStock === 1 ? "" : "s"} available
-                  </span>
-                )}
+              <div className="flex items-center gap-2 text-sm font-medium text-gray-900 dark:text-gray-100">
+                <span className={`h-3 w-3 rounded-full ${stockDotClass}`} />
+                <span>{stockDotLabel}</span>
               </div>
 
               {/* Description */}
@@ -364,13 +353,9 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
                   <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
                     Availability
                   </p>
-                  <p className="mt-1 font-medium text-gray-900 dark:text-gray-100">
-                    {product.stockStatus === "in_stock" ? "In stock" : "Out of stock"}
-                    {product.totalStock !== null && (
-                      <span className="ml-2 text-xs text-gray-500 dark:text-gray-400">
-                        ({product.totalStock} unit{product.totalStock === 1 ? "" : "s"})
-                      </span>
-                    )}
+                  <p className="mt-1 flex items-center gap-2 font-medium text-gray-900 dark:text-gray-100">
+                    <span className={`h-2.5 w-2.5 rounded-full ${stockDotClass}`} />
+                    <span>{stockDotLabel}</span>
                   </p>
                 </div>
               </div>
@@ -452,33 +437,26 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
                 <h2 className="text-lg font-semibold text-gray-900 sm:text-xl dark:text-gray-100">
                   Available Sizes
                 </h2>
-                <div className="overflow-hidden rounded-lg border border-gray-200 dark:border-gray-700">
-                  <div className="w-full overflow-x-auto">
-                    <table className="min-w-[360px] divide-y divide-gray-200 dark:divide-gray-700">
-                      <thead className="bg-gray-50 dark:bg-gray-800">
-                        <tr>
-                          <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-700 dark:text-gray-200">
-                            Size
-                          </th>
-                          <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-700 dark:text-gray-200">
-                            Stock
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-900">
-                        {product.sizeVariants.map((variant) => (
-                          <tr key={variant.label}>
-                            <td className="px-4 py-3 text-sm font-medium text-gray-900 dark:text-gray-100">
-                              {variant.label}
-                            </td>
-                            <td className="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">
-                              {variant.stock !== null ? `${variant.stock} units` : "Contact for availability"}
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  {product.sizeVariants.map((variant) => {
+                    const isVariantAvailable = typeof variant.stock === "number" ? variant.stock > 0 : false
+                    const variantLabel = isVariantAvailable ? "Ready to ship" : "Stock refreshes soon"
+                    const variantDotClass = isVariantAvailable ? "bg-emerald-500" : "bg-gray-400"
+                    return (
+                      <div
+                        key={variant.label}
+                        className="flex items-center justify-between rounded-2xl border border-gray-200 bg-white px-4 py-3 text-sm font-medium text-gray-900 shadow-sm dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100"
+                      >
+                        <div className="flex items-center gap-3">
+                          <span className={`h-2.5 w-2.5 rounded-full ${variantDotClass}`} />
+                          <span>{variant.label}</span>
+                        </div>
+                        <span className="text-xs font-normal text-gray-500 dark:text-gray-400">
+                          {variantLabel}
+                        </span>
+                      </div>
+                    )
+                  })}
                 </div>
               </div>
             )}

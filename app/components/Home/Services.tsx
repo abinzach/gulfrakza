@@ -11,6 +11,8 @@ import {
 } from "@/components/ui/card-with-grid-ellipsis-pattern";
 import QuoteModal from "../GetQuote";
 import { DarkGridHero } from "./DarkGrid";
+import { Link } from "@/navigation";
+import { getServiceSlugByIndex } from "@/lib/services";
 
 type ServiceCard = {
   title: string;
@@ -58,14 +60,22 @@ export default function ServicesSection() {
             {t("sectionHeading")}
           </h2>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
-            {cards.map((service) => (
-              <GridPatternCard key={service.title}>
-                <GridPatternCardBody>
-                  <h3 className="mb-1 text-lg font-bold text-foreground">{service.title}</h3>
-                  <p className="text-sm text-foreground/60">{service.description}</p>
-                </GridPatternCardBody>
-              </GridPatternCard>
-            ))}
+            {cards.map((service, index) => {
+              // Use English slug for consistent URLs across all locales
+              const serviceSlug = getServiceSlugByIndex(index) || `service-${index}`;
+              return (
+                <Link key={service.title} href={`/services/${serviceSlug}`}>
+                  <GridPatternCard className="h-full group hover:shadow-lg transition-all duration-300 cursor-pointer">
+                    <GridPatternCardBody className="h-full">
+                      <h3 className="mb-1 text-lg font-bold text-foreground group-hover:text-cyan-600 transition-colors duration-300">
+                        {service.title}
+                      </h3>
+                      <p className="text-sm text-foreground/60">{service.description}</p>
+                    </GridPatternCardBody>
+                  </GridPatternCard>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>

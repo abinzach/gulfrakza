@@ -10,6 +10,7 @@ import { I18nProvider } from "@/i18n/provider";
 import { getMessages, isLocale, locales } from "@/i18n/config";
 import { siteUrl } from "@/lib/constants";
 import LocalePreferenceSync from "@/app/components/LocalePreferenceSync";
+import { fetchCatalogData } from "@/lib/catalog";
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -115,11 +116,12 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
   }
 
   const messages = await getMessages(locale);
+  const { categoryTree } = await fetchCatalogData(locale);
 
   return (
     <I18nProvider locale={locale} messages={messages}>
       <LocalePreferenceSync locale={locale} />
-      <FlyoutNav />
+      <FlyoutNav categoryTree={categoryTree} />
       <main>{children}</main>
       <WhatsAppInquiry />
       <EmailInquiry />

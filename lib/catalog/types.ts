@@ -12,6 +12,7 @@ export interface CatalogCategoryNode {
   title: string
   slug: string
   description?: string
+  heroImageUrl?: string | null
   path: Array<{ title: string; slug: string }>
   productCount: number
   children: CatalogCategoryNode[]

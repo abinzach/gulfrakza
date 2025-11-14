@@ -74,7 +74,7 @@ const BreadcrumbPage = React.forwardRef<
   <span
     ref={ref}
     aria-current="page"
-    className={cn("font-semibold text-foreground", className)}
+    className={cn("font-medium cursor-pointer text-foreground", className)}
     {...props}
   />
 ))
