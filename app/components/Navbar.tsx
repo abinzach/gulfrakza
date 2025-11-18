@@ -71,7 +71,7 @@ const normalizeSlug = (value?: string | null, fallback?: string) => {
 };
 
 const buildCatalogHref = (slug?: string | null) =>
-  slug ? `/products/catalog?category=${encodeURIComponent(slug)}` : "/products/catalog";
+  slug ? `/products?category=${encodeURIComponent(slug)}` : "/products";
 
 const buildMegaMenuCategories = (categoryTree: CatalogCategoryNode[]): MegaMenuCategory[] => {
   if (!Array.isArray(categoryTree)) return [];
@@ -599,7 +599,7 @@ const DesktopProductsContent = ({
       <div className="mt-5 flex items-center justify-between text-sm text-neutral-500">
         <span>{activeCategory.title} • {productNavCategories.length} main groups</span>
         <Link
-          href="/products/catalog"
+          href="/products"
           onClick={() => onNavigate?.()}
           className="inline-flex items-center gap-2 font-semibold text-cyan-700 hover:text-cyan-600"
         >
@@ -676,7 +676,7 @@ const MobileProductsContent = ({
         </div>
       ))}
       <Link
-        href="/products/catalog"
+        href="/products"
         onClick={() => onNavigate?.()}
         className="flex items-center justify-center rounded-2xl border border-cyan-600 px-4 py-2 text-sm font-semibold text-cyan-700 transition hover:bg-cyan-600 hover:text-white"
       >

@@ -45,13 +45,13 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
   const title = product.seoTitle || fallbackTitle
   const description = product.seoDescription || product.description
   const image = product.imageSrc
-  const baseProductPath = `/${activeLocale}/products/catalog/${slug}`
+  const baseProductPath = `/${activeLocale}/products/${slug}`
   const canonicalUrl = `${siteUrl}${baseProductPath}`
   const languageAlternates = locales.reduce<Record<string, string>>((acc, loc) => {
-    acc[loc] = `${siteUrl}/${loc}/products/catalog/${slug}`
+    acc[loc] = `${siteUrl}/${loc}/products/${slug}`
     return acc
   }, {})
-  languageAlternates["x-default"] = `${siteUrl}/en/products/catalog/${slug}`
+  languageAlternates["x-default"] = `${siteUrl}/en/products/${slug}`
 
   return {
     title,
@@ -163,12 +163,12 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
     .slice(0, 8)
 
   const catalogBreadcrumb = [
-    { label: "Products", href: "/products/catalog" },
+    { label: "Products", href: "/products" },
     ...product.categoryTrail
       .filter((segment) => Boolean(segment.slug))
       .map((segment) => ({
         label: segment.title,
-        href: `/products/catalog?category=${encodeURIComponent(segment.slug)}`,
+        href: `/products?category=${encodeURIComponent(segment.slug)}`,
       })),
     { label: product.title, href: null },
   ]
@@ -176,7 +176,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
   const category = product.categoryTrail[0]?.title || product.primaryCategory || "General"
   const subcategory = product.categoryTrail[1]?.title || ""
   const itemCategory = product.categoryTrail[2]?.title || product.leafCategory || category
-  const productPath = `/${activeLocale}/products/catalog/${product.slug}`
+  const productPath = `/${activeLocale}/products/${product.slug}`
   const productUrl = `${siteUrl}${productPath}`
   const imageGallery = Array.from(new Set([product.imageSrc, ...product.gallery])).filter(Boolean)
   const isProductAvailable = product.stockStatus === "in_stock"
@@ -213,13 +213,13 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
     },
     {
       name: activeLocale === "ar" ? "كتالوج المنتجات" : "Product Catalog",
-      item: `${siteUrl}/${activeLocale}/products/catalog`,
+      item: `${siteUrl}/${activeLocale}/products`,
     },
     ...product.categoryTrail
       .filter((segment) => Boolean(segment.slug))
       .map((segment) => ({
         name: segment.title,
-        item: `${siteUrl}/${activeLocale}/products/catalog?category=${encodeURIComponent(segment.slug)}`,
+        item: `${siteUrl}/${activeLocale}/products?category=${encodeURIComponent(segment.slug)}`,
       })),
     {
       name: product.title,
@@ -370,7 +370,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
                 productItemCategory={itemCategory}
               />
               <Link
-                href="/products/catalog"
+                href="/products"
                 className="flex w-full items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 sm:text-base"
               >
                 ← Back to Catalog
@@ -522,7 +522,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
                 return (
                   <Link
                     key={relatedProduct.id}
-                    href={relatedProduct.detailsHref || `/products/catalog/${relatedProduct.slug}`}
+                    href={relatedProduct.detailsHref || `/products/${relatedProduct.slug}`}
                     className="group flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white transition hover:shadow-lg dark:border-gray-700 dark:bg-gray-800"
                   >
                     <div className="relative aspect-square overflow-hidden bg-gray-50 dark:bg-gray-900">

@@ -88,8 +88,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   addLocalizedEntries("/", 1, "monthly");
   addLocalizedEntries("/about-us", 0.8, "monthly");
-  addLocalizedEntries("/products", 0.8, "weekly");
-  addLocalizedEntries("/products/catalog", 0.9, "weekly");
+  addLocalizedEntries("/products", 0.9, "weekly");
+  addLocalizedEntries("/services", 0.85, "monthly");
   addLocalizedEntries("/privacy-policy", 0.4, "yearly");
   addLocalizedEntries("/terms-of-service", 0.4, "yearly");
 

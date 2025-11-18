@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useMemo, useState } from "react";
-import { useMessages, useTranslations } from "@/i18n/provider";
+import { useLocale, useTranslations } from "@/i18n/provider";
 import { FaHelmetSafety, FaPeopleGroup } from "react-icons/fa6";
 import { TbChecklist } from "react-icons/tb";
 import { Button } from "@/components/ui/button";
@@ -12,36 +12,16 @@ import {
 import QuoteModal from "../GetQuote";
 import { DarkGridHero } from "./DarkGrid";
 import { Link } from "@/navigation";
-import { getServiceSlugByIndex } from "@/lib/services";
-
-type ServiceCard = {
-  title: string;
-  description: string;
-};
+import { getCategories, type Locale } from "@/lib/services";
 
 export default function ServicesSection() {
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
   const t = useTranslations("home.services");
-  const messages = useMessages();
+  const locale = useLocale();
 
-  const cards = useMemo<ServiceCard[]>(() => {
-    if (!messages || typeof messages !== "object") {
-      return [];
-    }
-
-    const homeSection = (messages as Record<string, unknown>).home;
-    if (!homeSection || typeof homeSection !== "object") {
-      return [];
-    }
-
-    const servicesSection = (homeSection as Record<string, unknown>).services;
-    if (!servicesSection || typeof servicesSection !== "object") {
-      return [];
-    }
-
-    const cardEntries = (servicesSection as Record<string, unknown>).cards;
-    return Array.isArray(cardEntries) ? (cardEntries as ServiceCard[]) : [];
-  }, [messages]);
+  const categories = useMemo(() => {
+    return getCategories(locale as Locale);
+  }, [locale]);
 
   return (
     <>
@@ -60,17 +40,15 @@ export default function ServicesSection() {
             {t("sectionHeading")}
           </h2>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
-            {cards.map((service, index) => {
-              // Use English slug for consistent URLs across all locales
-              const serviceSlug = getServiceSlugByIndex(index) || `service-${index}`;
+            {categories.map((category) => {
               return (
-                <Link key={service.title} href={`/services/${serviceSlug}`}>
+                <Link key={category.id} href={`/services#${category.id}`}>
                   <GridPatternCard className="h-full group hover:shadow-lg transition-all duration-300 cursor-pointer">
                     <GridPatternCardBody className="h-full">
                       <h3 className="mb-1 text-lg font-bold text-foreground group-hover:text-cyan-600 transition-colors duration-300">
-                        {service.title}
+                        {category.title}
                       </h3>
-                      <p className="text-sm text-foreground/60">{service.description}</p>
+                      <p className="text-sm text-foreground/60">{category.description}</p>
                     </GridPatternCardBody>
                   </GridPatternCard>
                 </Link>

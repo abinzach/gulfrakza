@@ -1,4 +1,38 @@
-import { getMessages } from "@/i18n/config";
+import servicesData from "@/data/services.json";
+
+export type Locale = "en" | "ar";
+
+export interface ServiceItem {
+  id: string;
+  title: string;
+  description: string;
+  imageSrc?: string;
+  category?: string;
+}
+
+export interface ServiceCategory {
+  id: string;
+  title: string;
+  description: string;
+  imageSrc?: string;
+  services: ServiceItem[];
+}
+
+// Raw data types matching the JSON structure
+interface RawServiceItem {
+  id: string;
+  title: { en: string; ar: string };
+  description: { en: string; ar: string };
+  imageSrc?: string;
+}
+
+interface RawCategory {
+  id: string;
+  title: { en: string; ar: string };
+  description: { en: string; ar: string };
+  imageSrc?: string;
+  services: RawServiceItem[];
+}
 
 // Utility function to create a URL-friendly slug from a string
 export function slugify(text: string): string {
@@ -8,48 +42,43 @@ export function slugify(text: string): string {
     .replace(/\s+/g, "-"); // Replace spaces with hyphens
 }
 
-interface ServiceCard {
-  title: string;
-  description: string;
+export function getCategories(locale: Locale = "en"): ServiceCategory[] {
+  return (servicesData as RawCategory[]).map((category) => ({
+    id: category.id,
+    title: category.title[locale],
+    description: category.description[locale],
+    imageSrc: category.imageSrc,
+    services: category.services.map((service) => ({
+      id: service.id,
+      title: service.title[locale],
+      description: service.description[locale],
+      imageSrc: service.imageSrc,
+      category: category.title[locale],
+    })),
+  }));
 }
 
-// English service titles in order (used for consistent slug generation)
-const ENGLISH_SERVICE_TITLES = [
-  "Scaffolding Services",
-  "PEB Shed Fabrication",
-  "Civil Works",
-  "Steel & Aluminium Fabrication",
-  "Rope Access & Safety Training",
-  "Industrial Trading",
-];
-
-// Get English services to create consistent slug mapping
-export async function getEnglishServices(): Promise<ServiceCard[]> {
-  const messages = await getMessages("en");
-  const servicesSection = messages?.home?.services;
-  return servicesSection?.cards || [];
+export function getAllServices(locale: Locale = "en"): ServiceItem[] {
+  const categories = getCategories(locale);
+  return categories.flatMap((category) => category.services);
 }
 
-// Get service slug by index (services are in same order in all locales)
-export function getServiceSlugByIndex(index: number): string | null {
-  if (index >= 0 && index < ENGLISH_SERVICE_TITLES.length) {
-    return slugify(ENGLISH_SERVICE_TITLES[index]);
-  }
-  return null;
+export function getServiceBySlug(slug: string, locale: Locale = "en"): ServiceItem | null {
+  const services = getAllServices(locale);
+  return services.find((service) => service.id === slug) || null;
 }
 
-// Get service index by slug (for finding which service a slug refers to)
-export function getServiceIndexBySlug(slug: string): number | null {
-  for (let i = 0; i < ENGLISH_SERVICE_TITLES.length; i++) {
-    if (slugify(ENGLISH_SERVICE_TITLES[i]) === slug) {
-      return i;
-    }
-  }
-  return null;
-}
-
-// Get all service slugs (for static generation)
+// Get all service slugs (for static generation) - using IDs as slugs
 export function getAllServiceSlugs(): string[] {
-  return ENGLISH_SERVICE_TITLES.map((title) => slugify(title));
+  // We use the IDs from the JSON as stable slugs
+  return (servicesData as RawCategory[]).flatMap((cat) => 
+    cat.services.map((service) => service.id)
+  );
 }
 
+// Helper to get the index is less relevant now that we use ID-based lookup, 
+// but we might need it if we want to maintain order or find adjacent services.
+export function getServiceIndexBySlug(slug: string): number {
+    const slugs = getAllServiceSlugs();
+    return slugs.indexOf(slug);
+}
