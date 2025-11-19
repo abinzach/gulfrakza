@@ -1,139 +1,126 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+import type { Metadata } from "next"
 
-import React from "react";
-import Image from "next/image";
-import data from "../../../Product_Categories.json";
-import BackButton from "@/app/components/BackButton";
-import {
-  GridPatternCard,
-  GridPatternCardBody,
-} from "@/components/ui/card-with-grid-ellipsis-pattern";
-import { Link } from "@/navigation";
+import { fetchCatalogData } from "@/lib/catalog"
+import { defaultLocale, isLocale, locales, type Locale } from "@/i18n/config"
+import { siteUrl } from "@/lib/constants"
 
-// Define TypeScript interfaces for our data structure
-interface Item {
-  title: string;
-  description: string;
-  link: string;
-  imageSrc: string;
-  specs?: Record<string, any>;
+import CatalogPageClient from "./catalog-client"
+import { parseFiltersFromSearchParams } from "./filter-helpers"
+
+const catalogMeta = {
+  title: "Industrial Products Catalog | Gulf Rakza Trading",
+  description:
+    "Browse the complete Gulf Rakza Trading product catalog. Compare PPE, safety systems, lifting gear, welding equipment, marine supplies, and more tailored for industrial operations across the GCC.",
+  keywords: [
+    "industrial product catalog",
+    "Gulf Rakza products",
+    "PPE supplier Saudi Arabia",
+    "industrial safety equipment",
+    "marine equipment Saudi Arabia",
+    "industrial lifting gear",
+  ],
+  ogTitle: "Explore Gulf Rakza's Industrial Product Catalog",
+  ogDescription:
+    "Search, filter, and compare the full lineup of Gulf Rakza Trading industrial products including PPE, safety systems, lifting solutions, and specialized equipment.",
+  twitterTitle: "Gulf Rakza Industrial Product Catalog",
+  twitterDescription:
+    "Discover PPE, lifting gear, marine supplies, and industrial equipment from Gulf Rakza Trading.",
+  ogImage: `${siteUrl}/og/product-catalog.jpg`,
+  twitterImage: `${siteUrl}/twitter/product-catalog.jpg`,
 }
 
-interface Subcategory {
-  title: string;
-  description: string;
-  items: Item[];
+type CatalogPageProps = {
+  params: Promise<{ locale: string }>
+  searchParams?: Promise<Record<string, string | string[] | undefined>>
 }
 
-interface Category {
-  title: string;
-  description: string;
-  imageSrc: string;
-  link: string;
-  subcategories?: Subcategory[];
+export async function generateMetadata({ params }: CatalogPageProps): Promise<Metadata> {
+  const { locale } = await params
+  const activeLocale: Locale = isLocale(locale) ? locale : defaultLocale
+
+  const canonicalPath = `/${activeLocale}/products`
+  const canonicalUrl = `${siteUrl}${canonicalPath}`
+  const languageAlternates = locales.reduce<Record<string, string>>((acc, currentLocale) => {
+    acc[currentLocale] = `${siteUrl}/${currentLocale}/products`
+    return acc
+  }, {})
+  languageAlternates["x-default"] = `${siteUrl}/${defaultLocale}/products`
+
+  const localeTag = activeLocale === "ar" ? "ar_SA" : "en_US"
+
+  return {
+    title: catalogMeta.title,
+    description: catalogMeta.description,
+    keywords: catalogMeta.keywords,
+    alternates: {
+      canonical: canonicalUrl,
+      languages: languageAlternates,
+    },
+    openGraph: {
+      title: catalogMeta.ogTitle,
+      description: catalogMeta.ogDescription,
+      url: canonicalUrl,
+      siteName: "Gulf Rakza Trading",
+      type: "website",
+      locale: localeTag,
+      images: [
+        {
+          url: catalogMeta.ogImage,
+          width: 1200,
+          height: 630,
+          alt: "Gulf Rakza industrial product catalog",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: catalogMeta.twitterTitle,
+      description: catalogMeta.twitterDescription,
+      images: [catalogMeta.twitterImage],
+    },
+  }
 }
 
-interface CategoriesData {
-  categories: Category[];
+const buildURLSearchParams = (params?: Record<string, string | string[] | undefined>) => {
+  const searchParams = new URLSearchParams()
+  if (!params) {
+    return searchParams
+  }
+
+  Object.entries(params).forEach(([key, value]) => {
+    if (typeof value === "undefined") return
+    if (Array.isArray(value)) {
+      value.forEach((entry) => {
+        if (typeof entry === "string") {
+          searchParams.append(key, entry)
+        }
+      })
+    } else {
+      searchParams.append(key, value)
+    }
+  })
+
+  return searchParams
 }
 
-// Utility function to create a URL-friendly slug from a string.
-function slugify(text: string): string {
-  return text
-    .toLowerCase()
-    .replace(/[^\w\s-]/g, '') // Remove special characters
-    .replace(/\s+/g, '-');     // Replace spaces with hyphens
-}
+export default async function ProductsPage({ params, searchParams }: CatalogPageProps) {
+  const { locale } = await params
+  const activeLocale: Locale = isLocale(locale) ? locale : defaultLocale
 
-const ProductsPage: React.FC = () => {
-  const { categories } = data as CategoriesData;
+  const { products, categoryTree, featureFilters, brandFilters } =
+    await fetchCatalogData(activeLocale)
+
+  const resolvedSearchParams = searchParams ? await searchParams : undefined
+
+  const initialFilters = parseFiltersFromSearchParams(buildURLSearchParams(resolvedSearchParams))
 
   return (
-    <main
-      className="min-h-screen bg-gray-50 dark:bg-gray-900 font-inter pt-16"
-      style={{ scrollPaddingTop: "80px" }}
-    >  
-      <div className="max-w-6xl mx-auto px-4 py-8">
-        {/* Page Header */}
-        <BackButton />
-        <header className="mb-12">
-          <h1 className="text-4xl font-bold text-gray-800 dark:text-white">
-            Products
-          </h1>
-          <p className="mt-4 text-gray-700 font-light dark:text-gray-300">
-            Explore our categories and subcategories to discover our wide range
-            of industrial products and solutions.
-          </p>
-          <div className="mt-6">
-            <Link
-              href="/products/catalog"
-              className="inline-flex items-center rounded-full border border-cyan-600 px-4 py-2 text-sm font-medium text-cyan-700 transition-colors hover:bg-cyan-600 hover:text-white dark:border-cyan-400 dark:text-cyan-300 dark:hover:bg-cyan-400 dark:hover:text-slate-900"
-            >
-              Browse full product catalog &rarr;
-            </Link>
-          </div>
-        </header>
-
-        {/* Categories Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {categories.map((category, index) => (
-            <GridPatternCard
-              key={index}
-              className=""
-            >
-              <GridPatternCardBody>
-              <div className="flex items-center gap-4">
-                <Image 
-                  height={64} 
-                  width={64} 
-                  src={category.imageSrc || "/logo-rakza.png"} // Add fallback image
-                  alt={category.title + " image"}
-                  className="h-16 w-16 object-cover rounded"
-                  
-                />
-                <div>
-                  <h2 className="text-2xl font-semibold text-gray-800 dark:text-white">
-                    {category.title}
-                  </h2>
-                  <p className="text-gray-700 font-raleway text-sm dark:text-gray-300">
-                    {category.description}
-                  </p>
-                </div>
-              </div>
-              {category.subcategories && category.subcategories.length > 0 && (
-                <div className="mt-4">
-                  <ul className="space-y-2">
-                    {category.subcategories.map((subcat, subIndex) => {
-                      // Create slugs for category and subcategory
-                      const categorySlug = slugify(category.title);
-                      const subcatSlug = slugify(subcat.title);
-                      // Use the category link from JSON if provided,
-                      // otherwise generate based on slug.
-                      const basePath = category.link 
-                        ? category.link.endsWith('/') ? category.link.slice(0, -1) : category.link 
-                        : `/products/${categorySlug}`;
-                      const linkHref = `${basePath}/${subcatSlug}`;
-                      
-                      return (
-                        <li key={subIndex}>
-                          <Link href={linkHref}>
-                            <p className="text-sm text-cyan-600 transition-all duration-300 hover:underline dark:text-cyan-400">
-                              {subcat.title}
-                            </p>
-                          </Link>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
-              )}
-              </GridPatternCardBody>
-            </GridPatternCard>
-          ))}
-        </div>
-      </div>
-    </main>
-  );
-};
-
-export default ProductsPage;
+    <CatalogPageClient
+      products={products}
+      categoryTree={categoryTree}
+      featureFilters={featureFilters}
+      brandFilters={brandFilters}
+      initialFilters={initialFilters}
+    />
+  )
+}

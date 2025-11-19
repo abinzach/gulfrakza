@@ -1,0 +1,312 @@
+[
+  {
+    "id": "safety-services",
+    "title": {
+      "en": "Safety Services",
+      "ar": "خدمات السلامة"
+    },
+    "description": {
+      "en": "Comprehensive safety solutions including edge protection, safe access systems, and professional training.",
+      "ar": "حلول سلامة شاملة تشمل حماية الحواف وأنظمة الوصول الآمن والتدريب المهني."
+    },
+    "imageSrc": "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&w=800&q=80",
+    "services": [
+      {
+        "id": "edge-protection",
+        "title": {
+          "en": "Edge Protection",
+          "ar": "أنظمة حماية الحواف"
+        },
+        "description": {
+          "en": "Design, supply and installation of edge protection, void protection, Anchorage points and lifeline systems.",
+          "ar": "تصميم وتوريد وتركيب أنظمة حماية الحواف، وحماية الفراغات، ونقاط التثبيت، وأنظمة خطوط الحياة."
+        },
+        "imageSrc": "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&w=800&q=80"
+      },
+      {
+        "id": "safe-access",
+        "title": {
+          "en": "Safe Access",
+          "ar": "حلول الوصول الآمن"
+        },
+        "description": {
+          "en": "Design, supply and installation of gates, platforms, walkways, railings and collision protection systems.",
+          "ar": "تصميم وتوريد وتركيب البوابات والمنصات والممرات والدرابزين وأنظمة الحماية من الاصطدام."
+        },
+        "imageSrc": "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=800&q=80"
+      },
+      {
+        "id": "safety-components",
+        "title": {
+          "en": "Safety Components",
+          "ar": "مكونات السلامة"
+        },
+        "description": {
+          "en": "We have a range of fittings and steel fixing solutions that are designed to provide safe, reliable connections with built-in engineering.",
+          "ar": "لدينا مجموعة من التركيبات وحلول التثبيت الفولاذية المصممة لتوفير اتصالات آمنة وموثوقة مع هندسة مدمجة."
+        },
+        "imageSrc": "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=800&q=80"
+      },
+      {
+        "id": "training",
+        "title": {
+          "en": "Training",
+          "ar": "التدريب"
+        },
+        "description": {
+          "en": "We provide safety audits and general HSE training.",
+          "ar": "نحن نقدم عمليات تدقيق السلامة وتدريبات الصحة والسلامة والبيئة العامة."
+        },
+        "imageSrc": "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=800&q=80"
+      }
+    ]
+  },
+  {
+    "id": "cathodic-protection",
+    "title": {
+      "en": "Cathodic Protection",
+      "ar": "الحماية الكاثودية"
+    },
+    "description": {
+      "en": "Advanced corrosion protection systems including design, installation, and maintenance.",
+      "ar": "أنظمة حماية متقدمة من التآكل تشمل التصميم والتركيب والصيانة."
+    },
+    "imageSrc": "https://images.unsplash.com/photo-1621905252507-b35492cc79b4?auto=format&fit=crop&w=800&q=80",
+    "services": [
+      {
+        "id": "system-design-installation",
+        "title": {
+          "en": "System Design & Installation",
+          "ar": "تصميم وتركيب الأنظمة"
+        },
+        "description": {
+          "en": "We provide custom CP design and installation of both galvanic & impressed current cathodic protection (ICCP) systems to meet the highest industry standards.",
+          "ar": "نحن نقدم تصميمًا وتركيبًا مخصصًا للحماية الكاثودية لكل من الأنظمة الجلفانية والتيار القسري (ICCP) لتلبية أعلى معايير الصناعة."
+        },
+        "imageSrc": "https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?q=80&w=800"
+      },
+      {
+        "id": "testing-monitoring",
+        "title": {
+          "en": "Testing, Commissioning & Monitoring",
+          "ar": "الاختبار والتشغيل والمراقبة"
+        },
+        "description": {
+          "en": "We perform comprehensive testing and monitoring solutions that ensure optimal system performance. We provide Non Destructive Surveys providing precise diagnostics of coating integrity, corrosion risks, and system performance without excavation.",
+          "ar": "نقوم بإجراء اختبارات شاملة وحلول مراقبة تضمن الأداء الأمثل للنظام. نقدم مسوحات غير مدمرة توفر تشخيصًا دقيقًا لسلامة الطلاء ومخاطر التآكل وأداء النظام دون الحاجة للحفر."
+        },
+        "imageSrc": "https://images.unsplash.com/photo-1581093588401-fbb62a02f120?auto=format&fit=crop&w=800&q=80"
+      },
+      {
+        "id": "supply-materials",
+        "title": {
+          "en": "Supply of CP Materials",
+          "ar": "توريد مواد الحماية الكاثودية"
+        },
+        "description": {
+          "en": "We supply a vast variety of cathodic protection materials from anodes to the most sophisticated type of transformer rectifiers.",
+          "ar": "نقوم بتوريد مجموعة واسعة من مواد الحماية الكاثودية من الأنودات إلى أكثر أنواع محولات التقويم تعقيدًا."
+        },
+        "imageSrc": "https://images.unsplash.com/photo-1580983561371-7f4b242d8ec0?auto=format&fit=crop&w=800&q=80"
+      },
+      {
+        "id": "maintenance-refurbishment",
+        "title": {
+          "en": "Maintenance and Refurbishment Solutions",
+          "ar": "حلول الصيانة والتجديد"
+        },
+        "description": {
+          "en": "Scheduled and emergency maintenance services, system troubleshooting and performance optimization to maximize infrastructure protection. We upgrade and extend the service life of aging CP systems and critical assets with minimal downtime.",
+          "ar": "خدمات صيانة مجدولة وطارئة، واستكشاف أخطاء النظام وإصلاحها، وتحسين الأداء لتعظيم حماية البنية التحتية. نقوم بترقية وتمديد عمر خدمة أنظمة الحماية الكاثودية القديمة والأصول الحيوية بأقل وقت توقف."
+        },
+        "imageSrc": "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=800&q=80"
+      }
+    ]
+  },
+  {
+    "id": "civil-contracting",
+    "title": {
+      "en": "Civil Contracting",
+      "ar": "المقاولات المدنية"
+    },
+    "description": {
+      "en": "Expert civil contracting services from scaffolding to manpower rentals and PEB fabrication.",
+      "ar": "خدمات مقاولات مدنية خبيرة من السقالات إلى تأجير العمالة وتصنيع المباني سابقة الهندسة."
+    },
+    "imageSrc": "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=800&q=80",
+    "services": [
+      {
+        "id": "scaffolding-services",
+        "title": {
+          "en": "Scaffolding Services",
+          "ar": "خدمات السقالات"
+        },
+        "description": {
+          "en": "We provide industrial scaffolding, construction scaffolding, temporary access platforms, and shutdown and turnaround scaffolding.",
+          "ar": "نحن نقدم السقالات الصناعية، وسقالات البناء، ومنصات الوصول المؤقتة، وسقالات الإغلاق والصيانة الدورية."
+        },
+        "imageSrc": "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=800&q=80"
+      },
+      {
+        "id": "manpower-rentals",
+        "title": {
+          "en": "Manpower Rentals",
+          "ar": "تأجير العمالة"
+        },
+        "description": {
+          "en": "We provide Skilled, Semi-Skilled and Unskilled manpower for construction and infrastructure projects.",
+          "ar": "نوفر عمالة ماهرة وشبه ماهرة وغير ماهرة لمشاريع البناء والبنية التحتية."
+        },
+        "imageSrc": "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=800&q=80"
+      },
+      {
+        "id": "peb-fabrication",
+        "title": {
+          "en": "PEB Fabrication",
+          "ar": "تصنيع المباني سابقة الهندسة (PEB)"
+        },
+        "description": {
+          "en": "We deliver seamless Pre-Engineered Buildings (PEB) in Saudi Arabia with cutting-edge design, precise engineering, and top-notch services. PEB is a perfect choice for innovative and efficient building solutions. Our commitment to delivering the best international standard quality with client-specific requirements exceeds promises.",
+          "ar": "نقدم مباني سابقة الهندسة (PEB) سلسة في المملكة العربية السعودية بتصميم متطور وهندسة دقيقة وخدمات من الدرجة الأولى. المباني سابقة الهندسة هي الخيار الأمثل لحلول البناء المبتكرة والفعالة. التزامنا بتقديم أفضل جودة وفقًا للمعايير الدولية مع تلبية متطلبات العميل يتجاوز الوعود."
+        },
+        "imageSrc": "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?auto=format&fit=crop&w=800&q=80"
+      },
+      {
+        "id": "interior-fit-out",
+        "title": {
+          "en": "Interior Fit-Out",
+          "ar": "التجهيزات الداخلية"
+        },
+        "description": {
+          "en": "We offer comprehensive interior fit-out services, transforming spaces with high-quality finishes and functional designs tailored to your needs.",
+          "ar": "نقدم خدمات تجهيزات داخلية شاملة، ونحول المساحات بتشطيبات عالية الجودة وتصاميم وظيفية مصممة خصيصًا لاحتياجاتك."
+        },
+        "imageSrc": "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=800&q=80"
+      }
+    ]
+  },
+  {
+    "id": "hvac-services",
+    "title": {
+      "en": "HVAC Services",
+      "ar": "خدمات التكييف والتهوية"
+    },
+    "description": {
+      "en": "Complete HVAC solutions encompassing design, installation, ducting, and maintenance.",
+      "ar": "حلول تكييف وتهوية شاملة تشمل التصميم والتركيب ومجاري الهواء والصيانة."
+    },
+    "imageSrc": "https://images.unsplash.com/photo-1581094794329-cd2a1fb07a9f?auto=format&fit=crop&w=800&q=80",
+    "services": [
+      {
+        "id": "hvac-design",
+        "title": {
+          "en": "Design",
+          "ar": "التصميم"
+        },
+        "description": {
+          "en": "We work closely with architects, engineers, and end users to design the most effective and cost-effective HVAC systems.",
+          "ar": "نعمل بشكل وثيق مع المهندسين المعماريين والمهندسين والمستخدمين النهائيين لتصميم أنظمة التكييف والتهوية الأكثر فعالية وكفاءة من حيث التكلفة."
+        },
+        "imageSrc": "https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=800"
+      },
+      {
+        "id": "hvac-installation",
+        "title": {
+          "en": "Installation",
+          "ar": "التركيب"
+        },
+        "description": {
+          "en": "We provide HVAC installation of various manufacturers to meet almost any budget and timeframe.",
+          "ar": "نقدم خدمات تركيب أنظمة التكييف والتهوية من مختلف الشركات المصنعة لتلبية أي ميزانية وجدول زمني تقريبًا."
+        },
+        "imageSrc": "https://images.unsplash.com/photo-1621905251918-48416bd8575a?auto=format&fit=crop&w=800&q=80"
+      },
+      {
+        "id": "hvac-ducting",
+        "title": {
+          "en": "Ducting",
+          "ar": "أعمال مجاري الهواء (الدكت)"
+        },
+        "description": {
+          "en": "We design, manufacture, supply, and install ductwork for heating, ventilation, air conditioning, and dust/fume extraction.",
+          "ar": "نقوم بتصميم وتصنيع وتوريد وتركيب مجاري الهواء للتدفئة والتهوية وتكييف الهواء واستخراج الغبار والأبخرة."
+        },
+        "imageSrc": "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80"
+      },
+      {
+        "id": "hvac-maintenance",
+        "title": {
+          "en": "Maintenance",
+          "ar": "الصيانة"
+        },
+        "description": {
+          "en": "Regular preventive maintenance for HVAC systems includes cleaning and replacing filters, cleaning of evaporator and condenser coils, cleaning and adjusting dampers, refilling of refrigerants, etc.",
+          "ar": "تشمل الصيانة الوقائية الدورية لأنظمة التكييف والتهوية تنظيف واستبدال المرشحات، وتنظيف ملفات المبخر والمكثف، وتنظيف وضبط المخمدات، وإعادة تعبئة المبردات، وغيرها."
+        },
+        "imageSrc": "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?q=80&w=800"
+      }
+    ]
+  },
+  {
+    "id": "mechanical-engineering-services",
+    "title": {
+      "en": "Mechanical Engineering Services",
+      "ar": "خدمات الهندسة الميكانيكية"
+    },
+    "description": {
+      "en": "Specialized mechanical engineering services including bolt torquing, piping, and industrial maintenance.",
+      "ar": "خدمات هندسة ميكانيكية متخصصة تشمل عزم البراغي، والأنابيب، والصيانة الصناعية."
+    },
+    "imageSrc": "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80",
+    "services": [
+      {
+        "id": "bolt-torquing",
+        "title": {
+          "en": "Bolt Torquing / Tensioning Service",
+          "ar": "خدمات عزم وشد البراغي"
+        },
+        "description": {
+          "en": "Reliable bolt torquing and tensioning services ensuring optimal preload, zero leaks, and maximum equipment performance. Delivered by certified technicians using advanced hydraulic tools.",
+          "ar": "خدمات موثوقة لعزم وشد البراغي تضمن التحميل المسبق الأمثل، وصفر تسرب، وأقصى أداء للمعدات. يتم تقديمها بواسطة فنيين معتمدين باستخدام أدوات هيدروليكية متقدمة."
+        },
+        "imageSrc": "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80"
+      },
+      {
+        "id": "piping-pipeline",
+        "title": {
+          "en": "Piping & Pipeline Services",
+          "ar": "خدمات الأنابيب وخطوط الأنابيب"
+        },
+        "description": {
+          "en": "We provide complete piping and pipeline solutions including fabrication, installation, testing, and modification for industrial facilities. Our team ensures leak-proof connections, code compliance, and reliable performance in high-pressure environments.",
+          "ar": "نقدم حلولًا كاملة للأنابيب وخطوط الأنابيب بما في ذلك التصنيع والتركيب والاختبار والتعديل للمنشآت الصناعية. يضمن فريقنا وصلات مانعة للتسرب، والامتثال للكود، وأداءً موثوقًا في البيئات عالية الضغط."
+        },
+        "imageSrc": "https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&w=800&q=80"
+      },
+      {
+        "id": "industrial-maintenance",
+        "title": {
+          "en": "Industrial Maintenance & Repairs",
+          "ar": "الصيانة والإصلاحات الصناعية"
+        },
+        "description": {
+          "en": "Comprehensive preventive and corrective maintenance services to keep your plant equipment operating safely and efficiently. We diagnose faults, perform repairs, and extend asset life with minimal downtime.",
+          "ar": "خدمات صيانة وقائية وتصحيحية شاملة للحفاظ على تشغيل معدات المصنع بأمان وكفاءة. نقوم بتشخيص الأعطال وإجراء الإصلاحات وتمديد عمر الأصول بأقل وقت توقف."
+        },
+        "imageSrc": "https://images.unsplash.com/photo-1581094288338-2314dddb7ece?q=80&w=800"
+      },
+      {
+        "id": "fabrication-welding",
+        "title": {
+          "en": "Fabrication & Welding Services",
+          "ar": "خدمات التصنيع واللحام"
+        },
+        "description": {
+          "en": "Custom metal fabrication and certified welding solutions for structural steel, piping spools, and industrial assemblies. Delivered with precision, quality control, and adherence to international welding standards.",
+          "ar": "تصنيع معادن مخصص وحلول لحام معتمدة للهيكل الفولاذي، ومكبات الأنابيب، والتجميعات الصناعية. يتم تقديمها بدقة ومراقبة الجودة والامتثال لمعايير اللحام الدولية."
+        },
+        "imageSrc": "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80"
+      }
+    ]
+  }
+]

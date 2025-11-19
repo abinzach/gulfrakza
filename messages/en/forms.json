@@ -27,34 +27,59 @@
   "quoteForm": {
     "modalTitle": "Get a Quote",
     "forLabel": "For:",
+    "subtitle": "Tell us about your requirements and our team will get back within 24 hours.",
     "successTitle": "Success!",
     "successMessage": "Thank you! Your quote request has been submitted.",
+    "sections": {
+      "contact": "Contact Information"
+    },
     "fields": {
       "fullName": "Full Name",
       "email": "Email Address",
       "phone": "Phone Number",
       "category": "Category",
-      "subcategory": "Subcategory",
-      "itemCategory": "Item Category",
       "message": "Message"
     },
     "placeholders": {
-      "category": "e.g., Safety, Lifting, etc.",
-      "subcategory": "e.g., PPE, Hoists, etc.",
-      "itemCategory": "e.g., Face Protection, Manual Hoists, etc.",
+      "category": "e.g., HVAC Services",
       "message": "Tell us more about your requirements"
     },
+    "messageHelper": "Share deliverables, locations, or any deadlines to help us tailor the proposal faster.",
     "buttons": {
       "submit": "Submit Quote Request",
-      "submitting": "Submitting..."
+      "submitting": "Submitting...",
+      "requestService": "Request Service"
+    },
+    "privacy": "By submitting this form, you agree to be contacted regarding your request.",
+    "infoPanel": {
+      "heading": "What happens next?",
+      "steps": {
+        "submit": {
+          "title": "Share your requirements",
+          "description": "Send us the service details and any references so we understand the scope."
+        },
+        "review": {
+          "title": "We review everything",
+          "description": "Our specialists validate the brief and come back with clarifying questions within hours."
+        },
+        "proposal": {
+          "title": "Receive a tailored proposal",
+          "description": "Expect a clear execution plan, timeline, and commercial overview by the next business day."
+        }
+      },
+      "supportHeading": "Need quick support?",
+      "supportDescription": "Our consultants respond in under 2 hours Sunday to Friday.",
+      "phoneLabel": "Call us",
+      "whatsappLabel": "WhatsApp",
+      "cta": "We're here to help at every step."
     },
     "template": {
-      "intro": "I'm interested in getting a quote for the following product:",
-      "product": "Product:",
-      "category": "Category:",
-      "subcategory": "Subcategory:",
-      "itemCategory": "Item Category:",
-      "outro": "Please provide pricing, availability, and any additional product details."
+      "intro": "Hello Gulf Rakza team, I hope you're doing well.",
+      "product": "I'm interested in the following service:",
+      "category": "It sits within this category:",
+      "subcategory": "And the subcategory is:",
+      "itemCategory": "The specific focus area would be:",
+      "outro": "Could you please let me know the best approach, expected timelines, and commercial details? Happy to share anything else you need."
     },
     "emailSubject": "Quote Request: {categoryParts} from {name} (phone: {phone})"
   }

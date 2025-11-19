@@ -1,85 +1,111 @@
 import React from "react";
-import { Link } from "@/navigation";
-import BackButton from "@/app/components/BackButton";
-import {
-  GridPatternCard,
-  GridPatternCardBody,
-} from "@/components/ui/card-with-grid-ellipsis-pattern";
-import { getMessages, isLocale, type Locale, defaultLocale } from "@/i18n/config";
-import { DarkGridHero } from "@/app/components/Home/DarkGrid";
-import { getServiceSlugByIndex } from "@/lib/services";
+import type { Metadata } from "next";
 
-interface ServiceCard {
-  title: string;
-  description: string;
-}
+import { getMessages, isLocale, type Locale, defaultLocale, locales } from "@/i18n/config";
+import { getCategories } from "@/lib/services";
+import ServicesListingClient from "./services-listing-client";
+import { siteUrl } from "@/lib/constants";
 
 interface ServicesPageProps {
   params: Promise<{ locale: string }>;
+}
+
+const defaultHeroHeading = "Industrial Services & Solutions across the GCC";
+const defaultHeroDescription =
+  "Explore turnkey safety, cathodic protection, HVAC, and civil contracting services engineered for energy, infrastructure, and industrial operators.";
+const defaultSectionHeading = "Our Service Offerings";
+const defaultMetaTitle = "Industrial Services & Contracting | Gulf Rakza Trading";
+const defaultMetaDescription =
+  "Discover Gulf Rakza Trading’s comprehensive industrial services portfolio: safety, access, HVAC, corrosion protection, civil works, and more tailored for Saudi Arabia and the GCC.";
+
+type ServicesSectionMessages = {
+  heroHeading?: string;
+  heroDescription?: string;
+  sectionHeading?: string;
+  metaTitle?: string;
+  metaDescription?: string;
+};
+
+export async function generateMetadata({ params }: ServicesPageProps): Promise<Metadata> {
+  const { locale } = await params;
+  const activeLocale: Locale = isLocale(locale) ? locale : defaultLocale;
+  const messages = await getMessages(activeLocale);
+  const servicesSection = messages?.home?.services as ServicesSectionMessages | undefined;
+
+  const heroHeading = servicesSection?.heroHeading || defaultHeroHeading;
+  const heroDescription = servicesSection?.heroDescription || defaultHeroDescription;
+  const title = servicesSection?.metaTitle || defaultMetaTitle || heroHeading;
+  const description = servicesSection?.metaDescription || defaultMetaDescription || heroDescription;
+
+  const canonicalPath = `/${activeLocale}/services`;
+  const canonicalUrl = `${siteUrl}${canonicalPath}`;
+  const languageAlternates = locales.reduce<Record<string, string>>((acc, currentLocale) => {
+    acc[currentLocale] = `${siteUrl}/${currentLocale}/services`;
+    return acc;
+  }, {});
+  languageAlternates["x-default"] = `${siteUrl}/en/services`;
+
+  const localeTag = activeLocale === "ar" ? "ar_SA" : "en_US";
+
+  return {
+    title,
+    description,
+    keywords: [
+      "industrial services",
+      "Gulf Rakza services",
+      "safety services Saudi Arabia",
+      "cathodic protection solutions",
+      "industrial maintenance GCC",
+      "civil contracting Saudi Arabia",
+    ],
+    alternates: {
+      canonical: canonicalUrl,
+      languages: languageAlternates,
+    },
+    openGraph: {
+      title,
+      description,
+      url: canonicalUrl,
+      siteName: "Gulf Rakza Trading",
+      locale: localeTag,
+      type: "website",
+      images: [
+        {
+          url: `${siteUrl}/og-image.jpg`,
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [`${siteUrl}/twitter-og-image.jpg`],
+    },
+  };
 }
 
 export default async function ServicesPage({ params }: ServicesPageProps) {
   const { locale } = await params;
   const activeLocale: Locale = isLocale(locale) ? locale : defaultLocale;
   const messages = await getMessages(activeLocale);
+  
+  const categories = getCategories(activeLocale);
 
-  // Extract services from messages
-  const servicesSection = messages?.home?.services;
-  const services: ServiceCard[] = servicesSection?.cards || [];
-
-  const heroHeading = servicesSection?.heroHeading || "Our Services";
-  const heroDescription =
-    servicesSection?.heroDescription ||
-    "Explore our comprehensive range of services designed to meet your industrial needs.";
-  const sectionHeading =
-    servicesSection?.sectionHeading || "Our Service Offerings";
-
-  const serviceSlugs = await Promise.all(
-    services.map((_, index) => getServiceSlugByIndex(index)),
-  );
+  // Extract localized hero text
+  const servicesSection = messages?.home?.services as ServicesSectionMessages | undefined;
+  const heroHeading = servicesSection?.heroHeading || defaultHeroHeading;
+  const heroDescription = servicesSection?.heroDescription || defaultHeroDescription;
+  const sectionHeading = servicesSection?.sectionHeading || defaultSectionHeading;
 
   return (
-    <main
-      className="min-h-screen bg-gray-50 dark:bg-gray-900 font-inter"
-      style={{ scrollPaddingTop: "80px" }}
-    >
-      {/* Hero Section */}
-      <section className="relative flex h-[60vh] items-center justify-center bg-gray-900 text-center font-inter">
-        <div className="absolute inset-0 bg-cover bg-center" />
-        <div className="absolute inset-0 bg-black opacity-50" />
-        <DarkGridHero title={heroHeading} description={heroDescription} />
-      </section>
-
-      {/* Services Listing */}
-      <section className="bg-gray-50 py-16 lg:py-32">
-        <div className="mx-auto max-w-7xl px-4 font-inter">
-          <BackButton />
-          <h2 className="mb-16 text-center text-5xl font-semibold lg:text-left">
-            {sectionHeading}
-          </h2>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
-            {services.map((service, index) => {
-              const serviceSlug = serviceSlugs[index];
-              if (!serviceSlug) return null;
-
-              return (
-                <Link key={service.title} href={`/services/${serviceSlug}`}>
-                  <GridPatternCard className="h-full group hover:shadow-lg transition-all duration-300 cursor-pointer">
-                    <GridPatternCardBody className="h-full">
-                      <h3 className="mb-1 text-lg font-bold text-foreground group-hover:text-cyan-600 transition-colors duration-300">
-                        {service.title}
-                      </h3>
-                      <p className="text-sm text-foreground/60">
-                        {service.description}
-                      </p>
-                    </GridPatternCardBody>
-                  </GridPatternCard>
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-    </main>
+    <ServicesListingClient 
+      categories={categories}
+      heroHeading={heroHeading}
+      heroDescription={heroDescription}
+      sectionHeading={sectionHeading}
+    />
   );
 }
