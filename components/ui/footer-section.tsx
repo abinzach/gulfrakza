@@ -46,7 +46,7 @@ function Footerdemo() {
   const quickLinks: { href: string; label: string }[] = [
     { href: "/", label: t("links.home") },
     { href: "/about-us", label: t("links.about") },
-    { href: "/#services", label: t("links.services") },
+    { href: "/services", label: t("links.services") },
     { href: "/products", label: t("links.products") },
     { href: "/#contact-us", label: t("links.contact") },
   ];

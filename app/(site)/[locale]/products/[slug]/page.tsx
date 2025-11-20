@@ -37,11 +37,11 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
 
   if (!product) {
     return {
-      title: "Product not found | Gulf Rakza Trading",
+      title: "Product not found | GulfRakza",
     }
   }
 
-  const fallbackTitle = `${product.title} | Gulf Rakza Trading`
+  const fallbackTitle = `${product.title} | GulfRakza`
   const title = product.seoTitle || fallbackTitle
   const description = product.seoDescription || product.description
   const image = product.imageSrc

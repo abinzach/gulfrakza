@@ -70,7 +70,7 @@ export async function generateMetadata({ params }: LayoutParams): Promise<Metada
       title: common.brand.metaTitle,
       description: common.brand.ogDescription,
       url: `${siteUrl}${canonicalPath}`,
-      siteName: "Rakzah Gulf Trading Establishment",
+      siteName: "GulfRakza",
       locale: locale === "ar" ? "ar_SA" : "en_US",
       type: "website",
       images: [
@@ -130,20 +130,96 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
         {JSON.stringify(
           {
             "@context": "https://schema.org",
-            "@type": "Organization",
-            "name": "Rakzah Gulf Trading Establishment",
+            "@type": ["Organization", "LocalBusiness", "Store"],
+            "name": "GulfRakza",
+            "alternateName": "Rakzah Gulf Trading Establishment",
+            "legalName": "Rakzah Gulf Trading Establishment",
             "description": messages.common.brand.schemaDescription,
             "url": siteUrl,
-            "logo": `${siteUrl}/logo.png`,
+            "logo": `${siteUrl}/logo-rakza.png`,
+            "image": `${siteUrl}/og-image.jpg`,
             "address": {
               "@type": "PostalAddress",
-              "streetAddress": "2nd Floor, Salem Balhamer Building, Al Tubayshi District",
+              "streetAddress": "2nd Floor, Office #9, Salem Balhamer Building, Al Tubayshi District",
               "addressLocality": "Dammam",
-              "postalCode": "32416",
+              "addressRegion": "Eastern Province",
+              "postalCode": "32233",
               "addressCountry": "SA",
+            },
+            "geo": {
+              "@type": "GeoCoordinates",
+              "latitude": "26.4367",
+              "longitude": "50.1039"
             },
             "telephone": "+966558975494",
             "email": "sales@gulfrakza.com",
+            "areaServed": [
+              {
+                "@type": "City",
+                "name": "Dammam",
+                "description": "Primary service area - headquarters location"
+              },
+              {
+                "@type": "City",
+                "name": "Khobar"
+              },
+              {
+                "@type": "City",
+                "name": "Dhahran"
+              },
+              {
+                "@type": "City",
+                "name": "Jubail"
+              },
+              {
+                "@type": "AdministrativeArea",
+                "name": "Eastern Province",
+                "containedIn": {
+                  "@type": "Country",
+                  "name": "Saudi Arabia"
+                }
+              },
+              {
+                "@type": "Country",
+                "name": "Saudi Arabia",
+                "description": "Serving industrial customers across the Kingdom of Saudi Arabia"
+              }
+            ],
+            "hasOfferCatalog": {
+              "@type": "OfferCatalog",
+              "name": "Industrial Supplies & Services",
+              "itemListElement": [
+                {
+                  "@type": "OfferCatalog",
+                  "name": "Safety Equipment & PPE",
+                  "itemListElement": [
+                    {
+                      "@type": "Offer",
+                      "itemOffered": {
+                        "@type": "Product",
+                        "name": "Personal Protective Equipment"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "@type": "OfferCatalog",
+                  "name": "Industrial Services",
+                  "itemListElement": [
+                    {
+                      "@type": "Offer",
+                      "itemOffered": {
+                        "@type": "Service",
+                        "name": "Scaffolding Services"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            "sameAs": [
+              "https://www.gulfrakza.com"
+            ]
           },
           null,
           2,

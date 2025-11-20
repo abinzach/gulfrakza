@@ -7,9 +7,9 @@ import { getDirection, isLocale, defaultLocale } from "@/i18n/config";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Rakzah Gulf Trading Establishment | Connecting Markets, Empowering Growth",
+  title: "GulfRakza | Industrial Supplies & Safety Equipment | Dammam, Saudi Arabia",
   description:
-    "Based in Dammam, Saudi Arabia, Gulf Rakza Trading Company is a trusted partner offering top-quality industrial supplies and turnkey solutions that drive operational efficiency and growth.",
+    "GulfRakza (Rakzah Gulf Trading Establishment) - Leading supplier of industrial supplies, PPE, safety equipment, and turnkey solutions in Dammam, Saudi Arabia. Serving the GCC with quality products.",
   robots: "index, follow",
 };
 

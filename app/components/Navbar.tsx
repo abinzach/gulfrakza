@@ -158,6 +158,11 @@ const FlyoutNav = ({ categoryTree }: FlyoutNavProps) => {
         component: AboutUsContent,
       },
       {
+        key: "services",
+        href: "/services",
+        label: tNav("services"),
+      },
+      {
         key: "products",
         href: "/products",
         label: tNav("products"),

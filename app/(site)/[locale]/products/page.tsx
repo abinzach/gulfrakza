@@ -8,25 +8,27 @@ import CatalogPageClient from "./catalog-client"
 import { parseFiltersFromSearchParams } from "./filter-helpers"
 
 const catalogMeta = {
-  title: "Industrial Products Catalog | Gulf Rakza Trading",
+  title: "Industrial Products Catalog | PPE, Safety & Lifting Equipment | GulfRakza",
   description:
-    "Browse the complete Gulf Rakza Trading product catalog. Compare PPE, safety systems, lifting gear, welding equipment, marine supplies, and more tailored for industrial operations across the GCC.",
+    "Browse GulfRakza's complete catalog of industrial products in Dammam, Saudi Arabia. Compare PPE, safety systems, lifting gear, welding equipment, marine supplies, and more for industrial operations across the Kingdom.",
   keywords: [
-    "industrial product catalog",
-    "Gulf Rakza products",
+    "industrial products Dammam",
     "PPE supplier Saudi Arabia",
-    "industrial safety equipment",
+    "safety equipment Dammam",
+    "industrial supplies Eastern Province",
+    "lifting equipment Saudi Arabia",
+    "welding supplies Dammam",
     "marine equipment Saudi Arabia",
-    "industrial lifting gear",
+    "GulfRakza products",
   ],
-  ogTitle: "Explore Gulf Rakza's Industrial Product Catalog",
+  ogTitle: "Industrial Products Catalog | PPE & Safety Equipment | GulfRakza Dammam",
   ogDescription:
-    "Search, filter, and compare the full lineup of Gulf Rakza Trading industrial products including PPE, safety systems, lifting solutions, and specialized equipment.",
-  twitterTitle: "Gulf Rakza Industrial Product Catalog",
+    "Search, filter, and compare GulfRakza's full lineup of industrial products including PPE, safety systems, lifting solutions, and specialized equipment in Dammam, Saudi Arabia.",
+  twitterTitle: "Industrial Products Catalog | GulfRakza Dammam",
   twitterDescription:
-    "Discover PPE, lifting gear, marine supplies, and industrial equipment from Gulf Rakza Trading.",
-  ogImage: `${siteUrl}/og/product-catalog.jpg`,
-  twitterImage: `${siteUrl}/twitter/product-catalog.jpg`,
+    "Discover PPE, lifting gear, marine supplies, and industrial equipment from GulfRakza in Dammam, Saudi Arabia.",
+  ogImage: `${siteUrl}/og-image.jpg`,
+  twitterImage: `${siteUrl}/twitter-og-image.jpg`,
 }
 
 type CatalogPageProps = {
@@ -60,7 +62,7 @@ export async function generateMetadata({ params }: CatalogPageProps): Promise<Me
       title: catalogMeta.ogTitle,
       description: catalogMeta.ogDescription,
       url: canonicalUrl,
-      siteName: "Gulf Rakza Trading",
+      siteName: "GulfRakza",
       type: "website",
       locale: localeTag,
       images: [

@@ -1,14 +1,15 @@
 {
   "brand": {
-    "metaTitle": "Rakzah Gulf Trading Establishment | Connecting Markets, Empowering Growth",
-    "metaDescription": "Based in Dammam, Saudi Arabia, Gulf Rakza Trading Company is a trusted partner offering top-quality industrial supplies and turnkey solutions that drive operational efficiency and growth.",
-    "ogDescription": "Discover high-quality industrial supplies and turnkey solutions from Gulf Rakza - your trusted partner for operational excellence.",
-    "twitterDescription": "Gulf Rakza is your trusted partner for industrial supplies and turnkey solutions - connecting markets and empowering growth.",
-    "schemaDescription": "Rakzah Gulf Trading Establishment is a trusted partner for industrial supplies and turnkey solutions, connecting markets and empowering growth.",
+    "metaTitle": "GulfRakza | Industrial Supplies & Safety Equipment | Dammam, Saudi Arabia",
+    "metaDescription": "GulfRakza (Rakzah Gulf Trading Establishment) - Leading supplier of industrial supplies, PPE, safety equipment, and turnkey solutions in Dammam, Saudi Arabia. Serving industries across the Kingdom.",
+    "ogDescription": "Discover high-quality industrial supplies, PPE, and safety equipment from GulfRakza - your trusted partner for operational excellence in Dammam and across Saudi Arabia.",
+    "twitterDescription": "GulfRakza is your trusted partner for industrial supplies, safety equipment, and turnkey solutions in Saudi Arabia - connecting markets and empowering growth.",
+    "schemaDescription": "GulfRakza (Rakzah Gulf Trading Establishment) is a leading supplier of industrial supplies, PPE, safety equipment, and turnkey solutions, serving Dammam and industries across Saudi Arabia.",
     "tagline": "Connecting Markets, Empowering Growth"
   },
   "nav": {
     "about": "About Us",
+    "services": "Services",
     "products": "Products",
     "getQuote": "Get a quote"
   },
