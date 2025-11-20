@@ -93,16 +93,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   addLocalizedEntries("/privacy-policy", 0.4, "yearly");
   addLocalizedEntries("/terms-of-service", 0.4, "yearly");
 
-  const allCategories = flattenCategories(categoryTree);
-
-  allCategories.forEach((category) => {
-    const pathSegments = category.path.map((segment) => segment.slug).filter(Boolean);
-    if (pathSegments.length === 0) return;
-
-    const categoryPath = `/products/${pathSegments.join("/")}`;
-    addLocalizedEntries(categoryPath, 0.6, "monthly");
-  });
-
+  // Only include actual product detail pages, not category paths
+  // Category filtering is handled via query params on /products page
   products.forEach((product) => {
     if (!product.detailsHref) return;
     const productPath = normalizeHrefToPath(product.detailsHref);
