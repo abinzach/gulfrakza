@@ -133,9 +133,9 @@ export default function ServicesListingClient({
           {/* Main Content */}
           <div className="flex-1 min-w-0">
             <div className="mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white tracking-tight">
+              <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white tracking-tight">
                 {sectionHeading}
-              </h2>
+              </h1>
             </div>
 
             <div className="space-y-32">
@@ -146,10 +146,10 @@ export default function ServicesListingClient({
                   className="scroll-mt-32"
                 >
                   <div className="mb-10">
-                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3 flex items-center gap-3">
+                    <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-3 flex items-center gap-3">
                       <span className="w-8 h-1 bg-cyan-600 rounded-full block"></span>
                       {category.title}
-                    </h3>
+                    </h2>
                     <p className="text-lg text-gray-500 dark:text-gray-400 max-w-3xl leading-relaxed pl-11">
                       {category.description}
                     </p>

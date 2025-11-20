@@ -14,9 +14,9 @@ const defaultHeroHeading = "Industrial Services & Solutions across the GCC";
 const defaultHeroDescription =
   "Explore turnkey safety, cathodic protection, HVAC, and civil contracting services engineered for energy, infrastructure, and industrial operators.";
 const defaultSectionHeading = "Our Service Offerings";
-const defaultMetaTitle = "Industrial Services & Contracting | Gulf Rakza Trading";
+const defaultMetaTitle = "Industrial Services & Solutions | Scaffolding, Fabrication | GulfRakza Dammam";
 const defaultMetaDescription =
-  "Discover Gulf Rakza Trading’s comprehensive industrial services portfolio: safety, access, HVAC, corrosion protection, civil works, and more tailored for Saudi Arabia and the GCC.";
+  "GulfRakza offers comprehensive industrial services in Dammam, Saudi Arabia: scaffolding, steel fabrication, civil works, rope access, safety training, and more. Serving industries across the Kingdom.";
 
 type ServicesSectionMessages = {
   heroHeading?: string;
@@ -51,12 +51,14 @@ export async function generateMetadata({ params }: ServicesPageProps): Promise<M
     title,
     description,
     keywords: [
-      "industrial services",
-      "Gulf Rakza services",
-      "safety services Saudi Arabia",
-      "cathodic protection solutions",
-      "industrial maintenance GCC",
-      "civil contracting Saudi Arabia",
+      "industrial services Dammam",
+      "scaffolding services Saudi Arabia",
+      "steel fabrication Dammam",
+      "rope access services Eastern Province",
+      "civil works Dammam",
+      "safety training Saudi Arabia",
+      "industrial contracting GCC",
+      "PEB shed fabrication Dammam",
     ],
     alternates: {
       canonical: canonicalUrl,
@@ -66,7 +68,7 @@ export async function generateMetadata({ params }: ServicesPageProps): Promise<M
       title,
       description,
       url: canonicalUrl,
-      siteName: "Gulf Rakza Trading",
+      siteName: "GulfRakza",
       locale: localeTag,
       type: "website",
       images: [

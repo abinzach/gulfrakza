@@ -330,7 +330,7 @@ export default function CatalogPageClient({
       <div className="mx-auto flex max-w-[1600px] flex-col gap-6 px-4 lg:px-6">
         <header className="space-y-4 border-b border-gray-200 pb-6 dark:border-gray-700">
           <div className="space-y-2">
-            <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
+            <h1 className="text-2xl text-transparent font-semibold text-gray-900 dark:text-gray-100">
               All Products
             </h1>
            
