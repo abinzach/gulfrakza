@@ -9,6 +9,7 @@ import React, {
   useState,
 } from "react";
 import { FiMenu, FiArrowRight, FiX } from "react-icons/fi";
+import { FaWhatsapp, FaEnvelope } from "react-icons/fa";
 import {
   useMotionValueEvent,
   AnimatePresence,
@@ -180,15 +181,15 @@ const FlyoutNav = ({ categoryTree }: FlyoutNavProps) => {
   return (
     <>
       <nav
-        className={`fixed top-0 z-50 w-full px-6 text-white transition-all duration-300 ease-out lg:px-12 ${
+        className={`fixed top-0 z-50 w-full px-6 text-white transition-all duration-300 ease-out lg:px-12 overflow-visible ${
           finalScrolled
             ? "bg-neutral-950 py-3 shadow-xl"
             : "bg-neutral-950/0 py-6 shadow-none"
         }`}
       >
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-6">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 overflow-visible">
           <Logo />
-          <div className="hidden items-center gap-6 lg:flex">
+          <div className="hidden items-center gap-6 lg:flex overflow-visible">
             <Links items={links} />
             <LocaleSwitcher currentLocale={locale} pathname={pathnameWithQuery} />
             <CTAs label={tNav("getQuote")} onQuoteClick={() => setShowGetQuote(true)} />
@@ -269,15 +270,12 @@ const NavLink = ({
     <div
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
-      className="relative h-fit w-fit overflow-visible"
+      className="relative h-fit w-fit overflow-visible group"
     >
-      <Link href={href} className="relative">
+      <Link href={href} className="relative group">
         {children}
         <span
-          style={{
-            transform: showFlyout ? "scaleX(1)" : "scaleX(0)",
-          }}
-          className="absolute -bottom-2 -left-2 -right-2 h-1 origin-left rounded-full bg-cyan-300 transition-transform duration-300 ease-out"
+          className="absolute -bottom-2 -left-2 -right-2 h-1 origin-left rounded-full bg-cyan-300 transition-transform duration-300 ease-out group-hover:scale-x-100 scale-x-0"
         />
       </Link>
       <AnimatePresence>
@@ -288,10 +286,10 @@ const NavLink = ({
             exit={{ opacity: 0, y: 15 }}
             style={{ translateX: flyoutAlign === "left" ? "-70%" : "-50%" }}
             transition={{ duration: 0.3, ease: "easeOut" }}
-            className="absolute left-1/2 top-12 z-50 bg-white text-black"
+            className="absolute left-1/2 top-12 z-50 rounded-[28px] border border-neutral-800/50 bg-neutral-950/95 backdrop-blur-xl text-white shadow-2xl overflow-hidden"
           >
             <div className="absolute -top-6 left-0 right-0 h-6 bg-transparent" />
-            <div className="absolute left-1/2 top-0 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-white" />
+            <div className="absolute left-1/2 top-0 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-neutral-950/95 backdrop-blur-xl border-l border-t border-neutral-800/50 rounded-tl-sm" />
             <div className="overflow-visible">
               <FlyoutContent variant="desktop" onNavigate={() => setOpen(false)} />
             </div>
@@ -305,15 +303,23 @@ const NavLink = ({
 const CTAs = ({
   label,
   onQuoteClick,
+  variant = "desktop",
 }: {
   label: string;
   onQuoteClick: () => void;
+  variant?: "desktop" | "mobile";
 }) => {
+  const isMobile = variant === "mobile";
   return (
     <div className="flex items-center gap-3 font-inter">
       <button
         onClick={onQuoteClick}
-        className="flex rounded-full bg-white px-4 py-2 text-sm font-medium text-black transition-colors duration-300 hover:bg-gray-200"
+        className={cn(
+          "flex rounded-full text-sm font-medium transition-colors duration-300",
+          isMobile
+            ? "h-16 shrink-0 items-center justify-center bg-neutral-950 px-6 text-white hover:bg-neutral-800"
+            : "px-4 py-2 bg-white text-black hover:bg-gray-200",
+        )}
       >
         {label}
       </button>
@@ -431,22 +437,16 @@ const DesktopProductsContent = ({
 
   if (!activeCategory) {
     return (
-      <div className="w-[320px] rounded-2xl bg-white/90 p-6 text-sm text-neutral-500">
+      <div className="w-[320px] rounded-2xl bg-neutral-950/95 backdrop-blur-xl border border-neutral-800/50 p-6 text-sm text-neutral-400">
         Catalog navigation coming soon.
       </div>
     );
   }
 
-  const fallbackItems = activeCategory.subcategories.flatMap((subcategory) => subcategory.items);
-  const activeItems = activeSubcategory?.items ?? [];
-  const displayedItems = activeItems.length > 0 ? activeItems : fallbackItems;
-  const highlightedLineCount = displayedItems.length;
-  const supportingGroupCount = activeCategory.subcategories.length;
-
   return (
-    <div className="w-full max-w-[min(95vw,1400px)] overflow-visible rounded-[28px] border border-white/70 bg-white/95 p-6 text-neutral-900 shadow-[0_25px_70px_rgba(15,23,42,0.18)]">
-      <div className="grid gap-6 lg:[grid-template-columns:260px_280px_minmax(300px,1fr)] xl:[grid-template-columns:300px_340px_minmax(400px,1fr)]">
-        <motion.div className="space-y-3 border-b border-neutral-100 pb-4 lg:max-h-[65vh] lg:border-b-0 lg:border-r lg:pb-0 lg:pr-5 lg:overflow-y-auto">
+    <div className="w-full max-w-[min(95vw,900px)] overflow-visible rounded-[28px] border border-neutral-800/50 bg-neutral-950/95 backdrop-blur-xl p-6 text-white shadow-[0_25px_70px_rgba(0,0,0,0.5)]">
+      <div className="grid gap-6 lg:[grid-template-columns:260px_270px] xl:[grid-template-columns:300px_300px]">
+        <motion.div className="space-y-3 border-b border-neutral-800 pb-4 lg:border-b-0 lg:border-r lg:border-neutral-800 lg:pb-0 lg:pr-5">
           <p className="text-xs font-semibold uppercase tracking-[0.25em] text-neutral-400">
             Pillars
           </p>
@@ -464,8 +464,8 @@ const DesktopProductsContent = ({
                     className={cn(
                       "group flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-semibold transition-colors",
                       isActive
-                        ? "bg-neutral-900 text-white shadow-lg"
-                        : "bg-white/40 text-neutral-600 hover:bg-white",
+                        ? "bg-white/10 text-white shadow-lg border border-neutral-700"
+                        : "bg-white/5 text-neutral-300 hover:bg-white/10 border border-transparent",
                     )}
                     aria-current={isActive ? "true" : undefined}
                   >
@@ -474,8 +474,8 @@ const DesktopProductsContent = ({
                       className={cn(
                         "h-4 w-4 transition-all",
                         isActive
-                          ? "text-cyan-200"
-                          : "text-neutral-400 group-hover:translate-x-1 group-hover:text-cyan-600",
+                          ? "text-cyan-300"
+                          : "text-neutral-500 group-hover:translate-x-1 group-hover:text-cyan-400",
                       )}
                     />
                   </Link>
@@ -484,7 +484,7 @@ const DesktopProductsContent = ({
             })}
           </div>
         </motion.div>
-        <motion.div className="space-y-3 border-b border-neutral-100 pb-4 lg:max-h-[65vh] lg:border-b-0 lg:border-r lg:pb-0 lg:pr-5 lg:overflow-y-auto">
+        <motion.div className="space-y-3 border-b border-neutral-800 pb-4 lg:border-b-0 lg:pb-0">
           <p className="text-xs font-semibold uppercase tracking-[0.25em] text-neutral-400">
             Focus areas
           </p>
@@ -502,16 +502,13 @@ const DesktopProductsContent = ({
                     className={cn(
                       "block rounded-2xl border px-4 py-3 text-sm font-semibold transition-colors",
                       isActive
-                        ? "border-cyan-600 bg-cyan-50 text-cyan-900 shadow-sm"
-                        : "border-transparent text-neutral-600 hover:border-neutral-100",
+                        ? "border-cyan-500 bg-cyan-500/10 text-cyan-300 shadow-sm"
+                        : "border-transparent text-neutral-300 hover:border-neutral-700 hover:bg-white/5",
                     )}
                     aria-current={isActive ? "true" : undefined}
                   >
                     <div className="flex items-center justify-between gap-3">
                       <span>{subcategory.title}</span>
-                      <span className="text-xs uppercase tracking-wide text-neutral-400">
-                        {subcategory.items.length} lines
-                      </span>
                     </div>
                   </Link>
                 </motion.div>
@@ -519,98 +516,6 @@ const DesktopProductsContent = ({
             })}
           </div>
         </motion.div>
-        <motion.div className="flex min-w-0 flex-1 flex-col space-y-3 overflow-hidden lg:max-h-[65vh]">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-neutral-400">
-              Lines
-            </p>
-            <div className="flex flex-wrap items-center gap-2 text-[11px] font-semibold uppercase tracking-wide text-neutral-400">
-              <span className="rounded-full border border-neutral-200 px-3 py-1">
-                {highlightedLineCount} lines
-              </span>
-              <span className="rounded-full border border-neutral-200 px-3 py-1">
-                {supportingGroupCount} focus groups
-              </span>
-            </div>
-          </div>
-          <div className="min-w-0 flex-1 overflow-y-auto pr-1">
-            <div className="grid grid-cols-1 gap-2">
-              <AnimatePresence mode="popLayout">
-                {displayedItems.length > 0 ? (
-                  displayedItems.map((item, index) => {
-                    const key = `${activeSubcategory?.slug ?? activeCategory.slug ?? "category"}-${item.slug ?? slugifyValue(item.title) ?? "item"}-${index}`;
-                    const initials = item.title
-                      .split(" ")
-                      .filter(Boolean)
-                      .slice(0, 2)
-                      .map((word) => word[0])
-                      .join("")
-                      .toUpperCase();
-                    return (
-                      <motion.div
-                        key={key}
-                        layout
-                        initial={{ opacity: 0, y: 12 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -12 }}
-                        transition={{ duration: 0.25, ease: "easeOut" }}
-                        whileHover={{ scale: 1.01 }}
-                      >
-                        <Link
-                          href={buildCatalogHref(item.slug)}
-                          onClick={() => onNavigate?.()}
-                          className="group flex items-center gap-3 rounded-2xl border border-neutral-100 bg-white/80 px-4 py-3 text-sm font-semibold text-neutral-900 transition-colors hover:border-cyan-200"
-                        >
-                          <div className="relative h-12 w-12 flex-shrink-0 overflow-hidden rounded-2xl border border-neutral-100 bg-neutral-100">
-                            {item.imageSrc ? (
-                              <Image
-                                src={item.imageSrc}
-                                alt={item.title}
-                                fill
-                                sizes="48px"
-                                className="object-cover"
-                              />
-                            ) : (
-                              <div className="flex h-full w-full items-center justify-center text-xs font-semibold text-neutral-500">
-                                {initials || "•"}
-                              </div>
-                            )}
-                          </div>
-                          <span className="flex-1 whitespace-normal text-left leading-snug">
-                            {item.title}
-                          </span>
-                          <FiArrowRight className="h-4 w-4 flex-shrink-0 text-cyan-600 transition group-hover:translate-x-1" />
-                        </Link>
-                      </motion.div>
-                    );
-                  })
-                ) : (
-                  <motion.div
-                    key="lines-empty"
-                    layout
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="col-span-1 rounded-2xl border border-dashed border-neutral-200 p-6 text-sm text-neutral-500 sm:col-span-2"
-                  >
-                    Lines will appear here as categories populate.
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          </div>
-        </motion.div>
-      </div>
-      <div className="mt-5 flex items-center justify-between text-sm text-neutral-500">
-        <span>{activeCategory.title} • {productNavCategories.length} main groups</span>
-        <Link
-          href="/products"
-          onClick={() => onNavigate?.()}
-          className="inline-flex items-center gap-2 font-semibold text-cyan-700 hover:text-cyan-600"
-        >
-          View full catalog
-          <FiArrowRight className="h-4 w-4" />
-        </Link>
       </div>
     </div>
   );
@@ -647,36 +552,15 @@ const MobileProductsContent = ({
             <FiArrowRight className="h-4 w-4 text-neutral-400" />
           </Link>
           {(category.subcategories ?? []).map((subcategory, subIndex) => (
-            <div
+            <Link
               key={`${category.slug ?? slugifyValue(category.title) ?? "category"}-${subcategory.slug ?? slugifyValue(subcategory.title) ?? "subcategory"}-${subIndex}`}
-              className="rounded-2xl bg-neutral-50 p-3"
+              href={buildCatalogHref(subcategory.slug)}
+              onClick={() => onNavigate?.()}
+              className="flex items-center justify-between rounded-2xl bg-neutral-50 p-3 text-sm font-semibold text-neutral-800 transition hover:bg-neutral-100"
             >
-              <Link
-                href={buildCatalogHref(subcategory.slug)}
-                onClick={() => onNavigate?.()}
-                className="text-sm font-semibold text-neutral-800"
-              >
-                {subcategory.title}
-              </Link>
-              <div className="mt-2 grid gap-1">
-                {subcategory.items.slice(0, 3).map((item, itemIndex) => (
-                  <Link
-                    key={`${subcategory.slug ?? slugifyValue(subcategory.title) ?? "subcategory"}-${item.slug ?? slugifyValue(item.title) ?? "item"}-${itemIndex}`}
-                    href={buildCatalogHref(item.slug)}
-                    onClick={() => onNavigate?.()}
-                    className="flex items-center justify-between text-sm text-neutral-500"
-                  >
-                    <span className="line-clamp-1">{item.title}</span>
-                    <FiArrowRight className="h-3.5 w-3.5 text-neutral-400" />
-                  </Link>
-                ))}
-                {subcategory.items.length > 3 && (
-                  <span className="text-xs uppercase tracking-wide text-neutral-400">
-                    +{subcategory.items.length - 3} more lines
-                  </span>
-                )}
-              </div>
-            </div>
+              <span>{subcategory.title}</span>
+              <FiArrowRight className="h-4 w-4 text-neutral-400" />
+            </Link>
           ))}
         </div>
       ))}
@@ -716,8 +600,10 @@ const LocaleSwitcher = ({
   return (
     <div
       className={cn(
-        "inline-flex items-center rounded-full border border-white/15 bg-white/10 p-1 text-xs font-medium uppercase tracking-wide text-white shadow-sm backdrop-blur",
-        isMobile ? "w-full max-w-[180px] justify-between text-sm" : "gap-1",
+        "inline-flex items-center rounded-full border p-1 text-xs font-medium uppercase tracking-wide shadow-sm backdrop-blur",
+        isMobile
+          ? "w-full max-w-[180px] justify-between border-neutral-300 bg-white text-sm"
+          : "border-white/15 bg-white/10 text-white gap-1",
       )}
       aria-label={t("label")}
       role="group"
@@ -732,11 +618,18 @@ const LocaleSwitcher = ({
             aria-label={t(`switchTo.${loc}`)}
             onClick={() => persistLocalePreference(loc)}
             className={cn(
-              "flex-1 rounded-full text-center transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",
+              "flex-1 rounded-full text-center transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",
               isMobile ? "px-4 py-1.5 text-sm" : "px-3 py-1 text-xs",
-              isActive
-                ? "bg-white text-neutral-950 shadow-sm"
-                : "bg-transparent text-white/70 hover:text-white",
+              isMobile
+                ? isActive
+                  ? "bg-neutral-950 text-white shadow-sm"
+                  : "bg-transparent text-neutral-700 hover:text-neutral-950"
+                : isActive
+                  ? "bg-white text-neutral-950 shadow-sm"
+                  : "bg-transparent text-white/70 hover:text-white",
+              isMobile
+                ? "focus-visible:ring-neutral-950"
+                : "focus-visible:ring-white/80",
             )}
             aria-current={isActive ? "true" : undefined}
           >
@@ -775,21 +668,23 @@ const MobileMenuLink = ({
               e.stopPropagation();
               setMenuOpen(false);
             }}
+            className="text-neutral-950 hover:text-neutral-700 transition-colors"
           >
             {children}
           </Link>
         </div>
       ) : (
-        <button
+        <Link
+          href={href}
           onClick={(e) => {
             e.stopPropagation();
             setMenuOpen(false);
           }}
-          className="flex w-full cursor-pointer items-center justify-between border-b border-neutral-300 py-6 text-start text-2xl font-semibold"
+          className="flex w-full cursor-pointer items-center justify-between border-b border-neutral-300 py-6 text-start text-2xl font-semibold text-neutral-950 hover:text-neutral-700 transition-colors"
         >
           <span>{children}</span>
           <FiArrowRight />
-        </button>
+        </Link>
       )}
       {FoldContent && (
         <motion.div
@@ -824,6 +719,11 @@ const MobileMenu = ({
   pathname: string;
 }) => {
   const [open, setOpen] = useState(false);
+  const tContact = useTranslations("common.contactPresets");
+  const phoneNumber = "+966557197311";
+  const emailAddress = "info@gulfrakza.com";
+  const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(tContact("whatsappMessage"))}`;
+  const mailtoUrl = `mailto:${emailAddress}?subject=${encodeURIComponent(tContact("emailSubject"))}&body=${encodeURIComponent(tContact("emailBody"))}`;
   return (
     <div className="block lg:hidden">
       <button onClick={() => setOpen(true)} className="block text-3xl">
@@ -838,10 +738,10 @@ const MobileMenu = ({
             transition={{ duration: 0.15, ease: "easeOut" }}
             className="fixed left-0 top-0 flex h-screen w-full flex-col bg-white"
           >
-            <div className="flex items-center justify-between p-6">
+            <div className="flex items-center justify-between bg-neutral-950 p-6 text-white">
               <Logo />
               <button onClick={() => setOpen(false)}>
-                <FiX className="text-3xl text-neutral-950" />
+                <FiX className="text-3xl text-white" />
               </button>
             </div>
             <div className="h-screen overflow-y-scroll bg-neutral-100 p-6">
@@ -859,14 +759,35 @@ const MobileMenu = ({
                 </MobileMenuLink>
               ))}
             </div>
-            <div className="flex justify-end bg-neutral-950 p-6">
+            <div className="flex items-center justify-between gap-4 bg-neutral-100 p-6">
               <CTAs
                 label={ctaLabel}
                 onQuoteClick={() => {
                   setOpen(false);
                   onQuoteClick();
                 }}
+                variant="mobile"
               />
+              <div className="flex items-center gap-3">
+                <Link
+                  href={whatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setOpen(false)}
+                  className="flex h-16 w-16 shrink-0 cursor-pointer items-center justify-center rounded-full border-4 border-white bg-neutral-950 p-3 shadow-xl transition-colors hover:bg-neutral-800"
+                >
+                  <FaWhatsapp size={32} className="text-white" />
+                </Link>
+                <Link
+                  href={mailtoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setOpen(false)}
+                  className="flex h-16 w-16 shrink-0 cursor-pointer items-center justify-center rounded-full border-4 border-white bg-neutral-950 p-3 shadow-xl transition-colors hover:bg-neutral-800"
+                >
+                  <FaEnvelope size={32} className="text-white" />
+                </Link>
+              </div>
             </div>
           </motion.nav>
         )}
