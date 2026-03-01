@@ -1,8 +1,7 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { DarkGridHero } from "@/app/components/Home/DarkGrid";
-import ServiceCard from "@/app/components/Services/ServiceCard";
+import Image from "next/image";
+import React, { useEffect, useMemo, useState } from "react";
 import QuoteModal from "@/app/components/GetQuote";
 import { cn } from "@/lib/utils";
 import { ServiceCategory } from "@/lib/services";
@@ -24,6 +23,21 @@ export default function ServicesListingClient({
   const [activeCategory, setActiveCategory] = useState<string>("");
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
   const [selectedService, setSelectedService] = useState<{ name: string; category: string } | null>(null);
+  const [activeSlide, setActiveSlide] = useState(0);
+  const [categoryImageStep, setCategoryImageStep] = useState<Record<string, number>>({});
+  const gallerySlides = useMemo(
+    () =>
+      categories.slice(0, 5).map((category) => ({
+        id: category.id,
+        title: category.title,
+        tagline: category.description,
+        imageSrc:
+          category.imageSrc ||
+          "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&w=1920&q=80",
+      })),
+    [categories],
+  );
+  const currentSlide = gallerySlides[activeSlide];
 
   // Simple scroll spy
   useEffect(() => {
@@ -45,6 +59,24 @@ export default function ServicesListingClient({
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [categories]);
+
+  useEffect(() => {
+    if (gallerySlides.length <= 1) {
+      return;
+    }
+
+    const intervalId = window.setInterval(() => {
+      setActiveSlide((current) => (current + 1) % gallerySlides.length);
+    }, 5000);
+
+    return () => window.clearInterval(intervalId);
+  }, [gallerySlides.length]);
+
+  useEffect(() => {
+    if (activeSlide > gallerySlides.length - 1) {
+      setActiveSlide(0);
+    }
+  }, [activeSlide, gallerySlides.length]);
 
   const scrollToCategory = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
@@ -73,11 +105,65 @@ export default function ServicesListingClient({
 
   return (
     <main className="min-h-screen bg-white dark:bg-gray-950 font-sans pb-32">
-      {/* Hero Section */}
-      <section className="relative flex h-[50vh] items-center justify-center bg-gray-900 text-center">
-        <div className="absolute inset-0 bg-cover bg-center opacity-40" style={{ backgroundImage: "url(https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&w=1920&q=80)" }} />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-gray-900" />
-        <DarkGridHero title={heroHeading} description={heroDescription} />
+      {/* Gallery Hero */}
+      <section className="relative h-[62vh] min-h-[420px] overflow-hidden bg-gray-900">
+        {gallerySlides.map((slide, index) => (
+          <div
+            key={slide.id}
+            className={cn(
+              "absolute inset-0 transition-opacity duration-1000",
+              index === activeSlide ? "opacity-100" : "opacity-0",
+            )}
+            aria-hidden={index !== activeSlide}
+          >
+            <Image
+              src={slide.imageSrc}
+              alt={slide.title}
+              fill
+              sizes="100vw"
+              className="object-cover"
+              priority={index === 0}
+            />
+          </div>
+        ))}
+
+        <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/50 to-black/35" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-black/45" />
+
+        <div className="relative z-10 mx-auto flex h-full w-full max-w-7xl items-end px-4 pb-14 sm:px-6 lg:px-8">
+          <div className="w-full">
+            <p className="text-sm font-semibold tracking-[0.12em] text-cyan-300">
+              {sectionHeading}
+            </p>
+
+            <h1 className="mt-3 max-w-4xl text-3xl font-semibold leading-tight text-white md:text-5xl lg:text-6xl">
+              {currentSlide?.title || heroHeading}
+            </h1>
+
+            <p className="mt-4 max-w-3xl text-base leading-relaxed text-gray-200 md:text-xl">
+              {currentSlide?.tagline || heroDescription}
+            </p>
+
+            <div className="mt-8 flex flex-wrap gap-2">
+              {gallerySlides.map((slide, index) => (
+                <button
+                  key={slide.id}
+                  type="button"
+                  onClick={() => setActiveSlide(index)}
+                  className={cn(
+                    "rounded-full border px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] transition-colors",
+                    index === activeSlide
+                      ? "border-cyan-400 bg-cyan-500/20 text-cyan-100"
+                      : "border-white/20 bg-black/20 text-white/70 hover:border-white/40 hover:text-white",
+                  )}
+                  aria-label={`Show ${slide.title}`}
+                >
+                  {slide.title}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
       </section>
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-12 lg:pt-24">
@@ -138,37 +224,83 @@ export default function ServicesListingClient({
               </h1>
             </div>
 
-            <div className="space-y-32">
-              {categories.map((category) => (
-                <section
-                  key={category.id}
-                  id={category.id}
-                  className="scroll-mt-32"
-                >
-                  <div className="mb-10">
-                    <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-3 flex items-center gap-3">
-                      <span className="w-8 h-1 bg-cyan-600 rounded-full block"></span>
-                      {category.title}
-                    </h2>
-                    <p className="text-lg text-gray-500 dark:text-gray-400 max-w-3xl leading-relaxed pl-11">
-                      {category.description}
-                    </p>
-                  </div>
+            <div className="space-y-20">
+              {categories.map((category) => {
+                const imageCandidates = [
+                  category.imageSrc,
+                  category.services[0]?.imageSrc,
+                  "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&w=1200&q=80",
+                ].filter((item): item is string => Boolean(item));
+                const step = categoryImageStep[category.id] ?? 0;
+                const safeStep = Math.min(step, imageCandidates.length - 1);
+                const categoryImageSrc = imageCandidates[safeStep];
 
-                  <div className="grid grid-cols-1  gap-6">
-                    {category.services.map((service) => (
-                      <ServiceCard
-                        key={service.id}
-                        id={service.id}
-                        title={service.title}
-                        description={service.description}
-                        imageSrc={service.imageSrc}
-                        onRequestService={() => handleRequestService(service.title, category.title)}
-                      />
-                    ))}
-                  </div>
-                </section>
-              ))}
+                return (
+                  <section
+                    key={category.id}
+                    id={category.id}
+                    className="scroll-mt-32"
+                  >
+                    <div className="mb-8">
+                      <h2 className="mb-3 flex items-center gap-3 text-2xl font-bold text-gray-900 dark:text-white">
+                        <span className="block h-1 w-8 rounded-full bg-cyan-600"></span>
+                        {category.title}
+                      </h2>
+                      <p className="max-w-3xl pl-11 text-lg leading-relaxed text-gray-500 dark:text-gray-400">
+                        {category.description}
+                      </p>
+                    </div>
+
+                    <div className="overflow-hidden rounded-2xl border border-gray-100 bg-white p-4 shadow-sm dark:border-gray-800 dark:bg-gray-900 md:p-6">
+                      <div className="grid grid-cols-1 gap-6 md:grid-cols-12">
+                        <div className="relative h-56 overflow-hidden rounded-xl bg-gray-100 md:col-span-5 md:h-full md:min-h-[280px] dark:bg-gray-800">
+                          <Image
+                            src={categoryImageSrc}
+                            alt={category.title}
+                            fill
+                            sizes="(max-width: 768px) 100vw, 40vw"
+                            className="object-cover"
+                            priority={false}
+                            onError={() => {
+                              if (safeStep < imageCandidates.length - 1) {
+                                setCategoryImageStep((current) => ({
+                                  ...current,
+                                  [category.id]: safeStep + 1,
+                                }));
+                              }
+                            }}
+                          />
+                        </div>
+
+                        <div className="md:col-span-7">
+                          <p className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-gray-400">
+                            Select Service
+                          </p>
+
+                          <ul className="space-y-2">
+                            {category.services.map((service) => (
+                              <li key={service.id}>
+                                <button
+                                  type="button"
+                                  onClick={() => handleRequestService(service.title, category.title)}
+                                  className="group flex w-full items-center justify-between rounded-xl border border-gray-200 px-4 py-3 text-left transition-colors hover:border-cyan-500 hover:bg-cyan-50 dark:border-gray-700 dark:hover:border-cyan-500/60 dark:hover:bg-cyan-950/30"
+                                >
+                                  <span className="text-sm font-medium text-gray-800 transition-colors group-hover:text-cyan-700 dark:text-gray-100 dark:group-hover:text-cyan-300">
+                                    {service.title}
+                                  </span>
+                                  <span className="text-xs font-semibold uppercase tracking-[0.16em] text-cyan-600 dark:text-cyan-300">
+                                    Get Quote
+                                  </span>
+                                </button>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </section>
+                );
+              })}
             </div>
           </div>
         </div>

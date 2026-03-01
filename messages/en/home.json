@@ -235,7 +235,12 @@
       "quality": "Quality Assurance",
       "safety": "Safety First"
     },
-    "ctaHeading": "Ready to Elevate Your Operations?",
+    "pillarDetails": {
+      "expertise": "Skilled teams with real field experience plan and execute work with precision.",
+      "quality": "Structured processes and strict inspections keep every deliverable consistent and reliable.",
+      "safety": "Compliance-first methods and proactive risk control protect people, assets, and timelines."
+    },
+    "ctaHeading": "Elevate Your Operations",
     "ctaDescription": "Our experts are ready to provide personalized solutions to drive your industrial success.",
     "ctaButton": "Get a Quote"
   },

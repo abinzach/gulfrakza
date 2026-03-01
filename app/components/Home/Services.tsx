@@ -1,9 +1,8 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import { motion } from "framer-motion";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useLocale, useTranslations } from "@/i18n/provider";
-import { FaHelmetSafety, FaPeopleGroup } from "react-icons/fa6";
-import { TbChecklist } from "react-icons/tb";
 import { Button } from "@/components/ui/button";
 import {
   GridPatternCard,
@@ -18,10 +17,81 @@ export default function ServicesSection() {
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
   const t = useTranslations("home.services");
   const locale = useLocale();
+  const timelineRef = useRef<HTMLDivElement | null>(null);
+  const numberRefs = useRef<Array<HTMLParagraphElement | null>>([]);
+  const [lineMetrics, setLineMetrics] = useState({ top: 0, left: 0, width: 0, travel: 0 });
 
   const categories = useMemo(() => {
     return getCategories(locale as Locale);
   }, [locale]);
+  const useFiveCardLayout = categories.length === 5;
+  const pillars = useMemo(
+    () => [
+      { key: "expertise", number: "01" },
+      { key: "quality", number: "02" },
+      { key: "safety", number: "03" },
+    ],
+    [],
+  );
+
+  useEffect(() => {
+    const updateLineMetrics = () => {
+      const container = timelineRef.current;
+      const firstNumber = numberRefs.current[0];
+      const lastNumber = numberRefs.current[pillars.length - 1];
+
+      if (!container || !firstNumber || !lastNumber) {
+        return;
+      }
+
+      const containerRect = container.getBoundingClientRect();
+      const firstRect = firstNumber.getBoundingClientRect();
+      const lastRect = lastNumber.getBoundingClientRect();
+
+      const top = firstRect.top - containerRect.top + firstRect.height / 2;
+      const left = firstRect.left - containerRect.left + firstRect.width / 2;
+      const right = lastRect.left - containerRect.left + lastRect.width / 2;
+      const width = Math.max(0, right - left);
+      const streakWidth = 40;
+      const travel = Math.max(0, width - streakWidth);
+
+      setLineMetrics((current) => {
+        if (
+          Math.abs(current.top - top) < 0.5 &&
+          Math.abs(current.left - left) < 0.5 &&
+          Math.abs(current.width - width) < 0.5 &&
+          Math.abs(current.travel - travel) < 0.5
+        ) {
+          return current;
+        }
+        return { top, left, width, travel };
+      });
+    };
+
+    const animationFrame = window.requestAnimationFrame(updateLineMetrics);
+    window.addEventListener("resize", updateLineMetrics);
+
+    let resizeObserver: ResizeObserver | null = null;
+    if (typeof ResizeObserver !== "undefined") {
+      resizeObserver = new ResizeObserver(updateLineMetrics);
+      if (timelineRef.current) {
+        resizeObserver.observe(timelineRef.current);
+      }
+      numberRefs.current.forEach((element) => {
+        if (element) {
+          resizeObserver?.observe(element);
+        }
+      });
+    }
+
+    return () => {
+      window.cancelAnimationFrame(animationFrame);
+      window.removeEventListener("resize", updateLineMetrics);
+      resizeObserver?.disconnect();
+    };
+  }, [locale, pillars.length]);
+
+  const hasLineMetrics = lineMetrics.width > 0;
 
   return (
     <>
@@ -36,47 +106,91 @@ export default function ServicesSection() {
 
       <section className="bg-gray-50 py-16 lg:py-32">
         <div className="mx-auto max-w-7xl px-4 font-inter">
-          <h2 className="mb-16 text-center text-5xl font-semibold lg:text-left">
+          <h2 className="mb-16 text-center text-5xl font-semibold">
             {t("sectionHeading")}
           </h2>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
-            {categories.map((category) => {
+          <div
+            className={
+              useFiveCardLayout
+                ? "grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-6"
+                : "grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3"
+            }
+          >
+            {categories.map((category, index) => {
+              const layoutClass = useFiveCardLayout
+                ? index < 3
+                  ? "md:col-span-2"
+                  : index === 3
+                    ? "md:col-span-2 md:col-start-2"
+                    : "md:col-span-2 md:col-start-4"
+                : "";
+
               return (
-                <Link key={category.id} href={`/services#${category.id}`}>
-                  <GridPatternCard className="h-full group hover:shadow-lg transition-all duration-300 cursor-pointer">
-                    <GridPatternCardBody className="h-full">
-                      <h3 className="mb-1 text-lg font-bold text-foreground group-hover:text-cyan-600 transition-colors duration-300">
-                        {category.title}
-                      </h3>
-                      <p className="text-sm text-foreground/60">{category.description}</p>
-                    </GridPatternCardBody>
-                  </GridPatternCard>
-                </Link>
+                <div key={category.id} className={layoutClass}>
+                  <Link href={`/services#${category.id}`}>
+                    <GridPatternCard className="h-full group cursor-pointer transition-all duration-300 hover:shadow-lg">
+                      <GridPatternCardBody className="h-full text-center">
+                        <h3 className="mb-1 text-lg font-bold text-foreground transition-colors duration-300 group-hover:text-cyan-600">
+                          {category.title}
+                        </h3>
+                        <p className="text-sm text-foreground/60">{category.description}</p>
+                      </GridPatternCardBody>
+                    </GridPatternCard>
+                  </Link>
+                </div>
               );
             })}
           </div>
         </div>
       </section>
 
-      <section className="py-24">
-        <div className="mx-auto max-w-7xl px-4">
-          <h2 className="mb-4 text-center font-inter text-5xl font-semibold lg:text-left">
+      <section className="relative overflow-hidden bg-gradient-to-b from-slate-50 via-white to-slate-50 py-24">
+        <div className="mx-auto max-w-5xl px-4 text-center font-inter">
+          <h2 className="text-4xl font-semibold tracking-tight text-slate-900 lg:text-5xl">
             {t("whyHeading")}
           </h2>
-          <p className="font-raleway text-lg text-gray-600 lg:text-left">{t("whyDescription")}</p>
-          <div className="mt-20 flex flex-wrap justify-center gap-10 font-inter lg:gap-32">
-            <div className="flex flex-col items-center">
-              <FaPeopleGroup className="mb-2 h-24 w-24 text-cyan-600" />
-              <span className="font-bold text-gray-700">{t("pillars.expertise")}</span>
-            </div>
-            <div className="flex flex-col items-center">
-              <TbChecklist className="mb-2 h-24 w-24 text-cyan-600" />
-              <span className="font-bold text-gray-700">{t("pillars.quality")}</span>
-            </div>
-            <div className="flex flex-col items-center">
-              <FaHelmetSafety className="mb-2 h-24 w-24 text-cyan-600" />
-              <span className="font-bold text-gray-700">{t("pillars.safety")}</span>
-            </div>
+          <p className="mx-auto mt-5 font-raleway text-3xl leading-relaxed text-slate-600">
+            {t("whyDescription")}
+          </p>
+
+          <div ref={timelineRef} className="relative mx-auto mt-12 max-w-5xl">
+            {hasLineMetrics && (
+              <div
+                className="pointer-events-none absolute h-px bg-gradient-to-r from-cyan-200 via-cyan-500/60 to-cyan-200"
+                style={{
+                  top: `${lineMetrics.top}px`,
+                  left: `${lineMetrics.left}px`,
+                  width: `${lineMetrics.width}px`,
+                }}
+              />
+            )}
+            {hasLineMetrics && (
+              <motion.div
+                className="pointer-events-none absolute h-[2px] w-10 bg-gradient-to-r from-transparent via-cyan-300 to-transparent shadow-[0_0_10px_rgba(34,211,238,0.95)]"
+                style={{ top: `${lineMetrics.top}px`, left: `${lineMetrics.left}px` }}
+                animate={{ x: [0, lineMetrics.travel, 0], opacity: [0, 1, 1, 0] }}
+                transition={{ duration: 6.5, repeat: Infinity, ease: "linear" }}
+                aria-hidden
+              />
+            )}
+
+            <ol className="grid grid-cols-3 gap-5 sm:gap-8">
+              {pillars.map((pillar, index) => (
+                <li key={pillar.key} className="relative px-4 text-center">
+                  <p
+                    ref={(element) => {
+                      numberRefs.current[index] = element;
+                    }}
+                    className="relative z-10 inline-block bg-slate-50  font-inter text-[0.72rem] font-semibold leading-none tracking-[0.46em] text-cyan-700/90"
+                  >
+                    {pillar.number}
+                  </p>
+                  <h3 className="mt-2 font-hanken text-[1.5rem] font-light leading-tight tracking-[-0.01em] text-cyan-600 md:text-[1.85rem]">
+                    {t(`pillars.${pillar.key}`)}
+                  </h3>
+                </li>
+              ))}
+            </ol>
           </div>
         </div>
       </section>
