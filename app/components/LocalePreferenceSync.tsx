@@ -3,7 +3,11 @@
 import { useEffect } from "react"
 import { usePathname, useRouter } from "next/navigation"
 
-import { localePreferenceStorageKey, localeCookieName } from "@/lib/constants"
+import {
+  localePreferenceStorageKey,
+  localeCookieName,
+  localeSwitchScrollStorageKey,
+} from "@/lib/constants"
 import { locales, type Locale } from "@/i18n/config"
 
 const isValidLocale = (value: string | null): value is Locale =>
@@ -41,6 +45,27 @@ type LocalePreferenceSyncProps = {
 export default function LocalePreferenceSync({ locale }: LocalePreferenceSyncProps) {
   const pathname = usePathname()
   const router = useRouter()
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return
+    }
+
+    const storedScrollY = window.sessionStorage.getItem(localeSwitchScrollStorageKey)
+    if (!storedScrollY) {
+      return
+    }
+
+    window.sessionStorage.removeItem(localeSwitchScrollStorageKey)
+    const scrollY = Number(storedScrollY)
+    if (!Number.isFinite(scrollY)) {
+      return
+    }
+
+    window.requestAnimationFrame(() => {
+      window.scrollTo({ top: scrollY, left: 0, behavior: "auto" })
+    })
+  }, [locale, pathname])
 
   useEffect(() => {
     if (typeof window === "undefined") {

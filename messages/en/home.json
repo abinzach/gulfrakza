@@ -217,9 +217,9 @@
   "services": {
     "metaTitle": "Industrial Services & Solutions | Scaffolding, Fabrication | GulfRakza Dammam",
     "metaDescription": "GulfRakza offers comprehensive industrial services in Dammam, Saudi Arabia: scaffolding, steel fabrication, civil works, rope access, safety training, and more. Serving industries across the Kingdom.",
-    "heroHeading": "Elevating Your Industry with Integrated Services, Tailored Solutions That Drive Efficiency and Growth",
+    "heroHeading": "Elevate Industries with Integrated Services",
     "heroDescription": "Our comprehensive suite of services is designed to streamline operations, enhance safety, and boost productivity. Explore our expert solutions that cater to every facet of your industrial needs.",
-    "sectionHeading": "Our Service Offerings",
+    "sectionHeading": "Services",
     "cards": [
       { "title": "Scaffolding Services", "description": "Safe, compliant scaffolding solutions for every worksite." },
       { "title": "PEB Shed Fabrication", "description": "Custom pre-engineered building solutions designed to your specifications." },
@@ -232,8 +232,8 @@
     "whyDescription": "At Gulf Rakza, our services are backed by industry-leading expertise, a commitment to quality, and a tailored approach to meet your unique needs. From rapid response times to uncompromised safety standards, we are your trusted partner for industrial excellence.",
     "pillars": {
       "expertise": "Expertise",
-      "quality": "Quality Assurance",
-      "safety": "Safety First"
+      "quality": "Quality",
+      "safety": "Safety"
     },
     "pillarDetails": {
       "expertise": "Skilled teams with real field experience plan and execute work with precision.",

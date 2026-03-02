@@ -38,7 +38,13 @@
       "email": "Email Address",
       "phone": "Phone Number",
       "category": "Category",
+      "services": "Services",
       "message": "Message"
+    },
+    "serviceSelector": {
+      "title": "Select Services",
+      "helper": "Choose one or more services to include in this quote request.",
+      "validation": "Please select at least one service."
     },
     "placeholders": {
       "category": "e.g., HVAC Services",
@@ -76,6 +82,7 @@
     "template": {
       "intro": "Hello Gulf Rakza team, I hope you're doing well.",
       "product": "I'm interested in the following service:",
+      "products": "I'm interested in the following services:",
       "category": "It sits within this category:",
       "subcategory": "And the subcategory is:",
       "itemCategory": "The specific focus area would be:",

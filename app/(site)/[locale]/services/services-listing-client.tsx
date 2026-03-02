@@ -6,6 +6,7 @@ import QuoteModal from "@/app/components/GetQuote";
 import { cn } from "@/lib/utils";
 import { ServiceCategory } from "@/lib/services";
 import { Link } from "@/navigation.client";
+import { useTranslations } from "@/i18n/provider";
 
 interface ServicesListingClientProps {
   categories: ServiceCategory[];
@@ -20,9 +21,20 @@ export default function ServicesListingClient({
   heroDescription,
   sectionHeading,
 }: ServicesListingClientProps) {
+  const tNav = useTranslations("common.nav");
   const [activeCategory, setActiveCategory] = useState<string>("");
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
-  const [selectedService, setSelectedService] = useState<{ name: string; category: string } | null>(null);
+  const [quoteContext, setQuoteContext] = useState<{
+    initialProduct?: {
+      name?: string;
+      category?: string;
+    };
+    serviceOptions?: Array<{
+      id: string;
+      title: string;
+    }>;
+    initialSelectedServiceIds?: string[];
+  } | null>(null);
   const [activeSlide, setActiveSlide] = useState(0);
   const [categoryImageStep, setCategoryImageStep] = useState<Record<string, number>>({});
   const gallerySlides = useMemo(
@@ -95,10 +107,36 @@ export default function ServicesListingClient({
     }
   };
 
-  const handleRequestService = (serviceTitle: string, categoryTitle: string) => {
-    setSelectedService({
-      name: serviceTitle,
-      category: categoryTitle,
+  const buildServiceOptions = (category: ServiceCategory) =>
+    category.services.map((service) => ({
+      id: service.id,
+      title: service.title,
+    }));
+
+  const handleRequestCategory = (category: ServiceCategory) => {
+    setQuoteContext({
+      initialProduct: {
+        category: category.title,
+      },
+      serviceOptions: buildServiceOptions(category),
+      initialSelectedServiceIds: [],
+    });
+    setIsQuoteModalOpen(true);
+  };
+
+  const handleRequestService = (category: ServiceCategory, serviceId: string) => {
+    const selected = category.services.find((service) => service.id === serviceId);
+    if (!selected) {
+      return;
+    }
+
+    setQuoteContext({
+      initialProduct: {
+        name: selected.title,
+        category: category.title,
+      },
+      serviceOptions: buildServiceOptions(category),
+      initialSelectedServiceIds: [selected.id],
     });
     setIsQuoteModalOpen(true);
   };
@@ -132,7 +170,7 @@ export default function ServicesListingClient({
 
         <div className="relative z-10 mx-auto flex h-full w-full max-w-7xl items-end px-4 pb-14 sm:px-6 lg:px-8">
           <div className="w-full">
-            <p className="text-sm font-semibold tracking-[0.12em] text-cyan-300">
+            <p className="text-sm font-semibold uppercase tracking-[0.34em] text-cyan-300">
               {sectionHeading}
             </p>
 
@@ -144,24 +182,6 @@ export default function ServicesListingClient({
               {currentSlide?.tagline || heroDescription}
             </p>
 
-            <div className="mt-8 flex flex-wrap gap-2">
-              {gallerySlides.map((slide, index) => (
-                <button
-                  key={slide.id}
-                  type="button"
-                  onClick={() => setActiveSlide(index)}
-                  className={cn(
-                    "rounded-full border px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] transition-colors",
-                    index === activeSlide
-                      ? "border-cyan-400 bg-cyan-500/20 text-cyan-100"
-                      : "border-white/20 bg-black/20 text-white/70 hover:border-white/40 hover:text-white",
-                  )}
-                  aria-label={`Show ${slide.title}`}
-                >
-                  {slide.title}
-                </button>
-              ))}
-            </div>
           </div>
         </div>
       </section>
@@ -218,12 +238,6 @@ export default function ServicesListingClient({
 
           {/* Main Content */}
           <div className="flex-1 min-w-0">
-            <div className="mb-16">
-              <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white tracking-tight">
-                {sectionHeading}
-              </h1>
-            </div>
-
             <div className="space-y-20">
               {categories.map((category) => {
                 const imageCandidates = [
@@ -273,23 +287,39 @@ export default function ServicesListingClient({
                         </div>
 
                         <div className="md:col-span-7">
-                          <p className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-gray-400">
-                            Select Service
-                          </p>
+                          <div className="mb-4 flex justify-end">
+                            <button
+                              type="button"
+                              onClick={() => handleRequestCategory(category)}
+                              className="inline-flex items-center gap-2 rounded-full bg-cyan-600 px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-white transition-colors hover:bg-cyan-700"
+                            >
+                              <span className="inline-flex h-4 w-4 items-center justify-center text-[13px] leading-none" aria-hidden="true">
+                                &#xFDFC;
+                              </span>
+                              {tNav("getQuote")}
+                            </button>
+                          </div>
 
                           <ul className="space-y-2">
                             {category.services.map((service) => (
                               <li key={service.id}>
                                 <button
                                   type="button"
-                                  onClick={() => handleRequestService(service.title, category.title)}
+                                  onClick={() => handleRequestService(category, service.id)}
                                   className="group flex w-full items-center justify-between rounded-xl border border-gray-200 px-4 py-3 text-left transition-colors hover:border-cyan-500 hover:bg-cyan-50 dark:border-gray-700 dark:hover:border-cyan-500/60 dark:hover:bg-cyan-950/30"
                                 >
                                   <span className="text-sm font-medium text-gray-800 transition-colors group-hover:text-cyan-700 dark:text-gray-100 dark:group-hover:text-cyan-300">
                                     {service.title}
                                   </span>
-                                  <span className="text-xs font-semibold uppercase tracking-[0.16em] text-cyan-600 dark:text-cyan-300">
-                                    Get Quote
+                                  <span className="flex items-center rounded-full border border-cyan-200/70 bg-cyan-50 px-3 py-1 dark:border-cyan-700/60 dark:bg-cyan-950/40">
+                                    <Image
+                                      src="/logo-rakza.png"
+                                      alt="GulfRakza"
+                                      width={18}
+                                      height={18}
+                                      className="h-[18px] w-[18px] object-contain"
+                                    />
+                                    <span className="sr-only">{tNav("getQuote")}</span>
                                   </span>
                                 </button>
                               </li>
@@ -309,10 +339,9 @@ export default function ServicesListingClient({
       <QuoteModal 
         open={isQuoteModalOpen} 
         onOpenChange={setIsQuoteModalOpen}
-        initialProduct={selectedService ? {
-          name: selectedService.name,
-          category: selectedService.category
-        } : undefined}
+        initialProduct={quoteContext?.initialProduct}
+        serviceOptions={quoteContext?.serviceOptions}
+        initialSelectedServiceIds={quoteContext?.initialSelectedServiceIds}
       />
     </main>
   );

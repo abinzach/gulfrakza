@@ -13,7 +13,7 @@ interface ServicesPageProps {
 const defaultHeroHeading = "Industrial Services & Solutions across the GCC";
 const defaultHeroDescription =
   "Explore turnkey safety, cathodic protection, HVAC, and civil contracting services engineered for energy, infrastructure, and industrial operators.";
-const defaultSectionHeading = "Our Service Offerings";
+const defaultSectionHeading = "Services";
 const defaultMetaTitle = "Industrial Services & Solutions | Scaffolding, Fabrication | GulfRakza Dammam";
 const defaultMetaDescription =
   "GulfRakza offers comprehensive industrial services in Dammam, Saudi Arabia: scaffolding, steel fabrication, civil works, rope access, safety training, and more. Serving industries across the Kingdom.";

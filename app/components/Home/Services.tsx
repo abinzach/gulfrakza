@@ -18,7 +18,7 @@ export default function ServicesSection() {
   const t = useTranslations("home.services");
   const locale = useLocale();
   const timelineRef = useRef<HTMLDivElement | null>(null);
-  const numberRefs = useRef<Array<HTMLParagraphElement | null>>([]);
+  const markerRefs = useRef<Array<HTMLSpanElement | null>>([]);
   const [lineMetrics, setLineMetrics] = useState({ top: 0, left: 0, width: 0, travel: 0 });
 
   const categories = useMemo(() => {
@@ -27,9 +27,9 @@ export default function ServicesSection() {
   const useFiveCardLayout = categories.length === 5;
   const pillars = useMemo(
     () => [
-      { key: "expertise", number: "01" },
-      { key: "quality", number: "02" },
-      { key: "safety", number: "03" },
+      { key: "expertise" },
+      { key: "quality" },
+      { key: "safety" },
     ],
     [],
   );
@@ -37,16 +37,16 @@ export default function ServicesSection() {
   useEffect(() => {
     const updateLineMetrics = () => {
       const container = timelineRef.current;
-      const firstNumber = numberRefs.current[0];
-      const lastNumber = numberRefs.current[pillars.length - 1];
+      const firstMarker = markerRefs.current[0];
+      const lastMarker = markerRefs.current[pillars.length - 1];
 
-      if (!container || !firstNumber || !lastNumber) {
+      if (!container || !firstMarker || !lastMarker) {
         return;
       }
 
       const containerRect = container.getBoundingClientRect();
-      const firstRect = firstNumber.getBoundingClientRect();
-      const lastRect = lastNumber.getBoundingClientRect();
+      const firstRect = firstMarker.getBoundingClientRect();
+      const lastRect = lastMarker.getBoundingClientRect();
 
       const top = firstRect.top - containerRect.top + firstRect.height / 2;
       const left = firstRect.left - containerRect.left + firstRect.width / 2;
@@ -77,7 +77,7 @@ export default function ServicesSection() {
       if (timelineRef.current) {
         resizeObserver.observe(timelineRef.current);
       }
-      numberRefs.current.forEach((element) => {
+      markerRefs.current.forEach((element) => {
         if (element) {
           resizeObserver?.observe(element);
         }
@@ -177,15 +177,14 @@ export default function ServicesSection() {
             <ol className="grid grid-cols-3 gap-5 sm:gap-8">
               {pillars.map((pillar, index) => (
                 <li key={pillar.key} className="relative px-4 text-center">
-                  <p
+                  <span
                     ref={(element) => {
-                      numberRefs.current[index] = element;
+                      markerRefs.current[index] = element;
                     }}
-                    className="relative z-10 inline-block bg-slate-50  font-inter text-[0.72rem] font-semibold leading-none tracking-[0.46em] text-cyan-700/90"
-                  >
-                    {pillar.number}
-                  </p>
-                  <h3 className="mt-2 font-hanken text-[1.5rem] font-light leading-tight tracking-[-0.01em] text-cyan-600 md:text-[1.85rem]">
+                    className="relative z-10 inline-block h-3 w-3 rounded-full bg-cyan-600"
+                    aria-hidden="true"
+                  />
+                  <h3 className="mt-4 font-hanken text-[1.5rem] font-light leading-tight tracking-[-0.01em] text-cyan-600 md:text-[1.85rem]">
                     {t(`pillars.${pillar.key}`)}
                   </h3>
                 </li>

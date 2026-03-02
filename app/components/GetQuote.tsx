@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslations } from "@/i18n/provider";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -26,6 +26,11 @@ interface QuoteModalProps {
     subcategory: string;
     itemCategory: string;
   }>;
+  serviceOptions?: Array<{
+    id: string;
+    title: string;
+  }>;
+  initialSelectedServiceIds?: string[];
 }
 
 const infoSteps = [
@@ -42,65 +47,220 @@ type QuoteFormState = {
   message: string;
 };
 
+const areSameSelection = (left: string[], right: string[]) => {
+  if (left.length !== right.length) {
+    return false;
+  }
+
+  return left.every((value, index) => value === right[index]);
+};
+
 export default function QuoteModal({
   open,
   onOpenChange,
   initialProduct,
+  serviceOptions,
+  initialSelectedServiceIds,
 }: QuoteModalProps) {
   const t = useTranslations("forms.quoteForm");
+  const initialCategory = initialProduct?.category || "";
+  const initialName = initialProduct?.name || "";
 
-  const initialMessage = useMemo(() => {
-    if (!initialProduct) {
-      return "";
+  const availableServiceOptions = useMemo(
+    () =>
+      (serviceOptions || []).filter(
+        (
+          option,
+        ): option is {
+          id: string;
+          title: string;
+        } => Boolean(option?.id && option?.title),
+      ),
+    [serviceOptions],
+  );
+  const serviceLookup = useMemo(
+    () => new Map(availableServiceOptions.map((service) => [service.id, service])),
+    [availableServiceOptions],
+  );
+
+  const defaultSelectedServiceIds = useMemo(() => {
+    const selectedFromProps = (initialSelectedServiceIds || []).filter((serviceId) =>
+      serviceLookup.has(serviceId),
+    );
+    if (selectedFromProps.length > 0) {
+      return selectedFromProps;
     }
 
-    const templateIntro = t("template.intro");
-    const summaryLine =
-      initialProduct.category && initialProduct.name
-        ? `${initialProduct.category} --> ${initialProduct.name}`
-        : initialProduct.name || initialProduct.category || "";
-    const outro = t("template.outro");
+    if (!initialName) {
+      return [];
+    }
 
-    return [templateIntro, "", summaryLine, "", outro]
-      .filter((line) => line !== "")
-      .join("\n");
-  }, [initialProduct, t]);
+    const matchedService = availableServiceOptions.find((service) => service.title === initialName);
+    return matchedService ? [matchedService.id] : [];
+  }, [availableServiceOptions, initialName, initialSelectedServiceIds, serviceLookup]);
 
+  const buildCategorySummary = useCallback(
+    (serviceIds: string[]) => {
+      const selectedTitles = serviceIds
+        .map((serviceId) => serviceLookup.get(serviceId)?.title)
+        .filter((title): title is string => Boolean(title));
+
+      if (selectedTitles.length === 0) {
+        return initialCategory;
+      }
+
+      const serviceSummary = selectedTitles.join(", ");
+      return initialCategory ? `${initialCategory}: ${serviceSummary}` : serviceSummary;
+    },
+    [initialCategory, serviceLookup],
+  );
+
+  const buildMessageTemplate = useCallback(
+    (serviceIds: string[]) => {
+      const templateIntro = t("template.intro");
+      const outro = t("template.outro");
+      const selectedTitles = serviceIds
+        .map((serviceId) => serviceLookup.get(serviceId)?.title)
+        .filter((title): title is string => Boolean(title));
+
+      if (selectedTitles.length > 0) {
+        return [
+          templateIntro,
+          "",
+          t("template.products"),
+          ...selectedTitles.map((title) => `- ${title}`),
+          "",
+          outro,
+        ]
+          .filter((line) => line !== "")
+          .join("\n");
+      }
+
+      if (!initialProduct) {
+        return "";
+      }
+
+      const summaryLine =
+        initialCategory && initialName ? `${initialCategory} --> ${initialName}` : initialName || initialCategory;
+
+      return [templateIntro, "", summaryLine, "", outro]
+        .filter((line) => line !== "")
+        .join("\n");
+    },
+    [initialCategory, initialName, initialProduct, serviceLookup, t],
+  );
+
+  const [selectedServiceIds, setSelectedServiceIds] = useState<string[]>(
+    defaultSelectedServiceIds,
+  );
   const [formData, setFormData] = useState<QuoteFormState>({
     fullName: "",
     email: "",
     phone: "",
-    productCategory: initialProduct?.category || "",
-    message: initialMessage,
+    productCategory: buildCategorySummary(defaultSelectedServiceIds),
+    message: buildMessageTemplate(defaultSelectedServiceIds),
   });
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
+  const wasOpenRef = useRef(false);
+  const lastInitializedContextRef = useRef<string | null>(null);
+  const quoteContextKey = useMemo(() => {
+    const optionsKey = availableServiceOptions.map((service) => service.id).join("|");
+    const selectedKey = (initialSelectedServiceIds || []).join("|");
+    return `${initialCategory}__${initialName}__${optionsKey}__${selectedKey}`;
+  }, [availableServiceOptions, initialCategory, initialName, initialSelectedServiceIds]);
 
   useEffect(() => {
-    if (open && initialProduct) {
-      setFormData((prev) => ({
-        ...prev,
-        productCategory: initialProduct.category || "",
-        message: initialMessage,
-      }));
+    const justOpened = open && !wasOpenRef.current;
+    const contextChangedWhileOpen =
+      open && wasOpenRef.current && lastInitializedContextRef.current !== quoteContextKey;
+
+    if (justOpened || contextChangedWhileOpen) {
+      const nextCategory = buildCategorySummary(defaultSelectedServiceIds);
+      const nextMessage = buildMessageTemplate(defaultSelectedServiceIds);
+
+      setSelectedServiceIds((prev) =>
+        areSameSelection(prev, defaultSelectedServiceIds) ? prev : defaultSelectedServiceIds,
+      );
+      setFormData((prev) => {
+        if (prev.productCategory === nextCategory && prev.message === nextMessage) {
+          return prev;
+        }
+
+        return {
+          ...prev,
+          productCategory: nextCategory,
+          message: nextMessage,
+        };
+      });
+
+      lastInitializedContextRef.current = quoteContextKey;
     }
-  }, [open, initialProduct, initialMessage]);
 
-  useEffect(() => {
     if (!open) {
-      const timer = setTimeout(() => {
-        setFormData({
-          fullName: "",
-          email: "",
-          phone: "",
-          productCategory: initialProduct?.category || "",
-          message: initialProduct ? initialMessage : "",
-        });
-        setSuccess(false);
-      }, 300);
-      return () => clearTimeout(timer);
+      lastInitializedContextRef.current = null;
     }
-  }, [open, initialProduct, initialMessage]);
+
+    wasOpenRef.current = open;
+  }, [
+    open,
+    quoteContextKey,
+    defaultSelectedServiceIds,
+    buildCategorySummary,
+    buildMessageTemplate,
+  ]);
+
+  useEffect(() => {
+    if (!open || availableServiceOptions.length === 0) {
+      return;
+    }
+
+    const nextCategory = buildCategorySummary(selectedServiceIds);
+    const nextMessage = buildMessageTemplate(selectedServiceIds);
+
+    setFormData((prev) => {
+      if (prev.productCategory === nextCategory && prev.message === nextMessage) {
+        return prev;
+      }
+
+      return {
+        ...prev,
+        productCategory: nextCategory,
+        message: nextMessage,
+      };
+    });
+  }, [
+    open,
+    availableServiceOptions.length,
+    selectedServiceIds,
+    buildCategorySummary,
+    buildMessageTemplate,
+  ]);
+
+  useEffect(() => {
+    if (open) {
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      const resetCategory = buildCategorySummary(defaultSelectedServiceIds);
+      const resetMessage = buildMessageTemplate(defaultSelectedServiceIds);
+
+      setSelectedServiceIds((prev) =>
+        areSameSelection(prev, defaultSelectedServiceIds) ? prev : defaultSelectedServiceIds,
+      );
+      setFormData({
+        fullName: "",
+        email: "",
+        phone: "",
+        productCategory: resetCategory,
+        message: resetMessage,
+      });
+      setSuccess(false);
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [open, defaultSelectedServiceIds, buildCategorySummary, buildMessageTemplate]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -111,6 +271,24 @@ export default function QuoteModal({
       [name]: value,
     }));
   };
+
+  const handleServiceSelection = useCallback(
+    (serviceId: string) => {
+      setSelectedServiceIds((current) => {
+        const selectedSet = new Set(current);
+        if (selectedSet.has(serviceId)) {
+          selectedSet.delete(serviceId);
+        } else {
+          selectedSet.add(serviceId);
+        }
+
+        return availableServiceOptions
+          .map((service) => service.id)
+          .filter((id) => selectedSet.has(id));
+      });
+    },
+    [availableServiceOptions],
+  );
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -183,6 +361,52 @@ export default function QuoteModal({
                     <AlertTitle className="font-semibold">{t("successTitle")}</AlertTitle>
                     <AlertDescription>{t("successMessage")}</AlertDescription>
                   </Alert>
+                )}
+
+                {availableServiceOptions.length > 0 && (
+                  <div className="rounded-xl border border-gray-100 bg-white p-4 shadow-sm dark:border-gray-800 dark:bg-gray-900/70">
+                    <div className="space-y-3">
+                      <div>
+                        <p className="text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-gray-300">
+                          {t("serviceSelector.title")}
+                        </p>
+                        <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                          {t("serviceSelector.helper")}
+                        </p>
+                      </div>
+
+                      <div className="max-h-44 space-y-2 overflow-y-auto pr-1">
+                        {availableServiceOptions.map((service) => {
+                          const isSelected = selectedServiceIds.includes(service.id);
+                          return (
+                            <label
+                              key={service.id}
+                              className={`flex cursor-pointer items-center gap-3 rounded-lg border px-3 py-2 transition-colors ${
+                                isSelected
+                                  ? "border-cyan-500 bg-cyan-50 dark:border-cyan-500/60 dark:bg-cyan-950/40"
+                                  : "border-gray-200 bg-white hover:border-cyan-300 dark:border-gray-700 dark:bg-gray-900/80"
+                              }`}
+                            >
+                              <input
+                                type="checkbox"
+                                checked={isSelected}
+                                onChange={() => handleServiceSelection(service.id)}
+                                className="h-4 w-4 rounded border-gray-300 text-cyan-600 focus:ring-cyan-600 dark:border-gray-600 dark:bg-gray-900"
+                              />
+                              <span className="text-sm text-gray-800 dark:text-gray-100">
+                                {service.title}
+                              </span>
+                            </label>
+                          );
+                        })}
+                      </div>
+                      {selectedServiceIds.length === 0 && (
+                        <p className="text-xs text-amber-600 dark:text-amber-300">
+                          {t("serviceSelector.validation")}
+                        </p>
+                      )}
+                    </div>
+                  </div>
                 )}
 
                 <div className="rounded-xl border border-gray-100 bg-white p-4 shadow-sm dark:border-gray-800 dark:bg-gray-900/70">
@@ -268,7 +492,7 @@ export default function QuoteModal({
               <div className="sticky bottom-0 border-t border-cyan-200 bg-gradient-to-r from-cyan-50 to-white px-5 py-4 backdrop-blur-lg dark:border-cyan-900/30 dark:from-cyan-950/20 dark:to-gray-900/95">
                 <Button
                   type="submit"
-                  disabled={submitting}
+                  disabled={submitting || (availableServiceOptions.length > 0 && selectedServiceIds.length === 0)}
                   className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-cyan-600 to-cyan-500 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-cyan-500/30 transition-all hover:from-cyan-500 hover:to-cyan-400 hover:shadow-xl hover:shadow-cyan-500/40 disabled:opacity-70"
                 >
                   {submitting ? (

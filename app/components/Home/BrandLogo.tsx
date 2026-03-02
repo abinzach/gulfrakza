@@ -6,7 +6,7 @@ import { JSX } from "react";
 
 const DoubleScrollingLogos = () => {
   return (
-    <section className="bg-white py-4">
+    <section dir="ltr" className="bg-white py-4">
       <div className="flex overflow-hidden">
         <TranslateWrapper>
           <LogoItemsTop />
