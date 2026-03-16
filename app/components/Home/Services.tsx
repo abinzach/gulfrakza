@@ -1,213 +1,141 @@
 "use client";
 
 import { motion } from "framer-motion";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useLocale, useTranslations } from "@/i18n/provider";
 import { Button } from "@/components/ui/button";
-import {
-  GridPatternCard,
-  GridPatternCardBody,
-} from "@/components/ui/card-with-grid-ellipsis-pattern";
 import QuoteModal from "../GetQuote";
-import { DarkGridHero } from "./DarkGrid";
 import { Link } from "@/navigation";
 import { getCategories, type Locale } from "@/lib/services";
+
+const pillars = [
+  { key: "expertise", number: "01" },
+  { key: "quality", number: "02" },
+  { key: "safety", number: "03" },
+];
 
 export default function ServicesSection() {
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
   const t = useTranslations("home.services");
   const locale = useLocale();
-  const timelineRef = useRef<HTMLDivElement | null>(null);
-  const markerRefs = useRef<Array<HTMLSpanElement | null>>([]);
-  const [lineMetrics, setLineMetrics] = useState({ top: 0, left: 0, width: 0, travel: 0 });
-
-  const categories = useMemo(() => {
-    return getCategories(locale as Locale);
-  }, [locale]);
-  const useFiveCardLayout = categories.length === 5;
-  const pillars = useMemo(
-    () => [
-      { key: "expertise" },
-      { key: "quality" },
-      { key: "safety" },
-    ],
-    [],
-  );
-
-  useEffect(() => {
-    const updateLineMetrics = () => {
-      const container = timelineRef.current;
-      const firstMarker = markerRefs.current[0];
-      const lastMarker = markerRefs.current[pillars.length - 1];
-
-      if (!container || !firstMarker || !lastMarker) {
-        return;
-      }
-
-      const containerRect = container.getBoundingClientRect();
-      const firstRect = firstMarker.getBoundingClientRect();
-      const lastRect = lastMarker.getBoundingClientRect();
-
-      const top = firstRect.top - containerRect.top + firstRect.height / 2;
-      const left = firstRect.left - containerRect.left + firstRect.width / 2;
-      const right = lastRect.left - containerRect.left + lastRect.width / 2;
-      const width = Math.max(0, right - left);
-      const streakWidth = 40;
-      const travel = Math.max(0, width - streakWidth);
-
-      setLineMetrics((current) => {
-        if (
-          Math.abs(current.top - top) < 0.5 &&
-          Math.abs(current.left - left) < 0.5 &&
-          Math.abs(current.width - width) < 0.5 &&
-          Math.abs(current.travel - travel) < 0.5
-        ) {
-          return current;
-        }
-        return { top, left, width, travel };
-      });
-    };
-
-    const animationFrame = window.requestAnimationFrame(updateLineMetrics);
-    window.addEventListener("resize", updateLineMetrics);
-
-    let resizeObserver: ResizeObserver | null = null;
-    if (typeof ResizeObserver !== "undefined") {
-      resizeObserver = new ResizeObserver(updateLineMetrics);
-      if (timelineRef.current) {
-        resizeObserver.observe(timelineRef.current);
-      }
-      markerRefs.current.forEach((element) => {
-        if (element) {
-          resizeObserver?.observe(element);
-        }
-      });
-    }
-
-    return () => {
-      window.cancelAnimationFrame(animationFrame);
-      window.removeEventListener("resize", updateLineMetrics);
-      resizeObserver?.disconnect();
-    };
-  }, [locale, pillars.length]);
-
-  const hasLineMetrics = lineMetrics.width > 0;
+  const isRTL = locale === "ar";
+  const categories = useMemo(() => getCategories(locale as Locale), [locale]);
 
   return (
     <>
+      {/* ── Dark service list ── */}
       <section
         id="services"
-        className="relative flex h-[60vh] items-center justify-center bg-gray-900 text-center font-inter"
+        className="bg-black py-24 font-inter lg:py-32"
+        dir={isRTL ? "rtl" : "ltr"}
       >
-        <div className="absolute inset-0 bg-cover bg-center" />
-        <div className="absolute inset-0 bg-black opacity-50" />
-        <DarkGridHero title={t("heroHeading")} description={t("heroDescription")} />
-      </section>
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="lg:grid lg:grid-cols-2 lg:gap-20">
 
-      <section className="bg-gray-50 py-16 lg:py-32">
-        <div className="mx-auto max-w-7xl px-4 font-inter">
-          <h2 className="mb-16 text-center text-5xl font-semibold">
-            {t("sectionHeading")}
-          </h2>
-          <div
-            className={
-              useFiveCardLayout
-                ? "grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-6"
-                : "grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3"
-            }
-          >
-            {categories.map((category, index) => {
-              const layoutClass = useFiveCardLayout
-                ? index < 3
-                  ? "md:col-span-2"
-                  : index === 3
-                    ? "md:col-span-2 md:col-start-2"
-                    : "md:col-span-2 md:col-start-4"
-                : "";
+            {/* Left: sticky heading */}
+            <div className="mb-16 lg:mb-0 lg:sticky lg:top-28 lg:self-start">
+              <p className="mb-4 text-xs font-medium tracking-[0.2em] uppercase text-white/35">
+                {t("eyebrow")}
+              </p>
+              <h2 className="text-4xl font-semibold leading-[1.1] tracking-tight text-white lg:text-5xl">
+                {t("heroHeading")}
+              </h2>
+              <p className="mt-5 text-base leading-relaxed text-white/50">
+                {t("heroDescription")}
+              </p>
+              <Button
+                onClick={() => setIsQuoteModalOpen(true)}
+                className="mt-8 rounded-full bg-white px-6 py-3 text-sm font-semibold text-black hover:bg-white/90"
+              >
+                {t("ctaButton")}
+              </Button>
+            </div>
 
-              return (
-                <div key={category.id} className={layoutClass}>
-                  <Link href={`/services#${category.id}`}>
-                    <GridPatternCard className="h-full group cursor-pointer transition-all duration-300 hover:shadow-lg">
-                      <GridPatternCardBody className="h-full text-center">
-                        <h3 className="mb-1 text-lg font-bold text-foreground transition-colors duration-300 group-hover:text-cyan-600">
-                          {category.title}
-                        </h3>
-                        <p className="text-sm text-foreground/60">{category.description}</p>
-                      </GridPatternCardBody>
-                    </GridPatternCard>
-                  </Link>
-                </div>
-              );
-            })}
+            {/* Right: service rows */}
+            <div className="divide-y divide-white/8">
+              {categories.map((category, index) => (
+                <Link key={category.id} href={`/services#${category.id}`}>
+                  <motion.div
+                    initial={{ opacity: 0, x: isRTL ? -16 : 16 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: index * 0.07 }}
+                    className="group flex items-start justify-between py-7"
+                  >
+                    <div className="flex-1">
+                      <span className="mb-2 block font-inter text-[10px] font-medium tracking-[0.2em] uppercase text-white/25">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                      <h3 className="font-inter text-xl font-semibold text-white transition-colors group-hover:text-white/75">
+                        {category.title}
+                      </h3>
+                      <p className="mt-1.5 text-sm leading-relaxed text-white/40">
+                        {category.description}
+                      </p>
+                    </div>
+                    <svg
+                      className={`mt-1 h-5 w-5 flex-shrink-0 text-white/20 transition-all duration-200 group-hover:text-white/50 ${isRTL ? "mr-4 rotate-180 group-hover:-translate-x-1" : "ml-4 group-hover:translate-x-1"}`}
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={1.5}
+                        d="M17 8l4 4m0 0l-4 4m4-4H3"
+                      />
+                    </svg>
+                  </motion.div>
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="relative overflow-hidden bg-gradient-to-b from-slate-50 via-white to-slate-50 py-24">
-        <div className="mx-auto max-w-5xl px-4 text-center font-inter">
-          <h2 className="text-4xl font-semibold tracking-tight text-slate-900 lg:text-5xl">
+      {/* ── Why us — white ── */}
+      <section
+        className="bg-white py-24 font-inter lg:py-32"
+        dir={isRTL ? "rtl" : "ltr"}
+      >
+        <div className="mx-auto max-w-5xl px-6 text-center">
+          <p className="mb-4 text-xs font-medium tracking-[0.2em] uppercase text-gray-400">
+            {t("whyEyebrow")}
+          </p>
+          <h2 className="text-4xl font-semibold tracking-tight text-[#111] lg:text-5xl">
             {t("whyHeading")}
           </h2>
-          <p className="mx-auto mt-5 font-raleway text-3xl leading-relaxed text-slate-600">
+          <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-[#6b6b6b]">
             {t("whyDescription")}
           </p>
 
-          <div ref={timelineRef} className="relative mx-auto mt-12 max-w-5xl">
-            {hasLineMetrics && (
-              <div
-                className="pointer-events-none absolute h-px bg-gradient-to-r from-cyan-200 via-cyan-500/60 to-cyan-200"
-                style={{
-                  top: `${lineMetrics.top}px`,
-                  left: `${lineMetrics.left}px`,
-                  width: `${lineMetrics.width}px`,
-                }}
-              />
-            )}
-            {hasLineMetrics && (
+          <div className="mt-16 grid grid-cols-1 gap-14 md:grid-cols-3">
+            {pillars.map((pillar, index) => (
               <motion.div
-                className="pointer-events-none absolute h-[2px] w-10 bg-gradient-to-r from-transparent via-cyan-300 to-transparent shadow-[0_0_10px_rgba(34,211,238,0.95)]"
-                style={{ top: `${lineMetrics.top}px`, left: `${lineMetrics.left}px` }}
-                animate={{ x: [0, lineMetrics.travel, 0], opacity: [0, 1, 1, 0] }}
-                transition={{ duration: 6.5, repeat: Infinity, ease: "linear" }}
-                aria-hidden
-              />
-            )}
-
-            <ol className="grid grid-cols-3 gap-5 sm:gap-8">
-              {pillars.map((pillar, index) => (
-                <li key={pillar.key} className="relative px-4 text-center">
-                  <span
-                    ref={(element) => {
-                      markerRefs.current[index] = element;
-                    }}
-                    className="relative z-10 inline-block h-3 w-3 rounded-full bg-cyan-600"
-                    aria-hidden="true"
-                  />
-                  <h3 className="mt-4 font-hanken text-[1.5rem] font-light leading-tight tracking-[-0.01em] text-cyan-600 md:text-[1.85rem]">
-                    {t(`pillars.${pillar.key}`)}
-                  </h3>
-                </li>
-              ))}
-            </ol>
+                key={pillar.key}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="flex flex-col items-center text-center"
+              >
+                <span className="mb-4 font-inter text-xs font-medium tracking-[0.2em] uppercase text-gray-300">
+                  {pillar.number}
+                </span>
+                <h3 className="mb-3 font-inter text-xl font-semibold tracking-tight text-[#111]">
+                  {t(`pillars.${pillar.key}`)}
+                </h3>
+                <p className="text-sm leading-relaxed text-[#6b6b6b]">
+                  {t(`pillarDetails.${pillar.key}`)}
+                </p>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
 
-      <section className="bg-black py-12 text-center font-inter text-white">
-        <div className="mx-auto max-w-7xl px-4">
-          <h3 className="mb-4 text-4xl font-bold text-white">{t("ctaHeading")}</h3>
-          <p className="mb-6">{t("ctaDescription")}</p>
-          <Button
-            className="rounded-full bg-white px-6 py-3 font-medium text-black hover:bg-gray-100"
-            onClick={() => setIsQuoteModalOpen(true)}
-          >
-            {t("ctaButton")}
-          </Button>
-
-          <QuoteModal open={isQuoteModalOpen} onOpenChange={setIsQuoteModalOpen} />
-        </div>
-      </section>
+      <QuoteModal open={isQuoteModalOpen} onOpenChange={setIsQuoteModalOpen} />
     </>
   );
 }

@@ -1,12 +1,18 @@
 "use client";
 
-import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button";
 import { useTranslations } from "@/i18n/provider";
 import React from "react";
+import { Link } from "@/navigation";
 
 export default function HeroSection() {
   const t = useTranslations("home.hero");
-  const misc = useTranslations("common.misc");
+
+  const trustItems = [
+    t("trust1"),
+    t("trust2"),
+    t("trust3"),
+    t("trust4"),
+  ];
 
   return (
     <section
@@ -14,8 +20,9 @@ export default function HeroSection() {
       role="banner"
       aria-label={t("ariaLabel")}
     >
+      {/* Background Video */}
       <video
-        className="absolute top-0 left-0 h-full w-full object-cover"
+        className="absolute inset-0 h-full w-full object-cover"
         autoPlay
         loop
         muted
@@ -26,34 +33,56 @@ export default function HeroSection() {
           src="https://ik.imagekit.io/l3eswz12s/Gulf%20Rakza/hero_vid?updatedAt=1739108938597"
           type="video/mp4"
         />
-        {misc("videoFallback")}
       </video>
 
-      <noscript>
-        <div className="absolute left-0 top-0 h-full w-full">
-          <div className="h-full w-full bg-gray-800" />
-        </div>
-      </noscript>
+      {/* Dark overlay */}
+      <div className="absolute inset-0 bg-black/50" aria-hidden="true" />
 
-      <div className="absolute inset-0 bg-black bg-opacity-50" aria-hidden="true" />
+      {/* Hero content */}
+      <div className="relative z-10 flex h-full flex-col items-center justify-center px-6 text-center text-white">
+        {/* Eyebrow label */}
+        <p className="mb-6 font-inter text-xs font-medium tracking-[0.25em] uppercase text-white/50">
+          {t("eyebrow")}
+        </p>
 
-      <div className="relative z-10 flex h-full flex-col items-center justify-center px-4 text-center text-white">
-        <h1 className="mb-4 text-4xl font-semibold md:text-5xl">
-          <span className="font-light">{t("titlePrefix")}</span>{" "}
-          {t("titleMid1")}{" "}
-          <span className="font-light">{t("titleMid2")}</span>{" "}
-         {t("titleSuffix")}
+        {/* Main headline */}
+        <h1 className="mb-6 max-w-4xl font-inter text-5xl font-semibold leading-[1.05] tracking-tight md:text-6xl lg:text-[4.5rem]">
+          {t("headline")}
         </h1>
-        <p className="max-w-2xl text font-raleway md:text-lg">{t("description")}</p>
-        <div className="mt-6 flex flex-col items-center justify-center gap-5 md:flex-row md:gap-4">
-          <InteractiveHoverButton text={t("primaryCta")} />
+
+        {/* Description */}
+        <p className="mb-10 max-w-xl font-raleway text-base leading-relaxed text-white/65 md:text-lg">
+          {t("description")}
+        </p>
+
+        {/* CTAs */}
+        <div className="flex flex-col items-center gap-3 sm:flex-row">
+          <Link
+            href="/products"
+            className="rounded-full bg-white px-7 py-3 text-sm font-semibold text-black transition-all duration-200 hover:bg-white/90"
+          >
+            {t("primaryCta")}
+          </Link>
           <a
             href="#contact-us"
-            className="inline-block rounded-full border-2 px-6 py-3 text-white transition-all duration-300 hover:bg-black"
-            title={misc("contactTitle")}
+            className="rounded-full border border-white/30 px-7 py-3 text-sm font-medium text-white backdrop-blur-sm transition-all duration-200 hover:border-white/60 hover:bg-white/10"
           >
             {t("secondaryCta")}
           </a>
+        </div>
+      </div>
+
+      {/* Bottom trust strip */}
+      <div className="absolute bottom-0 left-0 right-0 border-t border-white/10 bg-black/50 backdrop-blur-md">
+        <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-center divide-x divide-white/15 px-6 py-3.5">
+          {trustItems.map((item) => (
+            <span
+              key={item}
+              className="px-5 py-1 font-inter text-xs font-medium tracking-wider text-white/50"
+            >
+              {item}
+            </span>
+          ))}
         </div>
       </div>
     </section>

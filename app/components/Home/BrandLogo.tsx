@@ -3,10 +3,23 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { JSX } from "react";
 
-
 const DoubleScrollingLogos = () => {
   return (
-    <section dir="ltr" className="bg-white py-4">
+    <section dir="ltr" className="bg-white py-20 font-inter">
+      {/* Section heading */}
+      <div className="mx-auto mb-12 max-w-7xl px-6 text-center">
+        <p className="mb-3 text-xs font-medium tracking-[0.2em] uppercase text-gray-400">
+          Partners
+        </p>
+        <h2 className="text-2xl font-semibold tracking-tight text-[#111] md:text-3xl">
+          Authorized distributor for the world&apos;s leading brands
+        </h2>
+        <p className="mt-3 text-sm text-[#6b6b6b]">
+          36+ global manufacturers trusted across the Eastern Province
+        </p>
+      </div>
+
+      {/* Logo rows */}
       <div className="flex overflow-hidden">
         <TranslateWrapper>
           <LogoItemsTop />
@@ -18,7 +31,7 @@ const DoubleScrollingLogos = () => {
           <LogoItemsTop />
         </TranslateWrapper>
       </div>
-      <div className="flex overflow-hidden mt-4">
+      <div className="mt-4 flex overflow-hidden">
         <TranslateWrapper reverse>
           <LogoItemsMiddle />
         </TranslateWrapper>
@@ -29,7 +42,7 @@ const DoubleScrollingLogos = () => {
           <LogoItemsMiddle />
         </TranslateWrapper>
       </div>
-      <div className="flex overflow-hidden mt-4">
+      <div className="mt-4 flex overflow-hidden">
         <TranslateWrapper>
           <LogoItemsBottom />
         </TranslateWrapper>
@@ -40,9 +53,14 @@ const DoubleScrollingLogos = () => {
           <LogoItemsBottom />
         </TranslateWrapper>
       </div>
+
+      {/* Fade edges */}
+      <div className="pointer-events-none absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-white to-transparent" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-white to-transparent" />
     </section>
   );
 };
+
 
 const TranslateWrapper = ({
   children,
@@ -65,16 +83,19 @@ const TranslateWrapper = ({
 
 const LogoItem = ({ src }: { src: string }) => {
   return (
-    <div
-    
-      className="w-16 md:w-24 h-16 md:h-24 flex justify-center items-center text-black transition-colors"
-    >
-      <Image width={100} height={100} loading="lazy" src={`/brands/${src}`} alt={src}/>
+    <div className="flex h-16 w-16 flex-shrink-0 items-center justify-center opacity-60 transition-opacity duration-200 hover:opacity-100 md:h-20 md:w-20">
+      <Image
+        width={80}
+        height={80}
+        loading="lazy"
+        src={`/brands/${src}`}
+        alt={src.replace(/[-_\.][^\.]+$/, "").replace(/[-_]/g, " ")}
+        className="max-h-10 w-auto object-contain md:max-h-12"
+      />
     </div>
   );
 };
 
-// New AVIF format logos
 const LogoItemsTop = () => (
   <>
     <LogoItem src="Mitsubishi_Electric_logo.svg.avif" />
@@ -92,7 +113,6 @@ const LogoItemsTop = () => (
   </>
 );
 
-// Mix of PNG and other format logos
 const LogoItemsMiddle = () => (
   <>
     <LogoItem src="shopify_eyevex_logo_500x250.avif" />
@@ -110,7 +130,6 @@ const LogoItemsMiddle = () => (
   </>
 );
 
-// More PNG format logos
 const LogoItemsBottom = () => (
   <>
     <LogoItem src="kee-systems-logo.png" />

@@ -1,19 +1,24 @@
 {
   "contactForm": {
     "labels": {
-      "email": "Your email",
-      "subject": "Subject",
+      "name": "Full name",
+      "company": "Company name",
+      "email": "Email address",
+      "subject": "How can we help?",
       "message": "Your message"
     },
     "placeholders": {
-      "email": "name@example.com",
-      "subject": "Let us know how we can help you",
-      "message": "Leave a comment..."
+      "name": "John Smith",
+      "company": "Your company (optional)",
+      "email": "name@company.com",
+      "subject": "e.g. Safety equipment inquiry",
+      "message": "Tell us about your requirements..."
     },
     "errors": {
+      "nameRequired": "Name is required",
       "emailRequired": "Email is required",
-      "emailFormat": "Entered value does not match email format",
-      "subjectRequired": "Subject is required",
+      "emailFormat": "Please enter a valid email address",
+      "subjectRequired": "Please let us know how we can help",
       "messageRequired": "Message is required"
     },
     "submit": "Send Message",

@@ -1,22 +1,31 @@
 {
   "hero": {
-    "ariaLabel": "Gulf Rakza Hero Section",
-    "titlePrefix": "Connecting",
-    "titleMid1": "Markets,",
-    "titleMid2": " Empowering",
-    "titleSuffix": "Growth",
-    "description": "At Gulf Rakza, we specialize in top-quality industrial supplies and turnkey solutions to keep your operations running smoothly.",
-    "primaryCta": "Explore our products",
-    "secondaryCta": "Contact Us"
+    "ariaLabel": "GulfRakza — Industrial Safety & Supplies",
+    "eyebrow": "Industrial Safety & Supplies · Eastern Province, KSA",
+    "headline": "Built for the Work That Doesn't Stop.",
+    "description": "Premium safety equipment, industrial supplies, and turnkey services for energy, construction, and infrastructure operators across Saudi Arabia.",
+    "primaryCta": "Browse Products",
+    "secondaryCta": "Request a Quote",
+    "trust1": "500+ Products",
+    "trust2": "5 Service Lines",
+    "trust3": "36+ Authorized Brands",
+    "trust4": "GCC Coverage"
+  },
+  "stats": {
+    "products": "Products in Catalog",
+    "services": "Service Disciplines",
+    "brands": "Global Brand Partners",
+    "coverage": "Eastern Province HQ"
   },
   "offerings": {
-    "headingLine1": "Empower your operations with",
-    "headingLine2": "our state-of-the-art solutions",
-    "description": "From safety equipment to hydraulic systems, we offer a comprehensive selection of products tailored to meet your industrial needs.",
+    "eyebrow": "Our Products",
+    "headingLine1": "Every industrial need.",
+    "headingLine2": "One trusted source.",
+    "description": "From PPE and fire safety to hydraulic systems and lifting equipment — everything your operation demands, sourced from the world's leading brands.",
     "categoryCards": {
       "safety": {
         "title": "Safety",
-        "description": "A complete range of advanced safety solutions designed to protect workers and secure industrial environments. Our products are engineered for rapid performance and durability.",
+        "description": "PPE, workwear, fall protection, gas detection, and LOTO solutions. Every product rigorously tested for compliance.",
         "subcategories": {
           "personal-protective-equipment-ppe": {
             "title": "Personal Protective Equipment (PPE)",
@@ -24,25 +33,25 @@
           },
           "workwear": {
             "title": "Workwear",
-            "description": "A complete range of workwear solutions designed for durability and comfort in harsh industrial settings. Our products are engineered for rapid performance and reliability."
+            "description": "Industrial workwear designed for durability and comfort in demanding environments, engineered to meet safety standards."
           },
           "fall-protection": {
             "title": "Fall Protection",
-            "description": "A complete range of fall protection equipment designed to safeguard workers at heights. Our products are engineered for rapid performance and durability."
+            "description": "Certified fall protection systems and equipment designed to keep workers safe at heights. Compliant with international safety standards."
           },
           "gas-detection": {
             "title": "Gas Detection",
-            "description": "A complete range of gas detection devices designed to monitor hazardous gases. Our products are engineered for rapid performance and reliability in safety operations."
+            "description": "Reliable gas detection devices engineered to monitor hazardous gases with precision. Critical protection for confined space and plant operations."
           },
           "lockout-tagout-loto-products": {
             "title": "Lockout Tagout (LOTO) Products",
-            "description": "A complete range of LOTO products designed to secure machinery during maintenance. Our products are engineered for rapid performance and reliability in safety operations."
+            "description": "Complete LOTO product range designed to secure machinery during maintenance. Engineered for reliability in industrial safety operations."
           }
         }
       },
       "fire-safety": {
         "title": "Fire Safety",
-        "description": "A complete range of fire safety solutions designed to protect lives and assets. Our products are engineered for rapid response and reliability during emergencies.",
+        "description": "Extinguishers, suppression systems, alarms, and firefighting equipment. Life-critical protection for industrial environments.",
         "subcategories": {
           "fire-extinguishers": {
             "title": "Fire Extinguishers",
@@ -58,13 +67,13 @@
           },
           "firefighting-equipment": {
             "title": "Firefighting Equipment",
-            "description": "A complete range of firefighting equipment designed to combat fires effectively. Our products are engineered for rapid performance and reliability during emergencies."
+            "description": "Professional firefighting equipment for rapid, effective response. Built to perform under the most demanding conditions."
           }
         }
       },
       "security": {
         "title": "Security",
-        "description": "A complete range of security solutions designed to protect assets and secure premises. Our products are engineered for rapid performance and reliability during operations.",
+        "description": "Surveillance, access control, perimeter defense, and intrusion detection. Protecting assets and facilities across the region.",
         "subcategories": {
           "surveillance-systems": {
             "title": "Surveillance Systems",
@@ -72,25 +81,25 @@
           },
           "access-control": {
             "title": "Access Control",
-            "description": "A complete range of access control solutions designed to restrict entry and secure premises. Our products are engineered for rapid performance and reliability during operations."
+            "description": "Comprehensive access control solutions designed to restrict entry and secure critical premises and industrial facilities."
           },
           "perimeter-security": {
             "title": "Perimeter Security",
-            "description": "A complete range of perimeter security solutions designed to protect property boundaries. Our products are engineered for rapid performance and reliability during operations."
+            "description": "Perimeter security solutions designed to protect property boundaries with reliability and precision."
           },
           "intrusion-detection": {
             "title": "Intrusion Detection",
-            "description": "A complete range of intrusion detection solutions designed to alert security personnel to unauthorized access. Our products are engineered for rapid performance and reliability during operations."
+            "description": "Intelligent intrusion detection systems designed to alert security personnel to unauthorized access in real time."
           }
         }
       },
       "lifting": {
         "title": "Lifting",
-        "description": "A complete range of lifting solutions designed to handle heavy loads safely. Our products are engineered for rapid performance and reliability in industrial operations.",
+        "description": "Slings, hoists, hooks, shackles, and cranes. Load-rated, certified, and engineered for heavy industrial use.",
         "subcategories": {
           "lifting-slings": {
             "title": "Lifting Slings",
-            "description": "High-quality slings designed to support heavy loads with reliability and flexibility. Our products are engineered for rapid performance and durability."
+            "description": "High-quality slings designed to support heavy loads with reliability and flexibility in demanding industrial environments."
           },
           "hoists-winches": {
             "title": "Hoists & Winches",
@@ -98,17 +107,17 @@
           },
           "lifting-hooks-shackles": {
             "title": "Lifting Hooks & Shackles",
-            "description": "A complete range of hooks and shackles designed to provide reliable support and stability during lifting operations. Our products are engineered for rapid performance and durability."
+            "description": "Load-rated hooks and shackles designed for reliable support and stability during heavy lifting operations."
           },
           "cranes-load-testing-equipment": {
             "title": "Cranes & Load Testing Equipment",
-            "description": "A complete range of cranes and load testing equipment designed for heavy lifting and safety verification. Our products are engineered for rapid performance and reliability."
+            "description": "Industrial cranes and load testing equipment designed for heavy lifting with safety verification built in."
           }
         }
       },
       "electrical": {
         "title": "Electrical",
-        "description": "A complete range of electrical solutions designed to power and control industrial systems. Our products are engineered for rapid performance and efficiency in applications.",
+        "description": "Cables, panels, lighting, transformers, and power supplies. Industrial-grade electrical solutions for demanding applications.",
         "subcategories": {
           "cables-wires": {
             "title": "Cables & Wires",
@@ -116,21 +125,21 @@
           },
           "electrical-panels-components": {
             "title": "Electrical Panels & Components",
-            "description": "A complete range of electrical panels and components designed for safe and efficient power distribution in industrial systems. Our products are engineered for rapid performance and reliability."
+            "description": "Industrial electrical panels and components designed for safe and efficient power distribution across facilities."
           },
           "industrial-lighting": {
             "title": "Industrial Lighting",
-            "description": "A complete range of industrial lighting solutions designed to illuminate facilities with energy efficiency and optimal brightness. Our products are engineered for rapid performance and reliability."
+            "description": "High-performance industrial lighting solutions that deliver energy efficiency and consistent illumination."
           },
           "transformers-power-supplies": {
             "title": "Transformers & Power Supplies",
-            "description": "A complete range of transformers and power supplies designed to ensure stable power delivery and efficient energy management. Our products are engineered for rapid performance and reliability."
+            "description": "Robust transformers and power supplies designed to ensure stable power delivery and efficient energy management."
           }
         }
       },
       "welding": {
         "title": "Welding",
-        "description": "A complete range of welding solutions designed for precision and durability in fabrication. Our products are engineered for rapid performance and reliability during welding.",
+        "description": "Machines, consumables, safety gear, and gas equipment. Supporting fabrication and construction from start to finish.",
         "subcategories": {
           "welding-machines": {
             "title": "Welding Machines",
@@ -142,57 +151,57 @@
           },
           "welding-safety-gear": {
             "title": "Welding Safety Gear",
-            "description": "Protective gear for welders designed to ensure maximum safety during welding operations. Our products are engineered for rapid performance and reliability during welding."
+            "description": "Protective gear for welders designed to ensure maximum safety during all welding operations."
           },
           "gas-welding-equipment": {
             "title": "Gas Welding Equipment",
-            "description": "A complete range of gas welding equipment designed to ensure safe and efficient welding operations. Our products are engineered for rapid performance and reliability."
+            "description": "Gas welding equipment designed for safe and precise welding operations across industrial and construction sites."
           }
         }
       },
       "marine-equipments": {
         "title": "Marine Equipments",
-        "description": "A complete range of marine equipment solutions designed for challenging maritime environments. Our products are engineered for rapid performance and reliability during sea operations.",
+        "description": "Navigation, deck equipment, and survival gear. Built for reliable performance in harsh maritime environments.",
         "subcategories": {
           "navigation-communication": {
             "title": "Navigation & Communication",
-            "description": "Advanced navigation and communication tools designed for reliable operation at sea. Our products are engineered for rapid performance and reliability."
+            "description": "Advanced navigation and communication tools designed for reliable operation at sea."
           },
           "deck-mooring-equipment": {
             "title": "Deck & Mooring Equipment",
-            "description": "A complete range of deck and mooring equipment designed to secure vessels and support safe marine operations. Our products are engineered for rapid performance and reliability."
+            "description": "Deck and mooring equipment designed to secure vessels and support safe, efficient marine operations."
           },
           "safety-survival-equipment": {
             "title": "Safety & Survival Equipment",
-            "description": "A complete range of safety and survival equipment designed to protect lives at sea. Our products are engineered for rapid performance and reliability during emergencies."
+            "description": "Life-critical safety and survival equipment designed to protect personnel at sea in any emergency."
           }
         }
       },
       "pneumatic-hydraulic-fittings": {
         "title": "Pneumatic & Hydraulic Fittings",
-        "description": "A complete range of pneumatic and hydraulic fittings designed for fluid control and power transmission. Our products are engineered for rapid performance and durability.",
+        "description": "Valves, hoses, compressors, and pumps. High-pressure fluid control components for industrial systems.",
         "subcategories": {
           "pneumatic-valves-actuators": {
             "title": "Pneumatic Valves & Actuators",
-            "description": "Precision valves and actuators designed for controlling compressed air flow in industrial applications. Our products are engineered for rapid performance and reliability."
+            "description": "Precision valves and actuators designed for controlling compressed air flow in demanding industrial applications."
           },
           "hydraulic-hoses-fittings": {
             "title": "Hydraulic Hoses & Fittings",
-            "description": "High-pressure hydraulic hoses and fittings engineered for maximum durability and performance in industrial applications. Our products are engineered for rapid performance and reliability."
+            "description": "High-pressure hydraulic hoses and fittings engineered for maximum durability and performance."
           },
           "air-compressors-filters": {
             "title": "Air Compressors & Filters",
-            "description": "Efficient air compressors and filters engineered to provide clean, consistent compressed air for industrial applications. Our products are engineered for rapid performance and reliability."
+            "description": "Efficient air compressors and filters engineered to provide clean, consistent compressed air for industrial applications."
           },
           "pumps-motors": {
             "title": "Pumps & Motors",
-            "description": "High-performance pumps and motors designed for efficient fluid transfer in industrial settings. Our products are engineered for rapid performance and reliability."
+            "description": "High-performance pumps and motors designed for efficient fluid transfer in industrial settings."
           }
         }
       },
       "industrial": {
         "title": "Industrial",
-        "description": "A complete range of industrial products designed to support diverse operational needs. Our products are engineered for rapid performance and efficiency in every application.",
+        "description": "Tools, bearings, material handling, and industrial chemicals. The essentials that keep operations running smoothly.",
         "subcategories": {
           "industrial-tools": {
             "title": "Industrial Tools",
@@ -208,7 +217,7 @@
           },
           "industrial-chemicals": {
             "title": "Industrial Chemicals",
-            "description": "Specialized chemicals formulated for industrial applications including lubrication, adhesion, and cleaning. Our products are engineered for rapid performance and efficiency."
+            "description": "Specialized chemicals formulated for industrial applications including lubrication, adhesion, and cleaning."
           }
         }
       }
@@ -217,47 +226,48 @@
   "services": {
     "metaTitle": "Industrial Services & Solutions | Scaffolding, Fabrication | GulfRakza Dammam",
     "metaDescription": "GulfRakza offers comprehensive industrial services in Dammam, Saudi Arabia: scaffolding, steel fabrication, civil works, rope access, safety training, and more. Serving industries across the Kingdom.",
-    "heroHeading": "Elevate Industries with Integrated Services",
-    "heroDescription": "Our comprehensive suite of services is designed to streamline operations, enhance safety, and boost productivity. Explore our expert solutions that cater to every facet of your industrial needs.",
+    "eyebrow": "Our Services",
+    "heroHeading": "Five disciplines. One partner.",
+    "heroDescription": "From scaffolding to cathodic protection, our integrated service offer covers the full industrial lifecycle — design, installation, maintenance, and beyond.",
     "sectionHeading": "Services",
     "cards": [
       { "title": "Scaffolding Services", "description": "Safe, compliant scaffolding solutions for every worksite." },
       { "title": "PEB Shed Fabrication", "description": "Custom pre-engineered building solutions designed to your specifications." },
       { "title": "Civil Works", "description": "Comprehensive civil engineering services that support infrastructure development." },
       { "title": "Steel & Aluminium Fabrication", "description": "Precision fabrication services for durable, industrial-grade builds." },
-      { "title": "Rope Access & Safety Training", "description": "Expert training and rope access solutions to ensure safe, efficient operations." },
-      { "title": "Industrial Trading", "description": "A curated selection of industrial products to complement our service offerings." }
+      { "title": "Rope Access & Safety Training", "description": "Expert training and rope access solutions to ensure safe, efficient operations." }
     ],
-    "whyHeading": "Why Choose Our Services?",
-    "whyDescription": "At Gulf Rakza, our services are backed by industry-leading expertise, a commitment to quality, and a tailored approach to meet your unique needs. From rapid response times to uncompromised safety standards, we are your trusted partner for industrial excellence.",
+    "whyEyebrow": "Why GulfRakza",
+    "whyHeading": "What sets us apart.",
+    "whyDescription": "We're not a catalogue. We're a committed partner with boots on the ground across the Eastern Province — combining technical expertise, quality systems, and a safety-first culture.",
     "pillars": {
       "expertise": "Expertise",
       "quality": "Quality",
       "safety": "Safety"
     },
     "pillarDetails": {
-      "expertise": "Skilled teams with real field experience plan and execute work with precision.",
-      "quality": "Structured processes and strict inspections keep every deliverable consistent and reliable.",
-      "safety": "Compliance-first methods and proactive risk control protect people, assets, and timelines."
+      "expertise": "Skilled teams with real field experience in energy, construction, and infrastructure — planning and executing work with precision.",
+      "quality": "Structured processes and rigorous inspections at every stage. Every deliverable is consistent, documented, and reliable.",
+      "safety": "Compliance-first methods, proactive risk assessment, and a culture of zero incidents. Your people and assets come home safe."
     },
-    "ctaHeading": "Elevate Your Operations",
-    "ctaDescription": "Our experts are ready to provide personalized solutions to drive your industrial success.",
+    "ctaHeading": "Ready to move forward?",
+    "ctaDescription": "Our team responds to every inquiry within 4 business hours.",
     "ctaButton": "Get a Quote"
   },
   "testimonials": {
     "sectionHeading": "What our customers think",
-    "sectionDescription": "At Gulf Rakza, our commitment to excellence is reflected in every interaction. We pride ourselves on delivering exceptional service and high-quality products, ensuring our customers receive nothing but the best.",
+    "sectionDescription": "Trusted by contractors, plant managers, and procurement teams across the Eastern Province.",
     "rating": "★★★★★",
     "items": [
       {
         "headline": "Impressive Service & Fast Delivery",
-        "description": "We've been working with Gulf Rakza for our safety and industrial equipment needs, and their service has been outstanding. Orders are always delivered on time, and the quality is top-notch. A reliable partner we highly recommend!",
+        "description": "We've been working with Gulf Rakza for our safety and industrial equipment needs, and their service has been outstanding. Orders are always delivered on time, and the quality is top-notch. A reliable partner we highly recommend.",
         "name": "Mohammed A.",
         "title": "Construction Contractor"
       },
       {
         "headline": "Dependable & Professional",
-        "description": "Gulf Rakza has quickly become one of our trusted suppliers. Their team is professional, responsive, and ensures we get the right products at competitive prices. Great service!",
+        "description": "Gulf Rakza has quickly become one of our trusted suppliers. Their team is professional, responsive, and ensures we get the right products at competitive prices.",
         "name": "Sara K.",
         "title": "Procurement Manager"
       },
@@ -269,20 +279,25 @@
       },
       {
         "headline": "High-Quality Products & Great Pricing",
-        "description": "We've been sourcing safety and electrical supplies from Gulf Rakza, and we're very satisfied. Their products are of excellent quality, pricing is fair, and their service is professional. Highly recommended!",
+        "description": "We've been sourcing safety and electrical supplies from Gulf Rakza, and we're very satisfied. Their products are of excellent quality, pricing is fair, and their service is professional.",
         "name": "Faisal M.",
         "title": "Manufacturing Plant Manager"
       },
       {
         "headline": "Trustworthy Supplier & Excellent Support",
-        "description": "Working with Gulf Rakza has been a great experience. Their quick response, attention to detail, and commitment to quality make them a supplier we can rely on. Looking forward to a long-term partnership!",
+        "description": "Working with Gulf Rakza has been a great experience. Their quick response, attention to detail, and commitment to quality make them a supplier we can rely on for the long term.",
         "name": "Omar H.",
         "title": "Project Engineer"
       }
     ]
   },
   "contact": {
-    "heading": "Contact Us",
-    "description": "Have an enquiry about our products or services? We are here to help. Please fill out the form below and our team will get back to you shortly."
+    "heading": "Let's talk.",
+    "description": "Tell us what you need. Our team responds within 4 business hours.",
+    "details": {
+      "phone": "+966 55 897 5494",
+      "email": "sales@gulfrakza.com",
+      "location": "Dammam, Eastern Province, KSA"
+    }
   }
 }

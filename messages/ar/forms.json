@@ -1,19 +1,24 @@
 {
   "contactForm": {
     "labels": {
-      "email": "بريدك الإلكتروني",
-      "subject": "الموضوع",
+      "name": "الاسم الكامل",
+      "company": "اسم الشركة",
+      "email": "البريد الإلكتروني",
+      "subject": "كيف يمكننا مساعدتك؟",
       "message": "رسالتك"
     },
     "placeholders": {
-      "email": "name@example.com",
-      "subject": "أخبرنا كيف يمكننا مساعدتك",
-      "message": "اترك تعليقًا..."
+      "name": "محمد أحمد",
+      "company": "شركتك (اختياري)",
+      "email": "name@company.com",
+      "subject": "مثال: استفسار عن معدات السلامة",
+      "message": "أخبرنا عن متطلباتك..."
     },
     "errors": {
+      "nameRequired": "الاسم مطلوب",
       "emailRequired": "البريد الإلكتروني مطلوب",
-      "emailFormat": "القيمة المدخلة لا تطابق تنسيق البريد الإلكتروني",
-      "subjectRequired": "الموضوع مطلوب",
+      "emailFormat": "يرجى إدخال بريد إلكتروني صحيح",
+      "subjectRequired": "يرجى إخبارنا كيف يمكننا المساعدة",
       "messageRequired": "الرسالة مطلوبة"
     },
     "submit": "إرسال الرسالة",
