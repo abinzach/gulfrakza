@@ -11,7 +11,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Logo } from "@/app/components/Navbar";
-import { Link } from "@/navigation";
+import { Link } from "@/navigation.client";
 
 type SocialItem = {
   icon: React.ReactNode;
@@ -51,32 +51,35 @@ function Footerdemo() {
     { href: "/#contact-us", label: t("links.contact") },
   ];
 
+  // Social links are intentionally hidden until real profile URLs exist.
+  // To enable a network, fill in its URL below; an empty string keeps it disabled
+  // (no dead-anchor crawl bleed for SEO / E-E-A-T signals).
   const socialItems: SocialItem[] = [
     {
       icon: <Facebook className="h-4 w-4" />,
       label: t("social.facebook"),
-      href: "#",
+      href: "",
       srLabel: "Facebook",
     },
     {
       icon: <Twitter className="h-4 w-4" />,
       label: t("social.twitter"),
-      href: "#",
+      href: "",
       srLabel: "Twitter",
     },
     {
       icon: <Instagram className="h-4 w-4" />,
       label: t("social.instagram"),
-      href: "#",
+      href: "",
       srLabel: "Instagram",
     },
     {
       icon: <Linkedin className="h-4 w-4" />,
       label: t("social.linkedin"),
-      href: "#",
+      href: "",
       srLabel: "LinkedIn",
     },
-  ];
+  ].filter((item) => item.href.length > 0);
 
   return (
     <footer className="relative border-t bg-background px-4 text-foreground transition-colors duration-300 md:px-6">

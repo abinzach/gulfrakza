@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/breadcrumb"
 import { fetchCatalogData, fetchProductDetail } from "@/lib/catalog"
 import { isLocale, type Locale, locales } from "@/i18n/config"
-import { Link } from "@/navigation"
+import Link from "next/link"
 import { urlFor } from "@/sanity/lib/image"
 import { siteUrl } from "@/lib/constants"
 
@@ -51,7 +51,7 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
     acc[loc] = `${siteUrl}/${loc}/products/${slug}`
     return acc
   }, {})
-  languageAlternates["x-default"] = `${siteUrl}/en/products/${slug}`
+  languageAlternates["x-default"] = `${siteUrl}/products/${slug}`
 
   return {
     title,
@@ -197,6 +197,15 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
         }
       : undefined,
     category: product.leafCategory ?? product.primaryCategory ?? undefined,
+    offers: {
+      "@type": "Offer",
+      url: productUrl,
+      priceCurrency: "SAR",
+      availability: isProductAvailable
+        ? "https://schema.org/InStock"
+        : "https://schema.org/OutOfStock",
+      businessFunction: "https://purl.org/goodrelations/v1#Sell",
+    },
     additionalProperty:
       product.specs.length > 0
         ? product.specs.map((spec) => ({

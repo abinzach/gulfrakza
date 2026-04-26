@@ -2,7 +2,8 @@ import React from "react";
 import type { Metadata } from "next";
 
 import { getMessages, isLocale, type Locale, defaultLocale, locales } from "@/i18n/config";
-import { getCategories } from "@/lib/services";
+import { fetchServiceCategories, type ServiceCategory } from "@/lib/services-sanity";
+import { getCategories as getLocalServiceCategories } from "@/lib/services";
 import ServicesListingClient from "./services-listing-client";
 import { siteUrl } from "@/lib/constants";
 
@@ -10,13 +11,13 @@ interface ServicesPageProps {
   params: Promise<{ locale: string }>;
 }
 
-const defaultHeroHeading = "Industrial Services & Solutions across the GCC";
+const defaultHeroHeading = "Integrated Engineering Solutions";
 const defaultHeroDescription =
-  "Explore turnkey safety, cathodic protection, HVAC, and civil contracting services engineered for energy, infrastructure, and industrial operators.";
-const defaultSectionHeading = "Services";
-const defaultMetaTitle = "Industrial Services & Solutions | Scaffolding, Fabrication | GulfRakza Dammam";
+  "Field-ready engineering support for industrial projects, shutdowns, infrastructure works, and facility operations across Saudi Arabia.";
+const defaultSectionHeading = "Integrated Engineering Solutions";
+const defaultMetaTitle = "Integrated Engineering Solutions | Scaffolding, Fabrication | GulfRakza Dammam";
 const defaultMetaDescription =
-  "GulfRakza offers comprehensive industrial services in Dammam, Saudi Arabia: scaffolding, steel fabrication, civil works, rope access, safety training, and more. Serving industries across the Kingdom.";
+  "GulfRakza delivers integrated engineering solutions in Dammam, Saudi Arabia: scaffolding, steel fabrication, civil works, rope access, safety training, cathodic protection, HVAC, and mechanical support.";
 
 type ServicesSectionMessages = {
   heroHeading?: string;
@@ -43,7 +44,7 @@ export async function generateMetadata({ params }: ServicesPageProps): Promise<M
     acc[currentLocale] = `${siteUrl}/${currentLocale}/services`;
     return acc;
   }, {});
-  languageAlternates["x-default"] = `${siteUrl}/en/services`;
+  languageAlternates["x-default"] = `${siteUrl}/services`;
 
   const localeTag = activeLocale === "ar" ? "ar_SA" : "en_US";
 
@@ -93,8 +94,34 @@ export default async function ServicesPage({ params }: ServicesPageProps) {
   const { locale } = await params;
   const activeLocale: Locale = isLocale(locale) ? locale : defaultLocale;
   const messages = await getMessages(activeLocale);
-  
-  const categories = getCategories(activeLocale);
+
+  // Services are now sourced from Sanity so the Studio can add/edit/reorder
+  // categories and their child services without code changes.
+  let categories: ServiceCategory[] = [];
+  try {
+    categories = await fetchServiceCategories(activeLocale);
+  } catch {
+    // ignore and fall back to local JSON below
+  }
+  if (categories.length === 0) {
+    // If Sanity is empty (fresh project), fall back to the existing local JSON
+    // so the /services page never becomes blank.
+    const fallback = getLocalServiceCategories(activeLocale === "ar" ? "ar" : "en");
+    categories = fallback.map((category) => ({
+      id: category.id,
+      slug: category.id,
+      title: category.title,
+      description: category.description,
+      imageSrc: category.imageSrc,
+      services: category.services.map((service) => ({
+        id: service.id,
+        slug: service.id,
+        title: service.title,
+        description: service.description,
+        imageSrc: service.imageSrc,
+      })),
+    }));
+  }
 
   // Extract localized hero text
   const servicesSection = messages?.home?.services as ServicesSectionMessages | undefined;

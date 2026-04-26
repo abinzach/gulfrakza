@@ -15,6 +15,29 @@ interface ServicesListingClientProps {
   sectionHeading: string;
 }
 
+const renderEngineeringSolutionsTitle = (title: string) => {
+  const englishHighlight = "Engineering Solutions";
+  const arabicHighlight = "الحلول الهندسية";
+  const highlight = title.includes(englishHighlight)
+    ? englishHighlight
+    : title.includes(arabicHighlight)
+      ? arabicHighlight
+      : "";
+
+  if (!highlight) {
+    return title;
+  }
+
+  const [before, after] = title.split(highlight);
+  return (
+    <>
+      {before}
+      <span className="text-cyan-300">{highlight}</span>
+      {after}
+    </>
+  );
+};
+
 export default function ServicesListingClient({
   categories,
   heroHeading,
@@ -49,7 +72,6 @@ export default function ServicesListingClient({
       })),
     [categories],
   );
-  const currentSlide = gallerySlides[activeSlide];
 
   // Simple scroll spy
   useEffect(() => {
@@ -113,6 +135,13 @@ export default function ServicesListingClient({
       title: service.title,
     }));
 
+  const buildServiceHref = (serviceId: string) => {
+    // Prefer slug if present (Sanity-backed). Fallback to id.
+    // Also preserves locale thanks to locale-aware Link.
+    const slugValue = (serviceId || "").trim();
+    return `/services/${encodeURIComponent(slugValue)}`;
+  };
+
   const handleRequestCategory = (category: ServiceCategory) => {
     setQuoteContext({
       initialProduct: {
@@ -175,11 +204,11 @@ export default function ServicesListingClient({
             </p>
 
             <h1 className="mt-3 max-w-4xl text-3xl font-semibold leading-tight text-white md:text-5xl lg:text-6xl">
-              {currentSlide?.title || heroHeading}
+              {renderEngineeringSolutionsTitle(heroHeading)}
             </h1>
 
             <p className="mt-4 max-w-3xl text-base leading-relaxed text-gray-200 md:text-xl">
-              {currentSlide?.tagline || heroDescription}
+              {heroDescription}
             </p>
 
           </div>
@@ -200,7 +229,7 @@ export default function ServicesListingClient({
                   <Link
                     key={category.id}
                     href={`#${category.id}`}
-                    onClick={(e) => scrollToCategory(e, category.id)}
+                    onClick={(e: React.MouseEvent<HTMLAnchorElement>) => scrollToCategory(e, category.id)}
                     className={cn(
                       "block pl-6 py-2 text-sm transition-all duration-300 border-l-2 -ml-[2px]",
                       activeCategory === category.id
@@ -222,11 +251,11 @@ export default function ServicesListingClient({
                 <Link
                   key={category.id}
                   href={`#${category.id}`}
-                  onClick={(e) => scrollToCategory(e, category.id)}
+                  onClick={(e: React.MouseEvent<HTMLAnchorElement>) => scrollToCategory(e, category.id)}
                   className={cn(
                     "whitespace-nowrap px-4 py-2 text-sm font-medium rounded-full transition-all",
                     activeCategory === category.id
-                      ? "bg-cyan-600 text-white shadow-md shadow-cyan-600/20"
+                      ? "bg-cyan-700 text-white shadow-md shadow-cyan-600/20"
                       : "bg-gray-50 dark:bg-gray-900 text-gray-600 dark:text-gray-400 hover:bg-gray-100"
                   )}
                 >
@@ -257,7 +286,7 @@ export default function ServicesListingClient({
                   >
                     <div className="mb-8">
                       <h2 className="mb-3 flex items-center gap-3 text-2xl font-bold text-gray-900 dark:text-white">
-                        <span className="block h-1 w-8 rounded-full bg-cyan-600"></span>
+                        <span className="block h-1 w-8 rounded-full bg-cyan-700"></span>
                         {category.title}
                       </h2>
                       <p className="max-w-3xl pl-11 text-lg leading-relaxed text-gray-500 dark:text-gray-400">
@@ -291,7 +320,7 @@ export default function ServicesListingClient({
                             <button
                               type="button"
                               onClick={() => handleRequestCategory(category)}
-                              className="inline-flex items-center gap-2 rounded-full bg-cyan-600 px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-white transition-colors hover:bg-cyan-700"
+                              className="inline-flex items-center gap-2 rounded-full bg-cyan-700 px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-white transition-colors hover:bg-cyan-800"
                             >
                               <span className="inline-flex h-4 w-4 items-center justify-center text-[13px] leading-none" aria-hidden="true">
                                 &#xFDFC;
@@ -303,25 +332,25 @@ export default function ServicesListingClient({
                           <ul className="space-y-2">
                             {category.services.map((service) => (
                               <li key={service.id}>
-                                <button
-                                  type="button"
-                                  onClick={() => handleRequestService(category, service.id)}
-                                  className="group flex w-full items-center justify-between rounded-xl border border-gray-200 px-4 py-3 text-left transition-colors hover:border-cyan-500 hover:bg-cyan-50 dark:border-gray-700 dark:hover:border-cyan-500/60 dark:hover:bg-cyan-950/30"
-                                >
-                                  <span className="text-sm font-medium text-gray-800 transition-colors group-hover:text-cyan-700 dark:text-gray-100 dark:group-hover:text-cyan-300">
-                                    {service.title}
-                                  </span>
-                                  <span className="flex items-center rounded-full border border-cyan-200/70 bg-cyan-50 px-3 py-1 dark:border-cyan-700/60 dark:bg-cyan-950/40">
-                                    <Image
-                                      src="/logo-rakza.png"
-                                      alt="GulfRakza"
-                                      width={18}
-                                      height={18}
-                                      className="h-[18px] w-[18px] object-contain"
-                                    />
-                                    <span className="sr-only">{tNav("getQuote")}</span>
-                                  </span>
-                                </button>
+                                <div className="group flex w-full items-stretch justify-between rounded-xl border border-gray-200 bg-white transition-colors hover:border-cyan-500 hover:bg-cyan-50 dark:border-gray-700 dark:bg-gray-900 dark:hover:border-cyan-500/60 dark:hover:bg-cyan-950/30">
+                                  <Link
+                                    href={buildServiceHref(service.id)}
+                                    className="flex-1 px-4 py-3 text-left"
+                                    aria-label={service.title}
+                                  >
+                                    <span className="text-sm font-medium text-gray-800 transition-colors group-hover:text-cyan-700 dark:text-gray-100 dark:group-hover:text-cyan-300">
+                                      {service.title}
+                                    </span>
+                                  </Link>
+
+                                  <button
+                                    type="button"
+                                    onClick={() => handleRequestService(category, service.id)}
+                                    className="m-1 inline-flex items-center gap-2 rounded-full bg-cyan-700 px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-white transition hover:bg-cyan-800"
+                                  >
+                                    {tNav("getQuote")}
+                                  </button>
+                                </div>
                               </li>
                             ))}
                           </ul>

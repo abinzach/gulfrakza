@@ -38,13 +38,13 @@
       "email": "Email Address",
       "phone": "Phone Number",
       "category": "Category",
-      "services": "Services",
+      "services": "Integrated Engineering Solutions",
       "message": "Message"
     },
     "serviceSelector": {
-      "title": "Select Services",
-      "helper": "Choose one or more services to include in this quote request.",
-      "validation": "Please select at least one service."
+      "title": "Select Engineering Solutions",
+      "helper": "Choose one or more engineering solutions to include in this quote request.",
+      "validation": "Please select at least one engineering solution."
     },
     "placeholders": {
       "category": "e.g., HVAC Services",
@@ -81,8 +81,8 @@
     },
     "template": {
       "intro": "Hello Gulf Rakza team, I hope you're doing well.",
-      "product": "I'm interested in the following service:",
-      "products": "I'm interested in the following services:",
+      "product": "I'm interested in the following engineering solution:",
+      "products": "I'm interested in the following engineering solutions:",
       "category": "It sits within this category:",
       "subcategory": "And the subcategory is:",
       "itemCategory": "The specific focus area would be:",

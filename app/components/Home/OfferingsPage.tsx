@@ -1,18 +1,17 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import Image from "next/image";
-import { useLocale, useTranslations } from "@/i18n/provider";
 import React from "react";
 import { cn } from "@/lib/utils";
 import data from "../../Product_Categories.json";
-import { Link } from "@/navigation";
+import Link from "next/link";
+
+import type { Locale } from "@/i18n/config";
+import { getMessages } from "@/i18n/config";
 
 interface Item {
   title: string;
   description: string;
   link: string;
   imageSrc: string;
-  specs?: { [key: string]: any };
 }
 
 interface Subcategory {
@@ -44,25 +43,38 @@ const getCategorySlug = (link: string, title: string) => {
     .replace(/[^a-z0-9]+/g, "-");
 };
 
-const OfferingsPage: React.FC = () => {
+const getNestedValue = (obj: unknown, path: string): unknown => {
+  if (!obj) return undefined;
+  return path.split(".").reduce<unknown>((acc, key) => {
+    if (!acc || typeof acc !== "object") return undefined;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return (acc as any)[key];
+  }, obj);
+};
+
+const OfferingsPage = async ({ locale }: { locale: Locale }) => {
   const { categories } = data as CategoriesData;
-  const locale = useLocale();
-  const t = useTranslations("home.offerings");
+  const messages = await getMessages(locale);
+
   const getLocalizedText = (relativeKey: string, fallback: string) => {
-    const translation = t(relativeKey);
-    const namespacedKey = `home.offerings.${relativeKey}`;
-    return translation === namespacedKey ? fallback : translation;
+    const value = getNestedValue(messages?.home?.offerings, relativeKey);
+    return typeof value === "string" && value.trim().length > 0 ? value : fallback;
   };
 
   return (
     <section className="bg-gray-50 py-10 font-inter dark:bg-gray-900 lg:py-32">
       <div className="mx-auto max-w-7xl px-4 text-center lg:text-left">
-        <h2 className="text-4xl font-semibold lg:text-5xl">{t("headingLine1")}</h2>
+        <h2 className="text-4xl font-semibold lg:text-5xl">
+          {getLocalizedText("headingLine1", "Empower your operations")}
+        </h2>
         <h2 className="mb-4 text-4xl font-semibold text-cyan-600 lg:text-5xl">
-          {t("headingLine2")}
+          {getLocalizedText("headingLine2", "with our solutions")}
         </h2>
         <p className="mb-12 max-w-2xl text-lg text-gray-800 lg:text-left">
-          {t("description")}
+          {getLocalizedText(
+            "description",
+            "From safety equipment to hydraulic systems, we offer a comprehensive selection of products tailored to meet your industrial needs.",
+          )}
         </p>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
           {categories.map((category) => {
@@ -74,7 +86,10 @@ const OfferingsPage: React.FC = () => {
             );
 
             return (
-              <Link key={category.title} href={category.link}>
+              <Link
+                key={category.title}
+                href={`/${locale}/products?category=${encodeURIComponent(slug)}`}
+              >
                 <div className="group h-full cursor-pointer rounded border border-dashed border-gray-500 bg-white p-6 transition-shadow duration-300 hover:shadow-lg dark:bg-gray-950">
                   <Image
                     width={64}

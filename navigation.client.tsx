@@ -8,49 +8,61 @@ import { locales } from "@/i18n/config";
 
 type NextLinkProps = ComponentProps<typeof NextLink>;
 
-interface LinkProps extends Omit<NextLinkProps, 'href'> {
+interface LinkProps extends Omit<NextLinkProps, "href"> {
   href: string;
   locale?: string;
 }
 
 // Custom Link component that handles locale switching
-export const Link = forwardRef<HTMLAnchorElement, LinkProps>(
-  function Link({ href, locale: targetLocale, ...props }, ref) {
-    const currentLocale = useLocale();
-    const pathname = useNextPathname();
-    
-    // Determine which locale to use
-    const localeToUse = targetLocale || currentLocale;
-    
-    // If a target locale is specified and it's different from current, we need to switch
-    if (targetLocale && targetLocale !== currentLocale) {
-      // Extract the current locale from pathname
-      const currentLocalePrefix = `/${currentLocale}`;
-      
-      // If pathname starts with current locale, replace it with target locale
-      if (pathname?.startsWith(currentLocalePrefix)) {
-        const pathWithoutLocale = pathname.slice(currentLocalePrefix.length) || '/';
-        const newHref = `/${targetLocale}${pathWithoutLocale}`;
-        return <NextLink ref={ref} href={newHref} {...props} />;
-      }
-      
-      // Otherwise, just prepend the target locale
-      const newHref = `/${targetLocale}${href}`;
+export const Link = forwardRef<HTMLAnchorElement, LinkProps>(function Link(
+  { href, locale: targetLocale, ...props },
+  ref,
+) {
+  const currentLocale = useLocale();
+  const pathname = useNextPathname();
+
+  // If the href is an absolute URL or uses a non-http scheme (mailto:, tel:, etc.),
+  // do not attempt to prefix locales.
+  const isExternalOrSchemeHref =
+    href.startsWith("http") ||
+    href.startsWith("#") ||
+    /^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(href);
+
+  if (isExternalOrSchemeHref) {
+    return <NextLink ref={ref} href={href} {...props} />;
+  }
+
+  // Determine which locale to use
+  const localeToUse = targetLocale || currentLocale;
+
+  // If a target locale is specified and it's different from current, we need to switch
+  if (targetLocale && targetLocale !== currentLocale) {
+    // Extract the current locale from pathname
+    const currentLocalePrefix = `/${currentLocale}`;
+
+    // If pathname starts with current locale, replace it with target locale
+    if (pathname?.startsWith(currentLocalePrefix)) {
+      const pathWithoutLocale = pathname.slice(currentLocalePrefix.length) || "/";
+      const newHref = `/${targetLocale}${pathWithoutLocale}`;
       return <NextLink ref={ref} href={newHref} {...props} />;
     }
-    
-    // For normal links without locale switching, ensure locale prefix
-    let finalHref = href;
-    
-    // If href doesn't start with a locale, add the current one
-    const startsWithLocale = locales.some(loc => href.startsWith(`/${loc}`));
-    if (!startsWithLocale && !href.startsWith('http') && !href.startsWith('#')) {
-      finalHref = `/${localeToUse}${href.startsWith('/') ? href : `/${href}`}`;
-    }
-    
-    return <NextLink ref={ref} href={finalHref} {...props} />;
+
+    // Otherwise, just prepend the target locale
+    const newHref = `/${targetLocale}${href}`;
+    return <NextLink ref={ref} href={newHref} {...props} />;
   }
-);
+
+  // For normal links without locale switching, ensure locale prefix
+  let finalHref = href;
+
+  // If href doesn't start with a locale, add the current one
+  const startsWithLocale = locales.some((loc) => href.startsWith(`/${loc}`));
+  if (!startsWithLocale) {
+    finalHref = `/${localeToUse}${href.startsWith("/") ? href : `/${href}`}`;
+  }
+
+  return <NextLink ref={ref} href={finalHref} {...props} />;
+});
 
 // Re-export Next.js navigation hooks
 export function usePathname() {

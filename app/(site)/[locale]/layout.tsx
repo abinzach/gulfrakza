@@ -8,8 +8,10 @@ import WhatsAppInquiry from "@/app/components/WhatsappEnquiry";
 import { Footerdemo } from "@/components/ui/footer-section";
 import { I18nProvider } from "@/i18n/provider";
 import { getMessages, isLocale, locales } from "@/i18n/config";
-import { siteUrl } from "@/lib/constants";
+import { contact, siteUrl } from "@/lib/constants";
 import LocalePreferenceSync from "@/app/components/LocalePreferenceSync";
+import { Analytics } from "@/app/components/Analytics";
+import { CookieConsent } from "@/app/components/CookieConsent";
 import { fetchCatalogData } from "@/lib/catalog";
 
 export function generateStaticParams() {
@@ -52,7 +54,7 @@ export async function generateMetadata({ params }: LayoutParams): Promise<Metada
     acc[current] = `${siteUrl}${targetPath}`;
     return acc;
   }, {});
-  alternateLanguages["x-default"] = `${siteUrl}${canonicalPath}`;
+  alternateLanguages["x-default"] = `${siteUrl}${pathSuffix || "/"}`;
 
   return {
     title: common.brand.metaTitle,
@@ -91,14 +93,14 @@ export async function generateMetadata({ params }: LayoutParams): Promise<Metada
     icons: {
       icon: [
         { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
-        { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
       ],
-      apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
-      other: [{ rel: "mask-icon", url: "/safari-pinned-tab.svg", color: "#5bbad5" }],
+      apple: [
+        { url: "/web-app-manifest-192x192.png", sizes: "192x192", type: "image/png" },
+      ],
     },
     other: {
-      "msapplication-TileColor": "#da532c",
-      "theme-color": "#ffffff",
+      "msapplication-TileColor": "#0e7490",
+      "theme-color": "#0a0a0a",
     },
   };
 }
@@ -120,9 +122,21 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
 
   return (
     <I18nProvider locale={locale} messages={messages}>
+      <Analytics />
+      <CookieConsent />
       <LocalePreferenceSync locale={locale} />
       <FlyoutNav categoryTree={categoryTree} />
-      <main>{children}</main>
+      {/* Skip-to-content link for keyboard users */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-md focus:bg-neutral-950 focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-white"
+      >
+        Skip to content
+      </a>
+
+      <main id="main-content" tabIndex={-1}>
+        {children}
+      </main>
       <WhatsAppInquiry />
       <EmailInquiry />
       <Footerdemo />
@@ -130,7 +144,7 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
         {JSON.stringify(
           {
             "@context": "https://schema.org",
-            "@type": ["Organization", "LocalBusiness", "Store"],
+            "@type": "LocalBusiness",
             "name": "GulfRakza",
             "alternateName": "Rakzah Gulf Trading Establishment",
             "legalName": "Rakzah Gulf Trading Establishment",
@@ -151,8 +165,9 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
               "latitude": "26.4367",
               "longitude": "50.1039"
             },
-            "telephone": "+966558975494",
-            "email": "sales@gulfrakza.com",
+            "telephone": contact.phoneMobileE164,
+            "email": contact.emailPrimary,
+            "priceRange": "$$",
             "areaServed": [
               {
                 "@type": "City",
@@ -187,7 +202,7 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
             ],
             "hasOfferCatalog": {
               "@type": "OfferCatalog",
-              "name": "Industrial Supplies & Services",
+              "name": "Industrial Supplies & Integrated Engineering Solutions",
               "itemListElement": [
                 {
                   "@type": "OfferCatalog",
@@ -204,7 +219,7 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
                 },
                 {
                   "@type": "OfferCatalog",
-                  "name": "Industrial Services",
+                  "name": "Integrated Engineering Solutions",
                   "itemListElement": [
                     {
                       "@type": "Offer",

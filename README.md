@@ -16,6 +16,36 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+## Sanity Studio
+
+Run the CMS on:
+
+```bash
+npm run studio
+```
+
+Studio mounts at:
+
+- http://127.0.0.1:3333/studio
+
+### Seeding Services into Sanity
+
+Services are now modeled in Sanity as:
+
+- `serviceCategory` (top level)
+- `service` (items)
+
+To import the existing website services from `data/services.json` into Sanity:
+
+1) Create a Sanity API token with **write** permissions.
+2) Run:
+
+```bash
+SANITY_WRITE_TOKEN=YOUR_TOKEN_HERE npm run seed:services
+```
+
+This will create/update categories + services and preserve their ordering.
+
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.

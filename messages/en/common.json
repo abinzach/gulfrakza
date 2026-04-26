@@ -9,7 +9,7 @@
   },
   "nav": {
     "about": "About Us",
-    "services": "Services",
+    "services": "Integrated Engineering Solutions",
     "products": "Products",
     "getQuote": "Get a quote"
   },
@@ -52,7 +52,7 @@
     "links": {
       "home": "Home",
       "about": "About Us",
-      "services": "Services",
+      "services": "Integrated Engineering Solutions",
       "products": "Products",
       "contact": "Contact",
       "privacy": "Privacy Policy",
@@ -67,7 +67,7 @@
     ],
     "phones": [
       "Phone: (013) 881 6957",
-      "Phone: +966 - 558 975 494"
+      "Mobile: +966 55 719 7311"
     ],
     "email": "Email: sales@gulfrakza.com",
     "followUs": "Follow Us",
@@ -80,9 +80,9 @@
     "copyright": "© 2024 GulfRakza. All rights reserved."
   },
   "contactPresets": {
-    "emailSubject": "Inquiry about your services",
-    "emailBody": "Hello, I would like to inquire about your services.",
-    "whatsappMessage": "Hello, I would like to inquire about your services."
+    "emailSubject": "Inquiry about your integrated engineering solutions",
+    "emailBody": "Hello, I would like to inquire about your integrated engineering solutions.",
+    "whatsappMessage": "Hello, I would like to inquire about your integrated engineering solutions."
   },
   "misc": {
     "videoFallback": "Your browser does not support the video tag.",

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { getMessages, isLocale, type Locale, defaultLocale, locales } from "@/i18n/config";
-import { I18nProvider } from "@/i18n/provider";
 import { siteUrl } from "@/lib/constants";
 import AboutUsClient from "./about-client";
 
@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: AboutUsPageProps): Promise<Me
     acc[currentLocale] = `${siteUrl}/${currentLocale}/about-us`;
     return acc;
   }, {});
-  languageAlternates["x-default"] = `${siteUrl}/en/about-us`;
+  languageAlternates["x-default"] = `${siteUrl}/about-us`;
 
   const localeTag = activeLocale === "ar" ? "ar_SA" : "en_US";
 
@@ -69,12 +69,9 @@ export async function generateMetadata({ params }: AboutUsPageProps): Promise<Me
 
 export default async function AboutUsPage({ params }: AboutUsPageProps) {
   const { locale } = await params;
-  const activeLocale: Locale = isLocale(locale) ? locale : defaultLocale;
-  const messages = await getMessages(activeLocale);
+  if (!isLocale(locale)) {
+    notFound();
+  }
 
-  return (
-    <I18nProvider locale={activeLocale} messages={messages}>
-      <AboutUsClient />
-    </I18nProvider>
-  );
+  return <AboutUsClient />;
 }

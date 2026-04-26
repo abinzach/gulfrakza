@@ -17,7 +17,7 @@ import GetQuoteButton from "@/app/components/GetQuoteButton"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
-import { Link } from "@/navigation"
+import { Link } from "@/navigation.client"
 
 import type { CatalogCategoryNode, CatalogProduct } from "@/lib/catalog/types"
 import {
@@ -330,10 +330,14 @@ export default function CatalogPageClient({
       <div className="mx-auto flex max-w-[1600px] flex-col gap-6 px-4 lg:px-6">
         <header className="space-y-4 border-b border-gray-200 pb-6 dark:border-gray-700">
           <div className="space-y-2">
-            <h1 className="text-2xl text-transparent font-semibold text-gray-900 dark:text-gray-100">
-              All Products
+            <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 sm:text-3xl">
+              Industrial Products Catalog — PPE, Safety & Lifting Equipment
             </h1>
-           
+            <p className="max-w-3xl text-sm text-gray-600 dark:text-gray-400">
+              Browse our complete range of industrial supplies, PPE, safety
+              systems, lifting gear, welding equipment, and marine supplies for
+              operations across Saudi Arabia.
+            </p>
           </div>
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div className="relative w-full md:max-w-xl">
@@ -351,12 +355,14 @@ export default function CatalogPageClient({
                  variant="outline"
                  size="sm"
                  onClick={() => setShowMobileFilters(!showMobileFilters)}
+                 aria-expanded={showMobileFilters}
+                 aria-controls="product-filters"
                  className="flex items-center gap-2 lg:hidden"
                >
                  <SlidersHorizontal className="h-4 w-4" />
                  Filters
                  {(selectedCategorySlug || selectedFeatures.length > 0 || selectedBrands.length > 0) && (
-                   <span className="ml-1 flex h-5 w-5 items-center justify-center rounded-full bg-cyan-600 text-xs text-white">
+                   <span className="ml-1 flex h-5 w-5 items-center justify-center rounded-full bg-cyan-700 text-xs text-white">
                      {[selectedCategorySlug, ...selectedFeatures, ...selectedBrands].filter(Boolean).length}
                    </span>
                  )}
@@ -364,6 +370,7 @@ export default function CatalogPageClient({
               <select
                 value={sortOrder}
                 onChange={(event) => setSortOrder(event.target.value as CatalogSortOption)}
+                aria-label="Sort products"
                 className="h-10 rounded-md border border-input bg-background px-3 text-sm text-slate-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-ring dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200"
               >
                 {sortOptions.map((option) => (
@@ -386,7 +393,7 @@ export default function CatalogPageClient({
         </header>
 
          <div className="grid gap-6 lg:grid-cols-[300px_1fr]">
-           <aside className={`fixed inset-y-0 left-0 z-50 w-[85vw] max-w-sm space-y-6 overflow-y-auto rounded-r-lg border border-gray-200 bg-white p-6 shadow-xl transition-transform duration-300 dark:border-gray-700 dark:bg-gray-800 lg:static lg:z-auto lg:w-auto lg:max-w-none lg:rounded-lg lg:bg-gray-50 lg:shadow-none ${showMobileFilters ? "translate-x-0" : "-translate-x-full lg:translate-x-0"} ${showMobileFilters ? "block" : "hidden lg:block"}`}>
+           <aside id="product-filters" className={`fixed inset-y-0 left-0 z-50 w-[85vw] max-w-sm space-y-6 overflow-y-auto rounded-r-lg border border-gray-200 bg-white p-6 shadow-xl transition-transform duration-300 dark:border-gray-700 dark:bg-gray-800 lg:static lg:z-auto lg:w-auto lg:max-w-none lg:rounded-lg lg:bg-gray-50 lg:shadow-none ${showMobileFilters ? "translate-x-0" : "-translate-x-full lg:translate-x-0"} ${showMobileFilters ? "block" : "hidden lg:block"}`}>
              <div className="flex items-center justify-between border-b border-gray-200 pb-4 dark:border-gray-700 lg:border-0 lg:pb-0">
             <div className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-slate-900 dark:text-slate-100">
               <SlidersHorizontal className="h-4 w-4" />

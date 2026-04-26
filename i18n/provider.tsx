@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, ReactNode, useEffect } from "react";
+import { createContext, useContext, ReactNode } from "react";
 import type { Locale } from "@/i18n/config";
 
 type Messages = Record<string, any>;
@@ -22,19 +22,6 @@ export function I18nProvider({
   messages: Messages;
   children: ReactNode;
 }) {
-  useEffect(() => {
-    const html = document.documentElement;
-    const direction = locale === "ar" ? "rtl" : "ltr";
-
-    if (html.getAttribute("dir") !== direction) {
-      html.setAttribute("dir", direction);
-    }
-
-    if (html.getAttribute("lang") !== locale) {
-      html.setAttribute("lang", locale);
-    }
-  }, [locale]);
-
   const t = (key: string): string => {
     const keys = key.split(".");
     let value: any = messages;

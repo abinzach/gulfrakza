@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "studio": "sanity dev"
+    "studio": "sanity dev",
+    "seed:services": "node scripts/seed-services-to-sanity.js"
   },
   "dependencies": {
     "@portabletext/react": "^5.0.0",

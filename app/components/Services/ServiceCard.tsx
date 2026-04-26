@@ -68,7 +68,7 @@ export default function ServiceCard({
           <Button
             variant="outline"
             size="sm"
-            className="gap-2 border-cyan-600 text-cyan-600 transition-all hover:bg-cyan-600 hover:text-white"
+            className="gap-2 border-cyan-600 text-cyan-600 transition-all hover:bg-cyan-700 hover:text-white"
           >
             <Mail className="h-4 w-4" />
             {t("buttons.requestService")}

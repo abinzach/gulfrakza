@@ -46,7 +46,7 @@ export async function generateMetadata({ params }: CatalogPageProps): Promise<Me
     acc[currentLocale] = `${siteUrl}/${currentLocale}/products`
     return acc
   }, {})
-  languageAlternates["x-default"] = `${siteUrl}/${defaultLocale}/products`
+  languageAlternates["x-default"] = `${siteUrl}/products`
 
   const localeTag = activeLocale === "ar" ? "ar_SA" : "en_US"
 

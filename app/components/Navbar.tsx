@@ -19,7 +19,7 @@ import {
 import useMeasure from "react-use-measure";
 import { usePathname, useSearchParams } from "next/navigation";
 import Image from "next/image";
-import { Link } from "@/navigation";
+import { Link } from "@/navigation.client";
 import { useLocale, useTranslations } from "@/i18n/provider";
 import QuoteModal from "./GetQuote";
 import { locales } from "@/i18n/config";
@@ -28,6 +28,7 @@ import {
   localePreferenceStorageKey,
   localeCookieName,
   localeSwitchScrollStorageKey,
+  contact,
 } from "@/lib/constants";
 import type { CatalogCategoryNode } from "@/lib/catalog/types";
 
@@ -274,6 +275,21 @@ const NavLink = ({
     <div
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
+      onFocus={() => setOpen(true)}
+      onBlur={(event) => {
+        // Close when focus leaves the nav item entirely.
+        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+          setOpen(false);
+        }
+      }}
+      onKeyDown={(event) => {
+        if (event.key === "Escape") {
+          setOpen(false);
+          // move focus back to the trigger link for predictable keyboard UX
+          const trigger = event.currentTarget.querySelector("a");
+          (trigger as HTMLAnchorElement | null)?.focus();
+        }
+      }}
       className="relative h-fit w-fit overflow-visible group"
     >
       <Link href={href} className="relative group">
@@ -291,6 +307,7 @@ const NavLink = ({
             style={{ translateX: flyoutAlign === "left" ? "-70%" : "-50%" }}
             transition={{ duration: 0.3, ease: "easeOut" }}
             className="absolute left-1/2 top-12 z-50 rounded-[28px] border border-neutral-800/50 bg-neutral-950/95 backdrop-blur-xl text-white shadow-2xl overflow-hidden"
+            role="menu"
           >
             <div className="absolute -top-6 left-0 right-0 h-6 bg-transparent" />
             <div className="absolute left-1/2 top-0 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-neutral-950/95 backdrop-blur-xl border-l border-t border-neutral-800/50 rounded-tl-sm" />
@@ -318,6 +335,7 @@ const CTAs = ({
     <div className="flex items-center gap-3 font-inter">
       <button
         onClick={onQuoteClick}
+        aria-haspopup="dialog"
         className={cn(
           "flex rounded-full text-sm font-medium transition-colors duration-300",
           isMobile
@@ -571,7 +589,7 @@ const MobileProductsContent = ({
       <Link
         href="/products"
         onClick={() => onNavigate?.()}
-        className="flex items-center justify-center rounded-2xl border border-cyan-600 px-4 py-2 text-sm font-semibold text-cyan-700 transition hover:bg-cyan-600 hover:text-white"
+        className="flex items-center justify-center rounded-2xl border border-cyan-600 px-4 py-2 text-sm font-semibold text-cyan-700 transition hover:bg-cyan-700 hover:text-white"
       >
         Explore entire catalog
       </Link>
@@ -681,7 +699,7 @@ const MobileMenuLink = ({
         >
           <Link
             href={href}
-            onClick={(e) => {
+            onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
               e.stopPropagation();
               setMenuOpen(false);
             }}
@@ -693,7 +711,7 @@ const MobileMenuLink = ({
       ) : (
         <Link
           href={href}
-          onClick={(e) => {
+          onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
             e.stopPropagation();
             setMenuOpen(false);
           }}
@@ -737,13 +755,16 @@ const MobileMenu = ({
 }) => {
   const [open, setOpen] = useState(false);
   const tContact = useTranslations("common.contactPresets");
-  const phoneNumber = "+966557197311";
-  const emailAddress = "info@gulfrakza.com";
-  const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(tContact("whatsappMessage"))}`;
-  const mailtoUrl = `mailto:${emailAddress}?subject=${encodeURIComponent(tContact("emailSubject"))}&body=${encodeURIComponent(tContact("emailBody"))}`;
+  const phoneForWa = contact.phoneMobileE164.replace(/[^0-9]/g, "");
+  const whatsappUrl = `https://wa.me/${phoneForWa}?text=${encodeURIComponent(tContact("whatsappMessage"))}`;
+  const mailtoUrl = `mailto:${contact.emailPrimary}?subject=${encodeURIComponent(tContact("emailSubject"))}&body=${encodeURIComponent(tContact("emailBody"))}`;
   return (
     <div className="block lg:hidden">
-      <button onClick={() => setOpen(true)} className="block text-3xl">
+      <button
+        onClick={() => setOpen(true)}
+        className="block text-3xl"
+        aria-label="Open menu"
+      >
         <FiMenu />
       </button>
       <AnimatePresence>
@@ -757,7 +778,7 @@ const MobileMenu = ({
           >
             <div className="flex items-center justify-between bg-neutral-950 p-6 text-white">
               <Logo />
-              <button onClick={() => setOpen(false)}>
+              <button onClick={() => setOpen(false)} aria-label="Close menu">
                 <FiX className="text-3xl text-white" />
               </button>
             </div>
@@ -791,6 +812,7 @@ const MobileMenu = ({
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => setOpen(false)}
+                  aria-label="WhatsApp"
                   className="flex h-16 w-16 shrink-0 cursor-pointer items-center justify-center rounded-full border-4 border-white bg-neutral-950 p-3 shadow-xl transition-colors hover:bg-neutral-800"
                 >
                   <FaWhatsapp size={32} className="text-white" />
@@ -800,6 +822,7 @@ const MobileMenu = ({
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => setOpen(false)}
+                  aria-label="Email"
                   className="flex h-16 w-16 shrink-0 cursor-pointer items-center justify-center rounded-full border-4 border-white bg-neutral-950 p-3 shadow-xl transition-colors hover:bg-neutral-800"
                 >
                   <FaEnvelope size={32} className="text-white" />

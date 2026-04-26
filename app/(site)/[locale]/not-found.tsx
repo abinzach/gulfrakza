@@ -5,12 +5,13 @@ import { motion, type Variants } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useTranslations } from "@/i18n/provider";
 import { Button } from "@/components/ui/button";
-import { Link } from "@/navigation";
+import { Link } from "@/navigation.client";
 
 export default function NotFound() {
   const router = useRouter();
   const t = useTranslations("notFound");
   const [dots, setDots] = useState("");
+  const [reduceMotion, setReduceMotion] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -21,6 +22,19 @@ export default function NotFound() {
       setDots((prev) => (prev.length < 3 ? `${prev}.` : ""));
     }, 500);
     return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setReduceMotion(mediaQuery.matches);
+    update();
+    if (typeof mediaQuery.addEventListener === "function") {
+      mediaQuery.addEventListener("change", update);
+      return () => mediaQuery.removeEventListener("change", update);
+    }
+    mediaQuery.addListener(update);
+    return () => mediaQuery.removeListener(update);
   }, []);
 
   const gearVariants: Variants = {
@@ -48,12 +62,20 @@ export default function NotFound() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-gray-50 px-4 py-12 dark:bg-gray-900">
       <div className="relative mb-8">
-        <motion.div className="absolute -left-16 -top-8" variants={gearVariants} animate="rotate">
-          <GearIcon />
-        </motion.div>
-        <motion.div className="absolute -right-16 -top-8" variants={reverseGearVariants} animate="rotate">
-          <GearIcon />
-        </motion.div>
+        {!reduceMotion ? (
+          <>
+            <motion.div className="absolute -left-16 -top-8" variants={gearVariants} animate="rotate">
+              <GearIcon />
+            </motion.div>
+            <motion.div
+              className="absolute -right-16 -top-8"
+              variants={reverseGearVariants}
+              animate="rotate"
+            >
+              <GearIcon />
+            </motion.div>
+          </>
+        ) : null}
         <motion.div
           className="relative"
           initial={{ opacity: 0, y: 20 }}
@@ -96,7 +118,7 @@ export default function NotFound() {
             {t("back")}
           </Button>
           <Link href="/">
-            <Button className="rounded-full bg-cyan-600 hover:bg-cyan-700">{t("cta")}</Button>
+            <Button className="rounded-full bg-cyan-700 hover:bg-cyan-800">{t("cta")}</Button>
           </Link>
         </motion.div>
       </motion.div>

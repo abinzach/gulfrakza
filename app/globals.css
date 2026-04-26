@@ -1,20 +1,38 @@
-@import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100&family=Raleway:wght@100;200;300;400;500;600;700;800;900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Liter:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Testimonials progress bar (paused/resumed via inline animation-play-state) */
+@keyframes testimonialProgress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
 
+.testimonial-progress {
+  transform-origin: left center;
+  animation: testimonialProgress 8s linear infinite;
+}
+
+/*
+ * Font utilities are now driven by next/font CSS variables defined in
+ * app/layout.tsx (--font-inter, --font-raleway, --font-hanken). This avoids
+ * render-blocking @import of Google Fonts. The "Liter" font that used to be
+ * loaded was removed because it wasn't referenced anywhere.
+ */
 .font-inter {
-  font-family: "Inter", sans-serif;
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 .font-raleway {
-  font-family: "Raleway", sans-serif;
+  font-family: var(--font-raleway), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 .font-hanken {
-  font-family: "Hanken Grotesk", sans-serif;
+  font-family: var(--font-hanken), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 /* Firefox */
@@ -119,5 +137,36 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  /* Brand logo marquee (CSS-only) */
+  @keyframes marquee-left {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @keyframes marquee-right {
+    from {
+      transform: translateX(-50%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  .marquee-left {
+    animation: marquee-left 50s linear infinite;
+    will-change: transform;
+  }
+
+  .marquee-right {
+    animation: marquee-right 50s linear infinite;
+    will-change: transform;
   }
 }

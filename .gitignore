@@ -19,6 +19,13 @@
 
 # production
 /build
+/dist
+
+# stale build artifacts
+build-log.txt
+
+# Local backup folder created during the Day-1 audit fixes
+.pre-audit-backup/
 
 # misc
 .DS_Store

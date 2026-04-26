@@ -2,6 +2,8 @@ import type { SchemaTypeDefinition } from 'sanity';
 
 import category from './documents/category';
 import product from './documents/product';
+import serviceCategory from './documents/serviceCategory';
+import service from './documents/service';
 import blockContent from './objects/blockContent';
 import localizedBlockContent from './objects/localizedBlockContent';
 import localizedString from './objects/localizedString';
@@ -12,6 +14,8 @@ import resourceAsset from './objects/resourceAsset';
 export const schemaTypes: SchemaTypeDefinition[] = [
   category,
   product,
+  serviceCategory,
+  service,
   blockContent,
   localizedBlockContent,
   localizedString,

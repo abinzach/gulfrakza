@@ -5,7 +5,12 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: '/admin/',
+      disallow: [
+        '/admin/',
+        '/studio/',
+        '/studio',
+        '/api/',
+      ],
     },
     sitemap: 'https://www.gulfrakza.com/sitemap.xml',
     host: 'https://www.gulfrakza.com',

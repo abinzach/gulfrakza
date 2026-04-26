@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Dispatch, SetStateAction, useMemo, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
 import { useLocale, useMessages, useTranslations } from "@/i18n/provider";
 
 interface Testimonial {
@@ -18,6 +18,8 @@ const StackedCardTestimonials = () => {
   const messages = useMessages();
   const locale = useLocale();
   const isRTL = locale === "ar";
+  const [reduceMotion, setReduceMotion] = useState(false);
+  const [paused, setPaused] = useState(false);
 
   const testimonials = useMemo<Testimonial[]>(() => {
     if (!messages || typeof messages !== "object") {
@@ -38,17 +40,62 @@ const StackedCardTestimonials = () => {
     return Array.isArray(items) ? (items as Testimonial[]) : [];
   }, [messages]);
 
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setReduceMotion(mediaQuery.matches);
+    update();
+    if (typeof mediaQuery.addEventListener === "function") {
+      mediaQuery.addEventListener("change", update);
+      return () => mediaQuery.removeEventListener("change", update);
+    }
+    mediaQuery.addListener(update);
+    return () => mediaQuery.removeListener(update);
+  }, []);
+
+  const autoplay = !reduceMotion && !paused;
+
+  useEffect(() => {
+    if (!autoplay) return;
+    if (testimonials.length <= 1) return;
+
+    const id = window.setInterval(() => {
+      setSelected((current) => (current === testimonials.length - 1 ? 0 : current + 1));
+    }, 8000);
+
+    return () => window.clearInterval(id);
+  }, [autoplay, testimonials.length]);
+
   return (
     <section
       className="grid grid-cols-1 items-center gap-8 overflow-hidden bg-white px-4 py-24 lg:grid-cols-2 lg:gap-4 lg:px-8"
       dir={isRTL ? "rtl" : "ltr"}
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onFocusCapture={() => setPaused(true)}
+      onBlurCapture={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+          setPaused(false);
+        }
+      }}
     >
       <div className="p-4">
         <h3 className="font-inter text-5xl font-semibold">{t("sectionHeading")}</h3>
         <p className="my-4 font-inter text-slate-500">{t("sectionDescription")}</p>
-        <SelectBtns numTracks={testimonials.length} setSelected={setSelected} selected={selected} />
+        <SelectBtns
+          numTracks={testimonials.length}
+          setSelected={setSelected}
+          selected={selected}
+          autoplay={autoplay}
+        />
       </div>
-      <Cards testimonials={testimonials} setSelected={setSelected} selected={selected} isRTL={isRTL} />
+      <Cards
+        testimonials={testimonials}
+        setSelected={setSelected}
+        selected={selected}
+        isRTL={isRTL}
+        reduceMotion={reduceMotion}
+      />
     </section>
   );
 };
@@ -57,34 +104,39 @@ const SelectBtns = ({
   numTracks,
   setSelected,
   selected,
+  autoplay,
 }: {
   numTracks: number;
   setSelected: Dispatch<SetStateAction<number>>;
   selected: number;
+  autoplay: boolean;
 }) => {
   return (
     <div className="mt-8 flex gap-1">
       {Array.from({ length: numTracks }).map((_, n) => (
         <button
           key={n}
+          type="button"
           onClick={() => setSelected(n)}
-          className="relative h-1.5 w-full bg-slate-300"
+          className="relative h-11 w-full bg-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700"
           aria-label={`Testimonial ${n + 1}`}
+          aria-current={selected === n ? "true" : undefined}
         >
+          <span className="absolute left-0 right-0 top-1/2 h-1.5 -translate-y-1/2 bg-slate-300" />
           {selected === n ? (
-            <motion.span
-              className="absolute inset-0 bg-slate-950"
-              initial={{ width: "0%" }}
-              animate={{ width: "100%" }}
-              transition={{ duration: 5 }}
-              onAnimationComplete={() => {
-                setSelected(selected === numTracks - 1 ? 0 : selected + 1);
+            <span
+              className="testimonial-progress absolute left-0 right-0 top-1/2 h-1.5 -translate-y-1/2 bg-slate-950"
+              style={{ animationPlayState: autoplay ? "running" : "paused" }}
+              onAnimationEnd={() => {
+                // no-op; autoplay is handled by interval in parent to support pause-on-hover/focus
               }}
+              aria-hidden="true"
             />
           ) : (
             <span
-              className="absolute inset-0 bg-slate-950"
-              style={{ width: selected > n ? "100%" : "0%" }}
+              className="absolute left-0 right-0 top-1/2 h-1.5 -translate-y-1/2 bg-slate-950"
+              style={{ transform: selected > n ? "scaleX(1)" : "scaleX(0)" }}
+              aria-hidden="true"
             />
           )}
         </button>
@@ -98,14 +150,20 @@ const Cards = ({
   selected,
   setSelected,
   isRTL,
+  reduceMotion,
 }: {
   testimonials: Testimonial[];
   selected: number;
   setSelected: Dispatch<SetStateAction<number>>;
   isRTL: boolean;
+  reduceMotion: boolean;
 }) => {
   return (
-    <div className="relative h-[450px] p-4 shadow-xl lg:h-[500px]">
+    <div
+      className="relative h-[450px] p-4 shadow-xl lg:h-[500px]"
+      aria-live="polite"
+      aria-atomic="true"
+    >
       {testimonials.map((testimonial, index) => (
         <Card
           key={`${testimonial.name}-${index}`}
@@ -114,6 +172,7 @@ const Cards = ({
           selected={selected}
           setSelected={setSelected}
           isRTL={isRTL}
+          reduceMotion={reduceMotion}
         />
       ))}
     </div>
@@ -130,11 +189,13 @@ const Card = ({
   selected,
   setSelected,
   isRTL,
+  reduceMotion,
 }: Testimonial & {
   position: number;
   selected: number;
   setSelected: Dispatch<SetStateAction<number>>;
   isRTL: boolean;
+  reduceMotion: boolean;
 }) => {
   const scale = position <= selected ? 1 : 1 + 0.015 * (position - selected);
   const directionMultiplier = isRTL ? -1 : 1;
@@ -156,10 +217,19 @@ const Card = ({
       }}
       animate={{ x: `${offset}%`, scale }}
       whileHover={{ translateX: hoverShift }}
-      transition={{ duration: 0.25, ease: "easeOut" }}
+      transition={reduceMotion ? { duration: 0 } : { duration: 0.25, ease: "easeOut" }}
       onClick={() => setSelected(position)}
-      className="absolute inset-0 flex min-h-full w-full cursor-pointer flex-col justify-between p-8 lg:p-12"
+      onKeyDown={(event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          setSelected(position);
+        }
+      }}
+      className="absolute inset-0 flex min-h-full w-full cursor-pointer flex-col justify-between p-8 outline-none focus-visible:ring-2 focus-visible:ring-cyan-700 lg:p-12"
       dir={isRTL ? "rtl" : "ltr"}
+      role="button"
+      tabIndex={position === selected ? 0 : -1}
+      aria-hidden={position !== selected}
     >
       <div className={`mt-4 ${headingAlignClass}`}>
         <p className="text-xl font-bold">{rating}</p>

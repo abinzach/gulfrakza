@@ -1,12 +1,47 @@
-// app/api/contact/emailTemplate.ts
+// app/api/contact/emailtemplate.ts
 
-export function createEmailContent(email: string, subject: string, message: string, formType: 'contact' | 'quote' = 'contact') {
-    const heading = formType === 'quote' ? 'New Quote Request' : 'Contact Form Submission';
-    const introText = formType === 'quote' 
+interface EmailContentInput {
+  email: string;
+  subject: string;
+  message: string;
+  fullName?: string;
+  phone?: string;
+  formType?: 'contact' | 'quote';
+}
+
+const escapeHtml = (value: string): string =>
+  value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+
+const formatMultiline = (value: string): string =>
+  escapeHtml(value).replace(/\r?\n/g, '<br>');
+
+export function createEmailContent({
+  email,
+  subject,
+  message,
+  fullName,
+  phone,
+  formType = 'contact',
+}: EmailContentInput): string {
+  const heading =
+    formType === 'quote' ? 'New Quote Request' : 'Contact Form Submission';
+  const introText =
+    formType === 'quote'
       ? 'A new quote request has been submitted through the website.'
       : 'A new message has been submitted through the contact form.';
-    
-    return `
+
+  const safeEmail = escapeHtml(email);
+  const safeSubject = escapeHtml(subject);
+  const safeName = fullName ? escapeHtml(fullName) : '';
+  const safePhone = phone ? escapeHtml(phone) : '';
+  const safeMessage = formatMultiline(message);
+
+  return `
       <!DOCTYPE html>
       <html lang="en">
         <head>
@@ -14,7 +49,6 @@ export function createEmailContent(email: string, subject: string, message: stri
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
           <title>${heading}</title>
           <style>
-            /* Base styles */
             body {
               font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
               line-height: 1.6;
@@ -23,8 +57,6 @@ export function createEmailContent(email: string, subject: string, message: stri
               margin: 0;
               padding: 0;
             }
-            
-            /* Container */
             .container {
               max-width: 600px;
               margin: 0 auto;
@@ -33,58 +65,44 @@ export function createEmailContent(email: string, subject: string, message: stri
               overflow: hidden;
               box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
             }
-            
-            /* Header */
             .header {
-              background: linear-gradient(135deg, #0891b2, #0e7490);
+              background: linear-gradient(135deg, #0e7490, #155e75);
               padding: 30px 10px;
               text-align: center;
               color: white;
             }
-            
-            .logo {
-              margin-bottom: 15px;
-            }
-            
             .header h1 {
               margin: 0;
               font-weight: 600;
               font-size: 24px;
               letter-spacing: -0.5px;
             }
-            
-            /* Content */
             .content {
               padding: 30px;
               background-color: #ffffff;
             }
-            
             .message-container {
               background-color: #f5f5f7;
               border-radius: 8px;
               padding: 20px;
-              margin-top: 20px;
+              margin-top: 8px;
             }
-            
             .field {
-              margin-bottom: 15px;
+              margin-bottom: 16px;
             }
-            
             .field-label {
               font-weight: 600;
-              font-size: 14px;
+              font-size: 12px;
               color: #6e6e73;
               text-transform: uppercase;
               letter-spacing: 0.5px;
-              margin-bottom: 5px;
+              margin-bottom: 6px;
             }
-            
             .field-value {
               font-size: 16px;
               color: #1d1d1f;
+              word-break: break-word;
             }
-            
-            /* Footer */
             .footer {
               background-color: #f5f5f7;
               padding: 20px;
@@ -93,17 +111,9 @@ export function createEmailContent(email: string, subject: string, message: stri
               color: #86868b;
               border-top: 1px solid #e5e5e7;
             }
-            
-            /* Responsive */
             @media only screen and (max-width: 620px) {
-              .container {
-                width: 100% !important;
-                border-radius: 0;
-              }
-              
-              .content {
-                padding: 20px;
-              }
+              .container { width: 100% !important; border-radius: 0; }
+              .content { padding: 20px; }
             }
           </style>
         </head>
@@ -111,37 +121,50 @@ export function createEmailContent(email: string, subject: string, message: stri
           <div style="padding: 20px;">
             <div class="container">
               <div class="header">
-               
                 <h1>${heading}</h1>
               </div>
-              
               <div class="content">
                 <p style="font-size: 16px; color: #1d1d1f; margin-top: 0;">
                   ${introText}
                 </p>
-                
-                <div class="field">
-                  <div class="field-label">From</div>
-                  <div class="field-value">${email}</div>
-                </div>
-                
+
+                ${
+                  safeName
+                    ? `<div class="field">
+                        <div class="field-label">From</div>
+                        <div class="field-value">${safeName} &lt;${safeEmail}&gt;</div>
+                      </div>`
+                    : `<div class="field">
+                        <div class="field-label">From</div>
+                        <div class="field-value">${safeEmail}</div>
+                      </div>`
+                }
+
+                ${
+                  safePhone
+                    ? `<div class="field">
+                        <div class="field-label">Phone</div>
+                        <div class="field-value">${safePhone}</div>
+                      </div>`
+                    : ''
+                }
+
                 <div class="field">
                   <div class="field-label">Subject</div>
-                  <div class="field-value">${subject}</div>
+                  <div class="field-value">${safeSubject}</div>
                 </div>
-                
+
                 <div class="field">
                   <div class="field-label">Message</div>
                   <div class="message-container">
-                    <div class="field-value">${message.replace(/\\n/g, '<br>')}</div>
+                    <div class="field-value">${safeMessage}</div>
                   </div>
                 </div>
               </div>
-              
               <div class="footer">
                 <p>
                   &copy; ${new Date().getFullYear()} Gulf Rakza. All rights reserved.<br>
-                  This is an automated message for Charlie Varga. Please do not reply to this email.
+                  This is an automated notification from gulfrakza.com — please reply directly to this email to respond to the sender.
                 </p>
               </div>
             </div>
@@ -149,4 +172,4 @@ export function createEmailContent(email: string, subject: string, message: stri
         </body>
       </html>
     `;
-  }
+}

@@ -4,11 +4,13 @@ import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useTranslations } from "@/i18n/provider";
+import { trackEvent } from "@/app/components/analytics-events";
 
 type FormData = {
   email: string;
   subject: string;
   message: string;
+  website?: string;
 };
 
 const LoadingSpinner: React.FC = () => (
@@ -97,13 +99,17 @@ const ContactForm: React.FC = () => {
   } = useForm<FormData>();
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
+  const [formStartedAt, setFormStartedAt] = useState(() => Date.now());
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
     if (status === "success" || status === "error") {
       timer = setTimeout(() => {
         setStatus("idle");
-        if (status === "success") reset();
+        if (status === "success") {
+          reset();
+          setFormStartedAt(Date.now());
+        }
       }, 8000);
     }
     return () => clearTimeout(timer);
@@ -117,9 +123,16 @@ const ContactForm: React.FC = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          ...data,
+          formStartedAt,
+          formType: "contact",
+        }),
       });
       if (response.ok) {
+        trackEvent("contact_form_submit", {
+          form_type: "contact",
+        });
         setStatus("success");
       } else {
         const errorData = await response.json();
@@ -151,6 +164,14 @@ const ContactForm: React.FC = () => {
                 : "opacity-100"
             }`}
           >
+            <input
+              type="text"
+              tabIndex={-1}
+              autoComplete="off"
+              className="hidden"
+              aria-hidden="true"
+              {...register("website")}
+            />
             <div>
               <label
                 htmlFor="email"
@@ -214,7 +235,7 @@ const ContactForm: React.FC = () => {
             <button
               type="submit"
               disabled={status === "loading"}
-              className="relative rounded-full bg-cyan-600 py-3 px-5 text-sm font-medium text-white transition hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 dark:bg-white dark:text-black dark:hover:bg-cyan-700 dark:focus:ring-cyan-800"
+              className="relative rounded-full bg-cyan-700 py-3 px-5 text-sm font-medium text-white transition hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 dark:bg-white dark:text-black dark:hover:bg-cyan-800 dark:focus:ring-cyan-800"
             >
               <span className={status === "loading" ? "invisible" : ""}>{t("submit")}</span>
               {status === "loading" && (

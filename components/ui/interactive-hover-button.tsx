@@ -1,7 +1,7 @@
-import { Link } from "@/navigation";
 import React from "react";
 import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Link } from "@/navigation.client";
 
 interface InteractiveHoverButtonProps
   extends React.AnchorHTMLAttributes<HTMLAnchorElement> {

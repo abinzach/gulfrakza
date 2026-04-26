@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { trackEvent } from "@/app/components/analytics-events";
 import {
   CheckCircle2,
   Clock3,
@@ -16,6 +17,7 @@ import {
   Phone,
   ShieldCheck,
 } from "lucide-react";
+import { contact } from "@/lib/constants";
 
 interface QuoteModalProps {
   open: boolean;
@@ -162,6 +164,7 @@ export default function QuoteModal({
   });
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [formStartedAt, setFormStartedAt] = useState(() => Date.now());
   const wasOpenRef = useRef(false);
   const lastInitializedContextRef = useRef<string | null>(null);
   const quoteContextKey = useMemo(() => {
@@ -256,6 +259,7 @@ export default function QuoteModal({
         productCategory: resetCategory,
         message: resetMessage,
       });
+      setFormStartedAt(Date.now());
       setSuccess(false);
     }, 300);
 
@@ -311,6 +315,8 @@ export default function QuoteModal({
         fullName: formData.fullName,
         phone: formData.phone,
         productCategory: formData.productCategory,
+        website: "",
+        formStartedAt,
       };
 
       const response = await fetch("/api/contact", {
@@ -325,6 +331,10 @@ export default function QuoteModal({
         throw new Error("Failed to submit quote request");
       }
 
+      trackEvent("quote_form_submit", {
+        form_type: "quote",
+        selected_services: selectedServiceIds.length,
+      });
       setSuccess(true);
     } catch (error) {
       console.error("Error submitting quote request:", error);
@@ -541,8 +551,9 @@ export default function QuoteModal({
               </p>
               <div className="mt-5 space-y-3">
                 <a
-                  href="tel:+971561234567"
+                  href={`tel:${contact.phoneMobileE164}`}
                   className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-left text-white transition hover:bg-white/10"
+                  aria-label={`Call us at ${contact.phoneMobileDisplay}`}
                 >
                   <div className="flex items-center gap-3">
                     <Phone className="h-4 w-4 text-white" />
@@ -550,10 +561,12 @@ export default function QuoteModal({
                       <p className="text-[11px] uppercase tracking-[0.3em] text-white/60">
                         {t("infoPanel.phoneLabel")}
                       </p>
-                      <p className="text-base font-semibold">+971 56 123 4567</p>
+                      <p className="text-base font-semibold" dir="ltr">
+                        {contact.phoneMobileDisplay}
+                      </p>
                     </div>
                   </div>
-                  <span className="text-xs text-white/60">GST</span>
+                  <span className="text-xs text-white/60">KSA</span>
                 </a>
                
               </div>

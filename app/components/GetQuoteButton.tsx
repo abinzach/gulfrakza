@@ -4,6 +4,7 @@ import { useTranslations } from "@/i18n/provider";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import GetQuote from "./GetQuote";
+import { trackEvent } from "./analytics-events";
 
 interface GetQuoteButtonProps {
   productName: string;
@@ -24,9 +25,15 @@ export default function GetQuoteButton({
   return (
     <>
       <Button
-        onClick={() => setIsModalOpen(true)}
+        onClick={() => {
+          trackEvent("quote_modal_open", {
+            source: "product_detail",
+            product_category: productCategory,
+          });
+          setIsModalOpen(true);
+        }}
         variant="default"
-        className="w-full bg-cyan-600 text-sm font-medium text-white hover:bg-cyan-700"
+        className="w-full bg-cyan-700 text-sm font-medium text-white hover:bg-cyan-800"
       >
         {t("getQuote")}
       </Button>
