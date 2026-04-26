@@ -118,26 +118,7 @@ export default function ServicesClient({ categories }: { categories: ServiceCate
 
   return (
     <>
-      <section
-        id="services"
-        className="bg-white px-4 py-20 font-inter lg:py-28"
-      >
-        <div className="mx-auto max-w-7xl">
-          <div className="max-w-4xl">
-            <p className="mb-4 text-sm font-semibold uppercase tracking-[0.22em] text-cyan-700">
-              {t("sectionHeading")}
-            </p>
-            <h2 className="text-4xl font-semibold leading-tight tracking-normal text-slate-950 md:text-6xl">
-              {renderEngineeringSolutionsTitle(t("heroHeading"))}
-            </h2>
-            <p className="mt-5 max-w-3xl text-lg leading-8 text-slate-600">
-              {t("heroDescription")}
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-gray-50 py-16 lg:py-24">
+      <section id="services" className="bg-gray-50 py-16 lg:py-24">
         <div className="mx-auto max-w-7xl px-4 font-inter">
           <h2 className="mb-16 text-center text-5xl font-semibold">
             {renderEngineeringSolutionsTitle(t("sectionHeading"))}
