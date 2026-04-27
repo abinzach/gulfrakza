@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { ServiceCategory } from "@/lib/services";
 import { Link } from "@/navigation.client";
 import { useTranslations } from "@/i18n/provider";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 
 interface ServicesListingClientProps {
   categories: ServiceCategory[];
@@ -15,7 +16,14 @@ interface ServicesListingClientProps {
   sectionHeading: string;
 }
 
-const renderEngineeringSolutionsTitle = (title: string) => {
+const categoryListImages: Record<string, string> = {
+  "safety-services": "/images/services/safety.jpeg",
+  "cathodic-protection": "/images/services/cathodic.jpeg",
+  "hvac-services": "/images/services/hvac.jpeg",
+  "mechanical-engineering-services": "/images/services/mechanical.jpeg",
+};
+
+const renderHighlightedTitle = (title: string) => {
   const englishHighlight = "Engineering Solutions";
   const arabicHighlight = "الحلول الهندسية";
   const highlight = title.includes(englishHighlight)
@@ -23,16 +31,12 @@ const renderEngineeringSolutionsTitle = (title: string) => {
     : title.includes(arabicHighlight)
       ? arabicHighlight
       : "";
-
-  if (!highlight) {
-    return title;
-  }
-
+  if (!highlight) return title;
   const [before, after] = title.split(highlight);
   return (
     <>
       {before}
-      <span className="text-cyan-300">{highlight}</span>
+      <span className="text-cyan-400">{highlight}</span>
       {after}
     </>
   );
@@ -45,101 +49,68 @@ export default function ServicesListingClient({
   sectionHeading,
 }: ServicesListingClientProps) {
   const tNav = useTranslations("common.nav");
-  const [activeCategory, setActiveCategory] = useState<string>("");
+  const [activeCategory, setActiveCategory] = useState<string>(categories[0]?.id ?? "");
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
   const [quoteContext, setQuoteContext] = useState<{
-    initialProduct?: {
-      name?: string;
-      category?: string;
-    };
-    serviceOptions?: Array<{
-      id: string;
-      title: string;
-    }>;
+    initialProduct?: { name?: string; category?: string };
+    serviceOptions?: Array<{ id: string; title: string }>;
     initialSelectedServiceIds?: string[];
   } | null>(null);
   const [activeSlide, setActiveSlide] = useState(0);
   const [categoryImageStep, setCategoryImageStep] = useState<Record<string, number>>({});
+
   const gallerySlides = useMemo(
     () =>
-      categories.slice(0, 5).map((category) => ({
-        id: category.id,
-        title: category.title,
-        tagline: category.description,
+      categories.slice(0, 5).map((cat) => ({
+        id: cat.id,
+        title: cat.title,
         imageSrc:
-          category.imageSrc ||
+          cat.imageSrc ||
           "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&w=1920&q=80",
       })),
     [categories],
   );
 
-  // Simple scroll spy
   useEffect(() => {
-    const handleScroll = () => {
-      const sections = categories.map((cat) => document.getElementById(cat.id));
-      const scrollPosition = window.scrollY + 200; // Offset
-
-      for (const section of sections) {
-        if (
-          section &&
-          section.offsetTop <= scrollPosition &&
-          section.offsetTop + section.offsetHeight > scrollPosition
-        ) {
-          setActiveCategory(section.id);
-        }
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [categories]);
-
-  useEffect(() => {
-    if (gallerySlides.length <= 1) {
-      return;
-    }
-
-    const intervalId = window.setInterval(() => {
-      setActiveSlide((current) => (current + 1) % gallerySlides.length);
-    }, 5000);
-
-    return () => window.clearInterval(intervalId);
+    if (gallerySlides.length <= 1) return;
+    const id = setInterval(() => setActiveSlide((s) => (s + 1) % gallerySlides.length), 5000);
+    return () => clearInterval(id);
   }, [gallerySlides.length]);
 
   useEffect(() => {
-    if (activeSlide > gallerySlides.length - 1) {
-      setActiveSlide(0);
-    }
+    if (activeSlide > gallerySlides.length - 1) setActiveSlide(0);
   }, [activeSlide, gallerySlides.length]);
+
+  useEffect(() => {
+    const onScroll = () => {
+      const scrollY = window.scrollY + 140;
+      for (const cat of categories) {
+        const el = document.getElementById(cat.id);
+        if (el && el.offsetTop <= scrollY && el.offsetTop + el.offsetHeight > scrollY) {
+          setActiveCategory(cat.id);
+          break;
+        }
+      }
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [categories]);
 
   const scrollToCategory = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
-    const element = document.getElementById(id);
-    if (element) {
-      const offset = 100; // Header height
-      const bodyRect = document.body.getBoundingClientRect().top;
-      const elementRect = element.getBoundingClientRect().top;
-      const elementPosition = elementRect - bodyRect;
-      const offsetPosition = elementPosition - offset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth",
-      });
+    const el = document.getElementById(id);
+    if (el) {
+      const y = el.getBoundingClientRect().top + window.scrollY - 108;
+      window.scrollTo({ top: y, behavior: "smooth" });
     }
   };
 
-  const buildServiceOptions = (category: ServiceCategory) =>
-    category.services.map((service) => ({
-      id: service.id,
-      title: service.title,
-    }));
+  const buildServiceOptions = (cat: ServiceCategory) =>
+    cat.services.map((s) => ({ id: s.id, title: s.title }));
 
   const handleRequestCategory = (category: ServiceCategory) => {
     setQuoteContext({
-      initialProduct: {
-        category: category.title,
-      },
+      initialProduct: { category: category.title },
       serviceOptions: buildServiceOptions(category),
       initialSelectedServiceIds: [],
     });
@@ -147,34 +118,28 @@ export default function ServicesListingClient({
   };
 
   const handleRequestService = (category: ServiceCategory, serviceId: string) => {
-    const selected = category.services.find((service) => service.id === serviceId);
-    if (!selected) {
-      return;
-    }
-
+    const svc = category.services.find((s) => s.id === serviceId);
+    if (!svc) return;
     setQuoteContext({
-      initialProduct: {
-        name: selected.title,
-        category: category.title,
-      },
+      initialProduct: { name: svc.title, category: category.title },
       serviceOptions: buildServiceOptions(category),
-      initialSelectedServiceIds: [selected.id],
+      initialSelectedServiceIds: [svc.id],
     });
     setIsQuoteModalOpen(true);
   };
 
   return (
-    <main className="min-h-screen bg-white dark:bg-gray-950 font-sans pb-32">
-      {/* Gallery Hero */}
-      <section className="relative h-[62vh] min-h-[420px] overflow-hidden bg-gray-900">
-        {gallerySlides.map((slide, index) => (
+    <main className="min-h-screen bg-gray-50 font-sans dark:bg-gray-950">
+      {/* ── Hero ──────────────────────────────────────────────────── */}
+      <section className="relative h-[52vh] min-h-[360px] max-h-[520px] overflow-hidden bg-gray-950">
+        {gallerySlides.map((slide, i) => (
           <div
             key={slide.id}
             className={cn(
               "absolute inset-0 transition-opacity duration-1000",
-              index === activeSlide ? "opacity-100" : "opacity-0",
+              i === activeSlide ? "opacity-100" : "opacity-0",
             )}
-            aria-hidden={index !== activeSlide}
+            aria-hidden={i !== activeSlide}
           >
             <Image
               src={slide.imageSrc}
@@ -182,170 +147,235 @@ export default function ServicesListingClient({
               fill
               sizes="100vw"
               className="object-cover"
-              priority={index === 0}
+              priority={i === 0}
             />
           </div>
         ))}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-black/20" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-black/35" />
 
-        <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/50 to-black/35" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-black/45" />
-
-        <div className="relative z-10 mx-auto flex h-full w-full max-w-7xl items-end px-4 pb-14 sm:px-6 lg:px-8">
-          <div className="w-full">
-            <p className="text-sm font-semibold uppercase tracking-[0.34em] text-cyan-300">
+        <div className="relative z-10 flex h-full flex-col justify-between px-5 pb-8 pt-24 sm:px-10 sm:pt-28 lg:px-20">
+          <div className="max-w-2xl">
+            <span className="mb-3 inline-block text-[10px] font-semibold uppercase tracking-[0.35em] text-cyan-400 sm:mb-4 sm:text-xs">
               {sectionHeading}
-            </p>
-
-            <h1 className="mt-3 max-w-4xl text-3xl font-semibold leading-tight text-white md:text-5xl lg:text-6xl">
-              {renderEngineeringSolutionsTitle(heroHeading)}
+            </span>
+            <h1 className="text-2xl font-bold leading-[1.15] text-white sm:text-4xl lg:text-5xl">
+              {renderHighlightedTitle(heroHeading)}
             </h1>
-
-            <p className="mt-4 max-w-3xl text-base leading-relaxed text-gray-200 md:text-xl">
+            <p className="mt-3 max-w-xl text-sm leading-relaxed text-gray-300 sm:mt-4 sm:text-base md:text-lg">
               {heroDescription}
             </p>
+          </div>
 
+          {/* Slide indicators — large enough touch area */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-1">
+              {gallerySlides.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setActiveSlide(i)}
+                  aria-label={`Slide ${i + 1}`}
+                  className="flex h-8 items-center px-1"
+                >
+                  <span
+                    className={cn(
+                      "block rounded-full transition-all duration-500",
+                      i === activeSlide
+                        ? "h-0.5 w-6 bg-cyan-400"
+                        : "h-0.5 w-2.5 bg-white/35",
+                    )}
+                  />
+                </button>
+              ))}
+            </div>
+            <span className="font-mono text-xs tabular-nums text-white/50">
+              <span className="text-white/90">{String(activeSlide + 1).padStart(2, "0")}</span>
+              {" — "}
+              {String(gallerySlides.length).padStart(2, "0")}
+            </span>
           </div>
         </div>
       </section>
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-12 lg:pt-24">
-        
-        <div className="flex flex-col lg:flex-row gap-12 lg:gap-20">
-          {/* Sidebar Navigation (Desktop) */}
-          <aside className="hidden lg:block w-64 flex-shrink-0">
-            <div className="sticky top-32">
-              <h3 className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-6">
+      {/* ── Page body ─────────────────────────────────────────────── */}
+      <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-10 lg:px-8 lg:py-14">
+
+        {/* Mobile tabs — sticky, full-width, proper touch height */}
+        <div className="sticky top-0 z-40 -mx-4 mb-6 border-b border-gray-200 bg-white/95 backdrop-blur-md dark:border-gray-800 dark:bg-gray-950/95 lg:hidden">
+          <div className="flex overflow-x-auto [&::-webkit-scrollbar]:hidden">
+            {categories.map((cat) => (
+              <Link
+                key={cat.id}
+                href={`#${cat.id}`}
+                onClick={(e: React.MouseEvent<HTMLAnchorElement>) =>
+                  scrollToCategory(e, cat.id)
+                }
+                className={cn(
+                  "relative shrink-0 px-4 py-3.5 text-xs font-semibold transition-colors duration-200 whitespace-nowrap",
+                  activeCategory === cat.id
+                    ? "text-cyan-700 dark:text-cyan-400"
+                    : "text-gray-500 dark:text-gray-400",
+                )}
+              >
+                {cat.title}
+                {activeCategory === cat.id && (
+                  <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-cyan-700 dark:bg-cyan-400" />
+                )}
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        <div className="flex gap-10 lg:gap-14">
+
+          {/* Sidebar — desktop only */}
+          <aside className="hidden lg:block w-56 flex-shrink-0">
+            <div className="sticky top-24">
+              <p className="mb-5 text-[10px] font-semibold uppercase tracking-[0.25em] text-gray-400">
                 Categories
-              </h3>
-              <nav className="space-y-2 border-l border-gray-100 dark:border-gray-800">
-                {categories.map((category) => (
+              </p>
+              <nav className="space-y-0.5 border-l border-gray-200 dark:border-gray-800">
+                {categories.map((cat, i) => (
                   <Link
-                    key={category.id}
-                    href={`#${category.id}`}
-                    onClick={(e: React.MouseEvent<HTMLAnchorElement>) => scrollToCategory(e, category.id)}
+                    key={cat.id}
+                    href={`#${cat.id}`}
+                    onClick={(e: React.MouseEvent<HTMLAnchorElement>) =>
+                      scrollToCategory(e, cat.id)
+                    }
                     className={cn(
-                      "block pl-6 py-2 text-sm transition-all duration-300 border-l-2 -ml-[2px]",
-                      activeCategory === category.id
-                        ? "border-cyan-600 text-cyan-600 font-medium"
-                        : "border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:border-gray-300"
+                      "group -ml-[2px] flex items-baseline gap-2.5 border-l-2 py-2.5 pl-4 text-sm transition-all duration-200",
+                      activeCategory === cat.id
+                        ? "border-cyan-700 font-semibold text-cyan-700 dark:border-cyan-400 dark:text-cyan-400"
+                        : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white",
                     )}
                   >
-                    {category.title}
+                    <span
+                      className={cn(
+                        "font-mono text-[10px] transition-colors",
+                        activeCategory === cat.id
+                          ? "text-cyan-600 dark:text-cyan-500"
+                          : "text-gray-300 group-hover:text-gray-400 dark:text-gray-600",
+                      )}
+                    >
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    {cat.title}
                   </Link>
                 ))}
               </nav>
             </div>
           </aside>
 
-          {/* Mobile Navigation (Horizontal) */}
-          <div className="lg:hidden sticky top-20 z-30 bg-white/80 dark:bg-gray-950/80 backdrop-blur-md py-4 -mx-4 px-4 border-b border-gray-100 dark:border-gray-800">
-            <div className="flex space-x-2 overflow-x-auto pb-2 scrollbar-hide">
-              {categories.map((category) => (
-                <Link
-                  key={category.id}
-                  href={`#${category.id}`}
-                  onClick={(e: React.MouseEvent<HTMLAnchorElement>) => scrollToCategory(e, category.id)}
-                  className={cn(
-                    "whitespace-nowrap px-4 py-2 text-sm font-medium rounded-full transition-all",
-                    activeCategory === category.id
-                      ? "bg-cyan-700 text-white shadow-md shadow-cyan-600/20"
-                      : "bg-gray-50 dark:bg-gray-900 text-gray-600 dark:text-gray-400 hover:bg-gray-100"
-                  )}
-                >
-                  {category.title}
-                </Link>
-              ))}
-            </div>
-          </div>
-
-          {/* Main Content */}
-          <div className="flex-1 min-w-0">
-            <div className="space-y-20">
-              {categories.map((category) => {
+          {/* Main content */}
+          <div className="min-w-0 flex-1">
+            <div className="space-y-10 sm:space-y-14">
+              {categories.map((category, catIdx) => {
                 const imageCandidates = [
+                  categoryListImages[category.id],
                   category.imageSrc,
-                  category.services[0]?.imageSrc,
-                  "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&w=1200&q=80",
-                ].filter((item): item is string => Boolean(item));
+                  "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&w=1920&q=80",
+                ].filter(Boolean) as string[];
                 const step = categoryImageStep[category.id] ?? 0;
                 const safeStep = Math.min(step, imageCandidates.length - 1);
-                const categoryImageSrc = imageCandidates[safeStep];
+                const catImage = imageCandidates[safeStep];
 
                 return (
                   <section
                     key={category.id}
                     id={category.id}
-                    className="scroll-mt-32"
+                    className="scroll-mt-[108px] lg:scroll-mt-28"
                   >
-                    <div className="mb-8">
-                      <h2 className="mb-3 flex items-center gap-3 text-2xl font-bold text-gray-900 dark:text-white">
-                        <span className="block h-1 w-8 rounded-full bg-cyan-700"></span>
-                        {category.title}
-                      </h2>
-                      <p className="max-w-3xl pl-11 text-lg leading-relaxed text-gray-500 dark:text-gray-400">
-                        {category.description}
-                      </p>
-                    </div>
+                    {/* Category banner — quote CTA always inside */}
+                    <div className="relative mb-4 h-40 overflow-hidden rounded-xl sm:mb-5 sm:h-48 md:h-56 md:rounded-2xl">
+                      <Image
+                        src={catImage}
+                        alt={category.title}
+                        fill
+                        sizes="(max-width: 1280px) 100vw, 900px"
+                        className="object-cover"
+                        onError={() => {
+                          if (safeStep < imageCandidates.length - 1) {
+                            setCategoryImageStep((prev) => ({
+                              ...prev,
+                              [category.id]: safeStep + 1,
+                            }));
+                          }
+                        }}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
 
-                    <div className="overflow-hidden rounded-2xl border border-gray-100 bg-white p-4 shadow-sm dark:border-gray-800 dark:bg-gray-900 md:p-6">
-                      <div className="grid grid-cols-1 gap-6 md:grid-cols-12">
-                        <div className="relative h-56 overflow-hidden rounded-xl bg-gray-100 md:col-span-5 md:h-full md:min-h-[280px] dark:bg-gray-800">
-                          <Image
-                            src={categoryImageSrc}
-                            alt={category.title}
-                            fill
-                            sizes="(max-width: 768px) 100vw, 40vw"
-                            className="object-cover"
-                            priority={false}
-                            onError={() => {
-                              if (safeStep < imageCandidates.length - 1) {
-                                setCategoryImageStep((current) => ({
-                                  ...current,
-                                  [category.id]: safeStep + 1,
-                                }));
-                              }
-                            }}
-                          />
-                        </div>
-
-                        <div className="md:col-span-7">
-                          <div className="mb-4 flex justify-end">
-                            <button
-                              type="button"
-                              onClick={() => handleRequestCategory(category)}
-                              className="inline-flex items-center gap-2 rounded-full bg-cyan-700 px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-white transition-colors hover:bg-cyan-800"
-                            >
-                              <span className="inline-flex h-4 w-4 items-center justify-center text-[13px] leading-none" aria-hidden="true">
-                                &#xFDFC;
-                              </span>
-                              {tNav("getQuote")}
-                            </button>
+                      <div className="absolute inset-0 flex flex-col justify-end p-4 sm:p-6 md:p-8">
+                        <div className="flex items-end justify-between gap-3">
+                          <div className="min-w-0">
+                            <span className="mb-0.5 block font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-cyan-400">
+                              {String(catIdx + 1).padStart(2, "0")}
+                            </span>
+                            <h2 className="text-base font-bold text-white sm:text-xl md:text-2xl">
+                              {category.title}
+                            </h2>
+                            <p className="mt-0.5 line-clamp-1 text-[11px] leading-relaxed text-gray-300 sm:line-clamp-2 sm:text-xs md:text-sm">
+                              {category.description}
+                            </p>
                           </div>
-
-                          <ul className="space-y-2">
-                            {category.services.map((service) => (
-                              <li key={service.id}>
-                                <div className="group flex w-full items-stretch justify-between rounded-xl border border-gray-200 bg-white transition-colors hover:border-cyan-500 hover:bg-cyan-50 dark:border-gray-700 dark:bg-gray-900 dark:hover:border-cyan-500/60 dark:hover:bg-cyan-950/30">
-                                  <div className="flex-1 px-4 py-3 text-left">
-                                    <span className="text-sm font-medium text-gray-800 transition-colors group-hover:text-cyan-700 dark:text-gray-100 dark:group-hover:text-cyan-300">
-                                      {service.title}
-                                    </span>
-                                  </div>
-
-                                  <button
-                                    type="button"
-                                    onClick={() => handleRequestService(category, service.id)}
-                                    className="m-1 inline-flex items-center gap-2 rounded-full bg-cyan-700 px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-white transition hover:bg-cyan-800"
-                                  >
-                                    {tNav("getQuote")}
-                                  </button>
-                                </div>
-                              </li>
-                            ))}
-                          </ul>
+                          {/* Quote CTA always in banner */}
+                          <button
+                            onClick={() => handleRequestCategory(category)}
+                            className="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-cyan-700/90 px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-white backdrop-blur-sm transition hover:bg-cyan-600 active:scale-95 sm:px-4 sm:py-2.5 sm:text-xs"
+                          >
+                            {tNav("getQuote")}
+                            <ArrowRight className="h-3 w-3" />
+                          </button>
                         </div>
                       </div>
                     </div>
+
+                    {/* Mobile: compact list rows (fast scanning, proper touch targets) */}
+                    <ul className="divide-y divide-gray-100 overflow-hidden rounded-xl border border-gray-200 bg-white dark:divide-gray-800 dark:border-gray-800 dark:bg-gray-900 sm:hidden">
+                      {category.services.map((service) => (
+                        <li key={service.id}>
+                          <button
+                            onClick={() => handleRequestService(category, service.id)}
+                            className="flex min-h-[52px] w-full items-center justify-between gap-3 px-4 py-3 text-left transition-colors active:bg-cyan-50 dark:active:bg-cyan-950/30"
+                          >
+                            <span className="text-sm font-medium leading-snug text-gray-800 dark:text-gray-100">
+                              {service.title}
+                            </span>
+                            <ArrowUpRight className="h-4 w-4 shrink-0 text-cyan-600 dark:text-cyan-400" />
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+
+                    {/* Tablet/Desktop: card grid */}
+                    <div className="hidden sm:grid sm:grid-cols-2 sm:gap-3">
+                      {category.services.map((service) => (
+                        <div
+                          key={service.id}
+                          className="group flex flex-col rounded-xl border border-gray-200 bg-white p-5 transition-all duration-200 hover:border-cyan-200 hover:shadow-md dark:border-gray-800 dark:bg-gray-900 dark:hover:border-cyan-800/60"
+                        >
+                          <h3 className="mb-2 text-sm font-semibold leading-snug text-gray-900 transition-colors group-hover:text-cyan-700 dark:text-white dark:group-hover:text-cyan-400">
+                            {service.title}
+                          </h3>
+                          {service.description && (
+                            <p className="mb-4 flex-1 text-xs leading-relaxed text-gray-500 line-clamp-2 dark:text-gray-400">
+                              {service.description}
+                            </p>
+                          )}
+                          <button
+                            onClick={() => handleRequestService(category, service.id)}
+                            className="mt-auto inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.15em] text-cyan-700 transition hover:text-cyan-500 dark:text-cyan-400 dark:hover:text-cyan-300"
+                          >
+                            {tNav("getQuote")}
+                            <ArrowUpRight className="h-3 w-3" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+
+                    {catIdx < categories.length - 1 && (
+                      <div className="mt-8 h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent dark:via-gray-800 sm:mt-10" />
+                    )}
                   </section>
                 );
               })}
@@ -354,8 +384,8 @@ export default function ServicesListingClient({
         </div>
       </div>
 
-      <QuoteModal 
-        open={isQuoteModalOpen} 
+      <QuoteModal
+        open={isQuoteModalOpen}
         onOpenChange={setIsQuoteModalOpen}
         initialProduct={quoteContext?.initialProduct}
         serviceOptions={quoteContext?.serviceOptions}

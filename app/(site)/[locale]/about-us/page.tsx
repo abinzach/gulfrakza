@@ -14,8 +14,12 @@ export async function generateMetadata({ params }: AboutUsPageProps): Promise<Me
   const messages = await getMessages(activeLocale);
   const aboutMessages = messages?.about as { metaTitle?: string; metaDescription?: string } | undefined;
 
-  const title = aboutMessages?.metaTitle || "About GulfRakza | Leading Industrial Supplier | Dammam, Saudi Arabia";
-  const description = aboutMessages?.metaDescription || "Learn about GulfRakza - your trusted partner for industrial supplies in Dammam, Saudi Arabia.";
+  const title =
+    aboutMessages?.metaTitle ||
+    "About GulfRakza | Industrial Supplies & Project Support | Dammam, Saudi Arabia";
+  const description =
+    aboutMessages?.metaDescription ||
+    "Learn about GulfRakza - a Dammam-based industrial trading and project support partner serving customers across Saudi Arabia.";
 
   const canonicalPath = `/${activeLocale}/about-us`;
   const canonicalUrl = `${siteUrl}${canonicalPath}`;

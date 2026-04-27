@@ -2,7 +2,7 @@
   "hero": {
     "ariaLabel": "Gulf Rakza Hero Section",
     "eyebrow": "Dammam-based supply partner",
-    "h1": "Industrial supplies that keep Saudi worksites moving",
+    "h1": "Engineered with Trust",
     "titlePrefix": "Connecting",
     "titleMid1": "Markets,",
     "titleMid2": " Empowering",
@@ -238,8 +238,14 @@
       { "title": "Rope Access & Safety Training", "description": "Expert training and rope access solutions to ensure safe, efficient operations." },
       { "title": "Industrial Trading", "description": "A curated selection of industrial products to complement our service offerings." }
     ],
+    "whyEyebrow": "Why GulfRakza",
     "whyHeading": "Why Choose Our Integrated Engineering Solutions?",
     "whyDescription": "At Gulf Rakza, our engineering solutions are backed by field experience, disciplined quality control, and a practical approach to industrial execution. From rapid response times to uncompromised safety standards, we are your trusted partner for project-ready support.",
+    "proofStats": {
+      "response": "Response",
+      "coverage": "Coverage",
+      "led": "Led"
+    },
     "pillars": {
       "expertise": "Expertise",
       "quality": "Quality",

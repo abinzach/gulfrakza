@@ -9,7 +9,7 @@
   },
   "nav": {
     "about": "من نحن",
-    "services": "الحلول الهندسية المتكاملة",
+    "services": "الخدمات",
     "products": "المنتجات",
     "getQuote": "اطلب عرض سعر"
   },
@@ -46,7 +46,7 @@
   },
   "footer": {
     "companyName": "مؤسسة ركزة الخليج للتجارة",
-    "tagline": "نربط الأسواق، ونمكّن النمو",
+    "tagline": "مُهندَس بثقة",
     "commercialRegistration": "السجل التجاري: 2050194171",
     "quickLinks": "روابط سريعة",
     "links": {

@@ -1,7 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useTranslations } from "@/i18n/provider";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,6 +9,7 @@ import {
 } from "@/components/ui/card-with-grid-ellipsis-pattern";
 import QuoteModal from "../GetQuote";
 import Link from "next/link";
+import { BadgeCheck, ShieldCheck, Wrench } from "lucide-react";
 
 type ServiceCategoryLite = {
   id: string;
@@ -43,78 +43,16 @@ const renderEngineeringSolutionsTitle = (title: string) => {
 export default function ServicesClient({ categories }: { categories: ServiceCategoryLite[] }) {
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
   const t = useTranslations("home.services");
-  const timelineRef = useRef<HTMLDivElement | null>(null);
-  const markerRefs = useRef<Array<HTMLSpanElement | null>>([]);
-  const [lineMetrics, setLineMetrics] = useState({ top: 0, left: 0, width: 0, travel: 0 });
 
   const useFiveCardLayout = categories.length === 5;
   const pillars = useMemo(
     () => [
-      { key: "expertise" },
-      { key: "quality" },
-      { key: "safety" },
+      { key: "expertise", icon: Wrench, label: "01" },
+      { key: "quality", icon: BadgeCheck, label: "02" },
+      { key: "safety", icon: ShieldCheck, label: "03" },
     ],
     [],
   );
-
-  useEffect(() => {
-    const updateLineMetrics = () => {
-      const container = timelineRef.current;
-      const firstMarker = markerRefs.current[0];
-      const lastMarker = markerRefs.current[pillars.length - 1];
-
-      if (!container || !firstMarker || !lastMarker) {
-        return;
-      }
-
-      const containerRect = container.getBoundingClientRect();
-      const firstRect = firstMarker.getBoundingClientRect();
-      const lastRect = lastMarker.getBoundingClientRect();
-
-      const top = firstRect.top - containerRect.top + firstRect.height / 2;
-      const left = firstRect.left - containerRect.left + firstRect.width / 2;
-      const right = lastRect.left - containerRect.left + lastRect.width / 2;
-      const width = Math.max(0, right - left);
-      const streakWidth = 40;
-      const travel = Math.max(0, width - streakWidth);
-
-      setLineMetrics((current) => {
-        if (
-          Math.abs(current.top - top) < 0.5 &&
-          Math.abs(current.left - left) < 0.5 &&
-          Math.abs(current.width - width) < 0.5 &&
-          Math.abs(current.travel - travel) < 0.5
-        ) {
-          return current;
-        }
-        return { top, left, width, travel };
-      });
-    };
-
-    const animationFrame = window.requestAnimationFrame(updateLineMetrics);
-    window.addEventListener("resize", updateLineMetrics);
-
-    let resizeObserver: ResizeObserver | null = null;
-    if (typeof ResizeObserver !== "undefined") {
-      resizeObserver = new ResizeObserver(updateLineMetrics);
-      if (timelineRef.current) {
-        resizeObserver.observe(timelineRef.current);
-      }
-      markerRefs.current.forEach((element) => {
-        if (element) {
-          resizeObserver?.observe(element);
-        }
-      });
-    }
-
-    return () => {
-      window.cancelAnimationFrame(animationFrame);
-      window.removeEventListener("resize", updateLineMetrics);
-      resizeObserver?.disconnect();
-    };
-  }, [pillars.length]);
-
-  const hasLineMetrics = lineMetrics.width > 0;
 
   return (
     <>
@@ -158,52 +96,70 @@ export default function ServicesClient({ categories }: { categories: ServiceCate
         </div>
       </section>
 
-      <section className="relative overflow-hidden bg-gradient-to-b from-slate-50 via-white to-slate-50 py-24">
-        <div className="mx-auto max-w-5xl px-4 text-center font-inter">
-          <h2 className="text-4xl font-semibold tracking-tight text-slate-900 lg:text-5xl">
-            {t("whyHeading")}
-          </h2>
-          <p className="mx-auto mt-5 font-raleway text-3xl leading-relaxed text-slate-600">
-            {t("whyDescription")}
-          </p>
+      <section className="bg-white py-20 lg:py-28">
+        <div className="mx-auto max-w-7xl px-4 font-inter">
+          <div className="relative overflow-hidden rounded-[2rem] border border-slate-200 bg-[#f7f9fb] shadow-[0_24px_80px_rgba(15,23,42,0.07)]">
+            <div className="pointer-events-none absolute inset-0 opacity-[0.45] [background-image:linear-gradient(to_right,rgba(15,23,42,0.055)_1px,transparent_1px),linear-gradient(to_bottom,rgba(15,23,42,0.055)_1px,transparent_1px)] [background-size:48px_48px]" />
+            <div className="pointer-events-none absolute right-0 top-0 h-full w-1/3 bg-gradient-to-l from-white/80 to-transparent" />
 
-          <div ref={timelineRef} className="relative mx-auto mt-12 max-w-5xl">
-            {hasLineMetrics && (
-              <div
-                className="pointer-events-none absolute h-px bg-gradient-to-r from-cyan-200 via-cyan-500/60 to-cyan-200"
-                style={{
-                  top: `${lineMetrics.top}px`,
-                  left: `${lineMetrics.left}px`,
-                  width: `${lineMetrics.width}px`,
-                }}
-              />
-            )}
-            {hasLineMetrics && (
-              <motion.div
-                className="pointer-events-none absolute h-[2px] w-10 bg-gradient-to-r from-transparent via-cyan-300 to-transparent shadow-[0_0_10px_rgba(34,211,238,0.95)]"
-                style={{ top: `${lineMetrics.top}px`, left: `${lineMetrics.left}px` }}
-                animate={{ x: [0, lineMetrics.travel, 0], opacity: [0, 1, 1, 0] }}
-                transition={{ duration: 6.5, repeat: Infinity, ease: "linear" }}
-                aria-hidden
-              />
-            )}
+            <div className="relative grid lg:grid-cols-[0.92fr_1.08fr]">
+              <div className="bg-white/85 p-6 sm:p-8 lg:p-10 xl:p-12">
+                <span className="text-xs font-semibold uppercase tracking-[0.28em] text-cyan-700">
+                  {t("whyEyebrow")}
+                </span>
+                <h2 className="mt-5 max-w-xl text-3xl font-semibold leading-tight tracking-tight text-slate-950 sm:text-4xl lg:text-5xl">
+                  {t("whyHeading")}
+                </h2>
+                <p className="mt-6 max-w-xl text-base leading-8 text-slate-600 lg:text-lg">
+                  {t("whyDescription")}
+                </p>
+                <div className="mt-10 hidden h-px w-full bg-gradient-to-r from-slate-300 via-slate-200 to-transparent lg:block" />
+                <p className="mt-5 hidden max-w-sm text-sm leading-6 text-slate-500 lg:block">
+                  Practical delivery support for industrial teams that need clear scopes,
+                  controlled execution, and dependable site readiness.
+                </p>
+              </div>
 
-            <ol className="grid grid-cols-3 gap-5 sm:gap-8">
-              {pillars.map((pillar, index) => (
-                <li key={pillar.key} className="relative px-4 text-center">
-                  <span
-                    ref={(element) => {
-                      markerRefs.current[index] = element;
-                    }}
-                    className="relative z-10 inline-block h-3 w-3 rounded-full bg-cyan-700"
-                    aria-hidden="true"
-                  />
-                  <h3 className="mt-4 font-hanken text-[1.5rem] font-light leading-tight tracking-[-0.01em] text-cyan-600 md:text-[1.85rem]">
-                    {t(`pillars.${pillar.key}`)}
-                  </h3>
-                </li>
-              ))}
-            </ol>
+              <div className="p-4 sm:p-6 lg:p-10 xl:p-12">
+                <div className="relative">
+                  <div className="absolute left-5 top-8 hidden h-[calc(100%-4rem)] w-px bg-slate-200 sm:block" />
+                  <div className="space-y-4">
+                    {pillars.map((pillar) => {
+                    const Icon = pillar.icon;
+                    return (
+                      <article
+                        key={pillar.key}
+                        className="group relative rounded-2xl border border-slate-200 bg-white/95 p-5 shadow-sm transition-all duration-300 hover:border-cyan-200 hover:bg-white hover:shadow-[0_18px_45px_rgba(15,23,42,0.08)] sm:ml-10 sm:p-6"
+                      >
+                        <span className="absolute -left-[3.25rem] top-6 hidden h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition-colors group-hover:border-cyan-200 group-hover:text-cyan-700 sm:flex">
+                          <Icon className="h-4 w-4" />
+                        </span>
+                        <div className="flex items-start gap-4">
+                          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-slate-700 transition-colors group-hover:bg-cyan-50 group-hover:text-cyan-700 sm:hidden">
+                            <Icon className="h-5 w-5" />
+                          </span>
+                          <div className="min-w-0">
+                            <div className="flex items-center gap-3">
+                              <span className="font-mono text-xs font-semibold uppercase tracking-[0.22em] text-slate-400">
+                                {pillar.label}
+                              </span>
+                              <span className="h-px w-8 bg-slate-200" />
+                            </div>
+                            <h3 className="mt-3 text-xl font-semibold tracking-tight text-slate-950">
+                              {t(`pillars.${pillar.key}`)}
+                            </h3>
+                            <p className="mt-2 text-sm leading-7 text-slate-600">
+                              {t(`pillarDetails.${pillar.key}`)}
+                            </p>
+                          </div>
+                        </div>
+                      </article>
+                    );
+                    })}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>

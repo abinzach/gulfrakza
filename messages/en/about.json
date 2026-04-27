@@ -1,10 +1,58 @@
 {
-  "metaTitle": "About GulfRakza | Leading Industrial Supplier | Dammam, Saudi Arabia",
-  "metaDescription": "Learn about GulfRakza (Rakzah Gulf Trading Establishment) - your trusted partner for industrial supplies, PPE, and safety equipment in Dammam. Serving industries across Saudi Arabia since establishment.",
-  "h1": "About GulfRakza — Leading Industrial Supplier in Dammam, Saudi Arabia",
-  "heroAlt": "GulfRakza — industrial supplier and PPE provider in Dammam, Saudi Arabia",
+  "metaTitle": "About GulfRakza | Industrial Supplies & Project Support | Dammam, Saudi Arabia",
+  "metaDescription": "Learn about GulfRakza (Rakzah Gulf Trading Establishment), a Dammam-based industrial trading and project support partner supplying PPE, safety equipment, spare parts, consumables, and industrial materials across Saudi Arabia.",
+  "heroEyebrow": "About GulfRakza",
+  "h1": "Industrial supplies and project support from Dammam",
+  "heroDescription": "GulfRakza supports industrial teams across Saudi Arabia with dependable sourcing, responsive coordination, and practical solutions for demanding operational environments.",
+  "heroAlt": "GulfRakza industrial trading and project support team in Dammam, Saudi Arabia",
+  "legalLabel": "Registered company",
+  "legalName": "Rakzah Gulf Trading Establishment",
+  "legalDescription": "GulfRakza is the trading brand of Rakzah Gulf Trading Establishment, based in Dammam and serving industrial customers across the Kingdom of Saudi Arabia.",
+  "snapshotEyebrow": "Company snapshot",
+  "snapshotHeading": "A practical supply partner for industrial operations",
   "intro": "Based in Dammam, Saudi Arabia, our trading company is a trusted partner for industries, offering top-quality industrial supplies, including spare parts, consumables, lubricants, chemicals, safety equipment, and hydraulic components. We are committed to delivering excellence in service and product quality, ensuring operational efficiency for our clients.",
-  "visionHeading": "Our Vision & Mission",
+  "snapshot": {
+    "location": {
+      "label": "Base",
+      "value": "Dammam, Saudi Arabia"
+    },
+    "coverage": {
+      "label": "Coverage",
+      "value": "Industrial customers across KSA"
+    },
+    "supply": {
+      "label": "Supply focus",
+      "value": "PPE, safety, spare parts and consumables"
+    },
+    "support": {
+      "label": "Support",
+      "value": "Trading, sourcing and project-ready coordination"
+    }
+  },
+  "visionLabel": "Vision",
+  "visionHeading": "Connecting markets, empowering growth",
   "visionParagraph": "Driven by the vision of 'Connecting Markets, Empowering Growth', we focus on driving growth and fostering long-term partnerships built on trust, integrity, and reliability. Our skilled team delivers personalized and efficient service to meet the unique needs of every client.",
-  "missionParagraph": "At Gulf Rakza, our vision is to consistently deliver exceptional performance by providing innovative products, services, EPC projects, and turnkey solutions across the Kingdom of Saudi Arabia. As a leader in material supply, we proudly offer reliable, high-quality, and cost-effective spare parts and materials, catering to industries from general manufacturing to aviation. We build strategic partnerships with global manufacturers, distributors, and service providers, embracing new business perspectives to ensure we continue to exceed client expectations."
+  "missionLabel": "Mission",
+  "missionHeading": "Reliable materials, services and execution support",
+  "missionParagraph": "At Gulf Rakza, our mission is to consistently deliver dependable performance by providing innovative products, services, EPC project support, and turnkey solutions across the Kingdom of Saudi Arabia. We supply reliable, high-quality, and cost-effective spare parts and materials for industries from general manufacturing to aviation, while building strategic partnerships with global manufacturers, distributors, and service providers.",
+  "valuesEyebrow": "How we work",
+  "valuesHeading": "Built around the priorities of industrial teams",
+  "values": {
+    "reliability": {
+      "title": "Reliable coordination",
+      "description": "We focus on clear communication, practical timelines, and dependable follow-through from inquiry to delivery."
+    },
+    "quality": {
+      "title": "Quality sourcing",
+      "description": "We work with trusted suppliers and product lines to support consistent performance in demanding environments."
+    },
+    "responsiveness": {
+      "title": "Responsive support",
+      "description": "Our team is structured to move quickly when operations need product availability, alternatives, or urgent coordination."
+    },
+    "partnership": {
+      "title": "Long-term relationships",
+      "description": "We build partnerships around trust, integrity, and a clear understanding of each customer's operating needs."
+    }
+  }
 }

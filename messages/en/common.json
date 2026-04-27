@@ -9,7 +9,7 @@
   },
   "nav": {
     "about": "About Us",
-    "services": "Integrated Engineering Solutions",
+    "services": "Services",
     "products": "Products",
     "getQuote": "Get a quote"
   },
@@ -46,13 +46,13 @@
   },
   "footer": {
     "companyName": "Rakzah Gulf Trading Establishment",
-    "tagline": "Connecting Markets, Empowering Growth",
+    "tagline": "Engineered with Trust",
     "commercialRegistration": "C.R. 2050194171",
     "quickLinks": "Quick Links",
     "links": {
       "home": "Home",
       "about": "About Us",
-      "services": "Integrated Engineering Solutions",
+      "services": "Services",
       "products": "Products",
       "contact": "Contact",
       "privacy": "Privacy Policy",
