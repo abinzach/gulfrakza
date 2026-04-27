@@ -135,13 +135,6 @@ export default function ServicesListingClient({
       title: service.title,
     }));
 
-  const buildServiceHref = (serviceId: string) => {
-    // Prefer slug if present (Sanity-backed). Fallback to id.
-    // Also preserves locale thanks to locale-aware Link.
-    const slugValue = (serviceId || "").trim();
-    return `/services/${encodeURIComponent(slugValue)}`;
-  };
-
   const handleRequestCategory = (category: ServiceCategory) => {
     setQuoteContext({
       initialProduct: {
@@ -333,15 +326,11 @@ export default function ServicesListingClient({
                             {category.services.map((service) => (
                               <li key={service.id}>
                                 <div className="group flex w-full items-stretch justify-between rounded-xl border border-gray-200 bg-white transition-colors hover:border-cyan-500 hover:bg-cyan-50 dark:border-gray-700 dark:bg-gray-900 dark:hover:border-cyan-500/60 dark:hover:bg-cyan-950/30">
-                                  <Link
-                                    href={buildServiceHref(service.id)}
-                                    className="flex-1 px-4 py-3 text-left"
-                                    aria-label={service.title}
-                                  >
+                                  <div className="flex-1 px-4 py-3 text-left">
                                     <span className="text-sm font-medium text-gray-800 transition-colors group-hover:text-cyan-700 dark:text-gray-100 dark:group-hover:text-cyan-300">
                                       {service.title}
                                     </span>
-                                  </Link>
+                                  </div>
 
                                   <button
                                     type="button"

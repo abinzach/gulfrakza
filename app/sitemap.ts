@@ -2,8 +2,6 @@ import { MetadataRoute } from "next";
 
 import { fetchCatalogData } from "@/lib/catalog";
 import { locales } from "@/i18n/config";
-import { fetchServiceSlugs } from "@/lib/services-sanity";
-import { getAllServiceSlugs as getLocalServiceSlugs } from "@/lib/services";
 
 const baseUrl = "https://www.gulfrakza.com";
 
@@ -46,12 +44,6 @@ const normalizeHrefToPath = (href: string) => {
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const { products } = await fetchCatalogData();
-  let serviceSlugs: string[] = getLocalServiceSlugs();
-  try {
-    serviceSlugs = Array.from(new Set([...serviceSlugs, ...(await fetchServiceSlugs())]));
-  } catch {
-    // keep sitemap resilient even if Sanity is unavailable
-  }
 
   const entries: MetadataRoute.Sitemap = [];
   const seen = new Set<string>();
@@ -86,11 +78,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   addLocalizedEntries("/services", 0.85, "monthly");
   addLocalizedEntries("/privacy-policy", 0.4, "yearly");
   addLocalizedEntries("/terms-of-service", 0.4, "yearly");
-
-  // Service detail pages
-  serviceSlugs.forEach((slug) => {
-    addLocalizedEntries(`/services/${slug}`, 0.85, "monthly");
-  });
 
   // Only include actual product detail pages, not category paths
   // Category filtering is handled via query params on /products page

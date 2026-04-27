@@ -1,16 +1,11 @@
 import "server-only";
 
-import type { PortableTextBlock } from "next-sanity";
 import { createClient } from "next-sanity";
 
 import { apiVersion, dataset, projectId } from "@/sanity/env";
 import { urlFor } from "@/sanity/lib/image";
 import type { Locale } from "@/i18n/config";
-import {
-  serviceBySlugQuery,
-  serviceCategoriesQuery,
-  serviceSlugsQuery,
-} from "@/sanity/lib/serviceQueries";
+import { serviceCategoriesQuery } from "@/sanity/lib/serviceQueries";
 
 // IMPORTANT:
 // Your Sanity project currently allows public reads for `category` + `product`,
@@ -34,7 +29,6 @@ export type ServiceLocale = "en" | "ar";
 
 type LocalizedString = { en?: string | null; ar?: string | null };
 type LocalizedText = { en?: string | null; ar?: string | null };
-type LocalizedBlocks = { en?: PortableTextBlock[] | null; ar?: PortableTextBlock[] | null };
 
 type RawService = {
   _id: string;
@@ -44,9 +38,6 @@ type RawService = {
   imageSrc?: string | null;
   heroImage?: unknown;
   order?: number | null;
-  body?: LocalizedBlocks | null;
-  seoTitle?: LocalizedString | null;
-  seoDescription?: LocalizedText | null;
 };
 
 type RawServiceCategory = {
@@ -67,20 +58,6 @@ export interface ServiceItem {
   description: string;
   imageSrc?: string;
   heroImageUrl?: string;
-}
-
-export interface ServiceDetail extends ServiceItem {
-  body?: PortableTextBlock[];
-  seoTitle?: string;
-  seoDescription?: string;
-  category?: {
-    id: string;
-    slug: string;
-    title: string;
-    description?: string;
-    imageSrc?: string;
-    heroImageUrl?: string;
-  };
 }
 
 export interface ServiceCategory {
@@ -112,16 +89,6 @@ const resolveImageUrl = (heroImage?: unknown): string | undefined => {
   } catch {
     return undefined;
   }
-};
-
-const pickLocalizedBlocks = (
-  value: LocalizedBlocks | null | undefined,
-  locale: Locale,
-): PortableTextBlock[] | undefined => {
-  if (!value) return undefined;
-  const en = Array.isArray(value.en) ? value.en : undefined;
-  const ar = Array.isArray(value.ar) ? value.ar : undefined;
-  return locale === "ar" ? ar || en : en || ar;
 };
 
 /**
@@ -159,49 +126,4 @@ export async function fetchServiceCategories(locale: Locale): Promise<ServiceCat
       services,
     };
   });
-}
-
-export async function fetchServiceSlugs(): Promise<string[]> {
-  const raw = await serviceClient.fetch<Array<{ slug?: string | null }>>(serviceSlugsQuery);
-  return (raw ?? [])
-    .map((item) => safeSlug(item.slug))
-    .filter((slug) => Boolean(slug));
-}
-
-export async function fetchServiceBySlug(
-  locale: Locale,
-  slug: string,
-): Promise<ServiceDetail | null> {
-  const raw = await serviceClient.fetch<RawService & { category?: RawServiceCategory | null }>(
-    serviceBySlugQuery,
-    { slug },
-  );
-
-  if (!raw?._id) return null;
-
-  const heroImageUrl = resolveImageUrl(raw.heroImage);
-  const categoryHeroImageUrl = resolveImageUrl(raw.category?.heroImage);
-  const categoryImageSrc = raw.category?.imageSrc?.trim() || categoryHeroImageUrl;
-
-  return {
-    id: safeSlug(raw.slug) || raw._id,
-    slug: safeSlug(raw.slug) || raw._id,
-    title: pickLocalized(raw.title, locale) || "Untitled",
-    description: pickLocalized(raw.description, locale) || "",
-    imageSrc: raw.imageSrc?.trim() || heroImageUrl,
-    heroImageUrl,
-    body: pickLocalizedBlocks(raw.body, locale),
-    seoTitle: pickLocalized(raw.seoTitle, locale),
-    seoDescription: pickLocalized(raw.seoDescription, locale),
-    category: raw.category
-      ? {
-          id: safeSlug(raw.category.slug) || raw.category._id,
-          slug: safeSlug(raw.category.slug) || raw.category._id,
-          title: pickLocalized(raw.category.title, locale) || "Untitled",
-          description: pickLocalized(raw.category.description, locale),
-          imageSrc: categoryImageSrc,
-          heroImageUrl: categoryHeroImageUrl,
-        }
-      : undefined,
-  };
 }

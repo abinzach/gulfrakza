@@ -66,7 +66,6 @@ export default defineType({
       description: "Lower numbers appear first within a category.",
     }),
 
-    // Future-proof fields for /services/[slug]
     defineField({
       name: "body",
       type: "localizedBlockContent",

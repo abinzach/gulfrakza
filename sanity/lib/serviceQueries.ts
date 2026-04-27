@@ -27,32 +27,3 @@ export const serviceCategoriesQuery = groq`
     }
   }
 `;
-
-export const serviceSlugsQuery = groq`
-  *[_type == "service" && defined(slug.current)]{
-    "slug": slug.current
-  }
-`;
-
-export const serviceBySlugQuery = groq`
-  *[_type == "service" && slug.current == $slug][0]{
-    _id,
-    "slug": slug.current,
-    title,
-    description,
-    imageSrc,
-    heroImage,
-    order,
-    body,
-    seoTitle,
-    seoDescription,
-    category-> {
-      _id,
-      "slug": slug.current,
-      title,
-      description,
-      imageSrc,
-      heroImage
-    }
-  }
-`;
