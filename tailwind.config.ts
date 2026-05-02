@@ -49,6 +49,19 @@ export default {
   				'3': 'hsl(var(--chart-3))',
   				'4': 'hsl(var(--chart-4))',
   				'5': 'hsl(var(--chart-5))'
+  			},
+  			cyan: {
+  				50: '#ecfeff',
+  				100: '#cffafe',
+  				200: '#a5f3fc',
+  				300: '#67e8f9',
+  				400: '#35d2e9',
+  				500: '#0bbfe0',
+  				600: '#0899b4',
+  				700: '#08778c',
+  				800: '#0f5f70',
+  				900: '#164f5d',
+  				950: '#073642'
   			}
   		},
   		borderRadius: {

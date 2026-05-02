@@ -295,7 +295,7 @@ const NavLink = ({
       <Link href={href} className="relative group">
         {children}
         <span
-          className="absolute -bottom-2 -left-2 -right-2 h-1 origin-left rounded-full bg-cyan-300 transition-transform duration-300 ease-out group-hover:scale-x-100 scale-x-0"
+          className="absolute -bottom-2 -left-2 -right-2 h-1 origin-left rounded-full bg-[#67e8f9] transition-transform duration-300 ease-out group-hover:scale-x-100 scale-x-0"
         />
       </Link>
       <AnimatePresence>
@@ -496,8 +496,8 @@ const DesktopProductsContent = ({
                       className={cn(
                         "h-4 w-4 transition-all",
                         isActive
-                          ? "text-cyan-300"
-                          : "text-neutral-500 group-hover:translate-x-1 group-hover:text-cyan-400",
+                          ? "text-[#67e8f9]"
+                          : "text-neutral-500 group-hover:translate-x-1 group-hover:text-[#35d2e9]",
                       )}
                     />
                   </Link>
@@ -524,7 +524,7 @@ const DesktopProductsContent = ({
                     className={cn(
                       "block rounded-2xl border px-4 py-3 text-sm font-semibold transition-colors",
                       isActive
-                        ? "border-cyan-500 bg-cyan-500/10 text-cyan-300 shadow-sm"
+                        ? "border-[#0bbfe0] bg-[#0bbfe0]/10 text-[#67e8f9] shadow-sm"
                         : "border-transparent text-neutral-300 hover:border-neutral-700 hover:bg-white/5",
                     )}
                     aria-current={isActive ? "true" : undefined}
@@ -589,7 +589,7 @@ const MobileProductsContent = ({
       <Link
         href="/products"
         onClick={() => onNavigate?.()}
-        className="flex items-center justify-center rounded-2xl border border-cyan-600 px-4 py-2 text-sm font-semibold text-cyan-700 transition hover:bg-cyan-700 hover:text-white"
+        className="flex items-center justify-center rounded-2xl border border-[#0899b4] px-4 py-2 text-sm font-semibold text-[#08778c] transition hover:bg-[#08778c] hover:text-white"
       >
         Explore entire catalog
       </Link>

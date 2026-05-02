@@ -34,7 +34,7 @@ const SuccessMessage: React.FC<SuccessMessageProps> = ({ title, body, note }) =>
     className="mx-auto mt-10 max-w-screen-md rounded-lg bg-white p-6 text-center shadow-lg"
   >
     <svg
-      className="mx-auto mb-4 h-16 w-16 text-cyan-500"
+      className="mx-auto mb-4 h-16 w-16 text-[#0bbfe0]"
       fill="none"
       stroke="currentColor"
       viewBox="0 0 24 24"
@@ -189,7 +189,7 @@ const ContactForm: React.FC = () => {
                     message: t("errors.emailFormat"),
                   },
                 })}
-                className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 shadow-sm focus:border-cyan-500 focus:ring-cyan-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-cyan-500 dark:focus:ring-cyan-500"
+                className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 shadow-sm focus:border-[#0bbfe0] focus:ring-[#0bbfe0] dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-[#0bbfe0] dark:focus:ring-[#0bbfe0]"
                 placeholder={t("placeholders.email")}
               />
               {errors.email && (
@@ -207,7 +207,7 @@ const ContactForm: React.FC = () => {
                 type="text"
                 id="subject"
                 {...register("subject", { required: t("errors.subjectRequired") })}
-                className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-3 text-sm text-gray-900 shadow-sm focus:border-cyan-500 focus:ring-cyan-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-cyan-500 dark:focus:ring-cyan-500"
+                className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-3 text-sm text-gray-900 shadow-sm focus:border-[#0bbfe0] focus:ring-[#0bbfe0] dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-[#0bbfe0] dark:focus:ring-[#0bbfe0]"
                 placeholder={t("placeholders.subject")}
               />
               {errors.subject && (
@@ -225,7 +225,7 @@ const ContactForm: React.FC = () => {
                 id="message"
                 rows={6}
                 {...register("message", { required: t("errors.messageRequired") })}
-                className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 shadow-sm focus:border-cyan-500 focus:ring-cyan-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-cyan-500 dark:focus:ring-cyan-500"
+                className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 shadow-sm focus:border-[#0bbfe0] focus:ring-[#0bbfe0] dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-[#0bbfe0] dark:focus:ring-[#0bbfe0]"
                 placeholder={t("placeholders.message")}
               />
               {errors.message && (
@@ -235,7 +235,7 @@ const ContactForm: React.FC = () => {
             <button
               type="submit"
               disabled={status === "loading"}
-              className="relative rounded-full bg-cyan-700 py-3 px-5 text-sm font-medium text-white transition hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 dark:bg-white dark:text-black dark:hover:bg-cyan-800 dark:focus:ring-cyan-800"
+              className="relative rounded-full bg-[#08778c] py-3 px-5 text-sm font-medium text-white transition hover:bg-[#0f5f70] focus:outline-none focus:ring-4 focus:ring-[#67e8f9] dark:bg-white dark:text-black dark:hover:bg-[#0f5f70] dark:focus:ring-[#0f5f70]"
             >
               <span className={status === "loading" ? "invisible" : ""}>{t("submit")}</span>
               {status === "loading" && (

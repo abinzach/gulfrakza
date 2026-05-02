@@ -112,7 +112,7 @@ export default function HeroSection() {
       <div className="relative z-10 mx-auto flex min-h-[720px] w-full max-w-7xl items-center px-4 pb-12 pt-32 text-white sm:px-6 lg:h-[100svh] lg:px-8 lg:pt-28">
         <div className="grid w-full items-end gap-10 lg:grid-cols-[minmax(0,1fr)_360px]">
           <div className={isRTL ? "text-right" : "text-left"}>
-            <p className="mb-5 inline-flex rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-cyan-100 backdrop-blur">
+            <p className="mb-5 inline-flex rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-[#d8f7ff] backdrop-blur">
               {t("eyebrow")}
             </p>
             <h1 className="max-w-4xl text-4xl font-semibold leading-[1.03] tracking-normal text-white sm:text-5xl lg:text-6xl">
@@ -126,7 +126,7 @@ export default function HeroSection() {
               <Link
                 href="/products"
                 onClick={() => trackEvent("hero_primary_cta_click", { target: "products" })}
-                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-neutral-950 shadow-lg shadow-black/20 transition hover:bg-cyan-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950"
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-neutral-950 shadow-lg shadow-black/20 transition hover:bg-[#eefcff] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#67e8f9] focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950"
               >
                 {t("primaryCta")}
                 <ArrowRight className={isRTL ? "h-4 w-4 rotate-180" : "h-4 w-4"} aria-hidden="true" />
@@ -134,7 +134,7 @@ export default function HeroSection() {
               <a
                 href="#contact-us"
                 onClick={() => trackEvent("hero_secondary_cta_click", { target: "contact" })}
-                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-white/40 bg-white/10 px-6 py-3 text-sm font-semibold text-white backdrop-blur transition hover:border-white hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950"
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-white/40 bg-white/10 px-6 py-3 text-sm font-semibold text-white backdrop-blur transition hover:border-white hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#67e8f9] focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950"
                 title={misc("contactTitle")}
               >
                 <MessageCircle className="h-4 w-4" aria-hidden="true" />
@@ -142,17 +142,17 @@ export default function HeroSection() {
               </a>
             </div>
 
-            <p className="mt-5 text-sm font-medium text-cyan-100/90">{t("supportLine")}</p>
+            <p className="mt-5 text-sm font-medium text-[#d8f7ff]/90">{t("supportLine")}</p>
           </div>
 
           <div className="hidden border-l border-white/20 pl-6 lg:block">
-            <p className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-cyan-200">
+            <p className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-[#a5f3fc]">
               {t("proofHeading")}
             </p>
             <div className="space-y-4">
               {[1, 2, 3].map((item) => (
                 <div key={item} className="flex gap-3 border-b border-white/10 pb-4 last:border-b-0 last:pb-0">
-                  <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-cyan-300" aria-hidden="true" />
+                  <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-[#67e8f9]" aria-hidden="true" />
                   <div>
                     <p className="text-sm font-semibold text-white">{t(`proof${item}Title`)}</p>
                     <p className="mt-1 text-sm leading-6 text-white/70">{t(`proof${item}Body`)}</p>

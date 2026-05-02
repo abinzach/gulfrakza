@@ -92,15 +92,16 @@ export async function generateMetadata({ params }: LayoutParams): Promise<Metada
     },
     icons: {
       icon: [
+        { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
         { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
       ],
       apple: [
-        { url: "/web-app-manifest-192x192.png", sizes: "192x192", type: "image/png" },
+        { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
       ],
     },
     other: {
-      "msapplication-TileColor": "#0e7490",
-      "theme-color": "#0a0a0a",
+      "msapplication-TileColor": "#0bbfe0",
+      "theme-color": "#0bbfe0",
     },
   };
 }

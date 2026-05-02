@@ -56,7 +56,7 @@ export default function ServiceCard({
 
       <div className="flex flex-1 flex-col justify-center p-6 md:p-8">
         <div>
-          <h3 className="mb-3 font-sans text-xl font-semibold text-gray-900 dark:text-white group-hover:text-cyan-600 transition-colors">
+          <h3 className="mb-3 font-sans text-xl font-semibold text-gray-900 dark:text-white group-hover:text-[#08778c] transition-colors">
             {title}
           </h3>
           <p className="mb-6 font-sans text-sm leading-relaxed text-gray-500 dark:text-gray-400 line-clamp-2 md:line-clamp-3">
@@ -68,7 +68,7 @@ export default function ServiceCard({
           <Button
             variant="outline"
             size="sm"
-            className="gap-2 border-cyan-600 text-cyan-600 transition-all hover:bg-cyan-700 hover:text-white"
+            className="gap-2 border-[#0899b4] text-[#08778c] transition-all hover:bg-[#08778c] hover:text-white"
           >
             <Mail className="h-4 w-4" />
             {t("buttons.requestService")}

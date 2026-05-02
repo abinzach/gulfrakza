@@ -118,7 +118,7 @@ const SelectBtns = ({
           key={n}
           type="button"
           onClick={() => setSelected(n)}
-          className="relative h-11 w-full bg-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700"
+          className="relative h-11 w-full bg-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#08778c]"
           aria-label={`Testimonial ${n + 1}`}
           aria-current={selected === n ? "true" : undefined}
         >
@@ -225,7 +225,7 @@ const Card = ({
           setSelected(position);
         }
       }}
-      className="absolute inset-0 flex min-h-full w-full cursor-pointer flex-col justify-between p-8 outline-none focus-visible:ring-2 focus-visible:ring-cyan-700 lg:p-12"
+      className="absolute inset-0 flex min-h-full w-full cursor-pointer flex-col justify-between p-8 outline-none focus-visible:ring-2 focus-visible:ring-[#08778c] lg:p-12"
       dir={isRTL ? "rtl" : "ltr"}
       role="button"
       tabIndex={position === selected ? 0 : -1}

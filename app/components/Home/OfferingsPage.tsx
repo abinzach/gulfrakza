@@ -67,7 +67,7 @@ const OfferingsPage = async ({ locale }: { locale: Locale }) => {
         <h2 className="text-4xl font-semibold lg:text-5xl">
           {getLocalizedText("headingLine1", "Empower your operations")}
         </h2>
-        <h2 className="mb-4 text-4xl font-semibold text-cyan-600 lg:text-5xl">
+        <h2 className="mb-4 text-4xl font-semibold text-[#08778c] lg:text-5xl">
           {getLocalizedText("headingLine2", "with our solutions")}
         </h2>
         <p className="mb-12 max-w-2xl text-lg text-gray-800 lg:text-left">
@@ -100,7 +100,7 @@ const OfferingsPage = async ({ locale }: { locale: Locale }) => {
                   />
                   <h3
                     className={cn(
-                      "mb-2 text-left font-raleway text-xl font-semibold transition-colors duration-300 group-hover:text-cyan-600",
+                      "mb-2 text-left font-raleway text-xl font-semibold transition-colors duration-300 group-hover:text-[#08778c]",
                       locale === "ar" ? undefined : "uppercase",
                     )}
                   >

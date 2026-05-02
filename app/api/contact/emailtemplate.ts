@@ -66,7 +66,7 @@ export function createEmailContent({
               box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
             }
             .header {
-              background: linear-gradient(135deg, #0e7490, #155e75);
+              background: linear-gradient(135deg, #08778c, #0f5f70);
               padding: 30px 10px;
               text-align: center;
               color: white;

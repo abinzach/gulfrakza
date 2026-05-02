@@ -64,14 +64,14 @@ export function CookieConsent() {
           <button
             type="button"
             onClick={() => saveChoice("rejected")}
-            className="rounded-full border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700 dark:border-gray-700 dark:text-gray-200 dark:hover:bg-gray-900"
+            className="rounded-full border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#08778c] dark:border-gray-700 dark:text-gray-200 dark:hover:bg-gray-900"
           >
             {messages.reject}
           </button>
           <button
             type="button"
             onClick={() => saveChoice("accepted")}
-            className="rounded-full bg-cyan-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-cyan-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-700 focus-visible:ring-offset-2"
+            className="rounded-full bg-[#08778c] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#0f5f70] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#08778c] focus-visible:ring-offset-2"
           >
             {messages.accept}
           </button>

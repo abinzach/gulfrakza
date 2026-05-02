@@ -1,12 +1,25 @@
 import { Fragment } from "react"
 import { PortableText, type PortableTextComponents } from "@portabletext/react"
-import { Download } from "lucide-react"
+import {
+  ArrowRight,
+  CheckCircle2,
+  Download,
+  FileText,
+  Layers,
+  Package,
+  ShieldCheck,
+  Truck,
+} from "lucide-react"
 import type { Metadata } from "next"
 import Script from "next/script"
 import Image from "next/image"
 import { notFound } from "next/navigation"
 
 import GetQuoteButton from "@/app/components/GetQuoteButton"
+import ProductGallery from "@/app/components/Product/ProductGallery"
+import ProductQuickActions from "@/app/components/Product/ProductQuickActions"
+import ProductSectionNav from "@/app/components/Product/ProductSectionNav"
+import MobileStickyBar from "@/app/components/Product/MobileStickyBar"
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -125,7 +138,7 @@ const portableTextComponents: PortableTextComponents = {
           href={linkValue.href}
           target={linkValue.openInNewTab ? "_blank" : undefined}
           rel={linkValue.openInNewTab ? "noopener noreferrer" : undefined}
-          className="text-cyan-600 underline decoration-dotted underline-offset-4 transition hover:text-cyan-500"
+          className="text-[#08778c] underline decoration-dotted underline-offset-4 transition hover:text-[#0bbfe0]"
         >
           {children}
         </a>
@@ -180,8 +193,22 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
   const productUrl = `${siteUrl}${productPath}`
   const imageGallery = Array.from(new Set([product.imageSrc, ...product.gallery])).filter(Boolean)
   const isProductAvailable = product.stockStatus === "in_stock"
-  const stockDotClass = isProductAvailable ? "bg-emerald-500" : "bg-gray-400"
-  const stockDotLabel = isProductAvailable ? "Ready to ship" : "Stock refreshes soon"
+  const stockLabel = isProductAvailable ? "Ready to ship" : "Available on request"
+
+  // Sub-nav sections — long-form content only (sizes & downloads now live in hero)
+  const sections: Array<{ id: string; label: string }> = []
+  if (product.richBody.length > 0) sections.push({ id: "overview", label: "Overview" })
+  if (product.specs.length > 0) sections.push({ id: "specifications", label: "Specifications" })
+  if (product.features.length > 0) sections.push({ id: "features", label: "Features" })
+
+  // Trust strip items
+  const trustItems = [
+    { icon: ShieldCheck, label: "Quality assured" },
+    { icon: Truck, label: "Ships from KSA" },
+    { icon: Package, label: "Bulk pricing" },
+    { icon: FileText, label: "RFQ in 24h" },
+  ]
+
   const productSchema = {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -248,328 +275,431 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
 
   return (
     <>
-      <main className="min-h-screen bg-white pt-16 dark:bg-gray-900">
-      {/* Breadcrumb */}
-      <div className="border-b border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900">
-        <div className="mx-auto max-w-[1600px] px-4 py-3 sm:px-6 sm:py-4">
-          <Breadcrumb>
-            <BreadcrumbList>
-              {catalogBreadcrumb.map((item, index) => {
-                const isLast = index === catalogBreadcrumb.length - 1
-                return (
-                  <Fragment key={`${item.label}-${index}`}>
-                    <BreadcrumbItem>
-                      {isLast || !item.href ? (
-                        <BreadcrumbPage className="text-xs sm:text-sm">{item.label}</BreadcrumbPage>
-                      ) : (
-                        <BreadcrumbLink asChild>
-                          <Link href={item.href} className="text-xs sm:text-sm" scroll={false}>
+      <main className="min-h-screen bg-gray-50/50 pb-24 pt-16 dark:bg-gray-950 lg:pb-12">
+        {/* Breadcrumb */}
+        <div className="border-b border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900">
+          <div className="mx-auto max-w-[1400px] px-4 py-3 sm:px-6 sm:py-4">
+            <Breadcrumb>
+              <BreadcrumbList>
+                {catalogBreadcrumb.map((item, index) => {
+                  const isLast = index === catalogBreadcrumb.length - 1
+                  return (
+                    <Fragment key={`${item.label}-${index}`}>
+                      <BreadcrumbItem>
+                        {isLast || !item.href ? (
+                          <BreadcrumbPage className="text-xs sm:text-sm">
                             {item.label}
-                          </Link>
-                        </BreadcrumbLink>
-                      )}
-                    </BreadcrumbItem>
-                    {index < catalogBreadcrumb.length - 1 && <BreadcrumbSeparator />}
-                  </Fragment>
-                )
-              })}
-            </BreadcrumbList>
-          </Breadcrumb>
-        </div>
-      </div>
-
-      {/* Product Detail */}
-      <div className="mx-auto max-w-[1600px] px-4 py-8 sm:px-6">
-        <div className="grid gap-6 lg:grid-cols-2 lg:gap-10">
-          {/* Left: Sticky Image */}
-          <div className="lg:sticky lg:top-8 lg:h-fit">
-            <div className="relative aspect-square overflow-hidden rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
-              <Image
-                src={product.imageSrc}
-                alt={product.title}
-                fill
-                priority
-                sizes="(max-width: 640px) 90vw, (max-width: 1024px) 60vw, 50vw"
-                className="object-contain p-4 sm:p-8"
-              />
-            </div>
-            {product.gallery.length > 1 && (
-              <div className="mt-4 grid grid-cols-3 gap-2 sm:grid-cols-4">
-                {product.gallery.slice(0, 4).map((imageUrl) => (
-                  <div
-                    key={imageUrl}
-                    className="relative aspect-square cursor-pointer overflow-hidden rounded border border-gray-200 bg-white transition hover:border-cyan-500 dark:border-gray-700 dark:bg-gray-800"
-                  >
-                    <Image src={imageUrl} alt={product.title} fill className="object-cover p-2" />
-                  </div>
-                ))}
-              </div>
-            )}
+                          </BreadcrumbPage>
+                        ) : (
+                          <BreadcrumbLink asChild>
+                            <Link
+                              href={item.href}
+                              className="text-xs sm:text-sm"
+                              scroll={false}
+                            >
+                              {item.label}
+                            </Link>
+                          </BreadcrumbLink>
+                        )}
+                      </BreadcrumbItem>
+                      {index < catalogBreadcrumb.length - 1 && <BreadcrumbSeparator />}
+                    </Fragment>
+                  )
+                })}
+              </BreadcrumbList>
+            </Breadcrumb>
           </div>
+        </div>
 
-          {/* Right: Scrollable Content */}
-          <div className="space-y-6 sm:space-y-8">
-            {/* Product Info */}
-            <div className="space-y-4">
-              {product.brand && (
-                <p className="text-sm font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400">
-                  {product.brand}
+        {/* Hero — Gallery + Summary (everything actionable lives here) */}
+        <section className="mx-auto max-w-[1400px] px-4 py-6 sm:px-6 sm:py-10">
+          <div className="grid gap-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] lg:gap-12">
+            {/* Gallery */}
+            <ProductGallery
+              images={imageGallery}
+              title={product.title}
+              brand={product.brand}
+              stockBadge={{ label: stockLabel, available: isProductAvailable }}
+            />
+
+            {/* Summary column */}
+            <div className="flex flex-col">
+              {/* Category trail */}
+              {product.categoryTrail.length > 0 && (
+                <p className="mb-2 text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400">
+                  {product.categoryTrail.map((s) => s.title).join(" › ")}
                 </p>
               )}
-              <h1 className="text-2xl font-semibold text-gray-900 sm:text-3xl dark:text-gray-100">
+
+              {/* Title */}
+              <h1 className="text-3xl font-bold leading-tight tracking-tight text-gray-900 sm:text-4xl dark:text-gray-50">
                 {product.title}
               </h1>
-              
-              {/* Stock Status */}
-              <div className="flex items-center gap-2 text-sm font-medium text-gray-900 dark:text-gray-100">
-                <span className={`h-3 w-3 rounded-full ${stockDotClass}`} />
-                <span>{stockDotLabel}</span>
+
+              {/* Inline meta */}
+              <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-gray-600 dark:text-gray-400">
+                {product.brand && (
+                  <span>
+                    Brand{" "}
+                    <span className="font-semibold text-gray-900 dark:text-gray-100">
+                      {product.brand}
+                    </span>
+                  </span>
+                )}
+                {product.brand && product.sku && (
+                  <span className="text-gray-300 dark:text-gray-700">·</span>
+                )}
+                {product.sku && (
+                  <span>
+                    SKU{" "}
+                    <span className="font-mono text-xs font-semibold text-gray-900 dark:text-gray-100">
+                      {product.sku}
+                    </span>
+                  </span>
+                )}
               </div>
 
               {/* Description */}
-              <p className="text-sm leading-relaxed text-gray-600 sm:text-base dark:text-gray-300">
+              <p className="mt-5 text-base leading-relaxed text-gray-700 dark:text-gray-300">
                 {product.description}
               </p>
 
-              <div className="grid grid-cols-1 gap-4 rounded-lg border border-gray-200 bg-gray-50 p-4 text-sm dark:border-gray-700 dark:bg-gray-800/50 sm:grid-cols-2">
-                <div>
-                  <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
-                    SKU / Model
-                  </p>
-                  <p className="mt-1 font-medium text-gray-900 dark:text-gray-100">
-                    {product.sku ?? "—"}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
-                    Primary Category
-                  </p>
-                  <p className="mt-1 font-medium text-gray-900 dark:text-gray-100">
-                    {category}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
-                    Category Path
-                  </p>
-                  <p className="mt-1 font-medium text-gray-900 dark:text-gray-100">
-                    {product.categoryTrail.length > 0
-                      ? product.categoryTrail.map((segment) => segment.title).join(" / ")
-                      : category}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
-                    Availability
-                  </p>
-                  <p className="mt-1 flex items-center gap-2 font-medium text-gray-900 dark:text-gray-100">
-                    <span className={`h-2.5 w-2.5 rounded-full ${stockDotClass}`} />
-                    <span>{stockDotLabel}</span>
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* CTA Section */}
-            <div className="space-y-3 border-y border-gray-200 py-5 dark:border-gray-700 sm:py-6">
-              <GetQuoteButton
-                productName={product.title}
-                productCategory={category}
-                productSubcategory={subcategory}
-                productItemCategory={itemCategory}
-              />
-              <Link
-                href="/products"
-                className="flex w-full items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 sm:text-base"
-              >
-                ← Back to Catalog
-              </Link>
-            </div>
-
-            {product.richBody.length > 0 && (
-              <div className="space-y-4">
-                <h2 className="text-lg font-semibold text-gray-900 sm:text-xl dark:text-gray-100">
-                  Detailed Overview
-                </h2>
-                <div className="space-y-4">
-                  <PortableText value={product.richBody} components={portableTextComponents} />
-                </div>
-              </div>
-            )}
-
-            {/* Features */}
-            {product.features.length > 0 && (
-              <div className="space-y-4">
-                <h2 className="text-lg font-semibold text-gray-900 sm:text-xl dark:text-gray-100">
-                  Key Features
-                </h2>
-                <ul className="space-y-3">
-                  {product.features.map((feature) => (
-                    <li key={feature} className="flex items-start gap-3 text-gray-700 dark:text-gray-300">
-                      <svg className="mt-1 h-4 w-4 flex-shrink-0 text-green-500 sm:h-5 sm:w-5" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                      </svg>
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            {/* Specifications */}
-            {product.specs.length > 0 && (
-              <div className="space-y-4">
-                <h2 className="text-lg font-semibold text-gray-900 sm:text-xl dark:text-gray-100">
-                  Specifications
-                </h2>
-                <div className="divide-y divide-gray-200 rounded-lg border border-gray-200 dark:divide-gray-700 dark:border-gray-700">
-                  {product.specs.map((spec) => (
-                    <div
-                      key={spec.key}
-                      className="flex flex-col gap-1 px-4 py-3 sm:grid sm:grid-cols-3 sm:items-start sm:gap-4"
-                    >
-                      <dt className="text-sm font-medium text-gray-500 dark:text-gray-400 sm:text-base">
-                        {spec.key}
-                      </dt>
-                      <dd className="text-sm text-gray-900 sm:col-span-2 sm:text-base dark:text-gray-100">
-                        {spec.values.join(", ")}
-                      </dd>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Size Variants */}
-            {product.sizeVariants.length > 0 && (
-              <div className="space-y-4">
-                <h2 className="text-lg font-semibold text-gray-900 sm:text-xl dark:text-gray-100">
-                  Available Sizes
-                </h2>
-                <div className="grid gap-3 sm:grid-cols-2">
-                  {product.sizeVariants.map((variant) => {
-                    const isVariantAvailable = typeof variant.stock === "number" ? variant.stock > 0 : false
-                    const variantLabel = isVariantAvailable ? "Ready to ship" : "Stock refreshes soon"
-                    const variantDotClass = isVariantAvailable ? "bg-emerald-500" : "bg-gray-400"
-                    return (
-                      <div
-                        key={variant.label}
-                        className="flex items-center justify-between rounded-2xl border border-gray-200 bg-white px-4 py-3 text-sm font-medium text-gray-900 shadow-sm dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100"
-                      >
-                        <div className="flex items-center gap-3">
-                          <span className={`h-2.5 w-2.5 rounded-full ${variantDotClass}`} />
-                          <span>{variant.label}</span>
-                        </div>
-                        <span className="text-xs font-normal text-gray-500 dark:text-gray-400">
-                          {variantLabel}
-                        </span>
-                      </div>
-                    )
-                  })}
-                </div>
-              </div>
-            )}
-
-            {product.resources.length > 0 && (
-              <div className="space-y-4">
-                <h2 className="text-lg font-semibold text-gray-900 sm:text-xl dark:text-gray-100">
-                  Downloads & Resources
-                </h2>
-                <ul className="space-y-3">
-                  {product.resources.map((resource) => {
-                    const metaParts = [
-                      resource.filename,
-                      resource.extension ? resource.extension.toUpperCase() : undefined,
-                      formatFileSize(resource.size),
-                    ].filter(Boolean)
-
-                    return (
-                      <li key={resource.url}>
-                        <a
-                          href={resource.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          download={resource.filename}
-                          className="flex items-center gap-3 rounded-lg border border-gray-200 bg-white p-3 transition hover:border-cyan-500 dark:border-gray-700 dark:bg-gray-800 sm:gap-4 sm:p-4"
+              {/* SIZES — inline, compact pill grid */}
+              {product.sizeVariants.length > 0 && (
+                <div className="mt-6">
+                  <div className="mb-2 flex items-center justify-between">
+                    <p className="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">
+                      <span className="inline-flex items-center gap-1.5">
+                        <Package className="h-3.5 w-3.5" />
+                        Available sizes
+                      </span>
+                    </p>
+                    <span className="text-xs text-gray-400 dark:text-gray-500">
+                      {product.sizeVariants.length} option
+                      {product.sizeVariants.length === 1 ? "" : "s"}
+                    </span>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {product.sizeVariants.map((variant) => {
+                      const isVariantAvailable =
+                        typeof variant.stock === "number"
+                          ? variant.stock > 0
+                          : false
+                      return (
+                        <span
+                          key={variant.label}
+                          title={
+                            isVariantAvailable
+                              ? "Ready to ship"
+                              : "Available on request"
+                          }
+                          className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold transition ${
+                            isVariantAvailable
+                              ? "border-emerald-200 bg-emerald-50 text-emerald-800 dark:border-emerald-700/40 dark:bg-emerald-900/30 dark:text-emerald-200"
+                              : "border-gray-200 bg-white text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+                          }`}
                         >
-                          <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-cyan-50 text-cyan-700 dark:bg-cyan-900/30 dark:text-cyan-300 sm:h-12 sm:w-12">
-                            <Download className="h-5 w-5" />
-                          </span>
-                          <div className="flex-1">
-                            <p className="text-sm font-medium text-gray-900 sm:text-base dark:text-gray-100">
-                              {resource.title}
-                            </p>
-                            {metaParts.length > 0 && (
-                              <p className="text-xs text-gray-500 dark:text-gray-400">
-                                {metaParts.join(" • ")}
-                              </p>
-                            )}
-                          </div>
-                          <span className="text-xs font-semibold uppercase tracking-wide text-cyan-600 dark:text-cyan-400 sm:text-sm">
-                            Download
-                          </span>
-                        </a>
-                      </li>
-                    )
-                  })}
-                </ul>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* Related Products */}
-      {relatedProducts.length > 0 && (
-        <div className="border-t border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800/50">
-          <div className="mx-auto max-w-[1600px] px-4 py-10 sm:px-6 sm:py-12">
-            <h2 className="mb-6 text-xl font-semibold text-gray-900 dark:text-gray-100 sm:text-2xl">
-              Related Products
-            </h2>
-            <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-              {relatedProducts.map((relatedProduct) => {
-                return (
-                  <Link
-                    key={relatedProduct.id}
-                    href={relatedProduct.detailsHref || `/products/${relatedProduct.slug}`}
-                    className="group flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white transition hover:shadow-lg dark:border-gray-700 dark:bg-gray-800"
-                  >
-                    <div className="relative aspect-square overflow-hidden bg-gray-50 dark:bg-gray-900">
-                      <Image
-                        src={relatedProduct.imageSrc || "/logo-rakza.png"}
-                        alt={relatedProduct.title}
-                        fill
-                        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                        className="object-contain p-4 transition-transform duration-200 group-hover:scale-105"
-                      />
-                    </div>
-                    <div className="flex flex-1 flex-col p-4">
-                      {relatedProduct.brand && (
-                        <p className="mb-1 text-xs font-medium text-gray-500 dark:text-gray-400">
-                          {relatedProduct.brand}
-                        </p>
-                      )}
-                      <h3 className="mb-2 line-clamp-2 text-sm font-medium text-gray-900 transition-colors group-hover:text-cyan-600 dark:text-gray-100 dark:group-hover:text-cyan-400">
-                        {relatedProduct.title}
-                      </h3>
-                      <div className="mt-auto">
-                        <span className={`inline-flex items-center rounded px-2 py-1 text-xs font-medium ${
-                          relatedProduct.isInStock 
-                            ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400" 
-                            : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
-                        }`}>
-                          {relatedProduct.isInStock ? "In Stock" : "Out of Stock"}
+                          <span
+                            className={`h-1.5 w-1.5 rounded-full ${
+                              isVariantAvailable
+                                ? "bg-emerald-500"
+                                : "bg-gray-400"
+                            }`}
+                          />
+                          {variant.label}
                         </span>
-                      </div>
-                    </div>
-                  </Link>
-                )
-              })}
+                      )
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {/* Trust strip */}
+              <div className="mt-6 grid grid-cols-2 gap-2 rounded-2xl border border-gray-200 bg-white p-3 dark:border-gray-800 dark:bg-gray-900 sm:grid-cols-4">
+                {trustItems.map(({ icon: Icon, label }) => (
+                  <div
+                    key={label}
+                    className="flex items-center gap-2 rounded-lg px-2 py-1.5 text-xs font-medium text-gray-700 dark:text-gray-300"
+                  >
+                    <Icon className="h-4 w-4 flex-shrink-0 text-[#08778c] dark:text-[#35d2e9]" />
+                    <span>{label}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Primary + secondary CTAs */}
+              <div className="mt-6 space-y-3">
+                <GetQuoteButton
+                  productName={product.title}
+                  productCategory={category}
+                  productSubcategory={subcategory}
+                  productItemCategory={itemCategory}
+                />
+                <ProductQuickActions
+                  productName={product.title}
+                  productCategory={[category, subcategory, itemCategory]
+                    .filter(Boolean)
+                    .join(" / ")}
+                />
+                <p className="text-xs text-gray-500 dark:text-gray-400">
+                  Min. order qty:{" "}
+                  <span className="font-semibold text-gray-700 dark:text-gray-300">
+                    1
+                  </span>{" "}
+                  · Volume discounts on request · Typical RFQ response within 24
+                  hours
+                </p>
+              </div>
+
+              {/* DOWNLOADS — inline, compact card list */}
+              {product.resources.length > 0 && (
+                <div className="mt-6 rounded-2xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900">
+                  <div className="mb-3 flex items-center justify-between">
+                    <p className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">
+                      <Download className="h-3.5 w-3.5" />
+                      Downloads &amp; resources
+                    </p>
+                    <span className="text-xs text-gray-400 dark:text-gray-500">
+                      {product.resources.length} file
+                      {product.resources.length === 1 ? "" : "s"}
+                    </span>
+                  </div>
+                  <ul className="space-y-2">
+                    {product.resources.map((resource) => {
+                      const metaParts = [
+                        resource.extension
+                          ? resource.extension.toUpperCase()
+                          : undefined,
+                        formatFileSize(resource.size),
+                      ].filter(Boolean)
+
+                      return (
+                        <li key={resource.url}>
+                          <a
+                            href={resource.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            download={resource.filename}
+                            className="group flex items-center gap-3 rounded-xl border border-gray-200 bg-gray-50/50 p-2.5 transition hover:border-[#08778c] hover:bg-white hover:shadow-sm dark:border-gray-700 dark:bg-gray-800/40 dark:hover:bg-gray-800"
+                          >
+                            <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-[#08778c]/10 text-[#08778c] transition group-hover:bg-[#08778c] group-hover:text-white dark:bg-[#08778c]/20 dark:text-[#35d2e9]">
+                              <FileText className="h-4 w-4" />
+                            </span>
+                            <div className="min-w-0 flex-1">
+                              <p className="truncate text-sm font-semibold text-gray-900 dark:text-gray-100">
+                                {resource.title}
+                              </p>
+                              {metaParts.length > 0 && (
+                                <p className="text-[11px] text-gray-500 dark:text-gray-400">
+                                  {metaParts.join(" · ")}
+                                </p>
+                              )}
+                            </div>
+                            <Download className="h-4 w-4 flex-shrink-0 text-gray-400 transition group-hover:text-[#08778c] dark:group-hover:text-[#35d2e9]" />
+                          </a>
+                        </li>
+                      )
+                    })}
+                  </ul>
+                </div>
+              )}
             </div>
           </div>
-        </div>
-      )}
-    </main>
+        </section>
+
+        {/* Long-form sections (Overview / Specs / Features) */}
+        {sections.length > 0 && (
+          <section className="mx-auto max-w-[1400px] px-4 sm:px-6">
+            <ProductSectionNav sections={sections} />
+
+            <div className="space-y-12 pb-12">
+              {/* Overview */}
+              {product.richBody.length > 0 && (
+                <section
+                  id="overview"
+                  className="scroll-mt-32 rounded-2xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-gray-900 sm:p-8"
+                >
+                  <header className="mb-5 flex items-center gap-3">
+                    <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#08778c]/10 text-[#08778c] dark:bg-[#08778c]/20 dark:text-[#35d2e9]">
+                      <FileText className="h-5 w-5" />
+                    </span>
+                    <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 sm:text-2xl">
+                      Detailed Overview
+                    </h2>
+                  </header>
+                  <div className="max-w-3xl space-y-4">
+                    <PortableText
+                      value={product.richBody}
+                      components={portableTextComponents}
+                    />
+                  </div>
+                </section>
+              )}
+
+              {/* Specifications */}
+              {product.specs.length > 0 && (
+                <section
+                  id="specifications"
+                  className="scroll-mt-32 rounded-2xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-gray-900 sm:p-8"
+                >
+                  <header className="mb-5 flex items-center gap-3">
+                    <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#08778c]/10 text-[#08778c] dark:bg-[#08778c]/20 dark:text-[#35d2e9]">
+                      <Layers className="h-5 w-5" />
+                    </span>
+                    <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 sm:text-2xl">
+                      Specifications
+                    </h2>
+                  </header>
+                  <div className="overflow-hidden rounded-xl border border-gray-200 dark:border-gray-700">
+                    <dl className="divide-y divide-gray-200 dark:divide-gray-700">
+                      {product.specs.map((spec, idx) => (
+                        <div
+                          key={spec.key}
+                          className={`grid grid-cols-1 gap-1 px-4 py-3 sm:grid-cols-3 sm:gap-4 ${
+                            idx % 2 === 0
+                              ? "bg-gray-50/50 dark:bg-gray-800/30"
+                              : "bg-white dark:bg-gray-900"
+                          }`}
+                        >
+                          <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                            {spec.key}
+                          </dt>
+                          <dd className="text-sm text-gray-900 sm:col-span-2 dark:text-gray-100">
+                            {spec.values.join(", ")}
+                          </dd>
+                        </div>
+                      ))}
+                    </dl>
+                  </div>
+                </section>
+              )}
+
+              {/* Features */}
+              {product.features.length > 0 && (
+                <section
+                  id="features"
+                  className="scroll-mt-32 rounded-2xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-gray-900 sm:p-8"
+                >
+                  <header className="mb-5 flex items-center gap-3">
+                    <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#08778c]/10 text-[#08778c] dark:bg-[#08778c]/20 dark:text-[#35d2e9]">
+                      <CheckCircle2 className="h-5 w-5" />
+                    </span>
+                    <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 sm:text-2xl">
+                      Key Features
+                    </h2>
+                  </header>
+                  <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                    {product.features.map((feature) => (
+                      <li
+                        key={feature}
+                        className="flex items-start gap-3 rounded-xl border border-gray-200 bg-gray-50/60 p-3 text-sm text-gray-700 dark:border-gray-700 dark:bg-gray-800/40 dark:text-gray-300"
+                      >
+                        <CheckCircle2 className="mt-0.5 h-5 w-5 flex-shrink-0 text-emerald-500" />
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              )}
+            </div>
+          </section>
+        )}
+
+        {/* Related Products */}
+        {relatedProducts.length > 0 && (
+          <section className="border-t border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900">
+            <div className="mx-auto max-w-[1400px] px-4 py-10 sm:px-6 sm:py-14">
+              <div className="mb-6 flex items-end justify-between gap-4">
+                <div>
+                  <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 sm:text-2xl">
+                    You might also like
+                  </h2>
+                  <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                    More from {category}
+                  </p>
+                </div>
+                <Link
+                  href="/products"
+                  className="hidden items-center gap-1 text-sm font-semibold text-[#08778c] hover:text-[#0bbfe0] dark:text-[#35d2e9] sm:inline-flex"
+                >
+                  View catalog
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
+              <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                {relatedProducts.map((relatedProduct) => {
+                  const trail = relatedProduct.categoryTrail
+                    .map((s) => s.title)
+                    .filter(Boolean)
+                    .slice(0, 2)
+                    .join(" › ")
+                  return (
+                    <Link
+                      key={relatedProduct.id}
+                      href={
+                        relatedProduct.detailsHref ||
+                        `/products/${relatedProduct.slug}`
+                      }
+                      className="group flex flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white transition hover:-translate-y-0.5 hover:border-[#08778c]/40 hover:shadow-lg dark:border-gray-800 dark:bg-gray-900"
+                    >
+                      <div className="relative aspect-square overflow-hidden bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-900">
+                        <Image
+                          src={relatedProduct.imageSrc || "/logo-rakza.png"}
+                          alt={relatedProduct.title}
+                          fill
+                          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                          className="object-contain p-4 transition-transform duration-300 group-hover:scale-105"
+                        />
+                      </div>
+                      <div className="flex flex-1 flex-col p-4">
+                        {relatedProduct.brand && (
+                          <p className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">
+                            {relatedProduct.brand}
+                          </p>
+                        )}
+                        <h3 className="line-clamp-2 text-sm font-semibold text-gray-900 transition-colors group-hover:text-[#08778c] dark:text-gray-100 dark:group-hover:text-[#35d2e9]">
+                          {relatedProduct.title}
+                        </h3>
+                        {trail && (
+                          <p className="mt-1 line-clamp-1 text-xs text-gray-500 dark:text-gray-400">
+                            {trail}
+                          </p>
+                        )}
+                        <div className="mt-3 flex items-center justify-between">
+                          <span className="inline-flex items-center gap-1 text-xs font-medium text-gray-600 dark:text-gray-400">
+                            <span
+                              className={`h-1.5 w-1.5 rounded-full ${
+                                relatedProduct.isInStock
+                                  ? "bg-emerald-500"
+                                  : "bg-gray-400"
+                              }`}
+                            />
+                            {relatedProduct.isInStock
+                              ? "Ready to ship"
+                              : "On request"}
+                          </span>
+                          <ArrowRight className="h-4 w-4 text-gray-400 transition group-hover:translate-x-0.5 group-hover:text-[#08778c] dark:group-hover:text-[#35d2e9]" />
+                        </div>
+                      </div>
+                    </Link>
+                  )
+                })}
+              </div>
+            </div>
+          </section>
+        )}
+      </main>
+
+      {/* Mobile sticky bottom CTA */}
+      <MobileStickyBar
+        imageSrc={product.imageSrc}
+        title={product.title}
+        productName={product.title}
+        productCategory={category}
+        productSubcategory={subcategory}
+        productItemCategory={itemCategory}
+      />
+
       <Script id={`product-schema-${product.slug}`} type="application/ld+json">
         {JSON.stringify(productSchema)}
       </Script>

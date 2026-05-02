@@ -14,7 +14,6 @@ interface ServicesPageProps {
 const defaultHeroHeading = "Integrated Engineering Solutions";
 const defaultHeroDescription =
   "Field-ready engineering support for industrial projects, shutdowns, infrastructure works, and facility operations across Saudi Arabia.";
-const defaultSectionHeading = "Integrated Engineering Solutions";
 const defaultMetaTitle = "Integrated Engineering Solutions | Scaffolding, Fabrication | GulfRakza Dammam";
 const defaultMetaDescription =
   "GulfRakza delivers integrated engineering solutions in Dammam, Saudi Arabia: scaffolding, steel fabrication, civil works, rope access, safety training, cathodic protection, HVAC, and mechanical support.";
@@ -22,7 +21,6 @@ const defaultMetaDescription =
 type ServicesSectionMessages = {
   heroHeading?: string;
   heroDescription?: string;
-  sectionHeading?: string;
   metaTitle?: string;
   metaDescription?: string;
 };
@@ -127,14 +125,12 @@ export default async function ServicesPage({ params }: ServicesPageProps) {
   const servicesSection = messages?.home?.services as ServicesSectionMessages | undefined;
   const heroHeading = servicesSection?.heroHeading || defaultHeroHeading;
   const heroDescription = servicesSection?.heroDescription || defaultHeroDescription;
-  const sectionHeading = servicesSection?.sectionHeading || defaultSectionHeading;
 
   return (
     <ServicesListingClient 
       categories={categories}
       heroHeading={heroHeading}
       heroDescription={heroDescription}
-      sectionHeading={sectionHeading}
     />
   );
 }

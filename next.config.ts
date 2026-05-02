@@ -49,6 +49,9 @@ const securityHeaders = [
   },
 ];
 
+const legacyTopLevelProductCategories =
+  "safety|fire-safety|security|lifting|electrical|welding|marine-equipments|pneumatic-hydraulic-fittings|industrial|services-supplies";
+
 const nextConfig: NextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
@@ -117,9 +120,9 @@ const nextConfig: NextConfig = {
       // link to (e.g. /products/safety) — these now correctly route to the
       // catalog page with a category filter applied via query string.
       {
-        source: "/products/:category",
+        source: `/products/:category(${legacyTopLevelProductCategories})`,
         destination: "/products?category=:category",
-        permanent: true,
+        permanent: false,
       },
       // Localized versions
       {
@@ -133,9 +136,9 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
-        source: "/:locale(en|ar)/products/:category",
+        source: `/:locale(en|ar)/products/:category(${legacyTopLevelProductCategories})`,
         destination: "/:locale/products?category=:category",
-        permanent: true,
+        permanent: false,
       },
     ];
   },

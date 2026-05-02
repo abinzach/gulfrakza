@@ -13,7 +13,6 @@ interface ServicesListingClientProps {
   categories: ServiceCategory[];
   heroHeading: string;
   heroDescription: string;
-  sectionHeading: string;
 }
 
 const categoryListImages: Record<string, string> = {
@@ -36,7 +35,7 @@ const renderHighlightedTitle = (title: string) => {
   return (
     <>
       {before}
-      <span className="text-cyan-400">{highlight}</span>
+      <span className="text-[#35d2e9]">{highlight}</span>
       {after}
     </>
   );
@@ -46,7 +45,6 @@ export default function ServicesListingClient({
   categories,
   heroHeading,
   heroDescription,
-  sectionHeading,
 }: ServicesListingClientProps) {
   const tNav = useTranslations("common.nav");
   const [activeCategory, setActiveCategory] = useState<string>(categories[0]?.id ?? "");
@@ -156,8 +154,8 @@ export default function ServicesListingClient({
 
         <div className="relative z-10 flex h-full flex-col justify-between px-5 pb-8 pt-24 sm:px-10 sm:pt-28 lg:px-20">
           <div className="max-w-2xl">
-            <span className="mb-3 inline-block text-[10px] font-semibold uppercase tracking-[0.35em] text-cyan-400 sm:mb-4 sm:text-xs">
-              {sectionHeading}
+            <span className="mb-3 inline-block text-[10px] font-semibold uppercase tracking-[0.35em] text-[#35d2e9] sm:mb-4 sm:text-xs">
+              {tNav("services")}
             </span>
             <h1 className="text-2xl font-bold leading-[1.15] text-white sm:text-4xl lg:text-5xl">
               {renderHighlightedTitle(heroHeading)}
@@ -181,7 +179,7 @@ export default function ServicesListingClient({
                     className={cn(
                       "block rounded-full transition-all duration-500",
                       i === activeSlide
-                        ? "h-0.5 w-6 bg-cyan-400"
+                        ? "h-0.5 w-6 bg-[#35d2e9]"
                         : "h-0.5 w-2.5 bg-white/35",
                     )}
                   />
@@ -213,13 +211,13 @@ export default function ServicesListingClient({
                 className={cn(
                   "relative shrink-0 px-4 py-3.5 text-xs font-semibold transition-colors duration-200 whitespace-nowrap",
                   activeCategory === cat.id
-                    ? "text-cyan-700 dark:text-cyan-400"
+                    ? "text-[#08778c] dark:text-[#35d2e9]"
                     : "text-gray-500 dark:text-gray-400",
                 )}
               >
                 {cat.title}
                 {activeCategory === cat.id && (
-                  <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-cyan-700 dark:bg-cyan-400" />
+                  <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#08778c] dark:bg-[#35d2e9]" />
                 )}
               </Link>
             ))}
@@ -245,7 +243,7 @@ export default function ServicesListingClient({
                     className={cn(
                       "group -ml-[2px] flex items-baseline gap-2.5 border-l-2 py-2.5 pl-4 text-sm transition-all duration-200",
                       activeCategory === cat.id
-                        ? "border-cyan-700 font-semibold text-cyan-700 dark:border-cyan-400 dark:text-cyan-400"
+                        ? "border-[#08778c] font-semibold text-[#08778c] dark:border-[#35d2e9] dark:text-[#35d2e9]"
                         : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white",
                     )}
                   >
@@ -253,7 +251,7 @@ export default function ServicesListingClient({
                       className={cn(
                         "font-mono text-[10px] transition-colors",
                         activeCategory === cat.id
-                          ? "text-cyan-600 dark:text-cyan-500"
+                          ? "text-[#08778c] dark:text-[#0bbfe0]"
                           : "text-gray-300 group-hover:text-gray-400 dark:text-gray-600",
                       )}
                     >
@@ -308,7 +306,7 @@ export default function ServicesListingClient({
                       <div className="absolute inset-0 flex flex-col justify-end p-4 sm:p-6 md:p-8">
                         <div className="flex items-end justify-between gap-3">
                           <div className="min-w-0">
-                            <span className="mb-0.5 block font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-cyan-400">
+                            <span className="mb-0.5 block font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-[#35d2e9]">
                               {String(catIdx + 1).padStart(2, "0")}
                             </span>
                             <h2 className="text-base font-bold text-white sm:text-xl md:text-2xl">
@@ -321,7 +319,7 @@ export default function ServicesListingClient({
                           {/* Quote CTA always in banner */}
                           <button
                             onClick={() => handleRequestCategory(category)}
-                            className="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-cyan-700/90 px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-white backdrop-blur-sm transition hover:bg-cyan-600 active:scale-95 sm:px-4 sm:py-2.5 sm:text-xs"
+                            className="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-[#08778c]/90 px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-white backdrop-blur-sm transition hover:bg-[#0899b4] active:scale-95 sm:px-4 sm:py-2.5 sm:text-xs"
                           >
                             {tNav("getQuote")}
                             <ArrowRight className="h-3 w-3" />
@@ -336,12 +334,12 @@ export default function ServicesListingClient({
                         <li key={service.id}>
                           <button
                             onClick={() => handleRequestService(category, service.id)}
-                            className="flex min-h-[52px] w-full items-center justify-between gap-3 px-4 py-3 text-left transition-colors active:bg-cyan-50 dark:active:bg-cyan-950/30"
+                            className="flex min-h-[52px] w-full items-center justify-between gap-3 px-4 py-3 text-left transition-colors active:bg-[#eefcff] dark:active:bg-[#073642]/30"
                           >
                             <span className="text-sm font-medium leading-snug text-gray-800 dark:text-gray-100">
                               {service.title}
                             </span>
-                            <ArrowUpRight className="h-4 w-4 shrink-0 text-cyan-600 dark:text-cyan-400" />
+                            <ArrowUpRight className="h-4 w-4 shrink-0 text-[#08778c] dark:text-[#35d2e9]" />
                           </button>
                         </li>
                       ))}
@@ -352,9 +350,9 @@ export default function ServicesListingClient({
                       {category.services.map((service) => (
                         <div
                           key={service.id}
-                          className="group flex flex-col rounded-xl border border-gray-200 bg-white p-5 transition-all duration-200 hover:border-cyan-200 hover:shadow-md dark:border-gray-800 dark:bg-gray-900 dark:hover:border-cyan-800/60"
+                          className="group flex flex-col rounded-xl border border-gray-200 bg-white p-5 transition-all duration-200 hover:border-[#a5f3fc] hover:shadow-md dark:border-gray-800 dark:bg-gray-900 dark:hover:border-[#0f5f70]/60"
                         >
-                          <h3 className="mb-2 text-sm font-semibold leading-snug text-gray-900 transition-colors group-hover:text-cyan-700 dark:text-white dark:group-hover:text-cyan-400">
+                          <h3 className="mb-2 text-sm font-semibold leading-snug text-gray-900 transition-colors group-hover:text-[#08778c] dark:text-white dark:group-hover:text-[#35d2e9]">
                             {service.title}
                           </h3>
                           {service.description && (
@@ -364,7 +362,7 @@ export default function ServicesListingClient({
                           )}
                           <button
                             onClick={() => handleRequestService(category, service.id)}
-                            className="mt-auto inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.15em] text-cyan-700 transition hover:text-cyan-500 dark:text-cyan-400 dark:hover:text-cyan-300"
+                            className="mt-auto inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.15em] text-[#08778c] transition hover:text-[#0bbfe0] dark:text-[#35d2e9] dark:hover:text-[#67e8f9]"
                           >
                             {tNav("getQuote")}
                             <ArrowUpRight className="h-3 w-3" />

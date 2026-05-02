@@ -349,8 +349,8 @@ export default function QuoteModal({
         <div className="grid h-full max-h-[92vh] min-h-0 lg:grid-cols-[1.1fr_0.7fr]">
           <div className="flex min-h-0 max-h-full flex-col">
             <div className="relative overflow-hidden border-b border-gray-100 bg-gray-50/90 px-5 py-5 dark:border-gray-800 dark:bg-gray-900/70">
-              <div className="pointer-events-none absolute -right-6 top-6 h-32 w-32 rounded-full bg-cyan-500/20 blur-3xl" />
-              <div className="pointer-events-none absolute left-8 bottom-0 h-32 w-32 rounded-full bg-sky-400/20 blur-3xl" />
+              <div className="pointer-events-none absolute -right-6 top-6 h-32 w-32 rounded-full bg-[#0bbfe0]/20 blur-3xl" />
+              <div className="pointer-events-none absolute left-8 bottom-0 h-32 w-32 rounded-full bg-[#0bbfe0]/20 blur-3xl" />
               <div className="relative flex flex-col gap-3">
                 <div className="space-y-2">
                   <DialogTitle className="text-2xl font-semibold text-gray-900 dark:text-white">
@@ -393,15 +393,15 @@ export default function QuoteModal({
                               key={service.id}
                               className={`flex cursor-pointer items-center gap-3 rounded-lg border px-3 py-2 transition-colors ${
                                 isSelected
-                                  ? "border-cyan-500 bg-cyan-50 dark:border-cyan-500/60 dark:bg-cyan-950/40"
-                                  : "border-gray-200 bg-white hover:border-cyan-300 dark:border-gray-700 dark:bg-gray-900/80"
+                                  ? "border-[#0bbfe0] bg-[#eefcff] dark:border-[#0bbfe0]/60 dark:bg-[#073642]/40"
+                                  : "border-gray-200 bg-white hover:border-[#67e8f9] dark:border-gray-700 dark:bg-gray-900/80"
                               }`}
                             >
                               <input
                                 type="checkbox"
                                 checked={isSelected}
                                 onChange={() => handleServiceSelection(service.id)}
-                                className="h-4 w-4 rounded border-gray-300 text-cyan-600 focus:ring-cyan-600 dark:border-gray-600 dark:bg-gray-900"
+                                className="h-4 w-4 rounded border-gray-300 text-[#08778c] focus:ring-[#0899b4] dark:border-gray-600 dark:bg-gray-900"
                               />
                               <span className="text-sm text-gray-800 dark:text-gray-100">
                                 {service.title}
@@ -431,7 +431,7 @@ export default function QuoteModal({
                         value={formData.fullName}
                         onChange={handleChange}
                         required
-                        className="rounded-lg border-gray-200 bg-white/80 px-3 py-2.5 text-sm focus-visible:ring-1 focus-visible:ring-cyan-600 dark:border-gray-700 dark:bg-gray-900/50"
+                        className="rounded-lg border-gray-200 bg-white/80 px-3 py-2.5 text-sm focus-visible:ring-1 focus-visible:ring-[#0899b4] dark:border-gray-700 dark:bg-gray-900/50"
                       />
                     </div>
                     <div className="space-y-2">
@@ -445,7 +445,7 @@ export default function QuoteModal({
                         value={formData.email}
                         onChange={handleChange}
                         required
-                        className="rounded-lg border-gray-200 bg-white/80 px-3 py-2.5 text-sm focus-visible:ring-1 focus-visible:ring-cyan-600 dark:border-gray-700 dark:bg-gray-900/50"
+                        className="rounded-lg border-gray-200 bg-white/80 px-3 py-2.5 text-sm focus-visible:ring-1 focus-visible:ring-[#0899b4] dark:border-gray-700 dark:bg-gray-900/50"
                       />
                     </div>
                     <div className="space-y-2">
@@ -459,7 +459,7 @@ export default function QuoteModal({
                         value={formData.phone}
                         onChange={handleChange}
                         required
-                        className="rounded-lg border-gray-200 bg-white/80 px-3 py-2.5 text-sm focus-visible:ring-1 focus-visible:ring-cyan-600 dark:border-gray-700 dark:bg-gray-900/50"
+                        className="rounded-lg border-gray-200 bg-white/80 px-3 py-2.5 text-sm focus-visible:ring-1 focus-visible:ring-[#0899b4] dark:border-gray-700 dark:bg-gray-900/50"
                       />
                     </div>
                     <div className="space-y-2">
@@ -472,7 +472,7 @@ export default function QuoteModal({
                         onChange={handleChange}
                         name="productCategory"
                         placeholder={t("placeholders.category")}
-                        className="rounded-lg border-gray-200 bg-white/80 px-3 py-2.5 text-sm focus-visible:ring-1 focus-visible:ring-cyan-600 dark:border-gray-700 dark:bg-gray-900/50"
+                        className="rounded-lg border-gray-200 bg-white/80 px-3 py-2.5 text-sm focus-visible:ring-1 focus-visible:ring-[#0899b4] dark:border-gray-700 dark:bg-gray-900/50"
                       />
                     </div>
                   </div>
@@ -490,7 +490,7 @@ export default function QuoteModal({
                       value={formData.message}
                       onChange={handleChange}
                       placeholder={t("placeholders.message")}
-                      className="rounded-lg border-gray-200 bg-white px-3 py-2.5 text-sm focus-visible:ring-1 focus-visible:ring-cyan-600 dark:border-gray-700 dark:bg-gray-900"
+                      className="rounded-lg border-gray-200 bg-white px-3 py-2.5 text-sm focus-visible:ring-1 focus-visible:ring-[#0899b4] dark:border-gray-700 dark:bg-gray-900"
                     />
                     <p className="text-[11px] text-gray-500 dark:text-gray-400">
                       {t("messageHelper")}
@@ -499,11 +499,11 @@ export default function QuoteModal({
                 </div>
               </div>
 
-              <div className="sticky bottom-0 border-t border-cyan-200 bg-gradient-to-r from-cyan-50 to-white px-5 py-4 backdrop-blur-lg dark:border-cyan-900/30 dark:from-cyan-950/20 dark:to-gray-900/95">
+              <div className="sticky bottom-0 border-t border-[#a5f3fc] bg-gradient-to-r from-[#eefcff] to-white px-5 py-4 backdrop-blur-lg dark:border-[#164f5d]/30 dark:from-[#073642]/20 dark:to-gray-900/95">
                 <Button
                   type="submit"
                   disabled={submitting || (availableServiceOptions.length > 0 && selectedServiceIds.length === 0)}
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-cyan-600 to-cyan-500 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-cyan-500/30 transition-all hover:from-cyan-500 hover:to-cyan-400 hover:shadow-xl hover:shadow-cyan-500/40 disabled:opacity-70"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#0899b4] to-[#0bbfe0] px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-[#0bbfe0]/30 transition-all hover:from-[#0bbfe0] hover:to-[#35d2e9] hover:shadow-xl hover:shadow-[#0bbfe0]/40 disabled:opacity-70"
                 >
                   {submitting ? (
                     <>
@@ -518,7 +518,7 @@ export default function QuoteModal({
             </form>
           </div>
 
-          <aside className="flex flex-col gap-5 bg-gradient-to-b from-cyan-900 via-slate-900 to-slate-950 px-6 py-8 text-white">
+          <aside className="flex flex-col gap-5 bg-gradient-to-b from-[#164f5d] via-slate-900 to-slate-950 px-6 py-8 text-white">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.3em] text-white/60">
                 {t("infoPanel.heading")}

@@ -33,7 +33,7 @@ export default function GetQuoteButton({
           setIsModalOpen(true);
         }}
         variant="default"
-        className="w-full bg-cyan-700 text-sm font-medium text-white hover:bg-cyan-800"
+        className="w-full bg-[#08778c] text-sm font-medium text-white hover:bg-[#0f5f70]"
       >
         {t("getQuote")}
       </Button>

@@ -21,7 +21,7 @@ const EmailInquiry: React.FC = () => {
       onClick={() => trackEvent("email_fab_click", { source: "floating_fab" })}
       aria-label={`Email us at ${contact.emailPrimary}`}
       title={`Email ${contact.emailPrimary}`}
-      className="fixed bottom-32 right-10 z-20 flex h-16 w-16 cursor-pointer items-center justify-center rounded-full border-4 border-white bg-cyan-700 shadow-xl transition-colors hover:bg-cyan-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-cyan-500/40"
+      className="fixed bottom-32 right-10 z-20 flex h-16 w-16 cursor-pointer items-center justify-center rounded-full border-4 border-white bg-[#08778c] shadow-xl transition-colors hover:bg-[#0f5f70] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#0bbfe0]/40"
     >
       <FaEnvelope size={28} className="text-white" aria-hidden="true" />
     </a>

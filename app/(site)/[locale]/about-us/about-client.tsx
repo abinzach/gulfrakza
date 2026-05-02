@@ -53,8 +53,8 @@ const AboutUsClient: React.FC = () => {
 
         <div className="relative mx-auto flex min-h-[78vh] max-w-7xl flex-col justify-end px-4 pb-16 pt-32 sm:px-6 lg:px-8 lg:pb-24 lg:pt-40">
           <div className="max-w-3xl">
-            <p className="flex items-center gap-3 text-xs font-medium uppercase tracking-[0.32em] text-cyan-300">
-              <span className="h-px w-10 bg-cyan-300/70" aria-hidden="true" />
+            <p className="flex items-center gap-3 text-xs font-medium uppercase tracking-[0.32em] text-[#67e8f9]">
+              <span className="h-px w-10 bg-[#67e8f9]/70" aria-hidden="true" />
               {t("heroEyebrow")}
             </p>
             <h1 className="mt-6 text-balance text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl lg:text-[64px]">
@@ -112,7 +112,7 @@ const AboutUsClient: React.FC = () => {
                     } ${idx > 0 ? "lg:pl-8" : ""}`}
                   >
                     <Icon
-                      className="mt-1 h-5 w-5 shrink-0 text-cyan-700"
+                      className="mt-1 h-5 w-5 shrink-0 text-[#08778c]"
                       strokeWidth={1.6}
                       aria-hidden="true"
                     />
@@ -136,8 +136,8 @@ const AboutUsClient: React.FC = () => {
           <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
             <div className="grid gap-x-16 gap-y-16 lg:grid-cols-2">
               <article className="lg:pr-8">
-                <p className="flex items-center gap-3 text-[11px] font-medium uppercase tracking-[0.28em] text-cyan-700">
-                  <span className="h-px w-8 bg-cyan-700/60" aria-hidden="true" />
+                <p className="flex items-center gap-3 text-[11px] font-medium uppercase tracking-[0.28em] text-[#08778c]">
+                  <span className="h-px w-8 bg-[#08778c]/60" aria-hidden="true" />
                   {t("visionLabel")}
                 </p>
                 <h2 className="mt-5 text-balance text-3xl font-semibold leading-tight tracking-tight text-neutral-950 sm:text-4xl">
@@ -149,8 +149,8 @@ const AboutUsClient: React.FC = () => {
               </article>
 
               <article className="lg:border-l lg:border-neutral-200 lg:pl-16">
-                <p className="flex items-center gap-3 text-[11px] font-medium uppercase tracking-[0.28em] text-cyan-700">
-                  <span className="h-px w-8 bg-cyan-700/60" aria-hidden="true" />
+                <p className="flex items-center gap-3 text-[11px] font-medium uppercase tracking-[0.28em] text-[#08778c]">
+                  <span className="h-px w-8 bg-[#08778c]/60" aria-hidden="true" />
                   {t("missionLabel")}
                 </p>
                 <h2 className="mt-5 text-balance text-3xl font-semibold leading-tight tracking-tight text-neutral-950 sm:text-4xl">
@@ -223,7 +223,7 @@ const AboutUsClient: React.FC = () => {
               </h2>
               <Link
                 href="/products"
-                className="group inline-flex items-center gap-3 border-b border-white/30 pb-2 text-sm font-medium tracking-wide text-white transition hover:border-cyan-300 hover:text-cyan-300"
+                className="group inline-flex items-center gap-3 border-b border-white/30 pb-2 text-sm font-medium tracking-wide text-white transition hover:border-[#67e8f9] hover:text-[#67e8f9]"
               >
                 <span>{t("legalName")}</span>
                 <ArrowRight

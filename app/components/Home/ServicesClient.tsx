@@ -34,7 +34,7 @@ const renderEngineeringSolutionsTitle = (title: string) => {
   return (
     <>
       {before}
-      <span className="text-cyan-600">{highlight}</span>
+      <span className="text-[#08778c]">{highlight}</span>
       {after}
     </>
   );
@@ -82,7 +82,7 @@ export default function ServicesClient({ categories }: { categories: ServiceCate
                   <Link href={`/services#${category.id}`}>
                     <GridPatternCard className="group h-full cursor-pointer transition-all duration-300 hover:shadow-lg">
                       <GridPatternCardBody className="h-full text-center">
-                        <h3 className="mb-1 text-lg font-bold text-foreground transition-colors duration-300 group-hover:text-cyan-600">
+                        <h3 className="mb-1 text-lg font-bold text-foreground transition-colors duration-300 group-hover:text-[#08778c]">
                           {category.title}
                         </h3>
                         <p className="text-sm text-foreground/60">{category.description}</p>
@@ -104,7 +104,7 @@ export default function ServicesClient({ categories }: { categories: ServiceCate
 
             <div className="relative grid lg:grid-cols-[0.92fr_1.08fr]">
               <div className="bg-white/85 p-6 sm:p-8 lg:p-10 xl:p-12">
-                <span className="text-xs font-semibold uppercase tracking-[0.28em] text-cyan-700">
+                <span className="text-xs font-semibold uppercase tracking-[0.28em] text-[#08778c]">
                   {t("whyEyebrow")}
                 </span>
                 <h2 className="mt-5 max-w-xl text-3xl font-semibold leading-tight tracking-tight text-slate-950 sm:text-4xl lg:text-5xl">
@@ -129,13 +129,13 @@ export default function ServicesClient({ categories }: { categories: ServiceCate
                     return (
                       <article
                         key={pillar.key}
-                        className="group relative rounded-2xl border border-slate-200 bg-white/95 p-5 shadow-sm transition-all duration-300 hover:border-cyan-200 hover:bg-white hover:shadow-[0_18px_45px_rgba(15,23,42,0.08)] sm:ml-10 sm:p-6"
+                        className="group relative rounded-2xl border border-slate-200 bg-white/95 p-5 shadow-sm transition-all duration-300 hover:border-[#a5f3fc] hover:bg-white hover:shadow-[0_18px_45px_rgba(15,23,42,0.08)] sm:ml-10 sm:p-6"
                       >
-                        <span className="absolute -left-[3.25rem] top-6 hidden h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition-colors group-hover:border-cyan-200 group-hover:text-cyan-700 sm:flex">
+                        <span className="absolute -left-[3.25rem] top-6 hidden h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition-colors group-hover:border-[#a5f3fc] group-hover:text-[#08778c] sm:flex">
                           <Icon className="h-4 w-4" />
                         </span>
                         <div className="flex items-start gap-4">
-                          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-slate-700 transition-colors group-hover:bg-cyan-50 group-hover:text-cyan-700 sm:hidden">
+                          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-slate-700 transition-colors group-hover:bg-[#eefcff] group-hover:text-[#08778c] sm:hidden">
                             <Icon className="h-5 w-5" />
                           </span>
                           <div className="min-w-0">

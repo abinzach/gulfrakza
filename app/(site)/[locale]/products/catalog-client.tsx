@@ -2,9 +2,9 @@
 
 import { useEffect, useMemo, useRef, useState } from "react"
 import Image from "next/image"
+import NextLink from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import {
-  ArrowUpRight,
   ChevronDown,
   ChevronRight,
   MoveVertical,
@@ -13,11 +13,10 @@ import {
   X,
 } from "lucide-react"
 
-import GetQuoteButton from "@/app/components/GetQuoteButton"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
-import { Link } from "@/navigation.client"
+import { useLocale } from "@/i18n/provider"
 
 import type { CatalogCategoryNode, CatalogProduct } from "@/lib/catalog/types"
 import {
@@ -98,7 +97,7 @@ const renderCategoryTree = (
                 onClick={() => onSelect(node.slug)}
                 className={`flex flex-1 items-center justify-between rounded-md px-2 py-1 text-left text-sm transition ${
                   isSelected
-                    ? "bg-cyan-100 font-semibold text-cyan-700 dark:bg-cyan-900/40 dark:text-cyan-300"
+                    ? "bg-[#d8f7ff] font-semibold text-[#08778c] dark:bg-[#164f5d]/40 dark:text-[#67e8f9]"
                     : "text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800/60"
                 }`}
               >
@@ -128,6 +127,7 @@ export default function CatalogPageClient({
   initialFilters,
 }: CatalogPageClientProps) {
   const router = useRouter()
+  const locale = useLocale()
   const pathname = usePathname()
   const basePath = pathname
 
@@ -315,9 +315,10 @@ export default function CatalogPageClient({
   const selectedCategoryPathLabel = selectedCategoryNode
     ? selectedCategoryNode.path.map((segment) => segment.title).join(" → ")
     : null
+  const activeFilterCount = [selectedCategorySlug, ...selectedFeatures, ...selectedBrands].filter(Boolean).length
 
   return (
-    <div className="min-h-screen bg-white py-8 dark:bg-gray-900">
+    <div className="min-h-screen bg-slate-50 py-4 dark:bg-gray-900 sm:py-8">
       {/* Mobile Filter Backdrop */}
       {showMobileFilters && (
         <div
@@ -327,43 +328,34 @@ export default function CatalogPageClient({
         />
       )}
       
-      <div className="mx-auto flex max-w-[1600px] flex-col gap-6 px-4 lg:px-6">
-        <header className="space-y-4 border-b border-gray-200 pb-6 dark:border-gray-700">
-          <div className="space-y-2">
-            <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 sm:text-3xl">
-              Industrial Products Catalog — PPE, Safety & Lifting Equipment
-            </h1>
-            <p className="max-w-3xl text-sm text-gray-600 dark:text-gray-400">
-              Browse our complete range of industrial supplies, PPE, safety
-              systems, lifting gear, welding equipment, and marine supplies for
-              operations across Saudi Arabia.
-            </p>
-          </div>
-          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+      <div className="mx-auto flex max-w-[1600px] flex-col gap-4 px-3 sm:gap-6 sm:px-4 lg:px-6">
+        <header className="mt-10 rounded-3xl border border-slate-200 bg-white p-3 shadow-sm dark:border-gray-800 dark:bg-gray-900 sm:space-y-4 sm:p-5 lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none">
+        
+          <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
             <div className="relative w-full md:max-w-xl">
-              <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+              <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
               <Input
                 value={searchTerm}
                 onChange={(event) => setSearchTerm(event.target.value)}
                 placeholder="Search by product name, spec, or use case"
                 aria-label="Search products"
-                className="pl-9"
+                className="h-11 rounded-full border-slate-200 bg-slate-50 pl-10 text-[15px] shadow-none focus-visible:ring-[#0899b4] dark:border-slate-800 dark:bg-slate-950 sm:h-10 sm:rounded-md"
               />
             </div>
-            <div className="flex flex-wrap items-center gap-3">
+            <div className="grid grid-cols-[1fr_auto] items-center gap-2 sm:flex sm:flex-wrap sm:gap-3">
                <Button
                  variant="outline"
                  size="sm"
                  onClick={() => setShowMobileFilters(!showMobileFilters)}
                  aria-expanded={showMobileFilters}
                  aria-controls="product-filters"
-                 className="flex items-center gap-2 lg:hidden"
+                 className="h-10 justify-center gap-2 rounded-full border-slate-200 bg-white px-4 shadow-sm lg:hidden"
                >
                  <SlidersHorizontal className="h-4 w-4" />
                  Filters
-                 {(selectedCategorySlug || selectedFeatures.length > 0 || selectedBrands.length > 0) && (
-                   <span className="ml-1 flex h-5 w-5 items-center justify-center rounded-full bg-cyan-700 text-xs text-white">
-                     {[selectedCategorySlug, ...selectedFeatures, ...selectedBrands].filter(Boolean).length}
+                 {activeFilterCount > 0 && (
+                   <span className="ml-1 flex h-5 w-5 items-center justify-center rounded-full bg-[#08778c] text-xs text-white">
+                     {activeFilterCount}
                    </span>
                  )}
                </Button>
@@ -371,7 +363,7 @@ export default function CatalogPageClient({
                 value={sortOrder}
                 onChange={(event) => setSortOrder(event.target.value as CatalogSortOption)}
                 aria-label="Sort products"
-                className="h-10 rounded-md border border-input bg-background px-3 text-sm text-slate-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-ring dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200"
+                className="h-10 rounded-full border border-slate-200 bg-white px-3 text-sm text-slate-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#0899b4] dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 sm:rounded-md"
               >
                 {sortOptions.map((option) => (
                   <option key={option.value} value={option.value}>
@@ -392,8 +384,8 @@ export default function CatalogPageClient({
           </div>
         </header>
 
-         <div className="grid gap-6 lg:grid-cols-[300px_1fr]">
-           <aside id="product-filters" className={`fixed inset-y-0 left-0 z-50 w-[85vw] max-w-sm space-y-6 overflow-y-auto rounded-r-lg border border-gray-200 bg-white p-6 shadow-xl transition-transform duration-300 dark:border-gray-700 dark:bg-gray-800 lg:static lg:z-auto lg:w-auto lg:max-w-none lg:rounded-lg lg:bg-gray-50 lg:shadow-none ${showMobileFilters ? "translate-x-0" : "-translate-x-full lg:translate-x-0"} ${showMobileFilters ? "block" : "hidden lg:block"}`}>
+         <div className="grid gap-4 lg:grid-cols-[300px_1fr] lg:gap-6">
+           <aside id="product-filters" className={`fixed inset-y-0 left-0 z-50 w-[88vw] max-w-sm space-y-6 overflow-y-auto rounded-r-3xl border border-gray-200 bg-white p-5 shadow-2xl transition-transform duration-300 dark:border-gray-700 dark:bg-gray-800 sm:p-6 lg:static lg:z-auto lg:w-auto lg:max-w-none lg:rounded-2xl lg:bg-white lg:shadow-sm ${showMobileFilters ? "translate-x-0" : "-translate-x-full lg:translate-x-0"} ${showMobileFilters ? "block" : "hidden lg:block"}`}>
              <div className="flex items-center justify-between border-b border-gray-200 pb-4 dark:border-gray-700 lg:border-0 lg:pb-0">
             <div className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-slate-900 dark:text-slate-100">
               <SlidersHorizontal className="h-4 w-4" />
@@ -404,7 +396,7 @@ export default function CatalogPageClient({
                    <button
                      type="button"
                      onClick={resetFilters}
-                     className="text-sm font-medium text-cyan-600 hover:text-cyan-700 dark:text-cyan-400 dark:hover:text-cyan-300 lg:hidden"
+                     className="text-sm font-medium text-[#08778c] hover:text-[#08778c] dark:text-[#35d2e9] dark:hover:text-[#67e8f9] lg:hidden"
                    >
                      Clear all
                    </button>
@@ -427,7 +419,7 @@ export default function CatalogPageClient({
                     <button
                       type="button"
                       onClick={() => setSelectedCategorySlug(null)}
-                      className="text-xs font-normal text-cyan-600 hover:underline dark:text-cyan-400"
+                      className="text-xs font-normal text-[#08778c] hover:underline dark:text-[#35d2e9]"
                     >
                       Clear
                     </button>
@@ -535,24 +527,35 @@ export default function CatalogPageClient({
             </div>
           </aside>
 
-          <section className="space-y-4">
-            <div className="space-y-3">
-              <p className="text-sm text-gray-600 dark:text-gray-400">
-                {sortedProducts.length} result{sortedProducts.length === 1 ? "" : "s"}
-                {sortedProducts.length !== products.length && (
-                  <span className="text-gray-500 dark:text-gray-500">
-                    {" "}of {products.length} total
-                  </span>
+          <section className="space-y-3 sm:space-y-4">
+            <div className="space-y-2 px-1 sm:space-y-3 sm:px-0">
+              <div className="flex items-center justify-between gap-3">
+                <p className="text-[13px] font-medium uppercase tracking-[0.16em] text-slate-500 dark:text-gray-400 sm:text-sm sm:normal-case sm:tracking-normal sm:text-gray-700 sm:dark:text-gray-300">
+                  {sortedProducts.length} result{sortedProducts.length === 1 ? "" : "s"}
+                  {sortedProducts.length !== products.length && (
+                    <span className="font-normal text-slate-400 dark:text-gray-500">
+                      {" "}of {products.length}
+                    </span>
+                  )}
+                </p>
+                {activeFilterCount > 0 && (
+                  <button
+                    type="button"
+                    onClick={resetFilters}
+                    className="text-xs font-semibold uppercase tracking-[0.14em] text-[#08778c] sm:hidden"
+                  >
+                    Clear
+                  </button>
                 )}
-              </p>
+              </div>
 
-              <div className="flex flex-wrap gap-2">
+              <div className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0 sm:pb-0">
                 {selectedCategoryNode && selectedCategoryPathLabel && (
                   <Button
                     variant="outline"
                     size="sm"
                     onClick={() => setSelectedCategorySlug(null)}
-                    className="gap-2"
+                    className="shrink-0 gap-2 rounded-full"
                   >
                     Category: {selectedCategoryPathLabel}
                     <X className="h-3 w-3" />
@@ -564,7 +567,7 @@ export default function CatalogPageClient({
                     variant="outline"
                     size="sm"
                     onClick={() => removeFeature(feature)}
-                    className="gap-2"
+                    className="shrink-0 gap-2 rounded-full"
                   >
                     {feature}
                     <X className="h-3 w-3" />
@@ -576,7 +579,7 @@ export default function CatalogPageClient({
                     variant="outline"
                     size="sm"
                     onClick={() => removeBrand(brand)}
-                    className="gap-2"
+                    className="shrink-0 gap-2 rounded-full"
                   >
                     Brand: {brand}
                     <X className="h-3 w-3" />
@@ -604,11 +607,10 @@ export default function CatalogPageClient({
                 )}
               </div>
             ) : (
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              <div className="divide-y divide-slate-200 border-y border-slate-200 bg-white dark:divide-gray-800 dark:border-gray-800 dark:bg-gray-900 sm:grid sm:grid-cols-2 sm:gap-4 sm:divide-y-0 sm:border-y-0 sm:bg-transparent lg:grid-cols-3 xl:grid-cols-4">
                 {sortedProducts.map((product) => {
                   // Extract 3-level category hierarchy from categoryTrail
                   const category = product.categoryTrail[0]?.title || product.primaryCategory || "General"
-                  const subcategory = product.categoryTrail[1]?.title || ""
                   const itemCategory = product.categoryTrail[2]?.title || product.leafCategory || category
 
                   const baseFeatureList =
@@ -616,84 +618,89 @@ export default function CatalogPageClient({
                   const featureHighlights = baseFeatureList.slice(0, 3)
                   const stockToneClass = product.isInStock ? "bg-emerald-500" : "bg-gray-400"
                   const stockToneLabel = product.isInStock ? "Ready to ship" : "Stock refreshes soon"
+                  const productHref = `/${locale}/products/${product.slug}`
 
                   return (
-                    <div
+                    <NextLink
                       key={product.id}
-                      className="group relative flex h-full flex-col overflow-hidden rounded-lg border border-gray-200 bg-white transition-all hover:shadow-lg dark:border-gray-700 dark:bg-gray-800"
+                      href={productHref}
+                      aria-label={`Open ${product.title}`}
+                      onMouseDown={(event) => {
+                        if (
+                          event.defaultPrevented ||
+                          event.button !== 0 ||
+                          event.metaKey ||
+                          event.ctrlKey ||
+                          event.shiftKey ||
+                          event.altKey
+                        ) {
+                          return
+                        }
+                        event.preventDefault()
+                        router.push(productHref)
+                      }}
+                      onClick={(event) => {
+                        if (
+                          event.defaultPrevented ||
+                          event.button !== 0 ||
+                          event.metaKey ||
+                          event.ctrlKey ||
+                          event.shiftKey ||
+                          event.altKey
+                        ) {
+                          return
+                        }
+                        event.preventDefault()
+                        router.push(productHref)
+                      }}
+                      className="group grid cursor-pointer grid-cols-[112px_minmax(0,1fr)] gap-3 bg-white px-1 py-3 transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#0899b4] dark:bg-gray-900 dark:hover:bg-gray-800/70 sm:flex sm:h-full sm:flex-col sm:overflow-hidden sm:rounded-xl sm:border sm:border-slate-200 sm:p-0 sm:hover:border-slate-300 sm:hover:shadow-sm dark:sm:border-gray-800"
                     >
-                      {/* Product Image Container */}
-                      <Link
-                        href={product.detailsHref || "#"}
-                        className="relative block aspect-square overflow-hidden bg-white p-4 dark:bg-gray-900"
-                      >
-                          <Image
-                            src={product.imageSrc || "/logo-rakza.png"}
-                            alt={product.title}
-                            fill
-                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      <div className="relative h-32 overflow-hidden bg-white p-2 dark:bg-gray-950 sm:aspect-square sm:h-auto sm:w-full sm:p-4">
+                        <Image
+                          src={product.imageSrc || "/logo-rakza.png"}
+                          alt={product.title}
+                          fill
+                          sizes="(max-width: 640px) 112px, (max-width: 1024px) 50vw, 25vw"
                           className="object-contain transition-transform duration-300 group-hover:scale-105"
                         />
-                      </Link>
+                      </div>
 
-                      {/* Product Details */}
-                      <div className="flex flex-1 flex-col p-4">
-                        {/* Brand */}
+                      <div className="flex min-w-0 flex-1 flex-col py-0.5 pr-2 sm:p-4">
+                        <div className="mb-1 flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1">
                           {product.brand && (
-                          <p className="mb-1 text-xs font-medium text-gray-500 dark:text-gray-400">
+                            <p className="truncate text-[11px] font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400 sm:text-xs">
                               {product.brand}
                             </p>
                           )}
+                          <span className={`h-1.5 w-1.5 shrink-0 rounded-full ${stockToneClass}`} />
+                          <span className="truncate text-[11px] font-medium text-gray-500 dark:text-gray-400">
+                            {stockToneLabel}
+                          </span>
+                        </div>
                 
-                        {/* Product Title */}
-                        <Link href={product.detailsHref || "#"}>
-                          <h3 className="mb-2 line-clamp-2 min-h-[2.5rem] text-sm font-normal leading-tight text-gray-900 transition-colors hover:text-cyan-600 dark:text-gray-100 dark:hover:text-cyan-400">
-                            {product.title}
-                          </h3>
-                        </Link>
+                        <h3 className="line-clamp-2 text-[15px] font-medium leading-snug text-gray-950 transition-colors group-hover:text-[#08778c] dark:text-gray-100 dark:group-hover:text-[#35d2e9] sm:mb-2 sm:min-h-[2.5rem] sm:text-sm sm:font-normal sm:leading-tight">
+                          {product.title}
+                        </h3>
 
-                        {/* Features/Specs */}
+                        <p className="mt-1 line-clamp-1 text-xs text-gray-500 dark:text-gray-400 sm:hidden">
+                          {itemCategory}
+                        </p>
+
                         {featureHighlights.length > 0 && (
-                          <div className="mb-3 text-xs text-gray-600 dark:text-gray-400">
+                          <div className="mt-2 text-xs text-gray-600 dark:text-gray-400 sm:mb-3">
                             <ul className="space-y-0.5">
                               {featureHighlights.slice(0, 2).map((feature) => (
-                                <li key={feature} className="truncate">
-                                  • {feature}
+                                <li key={feature} className="line-clamp-1">
+                                  <span className="text-gray-300 sm:text-gray-500">•</span> {feature}
                                 </li>
                               ))}
                             </ul>
                             </div>
                           )}
 
-                        {/* Stock Availability */}
-                        <div className="mb-3 flex items-center gap-2 text-xs font-medium text-gray-700 dark:text-gray-300">
-                          <span className={`h-2.5 w-2.5 rounded-full ${stockToneClass}`} />
-                          <span>{stockToneLabel}</span>
-                        </div>
-
-                        {/* Spacer to push buttons to bottom */}
                         <div className="flex-1" />
-
-                        {/* Action Buttons */}
-                        <div className="mt-3 space-y-2">
-                          <GetQuoteButton
-                            productName={product.title}
-                            productCategory={category}
-                            productSubcategory={subcategory}
-                            productItemCategory={itemCategory}
-                          />
-                        {product.detailsHref && (
-                          <Link
-                            href={product.detailsHref}
-                              className="flex w-full items-center justify-center gap-1 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
-                          >
-                              View Details
-                              <ArrowUpRight className="h-3.5 w-3.5" />
-                          </Link>
-                        )}
-                        </div>
                       </div>
-                    </div>
+                    </NextLink>
                   )
                 })}
               </div>
