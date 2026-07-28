@@ -16,8 +16,8 @@ export const contact = {
 
   // Saudi mobile number used for WhatsApp + the "Call us" CTA
   // E.164 format (no spaces) for `tel:` and WhatsApp URLs
-  phoneMobileE164: "+966557197311",
-  phoneMobileDisplay: "+966 55 719 7311",
+  phoneMobileE164: "+966539539827",
+  phoneMobileDisplay: "966 53 953 9827",
 
   // Landline (printed in the footer)
   phoneLandlineE164: "+966138816957",
