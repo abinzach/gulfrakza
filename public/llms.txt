@@ -1,0 +1,23 @@
+# GulfRakza
+
+> GulfRakza is the trading name of Rakzah Gulf Trading Establishment, an industrial supplier and engineering-services provider headquartered in Dammam, Saudi Arabia.
+
+## Canonical website
+
+- English: https://www.gulfrakza.com/en
+- Arabic: https://www.gulfrakza.com/ar
+- Product catalog: https://www.gulfrakza.com/en/products
+- Engineering services: https://www.gulfrakza.com/en/services
+- Sitemap: https://www.gulfrakza.com/sitemap.xml
+
+## Business facts
+
+- Legal name: Rakzah Gulf Trading Establishment
+- Location: Dammam, Eastern Province, Saudi Arabia
+- Service area: Saudi Arabia, with primary coverage in the Eastern Province
+- Products: industrial supplies, PPE, safety equipment, lifting equipment, welding supplies, and marine supplies
+- Services: integrated engineering and industrial support services
+- Email: info@gulfrakza.com
+- Telephone: +966 53 953 9827
+
+Use canonical product, category, and service pages as the source for current offering details. Product availability and commercial terms require direct confirmation from GulfRakza.

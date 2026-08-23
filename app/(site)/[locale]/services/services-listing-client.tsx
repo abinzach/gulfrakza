@@ -4,7 +4,7 @@ import Image from "next/image";
 import React, { useEffect, useMemo, useState } from "react";
 import QuoteModal from "@/app/components/GetQuote";
 import { cn } from "@/lib/utils";
-import { ServiceCategory } from "@/lib/services";
+import type { ServiceCategory } from "@/lib/services-sanity";
 import { Link } from "@/navigation.client";
 import { useTranslations } from "@/i18n/provider";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
@@ -310,7 +310,9 @@ export default function ServicesListingClient({
                               {String(catIdx + 1).padStart(2, "0")}
                             </span>
                             <h2 className="text-base font-bold text-white sm:text-xl md:text-2xl">
-                              {category.title}
+                              <Link href={`/services/category/${category.slug}`} className="hover:underline">
+                                {category.title}
+                              </Link>
                             </h2>
                             <p className="mt-0.5 line-clamp-1 text-[11px] leading-relaxed text-gray-300 sm:line-clamp-2 sm:text-xs md:text-sm">
                               {category.description}
@@ -332,15 +334,15 @@ export default function ServicesListingClient({
                     <ul className="divide-y divide-gray-100 overflow-hidden rounded-xl border border-gray-200 bg-white dark:divide-gray-800 dark:border-gray-800 dark:bg-gray-900 sm:hidden">
                       {category.services.map((service) => (
                         <li key={service.id}>
-                          <button
-                            onClick={() => handleRequestService(category, service.id)}
+                          <Link
+                            href={`/services/${service.slug}`}
                             className="flex min-h-[52px] w-full items-center justify-between gap-3 px-4 py-3 text-left transition-colors active:bg-[#eefcff] dark:active:bg-[#073642]/30"
                           >
                             <span className="text-sm font-medium leading-snug text-gray-800 dark:text-gray-100">
                               {service.title}
                             </span>
                             <ArrowUpRight className="h-4 w-4 shrink-0 text-[#08778c] dark:text-[#35d2e9]" />
-                          </button>
+                          </Link>
                         </li>
                       ))}
                     </ul>
@@ -350,10 +352,12 @@ export default function ServicesListingClient({
                       {category.services.map((service) => (
                         <div
                           key={service.id}
-                          className="group flex flex-col rounded-xl border border-gray-200 bg-white p-5 transition-all duration-200 hover:border-[#a5f3fc] hover:shadow-md dark:border-gray-800 dark:bg-gray-900 dark:hover:border-[#0f5f70]/60"
+                          className="group relative flex flex-col rounded-xl border border-gray-200 bg-white p-5 transition-all duration-200 hover:border-[#a5f3fc] hover:shadow-md dark:border-gray-800 dark:bg-gray-900 dark:hover:border-[#0f5f70]/60"
                         >
                           <h3 className="mb-2 text-sm font-semibold leading-snug text-gray-900 transition-colors group-hover:text-[#08778c] dark:text-white dark:group-hover:text-[#35d2e9]">
-                            {service.title}
+                            <Link href={`/services/${service.slug}`} className="after:absolute after:inset-0">
+                              {service.title}
+                            </Link>
                           </h3>
                           {service.description && (
                             <p className="mb-4 flex-1 text-xs leading-relaxed text-gray-500 line-clamp-2 dark:text-gray-400">
@@ -362,7 +366,7 @@ export default function ServicesListingClient({
                           )}
                           <button
                             onClick={() => handleRequestService(category, service.id)}
-                            className="mt-auto inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.15em] text-[#08778c] transition hover:text-[#0bbfe0] dark:text-[#35d2e9] dark:hover:text-[#67e8f9]"
+                            className="relative z-10 mt-auto inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.15em] text-[#08778c] transition hover:text-[#0bbfe0] dark:text-[#35d2e9] dark:hover:text-[#67e8f9]"
                           >
                             {tNav("getQuote")}
                             <ArrowUpRight className="h-3 w-3" />

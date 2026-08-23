@@ -42,7 +42,7 @@ export async function generateMetadata({ params }: TermsPageProps): Promise<Meta
     acc[currentLocale] = `${siteUrl}/${currentLocale}/terms-of-service`;
     return acc;
   }, {});
-  languages["x-default"] = `${siteUrl}/terms-of-service`;
+  languages["x-default"] = `${siteUrl}/en/terms-of-service`;
 
   return {
     title: `${terms.title} | GulfRakza`,

@@ -42,7 +42,7 @@ export async function generateMetadata({ params }: ServicesPageProps): Promise<M
     acc[currentLocale] = `${siteUrl}/${currentLocale}/services`;
     return acc;
   }, {});
-  languageAlternates["x-default"] = `${siteUrl}/services`;
+  languageAlternates["x-default"] = `${siteUrl}/en/services`;
 
   const localeTag = activeLocale === "ar" ? "ar_SA" : "en_US";
 
@@ -111,12 +111,18 @@ export default async function ServicesPage({ params }: ServicesPageProps) {
       title: category.title,
       description: category.description,
       imageSrc: category.imageSrc,
+      hasArabicTitle: activeLocale === "ar",
+      hasArabicDescription: activeLocale === "ar",
+      isArabicIndexable: true,
       services: category.services.map((service) => ({
         id: service.id,
         slug: service.id,
         title: service.title,
         description: service.description,
         imageSrc: service.imageSrc,
+        hasArabicTitle: activeLocale === "ar",
+        hasArabicDescription: activeLocale === "ar",
+        isArabicIndexable: true,
       })),
     }));
   }

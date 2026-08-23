@@ -76,16 +76,34 @@ const normalizeSlug = (value?: string | null, fallback?: string) => {
   return slugifyValue(fallback);
 };
 
-const buildCatalogHref = (slug?: string | null) =>
-  slug ? `/products?category=${encodeURIComponent(slug)}` : "/products";
+const findCategoryPath = (nodes: CatalogCategoryNode[], slug: string): string[] | null => {
+  for (const node of nodes) {
+    if (node.slug === slug) return node.path.map((segment) => segment.slug);
+    const childPath = findCategoryPath(node.children, slug);
+    if (childPath) return childPath;
+  }
+  return null;
+};
+
+const buildCatalogHref = (categoryTree: CatalogCategoryNode[], slug?: string | null) => {
+  if (!slug) return "/products";
+  const path = findCategoryPath(categoryTree, slug);
+  return path
+    ? `/products/category/${path.map(encodeURIComponent).join("/")}`
+    : `/products?category=${encodeURIComponent(slug)}`;
+};
 
 const buildMegaMenuCategories = (categoryTree: CatalogCategoryNode[]): MegaMenuCategory[] => {
   if (!Array.isArray(categoryTree)) return [];
 
   return categoryTree
+    .filter((category) => category.productCount > 0)
     .map((category) => {
-      const subcategories: MegaMenuSubcategory[] = category.children.map((child) => {
-        const sourceItems = child.children.length > 0 ? child.children : [child];
+      const subcategories: MegaMenuSubcategory[] = category.children
+        .filter((child) => child.productCount > 0)
+        .map((child) => {
+        const sourceItems = (child.children.length > 0 ? child.children : [child])
+          .filter((entry) => entry.productCount > 0);
         const items: MegaMenuItem[] = sourceItems.map((entry) => ({
           title: entry.title,
           description: entry.description,
@@ -132,9 +150,9 @@ const FlyoutNav = ({ categoryTree }: FlyoutNavProps) => {
 
   const ProductsFlyoutContent = useCallback(
     (props: FlyoutContentProps) => (
-      <ProductsContent {...props} productNavCategories={productNavCategories} />
+      <ProductsContent {...props} productNavCategories={productNavCategories} categoryTree={categoryTree} />
     ),
-    [productNavCategories],
+    [categoryTree, productNavCategories],
   );
 
   useMotionValueEvent(scrollY, "change", (latest) => {
@@ -355,17 +373,20 @@ function AboutUsContent({}: FlyoutContentProps) {
 
 type ProductsContentProps = FlyoutContentProps & {
   productNavCategories: MegaMenuCategory[];
+  categoryTree: CatalogCategoryNode[];
 };
 
 function ProductsContent({
   variant = "desktop",
   productNavCategories,
+  categoryTree,
   onNavigate,
 }: ProductsContentProps) {
   if (variant === "mobile") {
     return (
       <MobileProductsContent
         productNavCategories={productNavCategories}
+        categoryTree={categoryTree}
         onNavigate={onNavigate}
       />
     );
@@ -373,6 +394,7 @@ function ProductsContent({
   return (
     <DesktopProductsContent
       productNavCategories={productNavCategories}
+      categoryTree={categoryTree}
       onNavigate={onNavigate}
     />
   );
@@ -380,9 +402,11 @@ function ProductsContent({
 
 const DesktopProductsContent = ({
   productNavCategories,
+  categoryTree,
   onNavigate,
 }: {
   productNavCategories: MegaMenuCategory[];
+  categoryTree: CatalogCategoryNode[];
   onNavigate?: () => void;
 }) => {
   const initialCategorySlug =
@@ -479,7 +503,7 @@ const DesktopProductsContent = ({
               return (
                 <motion.div key={key} whileHover={{ scale: 1.01 }}>
                   <Link
-                    href={buildCatalogHref(category.slug)}
+                    href={buildCatalogHref(categoryTree, category.slug)}
                     onMouseEnter={() => setActiveCategorySlug(category.slug ?? null)}
                     onFocus={() => setActiveCategorySlug(category.slug ?? null)}
                     onClick={() => onNavigate?.()}
@@ -517,7 +541,7 @@ const DesktopProductsContent = ({
               return (
                 <motion.div key={key} whileHover={{ scale: 1.01 }}>
                   <Link
-                    href={buildCatalogHref(subcategory.slug)}
+                    href={buildCatalogHref(categoryTree, subcategory.slug)}
                     onMouseEnter={() => setActiveSubcategorySlug(subcategory.slug ?? null)}
                     onFocus={() => setActiveSubcategorySlug(subcategory.slug ?? null)}
                     onClick={() => onNavigate?.()}
@@ -545,9 +569,11 @@ const DesktopProductsContent = ({
 
 const MobileProductsContent = ({
   productNavCategories,
+  categoryTree,
   onNavigate,
 }: {
   productNavCategories: MegaMenuCategory[];
+  categoryTree: CatalogCategoryNode[];
   onNavigate?: () => void;
 }) => {
   if (productNavCategories.length === 0) {
@@ -566,7 +592,7 @@ const MobileProductsContent = ({
           className="space-y-3"
         >
           <Link
-            href={buildCatalogHref(category.slug)}
+            href={buildCatalogHref(categoryTree, category.slug)}
             onClick={() => onNavigate?.()}
             className="flex items-center justify-between text-base font-semibold text-neutral-900"
           >
@@ -576,7 +602,7 @@ const MobileProductsContent = ({
           {(category.subcategories ?? []).map((subcategory, subIndex) => (
             <Link
               key={`${category.slug ?? slugifyValue(category.title) ?? "category"}-${subcategory.slug ?? slugifyValue(subcategory.title) ?? "subcategory"}-${subIndex}`}
-              href={buildCatalogHref(subcategory.slug)}
+              href={buildCatalogHref(categoryTree, subcategory.slug)}
               onClick={() => onNavigate?.()}
               className="flex items-center justify-between rounded-2xl bg-neutral-50 p-3 text-sm font-semibold text-neutral-800 transition hover:bg-neutral-100"
             >

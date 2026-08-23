@@ -15,6 +15,10 @@ export interface CatalogCategoryNode {
   heroImageUrl?: string | null
   path: Array<{ title: string; slug: string }>
   productCount: number
+  updatedAt?: string
+  hasArabicTitle: boolean
+  hasArabicDescription: boolean
+  isArabicIndexable: boolean
   children: CatalogCategoryNode[]
 }
 
@@ -53,6 +57,10 @@ export interface CatalogProduct {
   usesVariantStock: boolean
   totalStock: number | null
   sizeVariants: CatalogSizeVariant[]
+  updatedAt?: string
+  hasArabicTitle: boolean
+  hasArabicDescription: boolean
+  isArabicIndexable: boolean
 }
 
 export interface CatalogProductDetail {
@@ -79,6 +87,12 @@ export interface CatalogProductDetail {
   resources: CatalogResourceAsset[]
   seoTitle?: string | null
   seoDescription?: string | null
+  updatedAt?: string
+  hasArabicTitle: boolean
+  hasArabicDescription: boolean
+  isArabicIndexable: boolean
+  reviewedBy?: string | null
+  lastReviewedAt?: string | null
 }
 
 export interface CatalogData {

@@ -1,7 +1,9 @@
 import { MetadataRoute } from "next";
 
-import { fetchCatalogData } from "@/lib/catalog";
+import { fetchCatalogData, flattenCategoryTree } from "@/lib/catalog";
 import { locales } from "@/i18n/config";
+import { fetchServiceCategories } from "@/lib/services-sanity";
+import { getAllServiceSlugs, getCategories as getLocalServiceCategories } from "@/lib/services";
 
 const baseUrl = "https://www.gulfrakza.com";
 
@@ -43,22 +45,21 @@ const normalizeHrefToPath = (href: string) => {
 };
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const { products } = await fetchCatalogData();
+  const { products, categoryTree } = await fetchCatalogData();
 
   const entries: MetadataRoute.Sitemap = [];
   const seen = new Set<string>();
-  const lastModified = new Date();
-
   const pushEntry = (
     url: string,
     priority: number,
     changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"],
+    lastModified?: string,
   ) => {
     if (seen.has(url)) return;
     seen.add(url);
     entries.push({
       url,
-      lastModified,
+      ...(lastModified ? { lastModified } : {}),
       changeFrequency,
       priority,
     });
@@ -68,8 +69,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     path: string,
     priority: number,
     changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"],
+    options?: { lastModified?: string; includeArabic?: boolean },
   ) => {
-    toLocalizedUrls(path).forEach((url) => pushEntry(url, priority, changeFrequency));
+    toLocalizedUrls(path).forEach((url) => {
+      if (options?.includeArabic === false && url.includes("/ar/")) return;
+      pushEntry(url, priority, changeFrequency, options?.lastModified);
+    });
   };
 
   addLocalizedEntries("/", 1, "monthly");
@@ -79,12 +84,48 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   addLocalizedEntries("/privacy-policy", 0.4, "yearly");
   addLocalizedEntries("/terms-of-service", 0.4, "yearly");
 
-  // Only include actual product detail pages, not category paths
-  // Category filtering is handled via query params on /products page
+  flattenCategoryTree(categoryTree)
+    .filter((category) => category.productCount > 0)
+    .forEach((category) => {
+      const path = `/products/category/${category.path.map((segment) => segment.slug).join("/")}`;
+      addLocalizedEntries(path, 0.7, "monthly", {
+        lastModified: category.updatedAt,
+        includeArabic: category.isArabicIndexable,
+      });
+    });
+
   products.forEach((product) => {
     if (!product.detailsHref) return;
     const productPath = normalizeHrefToPath(product.detailsHref);
-    addLocalizedEntries(productPath, 0.5, "monthly");
+    addLocalizedEntries(productPath, 0.6, "monthly", {
+      lastModified: product.updatedAt,
+      includeArabic: product.isArabicIndexable,
+    });
+  });
+
+  try {
+    const serviceCategories = await fetchServiceCategories("en");
+    serviceCategories.forEach((category) => {
+      addLocalizedEntries(`/services/category/${category.slug}`, 0.7, "monthly", {
+        lastModified: category.updatedAt,
+        includeArabic: category.isArabicIndexable,
+      });
+    });
+    serviceCategories.flatMap((category) => category.services).forEach((service) => {
+      addLocalizedEntries(`/services/${service.slug}`, 0.65, "monthly", {
+        lastModified: service.updatedAt,
+        includeArabic: service.isArabicIndexable,
+      });
+    });
+  } catch {
+    // The public sitemap remains valid if the optional authenticated service dataset is unavailable.
+  }
+
+  getAllServiceSlugs().forEach((slug) => {
+    addLocalizedEntries(`/services/${slug}`, 0.65, "monthly");
+  });
+  getLocalServiceCategories("en").forEach((category) => {
+    addLocalizedEntries(`/services/category/${category.id}`, 0.7, "monthly");
   });
 
   return entries;

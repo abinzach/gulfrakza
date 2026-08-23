@@ -82,6 +82,21 @@ export default defineType({
       title: "SEO description",
       group: "seo",
     }),
+    defineField({
+      name: "indexArabic",
+      type: "boolean",
+      title: "Arabic page approved for indexing",
+      group: "seo",
+      initialValue: false,
+      description: "Enable only after the Arabic title and description receive human review.",
+      validation: (rule) => rule.custom((enabled, context) => {
+        if (!enabled) return true;
+        const document = context.document as { title?: { en?: string; ar?: string }; description?: { ar?: string } };
+        if (!document.title?.ar?.trim() || !document.description?.ar?.trim()) return "Arabic title and description are required before indexing.";
+        if (document.title.ar.trim() === document.title.en?.trim()) return "Arabic title must not duplicate the English title.";
+        return true;
+      }),
+    }),
   ],
   preview: {
     select: {

@@ -65,10 +65,12 @@ const renderCategoryTree = (
   onToggleExpand: (slug: string) => void,
   onSelect: (slug: string) => void,
   selectedSlug: string | null,
+  locale: string,
 ) => {
+  const visibleNodes = nodes.filter((node) => node.productCount > 0)
   return (
     <ul className="space-y-1">
-      {nodes.map((node) => {
+      {visibleNodes.map((node) => {
         const isExpanded = expanded.has(node.slug)
         const hasChildren = node.children.length > 0
         const isSelected = selectedSlug === node.slug
@@ -92,24 +94,32 @@ const renderCategoryTree = (
               ) : (
                 <span className="mt-1 h-4 w-4" />
               )}
-              <button
-                type="button"
-                onClick={() => onSelect(node.slug)}
+              <div
                 className={`flex flex-1 items-center justify-between rounded-md px-2 py-1 text-left text-sm transition ${
                   isSelected
                     ? "bg-[#d8f7ff] font-semibold text-[#08778c] dark:bg-[#164f5d]/40 dark:text-[#67e8f9]"
                     : "text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800/60"
                 }`}
               >
-                <span>{node.title}</span>
-                <span className="ml-3 text-xs text-slate-500 dark:text-slate-400">
+                <NextLink
+                  href={`/${locale}/products/category/${node.path.map((segment) => encodeURIComponent(segment.slug)).join("/")}`}
+                  className="min-w-0 flex-1 hover:underline"
+                >
+                  {node.title}
+                </NextLink>
+                <button
+                  type="button"
+                  onClick={() => onSelect(node.slug)}
+                  aria-label={`Filter catalog by ${node.title}`}
+                  className="ml-3 rounded px-1 text-xs text-slate-500 hover:bg-white hover:text-cyan-800 dark:text-slate-400"
+                >
                   {node.productCount}
-                </span>
-              </button>
+                </button>
+              </div>
             </div>
             {hasChildren && isExpanded && (
               <div className="ml-5 border-l border-slate-200 pl-3 dark:border-slate-800">
-                {renderCategoryTree(node.children, expanded, onToggleExpand, onSelect, selectedSlug)}
+                {renderCategoryTree(node.children, expanded, onToggleExpand, onSelect, selectedSlug, locale)}
               </div>
             )}
           </li>
@@ -330,7 +340,16 @@ export default function CatalogPageClient({
       
       <div className="mx-auto flex max-w-[1600px] flex-col gap-4 px-3 sm:gap-6 sm:px-4 lg:px-6">
         <header className="mt-10 rounded-3xl border border-slate-200 bg-white p-3 shadow-sm dark:border-gray-800 dark:bg-gray-900 sm:space-y-4 sm:p-5 lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none">
-        
+          <div className="mb-4 max-w-4xl">
+            <h1 className="text-3xl font-bold tracking-tight text-slate-950 dark:text-white sm:text-4xl">
+              {locale === "ar" ? "كتالوج المنتجات الصناعية" : "Industrial products catalog"}
+            </h1>
+            <p className="mt-3 text-base leading-7 text-slate-600 dark:text-slate-300">
+              {locale === "ar"
+                ? "تصفح معدات السلامة ومستلزمات المصانع وحلول الرفع واللحام والمنتجات البحرية المتاحة للتوريد في الدمام وجميع أنحاء المملكة."
+                : "Browse safety equipment, plant supplies, lifting and welding solutions, and marine products available from Dammam across Saudi Arabia."}
+            </p>
+          </div>
           <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
             <div className="relative w-full md:max-w-xl">
               <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
@@ -437,6 +456,7 @@ export default function CatalogPageClient({
                         toggleExpandedNode,
                         handleCategorySelect,
                         selectedCategorySlug,
+                        locale,
                       )
                     ) : (
                       <p className="text-sm text-slate-500 dark:text-slate-400">

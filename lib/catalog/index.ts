@@ -35,6 +35,7 @@ interface RawResourceAsset {
 
 interface RawCategory {
   _id: string
+  _updatedAt?: string
   slug?: string | null
   title?: RawLocalizedString | null
   summary?: RawLocalizedString | null
@@ -43,6 +44,7 @@ interface RawCategory {
   parent?: {
     _id: string
   } | null
+  indexArabic?: boolean | null
 }
 
 interface RawProductSpecification {
@@ -57,6 +59,7 @@ interface RawSizeVariant {
 
 interface RawProduct {
   _id: string
+  _updatedAt?: string
   slug?: string | null
   title?: RawLocalizedString | null
   summary?: RawLocalizedString | null
@@ -79,6 +82,9 @@ interface RawProduct {
   sizeVariants?: Array<RawSizeVariant | null> | null
   seoTitle?: RawLocalizedString | null
   seoDescription?: RawLocalizedString | null
+  indexArabic?: boolean | null
+  reviewedBy?: string | null
+  lastReviewedAt?: string | null
 }
 
 interface CategoryNodeRecord {
@@ -91,23 +97,30 @@ interface CategoryNodeRecord {
   heroImage: unknown
   heroImageUrl?: string
   children: string[]
+  updatedAt?: string
+  hasArabicTitle: boolean
+  hasArabicDescription: boolean
+  isArabicIndexable: boolean
 }
 
 const categoriesQuery = groq`
   *[_type == "category"]{
     _id,
+    _updatedAt,
     "slug": slug.current,
     title,
     summary,
     order,
     heroImage,
-    parent->{ _id }
+    parent->{ _id },
+    indexArabic
   }
 `
 
 const productsQuery = groq`
   *[_type == "product" && coalesce(status, "active") != "archived"]{
     _id,
+    _updatedAt,
     "slug": slug.current,
     title,
     brand,
@@ -126,13 +139,17 @@ const productsQuery = groq`
       title,
       parent->{ _id }
     },
-    status
+    status,
+    indexArabic,
+    reviewedBy,
+    lastReviewedAt
   }
 `
 
 const productDetailQuery = groq`
   *[_type == "product" && slug.current == $slug][0]{
     _id,
+    _updatedAt,
     "slug": slug.current,
     title,
     brand,
@@ -166,7 +183,10 @@ const productDetailQuery = groq`
     },
     seoTitle,
     seoDescription,
-    status
+    status,
+    indexArabic,
+    reviewedBy,
+    lastReviewedAt
   }
 `
 
@@ -280,6 +300,15 @@ const buildCatalogContext = (rawCategories: RawCategory[], locale: Locale): Cata
       heroImage: category.heroImage,
       heroImageUrl,
       children: [],
+      updatedAt: category._updatedAt,
+      hasArabicTitle: Boolean(category.title?.ar?.trim()),
+      hasArabicDescription: Boolean(category.summary?.ar?.trim()),
+      isArabicIndexable: Boolean(
+        category.indexArabic &&
+        category.title?.ar?.trim() &&
+        category.summary?.ar?.trim() &&
+        category.title?.ar?.trim() !== category.title?.en?.trim()
+      ),
     })
   })
 
@@ -491,6 +520,15 @@ const normalizeProduct = (
     usesVariantStock,
     totalStock,
     sizeVariants,
+    updatedAt: product._updatedAt,
+    hasArabicTitle: Boolean(product.title?.ar?.trim()),
+    hasArabicDescription: Boolean(product.summary?.ar?.trim()),
+    isArabicIndexable: Boolean(
+      product.indexArabic &&
+      product.title?.ar?.trim() &&
+      product.summary?.ar?.trim() &&
+      product.title?.ar?.trim() !== product.title?.en?.trim()
+    ),
   }
 }
 
@@ -559,6 +597,10 @@ export const fetchCatalogData = async (locale: Locale = "en"): Promise<CatalogDa
       heroImageUrl: node.heroImageUrl,
       path,
       productCount: productCountMap.get(node.slug) ?? 0,
+      updatedAt: node.updatedAt,
+      hasArabicTitle: node.hasArabicTitle,
+      hasArabicDescription: node.hasArabicDescription,
+      isArabicIndexable: node.isArabicIndexable,
       children,
     }
   }
@@ -642,5 +684,30 @@ export const fetchProductDetail = async (
     resources,
     seoTitle,
     seoDescription,
+    updatedAt: baseProduct.updatedAt,
+    hasArabicTitle: baseProduct.hasArabicTitle,
+    hasArabicDescription: baseProduct.hasArabicDescription,
+    isArabicIndexable: baseProduct.isArabicIndexable,
+    reviewedBy: rawProduct.reviewedBy?.trim() || null,
+    lastReviewedAt: rawProduct.lastReviewedAt || null,
   }
+}
+
+export const flattenCategoryTree = (nodes: CatalogCategoryNode[]): CatalogCategoryNode[] =>
+  nodes.flatMap((node) => [node, ...flattenCategoryTree(node.children)])
+
+export const findCategoryByPath = (
+  nodes: CatalogCategoryNode[],
+  path: string[],
+): CatalogCategoryNode | null => {
+  let level = nodes
+  let match: CatalogCategoryNode | undefined
+
+  for (const slug of path) {
+    match = level.find((node) => node.slug === slug)
+    if (!match) return null
+    level = match.children
+  }
+
+  return match ?? null
 }

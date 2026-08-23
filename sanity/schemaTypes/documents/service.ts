@@ -84,6 +84,41 @@ export default defineType({
       title: "SEO description",
       group: "seo",
     }),
+    defineField({
+      name: "indexArabic",
+      type: "boolean",
+      title: "Arabic page approved for indexing",
+      group: "seo",
+      initialValue: false,
+      description: "Enable only after the Arabic title, description, SEO copy, and principal content receive human review.",
+      validation: (rule) => rule.custom((enabled, context) => {
+        if (!enabled) return true;
+        const document = context.document as { title?: { en?: string; ar?: string }; description?: { ar?: string } };
+        if (!document.title?.ar?.trim() || !document.description?.ar?.trim()) return "Arabic title and description are required before indexing.";
+        if (document.title.ar.trim() === document.title.en?.trim()) return "Arabic title must not duplicate the English title.";
+        return true;
+      }),
+    }),
+    defineField({
+      name: "reviewedBy",
+      type: "string",
+      title: "Technical reviewer",
+      group: "content",
+    }),
+    defineField({
+      name: "lastReviewedAt",
+      type: "datetime",
+      title: "Last technical review",
+      group: "content",
+    }),
+    defineField({
+      name: "sourceLinks",
+      type: "array",
+      title: "Claim sources",
+      group: "content",
+      of: [{ type: "url" }],
+      description: "Standards, specifications, or authoritative sources used to verify the service page.",
+    }),
   ],
   preview: {
     select: {
@@ -92,10 +127,9 @@ export default defineType({
       categoryEn: "category.title.en",
       categoryAr: "category.title.ar",
       media: "heroImage",
-      imageSrc: "imageSrc",
       slug: "slug.current",
     },
-    prepare({ titleEn, titleAr, categoryEn, categoryAr, media, imageSrc, slug }) {
+    prepare({ titleEn, titleAr, categoryEn, categoryAr, media, slug }) {
       const title = titleEn || titleAr || "Untitled service";
       const category = categoryEn || categoryAr;
       return {

@@ -1,6 +1,4 @@
 import type { Metadata } from "next";
-import Script from "next/script";
-import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 import FlyoutNav from "@/app/components/Navbar";
 import EmailInquiry from "@/app/components/MailEnquiry";
@@ -13,6 +11,7 @@ import LocalePreferenceSync from "@/app/components/LocalePreferenceSync";
 import { Analytics } from "@/app/components/Analytics";
 import { CookieConsent } from "@/app/components/CookieConsent";
 import { fetchCatalogData } from "@/lib/catalog";
+import { serializeJsonLd } from "@/lib/seo/json-ld";
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -32,29 +31,11 @@ export async function generateMetadata({ params }: LayoutParams): Promise<Metada
   const messages = await getMessages(locale);
   const common = messages.common;
 
-  const headersList = await headers();
-  const pathname = headersList.get("x-pathname") || "/";
-  const normalizedPath = pathname.startsWith("/") ? pathname : `/${pathname}`;
-  const localePrefix = `/${locale}`;
-
-  const pathWithLocale = normalizedPath.startsWith(localePrefix)
-    ? normalizedPath
-    : normalizedPath === "/"
-      ? localePrefix
-      : `${localePrefix}${normalizedPath.startsWith("/") ? normalizedPath : `/${normalizedPath}`}`;
-
-  const pathSuffix = pathWithLocale.slice(localePrefix.length) || "";
-  const canonicalPath = pathWithLocale;
-
   const alternateLanguages = locales.reduce<Record<string, string>>((acc, current) => {
-    const targetPath =
-      pathSuffix.length > 0
-        ? `/${current}${pathSuffix.startsWith("/") ? pathSuffix : `/${pathSuffix}`}`
-        : `/${current}`;
-    acc[current] = `${siteUrl}${targetPath}`;
+    acc[current] = `${siteUrl}/${current}`;
     return acc;
   }, {});
-  alternateLanguages["x-default"] = `${siteUrl}${pathSuffix || "/"}`;
+  alternateLanguages["x-default"] = `${siteUrl}/en`;
 
   return {
     title: common.brand.metaTitle,
@@ -65,13 +46,13 @@ export async function generateMetadata({ params }: LayoutParams): Promise<Metada
       google: "ZbwU2zvwMUj6zvUDKN1NnqwHt-jzSE-MZGu9K2jooeA",
     },
     alternates: {
-      canonical: `${siteUrl}${canonicalPath}`,
+      canonical: `${siteUrl}/${locale}`,
       languages: alternateLanguages,
     },
     openGraph: {
       title: common.brand.metaTitle,
       description: common.brand.ogDescription,
-      url: `${siteUrl}${canonicalPath}`,
+      url: `${siteUrl}/${locale}`,
       siteName: "GulfRakza",
       locale: locale === "ar" ? "ar_SA" : "en_US",
       type: "website",
@@ -141,11 +122,15 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
       <WhatsAppInquiry />
       <EmailInquiry />
       <Footerdemo />
-      <Script id="schema-script" type="application/ld+json">
-        {JSON.stringify(
+      <script
+        id="schema-script"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: serializeJsonLd(
           {
             "@context": "https://schema.org",
             "@type": "LocalBusiness",
+            "@id": `${siteUrl}/#organization`,
             "name": "GulfRakza",
             "alternateName": "Rakzah Gulf Trading Establishment",
             "legalName": "Rakzah Gulf Trading Establishment",
@@ -163,8 +148,8 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
             },
             "geo": {
               "@type": "GeoCoordinates",
-              "latitude": "26.4367",
-              "longitude": "50.1039"
+              "latitude": 26.4367,
+              "longitude": 50.1039
             },
             "telephone": contact.phoneMobileE164,
             "email": contact.emailPrimary,
@@ -234,13 +219,12 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
               ]
             },
             "sameAs": [
-              "https://www.gulfrakza.com"
+              "https://www.linkedin.com/company/gulfrakza/"
             ]
           },
-          null,
-          2,
-        )}
-      </Script>
+          ),
+        }}
+      />
     </I18nProvider>
   );
 }

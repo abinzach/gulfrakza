@@ -31,14 +31,38 @@ const catalogMeta = {
   twitterImage: `${siteUrl}/twitter-og-image.jpg`,
 }
 
+const arabicCatalogMeta = {
+  title: "كتالوج المنتجات الصناعية | معدات السلامة والرفع | جلف ركزة",
+  description:
+    "تصفح كتالوج جلف ركزة للمنتجات الصناعية في الدمام: معدات الوقاية والسلامة، معدات الرفع واللحام، والمستلزمات البحرية المتاحة للتوريد في المملكة العربية السعودية.",
+  keywords: [
+    "معدات صناعية الدمام",
+    "معدات السلامة السعودية",
+    "معدات الوقاية الشخصية الدمام",
+    "معدات الرفع السعودية",
+    "مستلزمات المصانع المنطقة الشرقية",
+  ],
+  ogTitle: "كتالوج المنتجات الصناعية ومعدات السلامة | جلف ركزة",
+  ogDescription: "اكتشف منتجات السلامة والرفع واللحام والمستلزمات الصناعية المتاحة من جلف ركزة في الدمام.",
+  twitterTitle: "كتالوج المنتجات الصناعية | جلف ركزة",
+  twitterDescription: "منتجات صناعية ومعدات سلامة متاحة للتوريد في الدمام والمملكة العربية السعودية.",
+  ogImage: `${siteUrl}/og-image.jpg`,
+  twitterImage: `${siteUrl}/twitter-og-image.jpg`,
+}
+
 type CatalogPageProps = {
   params: Promise<{ locale: string }>
   searchParams?: Promise<Record<string, string | string[] | undefined>>
 }
 
-export async function generateMetadata({ params }: CatalogPageProps): Promise<Metadata> {
+export async function generateMetadata({ params, searchParams }: CatalogPageProps): Promise<Metadata> {
   const { locale } = await params
   const activeLocale: Locale = isLocale(locale) ? locale : defaultLocale
+  const localizedMeta = activeLocale === "ar" ? arabicCatalogMeta : catalogMeta
+  const resolvedSearchParams = searchParams ? await searchParams : undefined
+  const hasFilters = Boolean(resolvedSearchParams && Object.values(resolvedSearchParams).some((value) =>
+    Array.isArray(value) ? value.some(Boolean) : Boolean(value),
+  ))
 
   const canonicalPath = `/${activeLocale}/products`
   const canonicalUrl = `${siteUrl}${canonicalPath}`
@@ -46,39 +70,40 @@ export async function generateMetadata({ params }: CatalogPageProps): Promise<Me
     acc[currentLocale] = `${siteUrl}/${currentLocale}/products`
     return acc
   }, {})
-  languageAlternates["x-default"] = `${siteUrl}/products`
+  languageAlternates["x-default"] = `${siteUrl}/en/products`
 
   const localeTag = activeLocale === "ar" ? "ar_SA" : "en_US"
 
   return {
-    title: catalogMeta.title,
-    description: catalogMeta.description,
-    keywords: catalogMeta.keywords,
+    title: localizedMeta.title,
+    description: localizedMeta.description,
+    robots: hasFilters ? { index: false, follow: true } : undefined,
+    keywords: localizedMeta.keywords,
     alternates: {
       canonical: canonicalUrl,
       languages: languageAlternates,
     },
     openGraph: {
-      title: catalogMeta.ogTitle,
-      description: catalogMeta.ogDescription,
+      title: localizedMeta.ogTitle,
+      description: localizedMeta.ogDescription,
       url: canonicalUrl,
       siteName: "GulfRakza",
       type: "website",
       locale: localeTag,
       images: [
         {
-          url: catalogMeta.ogImage,
+          url: localizedMeta.ogImage,
           width: 1200,
           height: 630,
-          alt: "Gulf Rakza industrial product catalog",
+          alt: localizedMeta.ogTitle,
         },
       ],
     },
     twitter: {
       card: "summary_large_image",
-      title: catalogMeta.twitterTitle,
-      description: catalogMeta.twitterDescription,
-      images: [catalogMeta.twitterImage],
+      title: localizedMeta.twitterTitle,
+      description: localizedMeta.twitterDescription,
+      images: [localizedMeta.twitterImage],
     },
   }
 }

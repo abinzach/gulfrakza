@@ -44,7 +44,7 @@ export async function generateMetadata({ params }: PrivacyPageProps): Promise<Me
     acc[currentLocale] = `${siteUrl}/${currentLocale}/privacy-policy`;
     return acc;
   }, {});
-  languages["x-default"] = `${siteUrl}/privacy-policy`;
+  languages["x-default"] = `${siteUrl}/en/privacy-policy`;
 
   return {
     title: `${privacy.title} | GulfRakza`,

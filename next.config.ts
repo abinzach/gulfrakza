@@ -77,6 +77,15 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
+        source: "/:locale(en|ar)/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, s-maxage=300, stale-while-revalidate=86400",
+          },
+        ],
+      },
+      {
         source: "/:path*",
         headers: securityHeaders,
       },
@@ -104,18 +113,6 @@ const nextConfig: NextConfig = {
 
   async redirects() {
     return [
-      // Redirect old hierarchical category URLs to main products page
-      // Example: /products/welding/gas-welding-equipment/regulators -> /products
-      {
-        source: "/products/:category/:subcategory/:item",
-        destination: "/products",
-        permanent: true,
-      },
-      {
-        source: "/products/:category/:subcategory",
-        destination: "/products",
-        permanent: true,
-      },
       // Catch the legacy single-segment category URLs that the homepage used to
       // link to (e.g. /products/safety) — these now correctly route to the
       // catalog page with a category filter applied via query string.
@@ -125,16 +122,6 @@ const nextConfig: NextConfig = {
         permanent: false,
       },
       // Localized versions
-      {
-        source: "/:locale(en|ar)/products/:category/:subcategory/:item",
-        destination: "/:locale/products",
-        permanent: true,
-      },
-      {
-        source: "/:locale(en|ar)/products/:category/:subcategory",
-        destination: "/:locale/products",
-        permanent: true,
-      },
       {
         source: `/:locale(en|ar)/products/:category(${legacyTopLevelProductCategories})`,
         destination: "/:locale/products?category=:category",

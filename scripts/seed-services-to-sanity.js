@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 
 // Seeds Sanity with the existing services structure from data/services.json.
 //

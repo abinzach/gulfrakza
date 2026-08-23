@@ -164,6 +164,42 @@ export default defineType({
       group: 'seo',
     }),
     defineField({
+      name: 'indexArabic',
+      type: 'boolean',
+      title: 'Arabic page approved for indexing',
+      group: 'seo',
+      initialValue: false,
+      description: 'Enable only after a human reviews genuinely Arabic title, summary, SEO copy, and principal content.',
+      validation: (rule) => rule.custom((enabled, context) => {
+        if (!enabled) return true;
+        const document = context.document as { title?: { en?: string; ar?: string }; summary?: { ar?: string } };
+        if (!document.title?.ar?.trim() || !document.summary?.ar?.trim()) return 'Arabic title and summary are required before indexing.';
+        if (document.title.ar.trim() === document.title.en?.trim()) return 'Arabic title must not duplicate the English title.';
+        return true;
+      }),
+    }),
+    defineField({
+      name: 'reviewedBy',
+      type: 'string',
+      title: 'Technical reviewer',
+      group: 'content',
+      description: 'Name or role of the person who verified product claims and specifications.',
+    }),
+    defineField({
+      name: 'lastReviewedAt',
+      type: 'datetime',
+      title: 'Last technical review',
+      group: 'content',
+    }),
+    defineField({
+      name: 'sourceLinks',
+      type: 'array',
+      title: 'Claim and specification sources',
+      group: 'content',
+      of: [{ type: 'url' }],
+      description: 'Manufacturer datasheets or authoritative sources used to verify the page. Internal editorial evidence; not automatically displayed.',
+    }),
+    defineField({
       name: 'status',
       type: 'string',
       title: 'Publishing status',

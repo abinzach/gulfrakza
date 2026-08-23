@@ -16,12 +16,22 @@ export default function HeroSection() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
   const [reduceMotion, setReduceMotion] = useState(false);
+  const [videoEligible, setVideoEligible] = useState(false);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-    const update = () => setReduceMotion(mediaQuery.matches);
+    const update = () => {
+      const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
+      const shouldReduceMotion = mediaQuery.matches;
+      setReduceMotion(shouldReduceMotion);
+      setVideoEligible(
+        !shouldReduceMotion &&
+          !connection?.saveData &&
+          window.matchMedia("(min-width: 1024px)").matches,
+      );
+    };
     update();
 
     // Safari < 14
@@ -35,14 +45,15 @@ export default function HeroSection() {
   }, []);
 
   useEffect(() => {
-    if (reduceMotion) return;
+    if (!videoEligible) return;
     const node = sectionRef.current;
     if (!node) return;
+    let loadTimer: number | undefined;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry?.isIntersecting) {
-          setShouldLoadVideo(true);
+          loadTimer = window.setTimeout(() => setShouldLoadVideo(true), 2500);
           observer.disconnect();
         }
       },
@@ -51,8 +62,11 @@ export default function HeroSection() {
     );
 
     observer.observe(node);
-    return () => observer.disconnect();
-  }, [reduceMotion]);
+    return () => {
+      observer.disconnect();
+      if (loadTimer) window.clearTimeout(loadTimer);
+    };
+  }, [videoEligible]);
 
   return (
     <section
@@ -75,7 +89,7 @@ export default function HeroSection() {
         className="absolute left-0 top-0 h-full w-full object-cover object-center"
       />
 
-      {shouldLoadVideo && !reduceMotion ? (
+      {shouldLoadVideo && videoEligible && !reduceMotion ? (
         <video
           className="absolute left-0 top-0 h-full w-full object-cover object-center"
           autoPlay

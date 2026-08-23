@@ -3,6 +3,7 @@ import { Inter, Raleway, Hanken_Grotesk } from "next/font/google";
 import "./globals.css";
 import { headers } from "next/headers";
 import { getDirection, isLocale, defaultLocale } from "@/i18n/config";
+import { siteUrl } from "@/lib/constants";
 
 // All three fonts are loaded through next/font (self-hosted, render-blocking-free,
 // preloaded automatically) and exposed as CSS variables that the legacy
@@ -27,6 +28,7 @@ const hanken = Hanken_Grotesk({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: "GulfRakza | Industrial Supplies & Safety Equipment | Dammam, Saudi Arabia",
   description:
     "GulfRakza (Rakzah Gulf Trading Establishment) - Leading supplier of industrial supplies, PPE, safety equipment, and turnkey solutions in Dammam, Saudi Arabia. Serving the GCC with quality products.",

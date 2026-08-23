@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: AboutUsPageProps): Promise<Me
     acc[currentLocale] = `${siteUrl}/${currentLocale}/about-us`;
     return acc;
   }, {});
-  languageAlternates["x-default"] = `${siteUrl}/about-us`;
+  languageAlternates["x-default"] = `${siteUrl}/en/about-us`;
 
   const localeTag = activeLocale === "ar" ? "ar_SA" : "en_US";
 

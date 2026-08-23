@@ -11,7 +11,6 @@ import {
   Truck,
 } from "lucide-react"
 import type { Metadata } from "next"
-import Script from "next/script"
 import Image from "next/image"
 import { notFound } from "next/navigation"
 
@@ -29,10 +28,11 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 import { fetchCatalogData, fetchProductDetail } from "@/lib/catalog"
-import { isLocale, type Locale, locales } from "@/i18n/config"
+import { isLocale, type Locale } from "@/i18n/config"
 import Link from "next/link"
 import { urlFor } from "@/sanity/lib/image"
 import { siteUrl } from "@/lib/constants"
+import { serializeJsonLd } from "@/lib/seo/json-ld"
 
 interface ProductPageProps {
   params: Promise<{ slug: string; locale: string }>
@@ -56,19 +56,29 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
 
   const fallbackTitle = `${product.title} | GulfRakza`
   const title = product.seoTitle || fallbackTitle
-  const description = product.seoDescription || product.description
+  const baseDescription = product.seoDescription || product.description
+  const description = baseDescription.length >= 110
+    ? baseDescription
+    : activeLocale === "ar"
+      ? `${baseDescription} متاح للاستفسار الفني وعروض الأسعار من جلف ركزة في الدمام والمملكة العربية السعودية.`
+      : `${baseDescription} Available for technical enquiry and quotation from GulfRakza in Dammam, Saudi Arabia.`
   const image = product.imageSrc
   const baseProductPath = `/${activeLocale}/products/${slug}`
   const canonicalUrl = `${siteUrl}${baseProductPath}`
-  const languageAlternates = locales.reduce<Record<string, string>>((acc, loc) => {
-    acc[loc] = `${siteUrl}/${loc}/products/${slug}`
-    return acc
-  }, {})
-  languageAlternates["x-default"] = `${siteUrl}/products/${slug}`
+  const languageAlternates: Record<string, string> = {
+    en: `${siteUrl}/en/products/${slug}`,
+    "x-default": `${siteUrl}/en/products/${slug}`,
+  }
+  if (product.isArabicIndexable) {
+    languageAlternates.ar = `${siteUrl}/ar/products/${slug}`
+  }
 
   return {
     title,
     description,
+    robots: activeLocale === "ar" && !product.isArabicIndexable
+      ? { index: false, follow: true }
+      : undefined,
     alternates: {
       canonical: canonicalUrl,
       languages: languageAlternates,
@@ -113,10 +123,10 @@ const portableTextComponents: PortableTextComponents = {
       <p className="text-base leading-relaxed text-gray-700 dark:text-gray-300">{children}</p>
     ),
     h2: ({ children }) => (
-      <h3 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">{children}</h3>
+      <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">{children}</h2>
     ),
     h3: ({ children }) => (
-      <h4 className="text-xl font-semibold text-gray-900 dark:text-gray-100">{children}</h4>
+      <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">{children}</h3>
     ),
   },
   list: {
@@ -176,12 +186,12 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
     .slice(0, 8)
 
   const catalogBreadcrumb = [
-    { label: "Products", href: "/products" },
+    { label: activeLocale === "ar" ? "المنتجات" : "Products", href: `/${activeLocale}/products` },
     ...product.categoryTrail
       .filter((segment) => Boolean(segment.slug))
-      .map((segment) => ({
+      .map((segment, index) => ({
         label: segment.title,
-        href: `/products?category=${encodeURIComponent(segment.slug)}`,
+        href: `/${activeLocale}/products/category/${product.categoryTrail.slice(0, index + 1).map((item) => encodeURIComponent(item.slug)).join("/")}`,
       })),
     { label: product.title, href: null },
   ]
@@ -224,15 +234,6 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
         }
       : undefined,
     category: product.leafCategory ?? product.primaryCategory ?? undefined,
-    offers: {
-      "@type": "Offer",
-      url: productUrl,
-      priceCurrency: "SAR",
-      availability: isProductAvailable
-        ? "https://schema.org/InStock"
-        : "https://schema.org/OutOfStock",
-      businessFunction: "https://purl.org/goodrelations/v1#Sell",
-    },
     additionalProperty:
       product.specs.length > 0
         ? product.specs.map((spec) => ({
@@ -253,9 +254,9 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
     },
     ...product.categoryTrail
       .filter((segment) => Boolean(segment.slug))
-      .map((segment) => ({
+      .map((segment, index) => ({
         name: segment.title,
-        item: `${siteUrl}/${activeLocale}/products?category=${encodeURIComponent(segment.slug)}`,
+        item: `${siteUrl}/${activeLocale}/products/category/${product.categoryTrail.slice(0, index + 1).map((item) => encodeURIComponent(item.slug)).join("/")}`,
       })),
     {
       name: product.title,
@@ -605,6 +606,23 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
           </section>
         )}
 
+        {(product.reviewedBy || product.lastReviewedAt) && (
+          <section aria-label={activeLocale === "ar" ? "مراجعة المحتوى" : "Content review"} className="mx-auto max-w-[1400px] px-4 pb-10 sm:px-6">
+            <div className="rounded-xl border border-slate-200 bg-white px-5 py-4 text-sm text-slate-600 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300">
+              {product.reviewedBy && (
+                <span>{activeLocale === "ar" ? "راجعه فنيًا: " : "Technically reviewed by: "}<strong>{product.reviewedBy}</strong></span>
+              )}
+              {product.reviewedBy && product.lastReviewedAt && <span aria-hidden="true"> · </span>}
+              {product.lastReviewedAt && (
+                <time dateTime={product.lastReviewedAt}>
+                  {activeLocale === "ar" ? "آخر مراجعة: " : "Last reviewed: "}
+                  {new Intl.DateTimeFormat(activeLocale === "ar" ? "ar-SA" : "en-SA", { dateStyle: "medium" }).format(new Date(product.lastReviewedAt))}
+                </time>
+              )}
+            </div>
+          </section>
+        )}
+
         {/* Related Products */}
         {relatedProducts.length > 0 && (
           <section className="border-t border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900">
@@ -619,7 +637,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
                   </p>
                 </div>
                 <Link
-                  href="/products"
+                  href={`/${activeLocale}/products`}
                   className="hidden items-center gap-1 text-sm font-semibold text-[#08778c] hover:text-[#0bbfe0] dark:text-[#35d2e9] sm:inline-flex"
                 >
                   View catalog
@@ -636,10 +654,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
                   return (
                     <Link
                       key={relatedProduct.id}
-                      href={
-                        relatedProduct.detailsHref ||
-                        `/products/${relatedProduct.slug}`
-                      }
+                      href={`/${activeLocale}/products/${relatedProduct.slug}`}
                       className="group flex flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white transition hover:-translate-y-0.5 hover:border-[#08778c]/40 hover:shadow-lg dark:border-gray-800 dark:bg-gray-900"
                     >
                       <div className="relative aspect-square overflow-hidden bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-900">
@@ -700,12 +715,16 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
         productItemCategory={itemCategory}
       />
 
-      <Script id={`product-schema-${product.slug}`} type="application/ld+json">
-        {JSON.stringify(productSchema)}
-      </Script>
-      <Script id={`breadcrumb-schema-${product.slug}`} type="application/ld+json">
-        {JSON.stringify(breadcrumbSchema)}
-      </Script>
+      <script
+        id={`product-schema-${product.slug}`}
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(productSchema) }}
+      />
+      <script
+        id={`breadcrumb-schema-${product.slug}`}
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(breadcrumbSchema) }}
+      />
     </>
   )
 }

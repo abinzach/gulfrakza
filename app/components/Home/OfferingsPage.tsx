@@ -6,6 +6,7 @@ import Link from "next/link";
 
 import type { Locale } from "@/i18n/config";
 import { getMessages } from "@/i18n/config";
+import { fetchCatalogData, flattenCategoryTree } from "@/lib/catalog";
 
 interface Item {
   title: string;
@@ -47,7 +48,6 @@ const getNestedValue = (obj: unknown, path: string): unknown => {
   if (!obj) return undefined;
   return path.split(".").reduce<unknown>((acc, key) => {
     if (!acc || typeof acc !== "object") return undefined;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return (acc as any)[key];
   }, obj);
 };
@@ -55,6 +55,8 @@ const getNestedValue = (obj: unknown, path: string): unknown => {
 const OfferingsPage = async ({ locale }: { locale: Locale }) => {
   const { categories } = data as CategoriesData;
   const messages = await getMessages(locale);
+  const { categoryTree } = await fetchCatalogData(locale);
+  const categoryLookup = new Map(flattenCategoryTree(categoryTree).map((category) => [category.slug, category]));
 
   const getLocalizedText = (relativeKey: string, fallback: string) => {
     const value = getNestedValue(messages?.home?.offerings, relativeKey);
@@ -79,6 +81,7 @@ const OfferingsPage = async ({ locale }: { locale: Locale }) => {
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
           {categories.map((category) => {
             const slug = getCategorySlug(category.link, category.title);
+            const liveCategory = categoryLookup.get(slug);
             const localizedTitle = getLocalizedText(`categoryCards.${slug}.title`, category.title);
             const localizedDescription = getLocalizedText(
               `categoryCards.${slug}.description`,
@@ -88,7 +91,9 @@ const OfferingsPage = async ({ locale }: { locale: Locale }) => {
             return (
               <Link
                 key={category.title}
-                href={`/${locale}/products?category=${encodeURIComponent(slug)}`}
+                href={liveCategory && liveCategory.productCount > 0
+                  ? `/${locale}/products/category/${liveCategory.path.map((segment) => encodeURIComponent(segment.slug)).join("/")}`
+                  : `/${locale}/products`}
               >
                 <div className="group h-full cursor-pointer rounded border border-dashed border-gray-500 bg-white p-6 transition-shadow duration-300 hover:shadow-lg dark:bg-gray-950">
                   <Image
