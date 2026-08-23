@@ -30,20 +30,7 @@ export function proxy(request: NextRequest) {
     return NextResponse.redirect(redirectUrl);
   }
 
-  const requestHeaders = new Headers(request.headers);
-  requestHeaders.set("x-pathname", pathname);
-  const response = NextResponse.next({ request: { headers: requestHeaders } });
-
-  if (request.cookies.get(localeCookieName)?.value !== localeFromPath) {
-    response.cookies.set(localeCookieName, localeFromPath, {
-      path: "/",
-      maxAge: 60 * 60 * 24 * 365,
-      sameSite: "lax",
-      secure: process.env.NODE_ENV === "production",
-    });
-  }
-
-  return response;
+  return NextResponse.next();
 }
 
 export const config = {
