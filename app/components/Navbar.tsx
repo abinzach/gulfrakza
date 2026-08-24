@@ -1,5 +1,8 @@
 'use client';
 
+/* Hallmark · pre-emit critique: P5 H5 E5 S5 R5 V4 */
+/* Hallmark · genre: modern-minimal · macrostructure: existing homepage preserved · tone: industrial-utilitarian · nav: N11 mega-menu */
+
 import React, {
   Dispatch,
   SetStateAction,
@@ -102,14 +105,12 @@ const buildMegaMenuCategories = (categoryTree: CatalogCategoryNode[]): MegaMenuC
       const subcategories: MegaMenuSubcategory[] = category.children
         .filter((child) => child.productCount > 0)
         .map((child) => {
-        const sourceItems = (child.children.length > 0 ? child.children : [child])
-          .filter((entry) => entry.productCount > 0);
-        const items: MegaMenuItem[] = sourceItems.map((entry) => ({
-          title: entry.title,
-          description: entry.description,
-          slug: normalizeSlug(entry.slug, entry.title),
-          imageSrc: entry.heroImageUrl ?? undefined,
-        }));
+        const items: MegaMenuItem[] = [{
+          title: child.title,
+          description: child.description,
+          slug: normalizeSlug(child.slug, child.title),
+          imageSrc: child.heroImageUrl ?? undefined,
+        }];
 
         return {
           title: child.title,
@@ -126,8 +127,7 @@ const buildMegaMenuCategories = (categoryTree: CatalogCategoryNode[]): MegaMenuC
         imageSrc: category.heroImageUrl ?? undefined,
         subcategories: subcategories.filter((subcategory) => subcategory.items.length > 0),
       };
-    })
-    .filter((category) => category.subcategories.length > 0);
+    });
 };
 
 type FlyoutNavProps = {
@@ -166,12 +166,13 @@ const FlyoutNav = ({ categoryTree }: FlyoutNavProps) => {
     return pathname.startsWith(prefix) ? pathname.slice(prefix.length) || "/" : pathname;
   }, [pathname, locale]);
 
-  const isProductsRoute =
+  const isSolidNavRoute =
     normalizedPath.startsWith("/products") ||
+    normalizedPath.startsWith("/services/") ||
     normalizedPath.startsWith("/privacy") ||
     normalizedPath.startsWith("/terms");
 
-  const finalScrolled = isProductsRoute ? true : scrolled;
+  const finalScrolled = isSolidNavRoute ? true : scrolled;
 
   const links = useMemo(() => {
     const baseLinks: NavItem[] = [
@@ -204,7 +205,7 @@ const FlyoutNav = ({ categoryTree }: FlyoutNavProps) => {
   return (
     <>
       <nav
-        className={`fixed top-0 z-50 w-full px-6 text-white transition-all duration-300 ease-out lg:px-12 overflow-visible ${
+        className={`fixed top-0 z-50 w-full overflow-visible px-6 text-white transition-[background-color,padding,box-shadow] duration-300 ease-out lg:px-12 ${
           finalScrolled
             ? "bg-neutral-950 py-3 shadow-xl"
             : "bg-neutral-950/0 py-6 shadow-none"
@@ -310,10 +311,13 @@ const NavLink = ({
       }}
       className="relative h-fit w-fit overflow-visible group"
     >
-      <Link href={href} className="relative group">
+      <Link
+        href={href}
+        className="relative whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#67e8f9] focus-visible:ring-offset-4 focus-visible:ring-offset-neutral-950"
+      >
         {children}
         <span
-          className="absolute -bottom-2 -left-2 -right-2 h-1 origin-left rounded-full bg-[#67e8f9] transition-transform duration-300 ease-out group-hover:scale-x-100 scale-x-0"
+          className="absolute -bottom-2 -left-2 -right-2 h-1 origin-left scale-x-0 bg-[#67e8f9] transition-transform duration-200 ease-out group-hover:scale-x-100 group-focus-within:scale-x-100"
         />
       </Link>
       <AnimatePresence>
@@ -324,11 +328,11 @@ const NavLink = ({
             exit={{ opacity: 0, y: 15 }}
             style={{ translateX: flyoutAlign === "left" ? "-70%" : "-50%" }}
             transition={{ duration: 0.3, ease: "easeOut" }}
-            className="absolute left-1/2 top-12 z-50 rounded-[28px] border border-neutral-800/50 bg-neutral-950/95 backdrop-blur-xl text-white shadow-2xl overflow-hidden"
+            className="absolute left-1/2 top-12 z-50 overflow-hidden border border-neutral-700 bg-neutral-950 text-white shadow-[0_24px_64px_rgba(0,0,0,0.45)]"
             role="menu"
           >
             <div className="absolute -top-6 left-0 right-0 h-6 bg-transparent" />
-            <div className="absolute left-1/2 top-0 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-neutral-950/95 backdrop-blur-xl border-l border-t border-neutral-800/50 rounded-tl-sm" />
+            <div className="absolute left-1/2 top-0 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rotate-45 border-l border-t border-neutral-700 bg-neutral-950" />
             <div className="overflow-visible">
               <FlyoutContent variant="desktop" onNavigate={() => setOpen(false)} />
             </div>
@@ -355,7 +359,7 @@ const CTAs = ({
         onClick={onQuoteClick}
         aria-haspopup="dialog"
         className={cn(
-          "flex rounded-full text-sm font-medium transition-colors duration-300",
+          "flex whitespace-nowrap text-sm font-medium transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#67e8f9] focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950 active:translate-y-px",
           isMobile
             ? "h-16 shrink-0 items-center justify-center bg-neutral-950 px-6 text-white hover:bg-neutral-800"
             : "px-4 py-2 bg-white text-black hover:bg-gray-200",
@@ -483,85 +487,130 @@ const DesktopProductsContent = ({
 
   if (!activeCategory) {
     return (
-      <div className="w-[320px] rounded-2xl bg-neutral-950/95 backdrop-blur-xl border border-neutral-800/50 p-6 text-sm text-neutral-400">
+      <div className="w-[320px] border border-neutral-800 bg-neutral-950 p-6 text-sm text-neutral-400">
         Catalog navigation coming soon.
       </div>
     );
   }
 
   return (
-    <div className="w-full max-w-[min(95vw,900px)] overflow-visible rounded-[28px] border border-neutral-800/50 bg-neutral-950/95 backdrop-blur-xl p-6 text-white shadow-[0_25px_70px_rgba(0,0,0,0.5)]">
-      <div className="grid gap-6 lg:[grid-template-columns:260px_270px] xl:[grid-template-columns:300px_300px]">
-        <motion.div className="space-y-3 border-b border-neutral-800 pb-4 lg:border-b-0 lg:border-r lg:border-neutral-800 lg:pb-0 lg:pr-5">
-          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-neutral-400">
-            Pillars
+    <div className="w-[min(92vw,880px)] bg-neutral-950 text-white">
+      <div className="flex items-center justify-between border-b border-neutral-800 px-6 py-4">
+        <div>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#67e8f9]">
+            Product catalog
           </p>
-          <div className="flex flex-col gap-1.5">
+          <p className="mt-1 text-sm text-neutral-400">Browse by industrial category</p>
+        </div>
+        <Link
+          href="/products"
+          onClick={() => onNavigate?.()}
+          className="group flex min-h-11 items-center gap-2 whitespace-nowrap border border-neutral-700 px-4 text-sm font-semibold text-white transition-colors duration-200 hover:border-[#0bbfe0] hover:bg-[#0bbfe0] hover:text-neutral-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#67e8f9] focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950"
+        >
+          View all products
+          <FiArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
+        </Link>
+      </div>
+
+      <div className="grid max-h-[min(70vh,560px)] grid-cols-[260px_minmax(0,1fr)] overflow-hidden">
+        <div className="overflow-y-auto border-r border-neutral-800 bg-neutral-950">
+          <p className="border-b border-neutral-800 px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.22em] text-neutral-500">
+            Categories
+          </p>
+          <div className="flex flex-col">
             {productNavCategories.map((category, index) => {
               const isActive = activeCategory?.slug === category.slug;
               const key = `${category.slug ?? slugifyValue(category.title) ?? "category"}-${index}`;
               return (
-                <motion.div key={key} whileHover={{ scale: 1.01 }}>
+                <div key={key}>
                   <Link
                     href={buildCatalogHref(categoryTree, category.slug)}
                     onMouseEnter={() => setActiveCategorySlug(category.slug ?? null)}
                     onFocus={() => setActiveCategorySlug(category.slug ?? null)}
                     onClick={() => onNavigate?.()}
                     className={cn(
-                      "group flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-semibold transition-colors",
+                      "group relative flex min-h-14 items-center justify-between border-b border-neutral-800 px-5 py-3 text-sm font-semibold transition-colors duration-150 focus-visible:z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#67e8f9]",
                       isActive
-                        ? "bg-white/10 text-white shadow-lg border border-neutral-700"
-                        : "bg-white/5 text-neutral-300 hover:bg-white/10 border border-transparent",
+                        ? "bg-neutral-800 text-white before:absolute before:inset-y-0 before:left-0 before:w-1 before:bg-[#0bbfe0]"
+                        : "text-neutral-300 hover:bg-neutral-900 hover:text-white",
                     )}
                     aria-current={isActive ? "true" : undefined}
                   >
-                    <span>{category.title}</span>
+                    <span className="min-w-0 truncate pr-3" title={category.title}>
+                      {category.title}
+                    </span>
                     <FiArrowRight
                       className={cn(
-                        "h-4 w-4 transition-all",
+                        "h-4 w-4 shrink-0 transition-[transform,color] duration-150",
                         isActive
                           ? "text-[#67e8f9]"
                           : "text-neutral-500 group-hover:translate-x-1 group-hover:text-[#35d2e9]",
                       )}
                     />
                   </Link>
-                </motion.div>
+                </div>
               );
             })}
           </div>
-        </motion.div>
-        <motion.div className="space-y-3 border-b border-neutral-800 pb-4 lg:border-b-0 lg:pb-0">
-          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-neutral-400">
-            Focus areas
-          </p>
-          <div className="flex flex-col gap-1.5">
+        </div>
+
+        <div className="overflow-y-auto bg-neutral-950 px-6 py-5">
+          <div className="mb-5 flex items-start justify-between gap-6 border-b border-neutral-800 pb-5">
+            <div className="min-w-0">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-neutral-500">
+                Product families
+              </p>
+              <h3 className="mt-2 text-xl font-semibold tracking-tight text-white">
+                {activeCategory.title}
+              </h3>
+              {activeCategory.description ? (
+                <p className="mt-2 line-clamp-2 max-w-xl text-sm leading-6 text-neutral-400">
+                  {activeCategory.description}
+                </p>
+              ) : null}
+            </div>
+            <Link
+              href={buildCatalogHref(categoryTree, activeCategory.slug)}
+              onClick={() => onNavigate?.()}
+              className="shrink-0 whitespace-nowrap text-sm font-semibold text-[#67e8f9] underline decoration-[#0bbfe0]/50 underline-offset-4 transition-colors duration-150 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#67e8f9] focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950"
+            >
+              View category
+            </Link>
+          </div>
+          <div className="grid grid-cols-2 border-l border-t border-neutral-800">
             {(activeCategory.subcategories ?? []).map((subcategory, index) => {
               const isActive = activeSubcategory?.slug === subcategory.slug;
               const key = `${activeCategory.slug ?? slugifyValue(activeCategory.title) ?? "category"}-${subcategory.slug ?? slugifyValue(subcategory.title) ?? "subcategory"}-${index}`;
               return (
-                <motion.div key={key} whileHover={{ scale: 1.01 }}>
+                <div key={key}>
                   <Link
                     href={buildCatalogHref(categoryTree, subcategory.slug)}
                     onMouseEnter={() => setActiveSubcategorySlug(subcategory.slug ?? null)}
                     onFocus={() => setActiveSubcategorySlug(subcategory.slug ?? null)}
                     onClick={() => onNavigate?.()}
                     className={cn(
-                      "block rounded-2xl border px-4 py-3 text-sm font-semibold transition-colors",
+                      "group flex min-h-16 items-center justify-between gap-3 border-b border-r border-neutral-800 px-4 py-3 text-sm font-semibold transition-colors duration-150 focus-visible:z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#67e8f9]",
                       isActive
-                        ? "border-[#0bbfe0] bg-[#0bbfe0]/10 text-[#67e8f9] shadow-sm"
-                        : "border-transparent text-neutral-300 hover:border-neutral-700 hover:bg-white/5",
+                        ? "bg-[#0bbfe0]/10 text-[#67e8f9]"
+                        : "text-neutral-300 hover:bg-neutral-900 hover:text-white",
                     )}
                     aria-current={isActive ? "true" : undefined}
                   >
-                    <div className="flex items-center justify-between gap-3">
-                      <span>{subcategory.title}</span>
-                    </div>
+                    <span className="min-w-0 truncate" title={subcategory.title}>
+                      {subcategory.title}
+                    </span>
+                    <FiArrowRight className="h-4 w-4 shrink-0 text-neutral-600 transition-[transform,color] duration-150 group-hover:translate-x-1 group-hover:text-[#35d2e9]" />
                   </Link>
-                </motion.div>
+                </div>
               );
             })}
           </div>
-        </motion.div>
+          {activeCategory.subcategories.length === 0 ? (
+            <p className="border border-neutral-800 p-5 text-sm text-neutral-400">
+              Products are available directly in this category.
+            </p>
+          ) : null}
+        </div>
       </div>
     </div>
   );
@@ -578,14 +627,14 @@ const MobileProductsContent = ({
 }) => {
   if (productNavCategories.length === 0) {
     return (
-      <div className="rounded-2xl bg-white p-4 text-sm text-neutral-500">
+      <div className="border border-neutral-200 bg-white p-4 text-sm text-neutral-500">
         Catalog navigation coming soon.
       </div>
     );
   }
 
   return (
-    <div className="space-y-5 rounded-2xl border border-neutral-200 bg-white p-4">
+    <div className="space-y-5 border border-neutral-200 bg-white p-4">
       {productNavCategories.map((category, index) => (
         <div
           key={`${category.slug ?? slugifyValue(category.title) ?? "category"}-${index}`}
@@ -594,20 +643,24 @@ const MobileProductsContent = ({
           <Link
             href={buildCatalogHref(categoryTree, category.slug)}
             onClick={() => onNavigate?.()}
-            className="flex items-center justify-between text-base font-semibold text-neutral-900"
+            className="flex min-h-11 items-center justify-between gap-3 text-base font-semibold text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0899b4]"
           >
-            {category.title}
-            <FiArrowRight className="h-4 w-4 text-neutral-400" />
+            <span className="min-w-0 truncate" title={category.title}>
+              {category.title}
+            </span>
+            <FiArrowRight className="h-4 w-4 shrink-0 text-neutral-400" />
           </Link>
           {(category.subcategories ?? []).map((subcategory, subIndex) => (
             <Link
               key={`${category.slug ?? slugifyValue(category.title) ?? "category"}-${subcategory.slug ?? slugifyValue(subcategory.title) ?? "subcategory"}-${subIndex}`}
               href={buildCatalogHref(categoryTree, subcategory.slug)}
               onClick={() => onNavigate?.()}
-              className="flex items-center justify-between rounded-2xl bg-neutral-50 p-3 text-sm font-semibold text-neutral-800 transition hover:bg-neutral-100"
+              className="flex min-h-11 items-center justify-between gap-3 bg-neutral-50 p-3 text-sm font-semibold text-neutral-800 transition-colors hover:bg-neutral-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0899b4]"
             >
-              <span>{subcategory.title}</span>
-              <FiArrowRight className="h-4 w-4 text-neutral-400" />
+              <span className="min-w-0 truncate" title={subcategory.title}>
+                {subcategory.title}
+              </span>
+              <FiArrowRight className="h-4 w-4 shrink-0 text-neutral-400" />
             </Link>
           ))}
         </div>
@@ -615,7 +668,7 @@ const MobileProductsContent = ({
       <Link
         href="/products"
         onClick={() => onNavigate?.()}
-        className="flex items-center justify-center rounded-2xl border border-[#0899b4] px-4 py-2 text-sm font-semibold text-[#08778c] transition hover:bg-[#08778c] hover:text-white"
+        className="flex min-h-11 items-center justify-center whitespace-nowrap border border-[#0899b4] px-4 py-2 text-sm font-semibold text-[#08778c] transition-colors hover:bg-[#08778c] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0899b4]"
       >
         Explore entire catalog
       </Link>
@@ -657,7 +710,7 @@ const LocaleSwitcher = ({
   return (
     <div
       className={cn(
-        "inline-flex items-center rounded-full border p-1 text-xs font-medium uppercase tracking-wide shadow-sm backdrop-blur",
+        "inline-flex items-center border p-1 text-xs font-medium uppercase tracking-wide shadow-sm backdrop-blur",
         isMobile
           ? "w-full max-w-[180px] justify-between border-neutral-300 bg-white text-sm"
           : "border-white/15 bg-white/10 text-white gap-1",
@@ -679,7 +732,7 @@ const LocaleSwitcher = ({
               persistLocalePreference(loc);
             }}
             className={cn(
-              "flex-1 rounded-full text-center transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",
+              "flex-1 text-center transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",
               isMobile ? "px-4 py-1.5 text-sm" : "px-3 py-1 text-xs",
               isMobile
                 ? isActive

@@ -36,7 +36,22 @@ export default defineType({
       description: 'Leave empty for top-level categories. Enables nested hierarchies.',
       options: {
         disableNew: true,
+        filter: '!defined(parent)',
       },
+      validation: (rule) =>
+        rule.custom(async (parent, context) => {
+          if (!parent?._ref) return true;
+
+          const parentId = parent._ref.replace(/^drafts\./, '');
+          const hasParent = await context
+            .getClient({ apiVersion: '2025-01-01' })
+            .fetch<boolean>(
+              'count(*[_id in [$parentId, $draftParentId] && defined(parent)]) > 0',
+              { parentId, draftParentId: `drafts.${parentId}` },
+            );
+
+          return hasParent ? 'Choose a top-level parent. The catalog supports only two category levels.' : true;
+        }),
     }),
     defineField({
       name: 'heroImage',

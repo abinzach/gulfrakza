@@ -1,5 +1,8 @@
 "use client";
 
+/* Hallmark · genre: modern-minimal · macrostructure: Catalogue · theme: GulfRakza Technical Sheet · enrichment: Sanity service photography · nav: inherited · footer: inherited */
+/* Hallmark · pre-emit critique: P4 H5 E5 S5 R5 V4 */
+
 import Image from "next/image";
 import React, { useEffect, useMemo, useState } from "react";
 import QuoteModal from "@/app/components/GetQuote";
@@ -35,7 +38,7 @@ const renderHighlightedTitle = (title: string) => {
   return (
     <>
       {before}
-      <span className="text-[#35d2e9]">{highlight}</span>
+      <span className="text-[var(--color-accent)]">{highlight}</span>
       {after}
     </>
   );
@@ -55,6 +58,7 @@ export default function ServicesListingClient({
     initialSelectedServiceIds?: string[];
   } | null>(null);
   const [activeSlide, setActiveSlide] = useState(0);
+  const [isGalleryPaused, setIsGalleryPaused] = useState(false);
   const [categoryImageStep, setCategoryImageStep] = useState<Record<string, number>>({});
 
   const gallerySlides = useMemo(
@@ -70,10 +74,10 @@ export default function ServicesListingClient({
   );
 
   useEffect(() => {
-    if (gallerySlides.length <= 1) return;
+    if (gallerySlides.length <= 1 || isGalleryPaused) return;
     const id = setInterval(() => setActiveSlide((s) => (s + 1) % gallerySlides.length), 5000);
     return () => clearInterval(id);
-  }, [gallerySlides.length]);
+  }, [gallerySlides.length, isGalleryPaused]);
 
   useEffect(() => {
     if (activeSlide > gallerySlides.length - 1) setActiveSlide(0);
@@ -127,9 +131,19 @@ export default function ServicesListingClient({
   };
 
   return (
-    <main className="min-h-screen bg-gray-50 font-sans dark:bg-gray-950">
+    <main className="min-h-screen bg-[var(--color-paper)] font-sans text-[var(--color-ink)]">
       {/* ── Hero ──────────────────────────────────────────────────── */}
-      <section className="relative h-[52vh] min-h-[360px] max-h-[520px] overflow-hidden bg-gray-950">
+      <section
+        className="relative h-[52vh] min-h-[360px] max-h-[520px] overflow-hidden bg-gray-950"
+        onMouseEnter={() => setIsGalleryPaused(true)}
+        onMouseLeave={() => setIsGalleryPaused(false)}
+        onFocusCapture={() => setIsGalleryPaused(true)}
+        onBlurCapture={(event) => {
+          if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+            setIsGalleryPaused(false);
+          }
+        }}
+      >
         {gallerySlides.map((slide, i) => (
           <div
             key={slide.id}
@@ -149,12 +163,11 @@ export default function ServicesListingClient({
             />
           </div>
         ))}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-black/20" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-black/35" />
+        <div className="absolute inset-0 bg-black/65" />
 
         <div className="relative z-10 flex h-full flex-col justify-between px-5 pb-8 pt-24 sm:px-10 sm:pt-28 lg:px-20">
           <div className="max-w-2xl">
-            <span className="mb-3 inline-block text-[10px] font-semibold uppercase tracking-[0.35em] text-[#35d2e9] sm:mb-4 sm:text-xs">
+            <span className="mb-3 inline-block text-[10px] font-semibold uppercase tracking-[0.35em] text-[var(--color-accent)] sm:mb-4 sm:text-xs">
               {tNav("services")}
             </span>
             <h1 className="text-2xl font-bold leading-[1.15] text-white sm:text-4xl lg:text-5xl">
@@ -173,14 +186,14 @@ export default function ServicesListingClient({
                   key={i}
                   onClick={() => setActiveSlide(i)}
                   aria-label={`Slide ${i + 1}`}
-                  className="flex h-8 items-center px-1"
+                  className="flex h-11 min-w-11 items-center justify-center px-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)] active:opacity-70"
                 >
                   <span
                     className={cn(
-                      "block rounded-full transition-all duration-500",
+                      "block h-0.5 w-6 transition-colors duration-300",
                       i === activeSlide
-                        ? "h-0.5 w-6 bg-[#35d2e9]"
-                        : "h-0.5 w-2.5 bg-white/35",
+                        ? "bg-[var(--color-accent)]"
+                        : "bg-white/35",
                     )}
                   />
                 </button>
@@ -199,8 +212,8 @@ export default function ServicesListingClient({
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-10 lg:px-8 lg:py-14">
 
         {/* Mobile tabs — sticky, full-width, proper touch height */}
-        <div className="sticky top-0 z-40 -mx-4 mb-6 border-b border-gray-200 bg-white/95 backdrop-blur-md dark:border-gray-800 dark:bg-gray-950/95 lg:hidden">
-          <div className="flex overflow-x-auto [&::-webkit-scrollbar]:hidden">
+        <div className="sticky top-16 z-40 -mx-4 mb-6 border-y border-[var(--color-rule)] bg-[var(--color-surface)]/95 backdrop-blur-md lg:hidden">
+          <div className="flex overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden [&::-webkit-scrollbar]:h-0">
             {categories.map((cat) => (
               <Link
                 key={cat.id}
@@ -209,15 +222,15 @@ export default function ServicesListingClient({
                   scrollToCategory(e, cat.id)
                 }
                 className={cn(
-                  "relative shrink-0 px-4 py-3.5 text-xs font-semibold transition-colors duration-200 whitespace-nowrap",
+                  "relative flex min-h-11 shrink-0 items-center px-4 py-3.5 text-xs font-semibold transition-colors duration-200 whitespace-nowrap focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[var(--color-focus)]",
                   activeCategory === cat.id
-                    ? "text-[#08778c] dark:text-[#35d2e9]"
-                    : "text-gray-500 dark:text-gray-400",
+                    ? "text-[var(--color-accent-strong)]"
+                    : "text-[var(--color-muted)] hover:text-[var(--color-ink)]",
                 )}
               >
                 {cat.title}
                 {activeCategory === cat.id && (
-                  <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#08778c] dark:bg-[#35d2e9]" />
+                  <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-[var(--color-accent)]" />
                 )}
               </Link>
             ))}
@@ -232,7 +245,7 @@ export default function ServicesListingClient({
               <p className="mb-5 text-[10px] font-semibold uppercase tracking-[0.25em] text-gray-400">
                 Categories
               </p>
-              <nav className="space-y-0.5 border-l border-gray-200 dark:border-gray-800">
+              <nav className="space-y-0.5 border-l border-[var(--color-rule)]">
                 {categories.map((cat, i) => (
                   <Link
                     key={cat.id}
@@ -241,18 +254,18 @@ export default function ServicesListingClient({
                       scrollToCategory(e, cat.id)
                     }
                     className={cn(
-                      "group -ml-[2px] flex items-baseline gap-2.5 border-l-2 py-2.5 pl-4 text-sm transition-all duration-200",
+                      "group -ml-[2px] flex min-h-11 items-center gap-2.5 border-l-2 py-2.5 pl-4 text-sm transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]",
                       activeCategory === cat.id
-                        ? "border-[#08778c] font-semibold text-[#08778c] dark:border-[#35d2e9] dark:text-[#35d2e9]"
-                        : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white",
+                        ? "border-[var(--color-accent)] font-semibold text-[var(--color-accent-strong)]"
+                        : "border-transparent text-[var(--color-muted)] hover:border-[var(--color-rule-strong)] hover:text-[var(--color-ink)]",
                     )}
                   >
                     <span
                       className={cn(
                         "font-mono text-[10px] transition-colors",
                         activeCategory === cat.id
-                          ? "text-[#08778c] dark:text-[#0bbfe0]"
-                          : "text-gray-300 group-hover:text-gray-400 dark:text-gray-600",
+                          ? "text-[var(--color-accent-strong)]"
+                          : "text-[var(--color-rule-strong)]",
                       )}
                     >
                       {String(i + 1).padStart(2, "0")}
@@ -284,7 +297,7 @@ export default function ServicesListingClient({
                     className="scroll-mt-[108px] lg:scroll-mt-28"
                   >
                     {/* Category banner — quote CTA always inside */}
-                    <div className="relative mb-4 h-40 overflow-hidden rounded-xl sm:mb-5 sm:h-48 md:h-56 md:rounded-2xl">
+                    <div className="relative mb-4 h-40 overflow-hidden border border-[var(--color-rule)] sm:mb-5 sm:h-48 md:h-56">
                       <Image
                         src={catImage}
                         alt={category.title}
@@ -300,17 +313,16 @@ export default function ServicesListingClient({
                           }
                         }}
                       />
-                      <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+                      <div className="absolute inset-0 bg-black/60" />
 
                       <div className="absolute inset-0 flex flex-col justify-end p-4 sm:p-6 md:p-8">
                         <div className="flex items-end justify-between gap-3">
                           <div className="min-w-0">
-                            <span className="mb-0.5 block font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-[#35d2e9]">
+                            <span className="mb-0.5 block font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--color-accent)]">
                               {String(catIdx + 1).padStart(2, "0")}
                             </span>
                             <h2 className="text-base font-bold text-white sm:text-xl md:text-2xl">
-                              <Link href={`/services/category/${category.slug}`} className="hover:underline">
+                              <Link href={`/services/category/${category.slug}`} className="focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)] hover:underline">
                                 {category.title}
                               </Link>
                             </h2>
@@ -321,7 +333,7 @@ export default function ServicesListingClient({
                           {/* Quote CTA always in banner */}
                           <button
                             onClick={() => handleRequestCategory(category)}
-                            className="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-[#08778c]/90 px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-white backdrop-blur-sm transition hover:bg-[#0899b4] active:scale-95 sm:px-4 sm:py-2.5 sm:text-xs"
+                            className="inline-flex min-h-11 shrink-0 items-center gap-1.5 bg-[var(--color-accent-strong)] px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--color-accent-ink)] transition-colors hover:bg-[var(--color-accent)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)] active:opacity-80 sm:px-4 sm:py-2.5 sm:text-xs whitespace-nowrap"
                           >
                             {tNav("getQuote")}
                             <ArrowRight className="h-3 w-3" />
@@ -331,42 +343,42 @@ export default function ServicesListingClient({
                     </div>
 
                     {/* Mobile: compact list rows (fast scanning, proper touch targets) */}
-                    <ul className="divide-y divide-gray-100 overflow-hidden rounded-xl border border-gray-200 bg-white dark:divide-gray-800 dark:border-gray-800 dark:bg-gray-900 sm:hidden">
+                    <ul className="divide-y divide-[var(--color-rule)] overflow-hidden border border-[var(--color-rule)] bg-[var(--color-surface)] sm:hidden">
                       {category.services.map((service) => (
                         <li key={service.id}>
                           <Link
                             href={`/services/${service.slug}`}
-                            className="flex min-h-[52px] w-full items-center justify-between gap-3 px-4 py-3 text-left transition-colors active:bg-[#eefcff] dark:active:bg-[#073642]/30"
+                            className="flex min-h-[52px] w-full items-center justify-between gap-3 px-4 py-3 text-left transition-colors hover:bg-[var(--color-paper-2)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[var(--color-focus)] active:bg-[var(--color-paper-2)]"
                           >
-                            <span className="text-sm font-medium leading-snug text-gray-800 dark:text-gray-100">
+                            <span className="text-sm font-medium leading-snug text-[var(--color-ink)]">
                               {service.title}
                             </span>
-                            <ArrowUpRight className="h-4 w-4 shrink-0 text-[#08778c] dark:text-[#35d2e9]" />
+                            <ArrowUpRight className="h-4 w-4 shrink-0 text-[var(--color-accent-strong)]" />
                           </Link>
                         </li>
                       ))}
                     </ul>
 
                     {/* Tablet/Desktop: card grid */}
-                    <div className="hidden sm:grid sm:grid-cols-2 sm:gap-3">
+                    <div className="hidden border-l border-t border-[var(--color-rule)] sm:grid sm:grid-cols-2">
                       {category.services.map((service) => (
                         <div
                           key={service.id}
-                          className="group relative flex flex-col rounded-xl border border-gray-200 bg-white p-5 transition-all duration-200 hover:border-[#a5f3fc] hover:shadow-md dark:border-gray-800 dark:bg-gray-900 dark:hover:border-[#0f5f70]/60"
+                          className="group relative flex min-w-0 flex-col border-b border-r border-[var(--color-rule)] bg-[var(--color-surface)] p-5 transition-colors duration-200 hover:bg-[var(--color-paper-2)]"
                         >
-                          <h3 className="mb-2 text-sm font-semibold leading-snug text-gray-900 transition-colors group-hover:text-[#08778c] dark:text-white dark:group-hover:text-[#35d2e9]">
-                            <Link href={`/services/${service.slug}`} className="after:absolute after:inset-0">
+                          <h3 className="mb-2 min-w-0 text-sm font-semibold leading-snug text-[var(--color-ink)] transition-colors group-hover:text-[var(--color-accent-strong)] [overflow-wrap:anywhere]">
+                            <Link href={`/services/${service.slug}`} className="after:absolute after:inset-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[var(--color-focus)]">
                               {service.title}
                             </Link>
                           </h3>
                           {service.description && (
-                            <p className="mb-4 flex-1 text-xs leading-relaxed text-gray-500 line-clamp-2 dark:text-gray-400">
+                            <p className="mb-4 flex-1 text-xs leading-relaxed text-[var(--color-muted)] line-clamp-2">
                               {service.description}
                             </p>
                           )}
                           <button
                             onClick={() => handleRequestService(category, service.id)}
-                            className="relative z-10 mt-auto inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.15em] text-[#08778c] transition hover:text-[#0bbfe0] dark:text-[#35d2e9] dark:hover:text-[#67e8f9]"
+                            className="relative z-10 mt-auto inline-flex min-h-11 items-center gap-1.5 self-start text-xs font-semibold uppercase tracking-[0.15em] text-[var(--color-accent-strong)] transition-colors hover:text-[var(--color-accent)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)] active:opacity-70 whitespace-nowrap"
                           >
                             {tNav("getQuote")}
                             <ArrowUpRight className="h-3 w-3" />
@@ -376,7 +388,7 @@ export default function ServicesListingClient({
                     </div>
 
                     {catIdx < categories.length - 1 && (
-                      <div className="mt-8 h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent dark:via-gray-800 sm:mt-10" />
+                      <div className="mt-8 h-px bg-[var(--color-rule)] sm:mt-10" />
                     )}
                   </section>
                 );

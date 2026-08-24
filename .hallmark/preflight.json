@@ -1,0 +1,14 @@
+{
+  "scannedAt": "2026-08-25",
+  "framework": "Next.js 16 App Router with Tailwind CSS 3",
+  "fontStack": ["Inter", "Raleway", "Hanken Grotesk"],
+  "palette": "Existing GulfRakza neutral black/white palette with cyan and teal brand accents",
+  "motion": "Framer Motion 12 is installed; catalog uses restrained CSS transitions and preserves reduced-motion-compatible core behavior",
+  "spacing": "Tailwind default spacing scale",
+  "preserve": ["font stack", "brand palette", "Sanity content", "SEO category routes", "product routes", "structured data"],
+  "catalogAudit": {
+    "macrostructure": "server-rendered catalog data with a client-side filter surface, separate crawlable category pages, and server-rendered product detail pages",
+    "interactionBug": "category labels in the filter rail were links to category routes while only the adjacent count filtered",
+    "direction": "Industrial Procurement Desk: square geometry, technical information density, visible filter state, and same-page refinement"
+  }
+}

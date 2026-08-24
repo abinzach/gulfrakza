@@ -1,13 +1,14 @@
 "use client"
 
-import { useEffect, useMemo, useRef, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import Image from "next/image"
-import NextLink from "next/link"
-import { usePathname, useRouter } from "next/navigation"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
 import {
+  ArrowRight,
   ChevronDown,
   ChevronRight,
-  MoveVertical,
+  PackageSearch,
   Search,
   SlidersHorizontal,
   X,
@@ -21,6 +22,7 @@ import { useLocale } from "@/i18n/provider"
 import type { CatalogCategoryNode, CatalogProduct } from "@/lib/catalog/types"
 import {
   buildSearchParamsFromFilters,
+  parseFiltersFromSearchParams,
   type CatalogFilterState,
   type CatalogSortOption,
 } from "./filter-helpers"
@@ -33,93 +35,120 @@ interface CatalogPageClientProps {
   initialFilters: CatalogFilterState
 }
 
-const sortOptions = [
-  { label: "Relevance", value: "relevance" },
-  { label: "Name A - Z", value: "name-asc" },
-  { label: "Name Z - A", value: "name-desc" },
+const sortOptions: Array<{ label: string; value: CatalogSortOption }> = [
+  { label: "Recommended", value: "relevance" },
+  { label: "Product name: A–Z", value: "name-asc" },
+  { label: "Product name: Z–A", value: "name-desc" },
 ]
 
-const featureId = (feature: string) =>
-  `feature-${feature.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`
+const defaultFilters: CatalogFilterState = {
+  searchTerm: "",
+  categorySlug: null,
+  features: [],
+  brands: [],
+  sortOrder: "relevance",
+}
 
-const brandId = (brand: string) =>
-  `brand-${brand.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`
+const controlId = (prefix: string, value: string) =>
+  `${prefix}-${value.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`
 
 const flattenCategoryTree = (nodes: CatalogCategoryNode[]) => {
   const map = new Map<string, CatalogCategoryNode>()
   const walk = (list: CatalogCategoryNode[]) => {
     list.forEach((node) => {
       map.set(node.slug, node)
-      if (node.children.length > 0) {
-        walk(node.children)
-      }
+      walk(node.children)
     })
   }
   walk(nodes)
   return map
 }
 
-const renderCategoryTree = (
-  nodes: CatalogCategoryNode[],
-  expanded: Set<string>,
-  onToggleExpand: (slug: string) => void,
-  onSelect: (slug: string) => void,
-  selectedSlug: string | null,
-  locale: string,
-) => {
+interface CategoryTreeProps {
+  nodes: CatalogCategoryNode[]
+  expanded: Set<string>
+  selectedSlug: string | null
+  counts: Map<string, number>
+  idPrefix: string
+  onToggleExpand: (slug: string) => void
+  onSelect: (slug: string) => void
+  depth?: number
+}
+
+function CategoryTree({
+  nodes,
+  expanded,
+  selectedSlug,
+  counts,
+  idPrefix,
+  onToggleExpand,
+  onSelect,
+  depth = 0,
+}: CategoryTreeProps) {
   const visibleNodes = nodes.filter((node) => node.productCount > 0)
+
   return (
-    <ul className="space-y-1">
+    <ul className={depth === 0 ? "divide-y divide-slate-200 dark:divide-slate-800" : "border-l border-slate-200 dark:border-slate-800"}>
       {visibleNodes.map((node) => {
         const isExpanded = expanded.has(node.slug)
-        const hasChildren = node.children.length > 0
+        const hasChildren = node.children.some((child) => child.productCount > 0)
         const isSelected = selectedSlug === node.slug
+        const count = counts.get(node.slug) ?? 0
+        const id = controlId(`${idPrefix}-category`, node.id)
 
         return (
-          <li key={node.slug}>
-            <div className="flex items-start gap-2">
+          <li key={node.id}>
+            <div
+              className={`group flex min-h-11 items-center border-l-2 transition-colors ${
+                isSelected
+                  ? "border-cyan-600 bg-cyan-50 text-cyan-950 dark:bg-cyan-950/30 dark:text-cyan-100"
+                  : "border-transparent text-slate-800 hover:border-slate-400 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-900"
+              }`}
+            >
               {hasChildren ? (
                 <button
                   type="button"
-                  aria-label={isExpanded ? "Collapse category" : "Expand category"}
+                  aria-label={`${isExpanded ? "Collapse" : "Expand"} ${node.title}`}
+                  aria-expanded={isExpanded}
                   onClick={() => onToggleExpand(node.slug)}
-                  className="mt-1 text-slate-500 transition hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-100"
+                  className="flex h-11 w-9 shrink-0 items-center justify-center text-slate-500 hover:text-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-cyan-600 dark:hover:text-white"
                 >
-                  {isExpanded ? (
-                    <ChevronDown className="h-4 w-4" />
-                  ) : (
-                    <ChevronRight className="h-4 w-4" />
-                  )}
+                  {isExpanded ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
                 </button>
               ) : (
-                <span className="mt-1 h-4 w-4" />
+                <span className="w-9 shrink-0" aria-hidden="true" />
               )}
-              <div
-                className={`flex flex-1 items-center justify-between rounded-md px-2 py-1 text-left text-sm transition ${
-                  isSelected
-                    ? "bg-[#d8f7ff] font-semibold text-[#08778c] dark:bg-[#164f5d]/40 dark:text-[#67e8f9]"
-                    : "text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800/60"
-                }`}
+
+              <Checkbox
+                id={id}
+                aria-label={`Filter by ${node.title}`}
+                checked={isSelected}
+                onCheckedChange={() => onSelect(node.slug)}
+                className="rounded-none border-slate-400 data-[state=checked]:border-cyan-700 data-[state=checked]:bg-cyan-700"
+              />
+              <label
+                htmlFor={id}
+                className="flex min-w-0 flex-1 cursor-pointer items-center justify-between gap-3 py-2.5 pl-3 pr-3 text-sm"
               >
-                <NextLink
-                  href={`/${locale}/products/category/${node.path.map((segment) => encodeURIComponent(segment.slug)).join("/")}`}
-                  className="min-w-0 flex-1 hover:underline"
-                >
-                  {node.title}
-                </NextLink>
-                <button
-                  type="button"
-                  onClick={() => onSelect(node.slug)}
-                  aria-label={`Filter catalog by ${node.title}`}
-                  className="ml-3 rounded px-1 text-xs text-slate-500 hover:bg-white hover:text-cyan-800 dark:text-slate-400"
-                >
-                  {node.productCount}
-                </button>
-              </div>
+                <span className={isSelected ? "font-semibold" : "font-medium"}>{node.title}</span>
+                <span className="shrink-0 font-mono text-[11px] tabular-nums text-slate-500 dark:text-slate-400">
+                  {count}
+                </span>
+              </label>
             </div>
+
             {hasChildren && isExpanded && (
-              <div className="ml-5 border-l border-slate-200 pl-3 dark:border-slate-800">
-                {renderCategoryTree(node.children, expanded, onToggleExpand, onSelect, selectedSlug, locale)}
+              <div className="ml-9">
+                <CategoryTree
+                  nodes={node.children}
+                  expanded={expanded}
+                  selectedSlug={selectedSlug}
+                  counts={counts}
+                  idPrefix={idPrefix}
+                  onToggleExpand={onToggleExpand}
+                  onSelect={onSelect}
+                  depth={depth + 1}
+                />
               </div>
             )}
           </li>
@@ -136,15 +165,10 @@ export default function CatalogPageClient({
   brandFilters,
   initialFilters,
 }: CatalogPageClientProps) {
-  const router = useRouter()
   const locale = useLocale()
   const pathname = usePathname()
-  const basePath = pathname
-
   const [searchTerm, setSearchTerm] = useState(initialFilters.searchTerm)
-  const [selectedCategorySlug, setSelectedCategorySlug] = useState<string | null>(
-    initialFilters.categorySlug,
-  )
+  const [selectedCategorySlug, setSelectedCategorySlug] = useState<string | null>(initialFilters.categorySlug)
   const [selectedFeatures, setSelectedFeatures] = useState<string[]>(initialFilters.features)
   const [selectedBrands, setSelectedBrands] = useState<string[]>(initialFilters.brands)
   const [sortOrder, setSortOrder] = useState<CatalogSortOption>(initialFilters.sortOrder)
@@ -152,575 +176,510 @@ export default function CatalogPageClient({
     () => new Set(categoryTree.map((node) => node.slug)),
   )
   const [showMobileFilters, setShowMobileFilters] = useState(false)
-  const lastQueryRef = useRef(buildSearchParamsFromFilters(initialFilters))
-  const categoryScrollRef = useRef<HTMLDivElement | null>(null)
-  const [categoryScrollIndicators, setCategoryScrollIndicators] = useState({
-    showTop: false,
-    showBottom: false,
-  })
+  const searchInputRef = useRef<HTMLInputElement | null>(null)
+
+  const isArabic = locale === "ar"
+  const copy = isArabic
+    ? {
+        eyebrow: "كتالوج التوريد الصناعي",
+        title: "اعثر على المنتج المناسب للموقع",
+        intro: "صفِّ حسب الفئة أو العلامة التجارية أو المواصفات، ثم أرسل طلب عرض سعر مباشرة إلى فريق جلف ركزة.",
+        search: "ابحث بالمنتج أو المواصفة أو الاستخدام",
+        filters: "الفلاتر",
+        categories: "الفئات",
+        attributes: "مواصفات المنتج",
+        brands: "العلامات التجارية",
+        clear: "مسح الكل",
+        results: "نتائج",
+        showResults: "عرض المنتجات",
+        noResults: "لا توجد منتجات مطابقة",
+        noResultsBody: "جرّب إزالة فلتر أو استخدام عبارة بحث أوسع.",
+        viewProduct: "عرض المنتج",
+        available: "متوفر",
+        onRequest: "حسب الطلب",
+        activeFilters: "الفلاتر المطبقة",
+      }
+    : {
+        eyebrow: "Industrial supply catalog",
+        title: "Find the right product for the job",
+        intro: "Filter by category, brand, or specification, then send a focused quotation request to the GulfRakza team.",
+        search: "Search product, specification, or application",
+        filters: "Filters",
+        categories: "Categories",
+        attributes: "Product attributes",
+        brands: "Brands",
+        clear: "Clear all",
+        results: "results",
+        showResults: "Show products",
+        noResults: "No matching products",
+        noResultsBody: "Remove a filter or try a broader search term.",
+        viewProduct: "View product",
+        available: "Available",
+        onRequest: "On request",
+        activeFilters: "Applied filters",
+      }
 
   const categoryLookup = useMemo(() => flattenCategoryTree(categoryTree), [categoryTree])
+  const selectedCategoryNode = selectedCategorySlug ? categoryLookup.get(selectedCategorySlug) ?? null : null
 
-  const selectedCategoryNode = selectedCategorySlug
-    ? categoryLookup.get(selectedCategorySlug) ?? null
-    : null
-
-  useEffect(() => {
-    const state: CatalogFilterState = {
+  const currentFilters = useMemo<CatalogFilterState>(
+    () => ({
       searchTerm,
       categorySlug: selectedCategorySlug,
       features: selectedFeatures,
       brands: selectedBrands,
       sortOrder,
-    }
+    }),
+    [searchTerm, selectedCategorySlug, selectedFeatures, selectedBrands, sortOrder],
+  )
 
-    const queryString = buildSearchParamsFromFilters(state)
+  const writeUrl = useCallback(
+    (next: CatalogFilterState, method: "push" | "replace") => {
+      const query = buildSearchParamsFromFilters(next)
+      const nextUrl = query ? `${pathname}?${query}` : pathname
+      const currentUrl = `${window.location.pathname}${window.location.search}`
+      if (nextUrl === currentUrl) return
 
-    if (queryString !== lastQueryRef.current) {
-      const nextUrl = queryString ? `${basePath}?${queryString}` : basePath
-      lastQueryRef.current = queryString
-      router.replace(nextUrl, { scroll: false })
+      if (method === "push") window.history.pushState({}, "", nextUrl)
+      else window.history.replaceState({}, "", nextUrl)
+    },
+    [pathname],
+  )
+
+  const applyFilters = useCallback(
+    (patch: Partial<CatalogFilterState>, method: "push" | "replace" = "push") => {
+      const next = { ...currentFilters, ...patch }
+      setSearchTerm(next.searchTerm)
+      setSelectedCategorySlug(next.categorySlug)
+      setSelectedFeatures(next.features)
+      setSelectedBrands(next.brands)
+      setSortOrder(next.sortOrder)
+      writeUrl(next, method)
+    },
+    [currentFilters, writeUrl],
+  )
+
+  useEffect(() => {
+    const timeout = window.setTimeout(() => {
+      writeUrl({ ...currentFilters, searchTerm }, "replace")
+    }, 250)
+    return () => window.clearTimeout(timeout)
+  }, [currentFilters, searchTerm, writeUrl])
+
+  useEffect(() => {
+    const restoreFromUrl = () => {
+      const restored = parseFiltersFromSearchParams(new URLSearchParams(window.location.search))
+      setSearchTerm(restored.searchTerm)
+      setSelectedCategorySlug(restored.categorySlug)
+      setSelectedFeatures(restored.features)
+      setSelectedBrands(restored.brands)
+      setSortOrder(restored.sortOrder)
     }
-  }, [
-    searchTerm,
-    selectedCategorySlug,
-    selectedFeatures,
-    selectedBrands,
-    sortOrder,
-    router,
-    basePath,
-  ])
+    window.addEventListener("popstate", restoreFromUrl)
+    return () => window.removeEventListener("popstate", restoreFromUrl)
+  }, [])
 
   useEffect(() => {
     if (!selectedCategoryNode) return
-
-    setExpandedNodes((prev) => {
-      const next = new Set(prev)
-      let changed = false
-      selectedCategoryNode.path.forEach(({ slug }) => {
-        if (!next.has(slug)) {
-          next.add(slug)
-          changed = true
-        }
-      })
-      return changed ? next : prev
+    setExpandedNodes((previous) => {
+      const next = new Set(previous)
+      selectedCategoryNode.path.forEach((segment) => next.add(segment.slug))
+      return next
     })
   }, [selectedCategoryNode])
 
   useEffect(() => {
-    const container = categoryScrollRef.current
-    if (!container) return
-
-    const updateIndicators = () => {
-      const { scrollTop, scrollHeight, clientHeight } = container
-      const maxScroll = Math.max(scrollHeight - clientHeight, 0)
-      setCategoryScrollIndicators({
-        showTop: scrollTop > 4,
-        showBottom: scrollTop < maxScroll - 4,
-      })
+    if (!showMobileFilters) return
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = "hidden"
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setShowMobileFilters(false)
     }
-
-    updateIndicators()
-    container.addEventListener("scroll", updateIndicators)
-    window.addEventListener("resize", updateIndicators)
-
+    window.addEventListener("keydown", onKeyDown)
     return () => {
-      container.removeEventListener("scroll", updateIndicators)
-      window.removeEventListener("resize", updateIndicators)
+      document.body.style.overflow = previousOverflow
+      window.removeEventListener("keydown", onKeyDown)
     }
-  }, [categoryTree])
+  }, [showMobileFilters])
+
+  const normalizedSearch = searchTerm.trim().toLowerCase()
+
+  const matchesSearch = useCallback(
+    (product: CatalogProduct) => {
+      if (!normalizedSearch) return true
+      const haystack = [
+        product.title,
+        product.description,
+        product.brand ?? "",
+        product.primaryCategory ?? "",
+        product.leafCategory ?? "",
+        product.categoryTrail.map((segment) => segment.title).join(" "),
+        product.featureTokens.join(" "),
+        product.specs.map((spec) => [spec.key, ...spec.values].join(" ")).join(" "),
+      ].join(" ").toLowerCase()
+      return haystack.includes(normalizedSearch)
+    },
+    [normalizedSearch],
+  )
+
+  const filteredProducts = useMemo(
+    () => products.filter((product) => {
+      if (selectedCategorySlug && !product.categorySlugs.includes(selectedCategorySlug)) return false
+      if (selectedFeatures.length > 0 && !selectedFeatures.every((feature) => product.featureTokens.includes(feature))) return false
+      if (selectedBrands.length > 0 && (!product.brand || !selectedBrands.includes(product.brand))) return false
+      return matchesSearch(product)
+    }),
+    [products, selectedCategorySlug, selectedFeatures, selectedBrands, matchesSearch],
+  )
+
+  const sortedProducts = useMemo(() => {
+    if (sortOrder === "name-asc") return [...filteredProducts].sort((a, b) => a.title.localeCompare(b.title))
+    if (sortOrder === "name-desc") return [...filteredProducts].sort((a, b) => b.title.localeCompare(a.title))
+    return [...filteredProducts].sort((a, b) => a.position - b.position)
+  }, [filteredProducts, sortOrder])
+
+  const categoryCounts = useMemo(() => {
+    const counts = new Map<string, number>()
+    products.forEach((product) => {
+      if (!matchesSearch(product)) return
+      if (selectedFeatures.length > 0 && !selectedFeatures.every((feature) => product.featureTokens.includes(feature))) return
+      if (selectedBrands.length > 0 && (!product.brand || !selectedBrands.includes(product.brand))) return
+      product.categorySlugs.forEach((slug) => counts.set(slug, (counts.get(slug) ?? 0) + 1))
+    })
+    return counts
+  }, [products, matchesSearch, selectedFeatures, selectedBrands])
+
+  const featureCounts = useMemo(() => {
+    const counts = new Map<string, number>()
+    featureFilters.forEach((feature) => counts.set(feature, 0))
+    products.forEach((product) => {
+      if (!matchesSearch(product)) return
+      if (selectedCategorySlug && !product.categorySlugs.includes(selectedCategorySlug)) return
+      if (selectedBrands.length > 0 && (!product.brand || !selectedBrands.includes(product.brand))) return
+      product.featureTokens.forEach((feature) => {
+        if (counts.has(feature)) counts.set(feature, (counts.get(feature) ?? 0) + 1)
+      })
+    })
+    return counts
+  }, [featureFilters, products, matchesSearch, selectedCategorySlug, selectedBrands])
+
+  const brandCounts = useMemo(() => {
+    const counts = new Map<string, number>()
+    brandFilters.forEach((brand) => counts.set(brand, 0))
+    products.forEach((product) => {
+      if (!product.brand || !matchesSearch(product)) return
+      if (selectedCategorySlug && !product.categorySlugs.includes(selectedCategorySlug)) return
+      if (selectedFeatures.length > 0 && !selectedFeatures.every((feature) => product.featureTokens.includes(feature))) return
+      counts.set(product.brand, (counts.get(product.brand) ?? 0) + 1)
+    })
+    return counts
+  }, [brandFilters, products, matchesSearch, selectedCategorySlug, selectedFeatures])
 
   const toggleExpandedNode = (slug: string) => {
-    setExpandedNodes((prev) => {
-      const next = new Set(prev)
-      if (next.has(slug)) {
-        next.delete(slug)
-      } else {
-        next.add(slug)
-      }
+    setExpandedNodes((previous) => {
+      const next = new Set(previous)
+      if (next.has(slug)) next.delete(slug)
+      else next.add(slug)
       return next
     })
   }
 
-  const handleCategorySelect = (slug: string) => {
-    setSelectedCategorySlug((previous) => (previous === slug ? null : slug))
-    // Close mobile filters after selection
-    if (window.innerWidth < 1024) {
-      setTimeout(() => setShowMobileFilters(false), 300)
-    }
+  const selectCategory = (slug: string) => applyFilters({ categorySlug: selectedCategorySlug === slug ? null : slug })
+
+  const toggleFeature = (feature: string, checked: boolean) => {
+    const next = checked
+      ? Array.from(new Set([...selectedFeatures, feature]))
+      : selectedFeatures.filter((item) => item !== feature)
+    applyFilters({ features: next })
   }
 
-  const normalizedSearch = searchTerm.trim().toLowerCase()
-
-  const filteredProducts = useMemo(() => {
-    return products.filter((product) => {
-      if (selectedCategorySlug && !product.categorySlugs.includes(selectedCategorySlug)) {
-        return false
-      }
-
-      if (
-        selectedFeatures.length > 0 &&
-        !selectedFeatures.every((feature) => product.featureTokens.includes(feature))
-      ) {
-        return false
-      }
-
-      if (
-        selectedBrands.length > 0 &&
-        (!product.brand || !selectedBrands.includes(product.brand))
-      ) {
-        return false
-      }
-
-      if (normalizedSearch) {
-        const haystack = [
-          product.title,
-          product.description,
-          product.brand ?? "",
-          product.primaryCategory ?? "",
-          product.leafCategory ?? "",
-          product.categoryTrail.map((segment) => segment.title).join(" "),
-          product.featureTokens.join(" "),
-          product.specs.map((spec) => [spec.key, ...spec.values].join(" ")).join(" "),
-        ]
-          .join(" ")
-          .toLowerCase()
-
-        if (!haystack.includes(normalizedSearch)) {
-          return false
-        }
-      }
-
-      return true
-    })
-  }, [products, selectedCategorySlug, selectedFeatures, selectedBrands, normalizedSearch])
-
-  const sortedProducts = useMemo(() => {
-    switch (sortOrder) {
-      case "name-asc":
-        return [...filteredProducts].sort((a, b) => a.title.localeCompare(b.title))
-      case "name-desc":
-        return [...filteredProducts].sort((a, b) => b.title.localeCompare(a.title))
-      default:
-        return [...filteredProducts].sort((a, b) => a.position - b.position)
-    }
-  }, [filteredProducts, sortOrder])
-
-  const resetFilters = () => {
-    setSearchTerm("")
-    setSelectedCategorySlug(null)
-    setSelectedFeatures([])
-    setSelectedBrands([])
-    setSortOrder("relevance")
+  const toggleBrand = (brand: string, checked: boolean) => {
+    const next = checked
+      ? Array.from(new Set([...selectedBrands, brand]))
+      : selectedBrands.filter((item) => item !== brand)
+    applyFilters({ brands: next })
   }
 
-  const removeFeature = (feature: string) => {
-    setSelectedFeatures((prev) => prev.filter((item) => item !== feature))
-  }
+  const resetFilters = () => applyFilters(defaultFilters)
+  const activeFilterCount = (searchTerm.trim() ? 1 : 0) + (selectedCategorySlug ? 1 : 0) + selectedFeatures.length + selectedBrands.length
+  const hasActiveFilters = activeFilterCount > 0
+  const selectedCategoryLabel = selectedCategoryNode?.path.map((segment) => segment.title).join(" / ")
 
-  const removeBrand = (brand: string) => {
-    setSelectedBrands((prev) => prev.filter((item) => item !== brand))
-  }
+  const renderFilterPanel = (idPrefix: "desktop" | "mobile") => (
+    <>
+      <div className="border-b border-slate-300 px-5 py-4 dark:border-slate-700">
+        <div className="flex items-center justify-between gap-4">
+          <div className="flex items-center gap-2 text-sm font-bold uppercase tracking-[0.14em] text-slate-950 dark:text-white">
+            <SlidersHorizontal className="h-4 w-4 text-cyan-700 dark:text-cyan-400" />
+            {copy.filters}
+          </div>
+          {hasActiveFilters && (
+            <button type="button" onClick={resetFilters} className="text-xs font-bold uppercase tracking-[0.12em] text-cyan-800 underline-offset-4 hover:underline dark:text-cyan-300">
+              {copy.clear}
+            </button>
+          )}
+        </div>
+      </div>
 
-  const selectedCategoryPathLabel = selectedCategoryNode
-    ? selectedCategoryNode.path.map((segment) => segment.title).join(" → ")
-    : null
-  const activeFilterCount = [selectedCategorySlug, ...selectedFeatures, ...selectedBrands].filter(Boolean).length
+      <div className="divide-y divide-slate-300 dark:divide-slate-700">
+        <section aria-labelledby={`${idPrefix}-category-filter-title`} className="py-2">
+          <h2 id={`${idPrefix}-category-filter-title`} className="px-5 py-3 text-[11px] font-bold uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">
+            {copy.categories}
+          </h2>
+          {categoryTree.length > 0 ? (
+            <CategoryTree
+              nodes={categoryTree}
+              expanded={expandedNodes}
+              selectedSlug={selectedCategorySlug}
+              counts={categoryCounts}
+              idPrefix={idPrefix}
+              onToggleExpand={toggleExpandedNode}
+              onSelect={selectCategory}
+            />
+          ) : (
+            <p className="px-5 pb-4 text-sm text-slate-500">No categories available.</p>
+          )}
+        </section>
+
+        {featureFilters.length > 0 && (
+          <details open className="group py-2">
+            <summary className="flex cursor-pointer list-none items-center justify-between px-5 py-3 text-[11px] font-bold uppercase tracking-[0.18em] text-slate-500 marker:hidden dark:text-slate-400">
+              {copy.attributes}
+              <ChevronDown className="h-4 w-4 transition group-open:rotate-180" />
+            </summary>
+            <div className="px-5 pb-4">
+              {featureFilters.map((feature) => {
+                const id = controlId(`${idPrefix}-feature`, feature)
+                const count = featureCounts.get(feature) ?? 0
+                const checked = selectedFeatures.includes(feature)
+                return (
+                  <div key={feature} className="flex min-h-10 items-start gap-3 border-b border-slate-100 py-2 last:border-b-0 dark:border-slate-800">
+                    <Checkbox id={id} aria-label={`Filter by attribute ${feature}`} checked={checked} disabled={count === 0 && !checked} onCheckedChange={(value) => toggleFeature(feature, value === true)} className="mt-0.5 rounded-none" />
+                    <label htmlFor={id} className="flex min-w-0 flex-1 cursor-pointer justify-between gap-3 text-sm text-slate-700 dark:text-slate-300">
+                      <span>{feature}</span>
+                      <span className="font-mono text-[11px] tabular-nums text-slate-400">{count}</span>
+                    </label>
+                  </div>
+                )
+              })}
+            </div>
+          </details>
+        )}
+
+        {brandFilters.length > 0 && (
+          <details open className="group py-2">
+            <summary className="flex cursor-pointer list-none items-center justify-between px-5 py-3 text-[11px] font-bold uppercase tracking-[0.18em] text-slate-500 marker:hidden dark:text-slate-400">
+              {copy.brands}
+              <ChevronDown className="h-4 w-4 transition group-open:rotate-180" />
+            </summary>
+            <div className="px-5 pb-4">
+              {brandFilters.map((brand) => {
+                const id = controlId(`${idPrefix}-brand`, brand)
+                const count = brandCounts.get(brand) ?? 0
+                const checked = selectedBrands.includes(brand)
+                return (
+                  <div key={brand} className="flex min-h-10 items-start gap-3 border-b border-slate-100 py-2 last:border-b-0 dark:border-slate-800">
+                    <Checkbox id={id} aria-label={`Filter by brand ${brand}`} checked={checked} disabled={count === 0 && !checked} onCheckedChange={(value) => toggleBrand(brand, value === true)} className="mt-0.5 rounded-none" />
+                    <label htmlFor={id} className="flex min-w-0 flex-1 cursor-pointer justify-between gap-3 text-sm text-slate-700 dark:text-slate-300">
+                      <span>{brand}</span>
+                      <span className="font-mono text-[11px] tabular-nums text-slate-400">{count}</span>
+                    </label>
+                  </div>
+                )
+              })}
+            </div>
+          </details>
+        )}
+      </div>
+    </>
+  )
 
   return (
-    <div className="min-h-screen bg-slate-50 py-4 dark:bg-gray-900 sm:py-8">
-      {/* Mobile Filter Backdrop */}
+    <div className="min-h-screen bg-[#f4f5f5] pb-16 pt-16 text-slate-950 dark:bg-slate-950 dark:text-white">
       {showMobileFilters && (
-        <div
-          className="fixed inset-0 z-40 bg-black/50 lg:hidden"
-          onClick={() => setShowMobileFilters(false)}
-          aria-hidden="true"
-        />
+        <button type="button" aria-label="Close filters" onClick={() => setShowMobileFilters(false)} className="fixed inset-0 z-40 bg-slate-950/70 lg:hidden" />
       )}
-      
-      <div className="mx-auto flex max-w-[1600px] flex-col gap-4 px-3 sm:gap-6 sm:px-4 lg:px-6">
-        <header className="mt-10 rounded-3xl border border-slate-200 bg-white p-3 shadow-sm dark:border-gray-800 dark:bg-gray-900 sm:space-y-4 sm:p-5 lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none">
-          <div className="mb-4 max-w-4xl">
-            <h1 className="text-3xl font-bold tracking-tight text-slate-950 dark:text-white sm:text-4xl">
-              {locale === "ar" ? "كتالوج المنتجات الصناعية" : "Industrial products catalog"}
-            </h1>
-            <p className="mt-3 text-base leading-7 text-slate-600 dark:text-slate-300">
-              {locale === "ar"
-                ? "تصفح معدات السلامة ومستلزمات المصانع وحلول الرفع واللحام والمنتجات البحرية المتاحة للتوريد في الدمام وجميع أنحاء المملكة."
-                : "Browse safety equipment, plant supplies, lifting and welding solutions, and marine products available from Dammam across Saudi Arabia."}
-            </p>
-          </div>
-          <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-            <div className="relative w-full md:max-w-xl">
-              <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
-              <Input
-                value={searchTerm}
-                onChange={(event) => setSearchTerm(event.target.value)}
-                placeholder="Search by product name, spec, or use case"
-                aria-label="Search products"
-                className="h-11 rounded-full border-slate-200 bg-slate-50 pl-10 text-[15px] shadow-none focus-visible:ring-[#0899b4] dark:border-slate-800 dark:bg-slate-950 sm:h-10 sm:rounded-md"
-              />
-            </div>
-            <div className="grid grid-cols-[1fr_auto] items-center gap-2 sm:flex sm:flex-wrap sm:gap-3">
-               <Button
-                 variant="outline"
-                 size="sm"
-                 onClick={() => setShowMobileFilters(!showMobileFilters)}
-                 aria-expanded={showMobileFilters}
-                 aria-controls="product-filters"
-                 className="h-10 justify-center gap-2 rounded-full border-slate-200 bg-white px-4 shadow-sm lg:hidden"
-               >
-                 <SlidersHorizontal className="h-4 w-4" />
-                 Filters
-                 {activeFilterCount > 0 && (
-                   <span className="ml-1 flex h-5 w-5 items-center justify-center rounded-full bg-[#08778c] text-xs text-white">
-                     {activeFilterCount}
-                   </span>
-                 )}
-               </Button>
-              <select
-                value={sortOrder}
-                onChange={(event) => setSortOrder(event.target.value as CatalogSortOption)}
-                aria-label="Sort products"
-                className="h-10 rounded-full border border-slate-200 bg-white px-3 text-sm text-slate-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#0899b4] dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 sm:rounded-md"
-              >
-                {sortOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={resetFilters}
-                 className="hidden items-center gap-2 sm:flex"
-              >
-                <X className="h-4 w-4" />
-                Clear filters
-              </Button>
-            </div>
-          </div>
-        </header>
 
-         <div className="grid gap-4 lg:grid-cols-[300px_1fr] lg:gap-6">
-           <aside id="product-filters" className={`fixed inset-y-0 left-0 z-50 w-[88vw] max-w-sm space-y-6 overflow-y-auto rounded-r-3xl border border-gray-200 bg-white p-5 shadow-2xl transition-transform duration-300 dark:border-gray-700 dark:bg-gray-800 sm:p-6 lg:static lg:z-auto lg:w-auto lg:max-w-none lg:rounded-2xl lg:bg-white lg:shadow-sm ${showMobileFilters ? "translate-x-0" : "-translate-x-full lg:translate-x-0"} ${showMobileFilters ? "block" : "hidden lg:block"}`}>
-             <div className="flex items-center justify-between border-b border-gray-200 pb-4 dark:border-gray-700 lg:border-0 lg:pb-0">
-            <div className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-slate-900 dark:text-slate-100">
-              <SlidersHorizontal className="h-4 w-4" />
-              Filters
-               </div>
-               <div className="flex items-center gap-2">
-                 {(selectedCategorySlug || selectedFeatures.length > 0 || selectedBrands.length > 0) && (
-                   <button
-                     type="button"
-                     onClick={resetFilters}
-                     className="text-sm font-medium text-[#08778c] hover:text-[#08778c] dark:text-[#35d2e9] dark:hover:text-[#67e8f9] lg:hidden"
-                   >
-                     Clear all
-                   </button>
-                 )}
-                 <button
-                   type="button"
-                   onClick={() => setShowMobileFilters(false)}
-                   className="lg:hidden"
-                   aria-label="Close filters"
-                 >
-                   <X className="h-5 w-5 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200" />
-                 </button>
-               </div>
+      <section className="border-b border-slate-300 bg-[#101315] text-white dark:border-slate-700">
+        <div className="mx-auto w-[calc(100%-3rem)] max-w-7xl py-10 sm:py-12 lg:w-[calc(100%-6rem)]">
+          <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(420px,0.72fr)] lg:items-end">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[0.22em] text-cyan-300">{copy.eyebrow}</p>
+              <h1 className="mt-3 max-w-4xl text-4xl font-semibold leading-[1.05] tracking-[-0.03em] sm:text-5xl">{copy.title}</h1>
+              <p className="mt-4 max-w-3xl text-base leading-7 text-slate-300 sm:text-lg">{copy.intro}</p>
             </div>
-            <div className="space-y-4">
-              <div className="space-y-3">
-                <div className="flex items-center justify-between text-xs font-semibold uppercase text-slate-500 dark:text-slate-400">
-                  <span>Browse by category</span>
-                  {selectedCategorySlug && (
-                    <button
-                      type="button"
-                      onClick={() => setSelectedCategorySlug(null)}
-                      className="text-xs font-normal text-[#08778c] hover:underline dark:text-[#35d2e9]"
-                    >
-                      Clear
-                    </button>
-                  )}
-                </div>
-                <div className="relative">
-                  <div
-                    ref={categoryScrollRef}
-                    className="max-h-[360px] overflow-y-auto pr-1"
-                  >
-                    {categoryTree.length > 0 ? (
-                      renderCategoryTree(
-                        categoryTree,
-                        expandedNodes,
-                        toggleExpandedNode,
-                        handleCategorySelect,
-                        selectedCategorySlug,
-                        locale,
-                      )
-                    ) : (
-                      <p className="text-sm text-slate-500 dark:text-slate-400">
-                        No categories found. Set up categories in Sanity to begin filtering.
-                      </p>
-                    )}
-                  </div>
-                  {categoryScrollIndicators.showTop && (
-                    <div className="pointer-events-none absolute inset-x-0 top-0 h-6 bg-gradient-to-b from-white via-white/80 to-transparent dark:from-gray-900 dark:via-gray-900/80 lg:from-gray-50 lg:via-gray-50/80" />
-                  )}
-                  {categoryScrollIndicators.showBottom && (
-                    <div className="pointer-events-none absolute inset-x-0 bottom-0 h-6 bg-gradient-to-t from-white via-white/80 to-transparent dark:from-gray-900 dark:via-gray-900/80 lg:from-gray-50 lg:via-gray-50/80" />
-                  )}
-                </div>
-                {categoryScrollIndicators.showBottom && (
-                  <p className="mt-2 flex items-center gap-1 text-xs text-slate-400 dark:text-slate-500">
-                    <MoveVertical className="h-3.5 w-3.5" />
-                    Scroll to explore categories
-                  </p>
-                )}
-              </div>
-              {featureFilters.length > 0 && (
-                <div className="space-y-3">
-                  <p className="text-xs font-semibold uppercase text-slate-500 dark:text-slate-400">
-                    Product attributes
-                  </p>
-                  <div className="max-h-60 space-y-3 overflow-y-auto pr-1">
-                    {featureFilters.map((feature) => (
-                      <label
-                        key={feature}
-                        htmlFor={featureId(feature)}
-                        className="flex cursor-pointer items-start gap-3 text-sm text-slate-600 dark:text-slate-300"
-                      >
-                        <Checkbox
-                          id={featureId(feature)}
-                          checked={selectedFeatures.includes(feature)}
-                          onCheckedChange={(checked) => {
-                            setSelectedFeatures((prev) => {
-                              if (checked === true) {
-                                if (prev.includes(feature)) {
-                                  return prev
-                                }
-                                return [...prev, feature]
-                              }
-                              return prev.filter((item) => item !== feature)
-                            })
-                          }}
-                        />
-                        <span>{feature}</span>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-              )}
-              {brandFilters.length > 0 && (
-                <div className="space-y-3">
-                  <p className="text-xs font-semibold uppercase text-slate-500 dark:text-slate-400">
-                    Brands
-                  </p>
-                  <div className="max-h-60 space-y-3 overflow-y-auto pr-1">
-                    {brandFilters.map((brand) => (
-                      <label
-                        key={brand}
-                        htmlFor={brandId(brand)}
-                        className="flex cursor-pointer items-start gap-3 text-sm text-slate-600 dark:text-slate-300"
-                      >
-                        <Checkbox
-                          id={brandId(brand)}
-                          checked={selectedBrands.includes(brand)}
-                          onCheckedChange={(checked) => {
-                            setSelectedBrands((prev) => {
-                              if (checked === true) {
-                                if (prev.includes(brand)) {
-                                  return prev
-                                }
-                                return [...prev, brand]
-                              }
-                              return prev.filter((item) => item !== brand)
-                            })
-                          }}
-                        />
-                        <span>{brand}</span>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          </aside>
 
-          <section className="space-y-3 sm:space-y-4">
-            <div className="space-y-2 px-1 sm:space-y-3 sm:px-0">
-              <div className="flex items-center justify-between gap-3">
-                <p className="text-[13px] font-medium uppercase tracking-[0.16em] text-slate-500 dark:text-gray-400 sm:text-sm sm:normal-case sm:tracking-normal sm:text-gray-700 sm:dark:text-gray-300">
-                  {sortedProducts.length} result{sortedProducts.length === 1 ? "" : "s"}
-                  {sortedProducts.length !== products.length && (
-                    <span className="font-normal text-slate-400 dark:text-gray-500">
-                      {" "}of {products.length}
-                    </span>
-                  )}
-                </p>
-                {activeFilterCount > 0 && (
+            <div>
+              <label htmlFor="catalog-search" className="mb-2 block text-[11px] font-bold uppercase tracking-[0.16em] text-slate-400">{copy.search}</label>
+              <div className="relative">
+                <Search className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-500" />
+                <Input
+                  ref={searchInputRef}
+                  id="catalog-search"
+                  value={searchTerm}
+                  onChange={(event) => setSearchTerm(event.target.value)}
+                  placeholder={copy.search}
+                  className="h-14 rounded-none border-slate-600 bg-white pl-12 pr-12 text-base text-slate-950 shadow-none placeholder:text-slate-500 focus-visible:ring-2 focus-visible:ring-cyan-400"
+                />
+                {searchTerm && (
                   <button
                     type="button"
-                    onClick={resetFilters}
-                    className="text-xs font-semibold uppercase tracking-[0.14em] text-[#08778c] sm:hidden"
+                    onClick={() => { setSearchTerm(""); searchInputRef.current?.focus() }}
+                    aria-label="Clear search"
+                    className="absolute right-0 top-0 flex h-14 w-12 items-center justify-center text-slate-500 hover:text-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-cyan-600"
                   >
-                    Clear
+                    <X className="h-5 w-5" />
                   </button>
                 )}
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-              <div className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0 sm:pb-0">
-                {selectedCategoryNode && selectedCategoryPathLabel && (
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setSelectedCategorySlug(null)}
-                    className="shrink-0 gap-2 rounded-full"
+      <div className="mx-auto w-[calc(100%-3rem)] max-w-7xl py-5 lg:w-[calc(100%-6rem)] lg:py-8">
+        <div className="mb-4 grid grid-cols-[1fr_auto] gap-3 border-y border-slate-300 bg-white p-3 dark:border-slate-700 dark:bg-slate-900 lg:hidden">
+          <Button type="button" variant="outline" onClick={() => setShowMobileFilters(true)} aria-expanded={showMobileFilters} aria-controls="mobile-catalog-filters" className="h-11 justify-start rounded-none border-slate-300 bg-white px-4 dark:border-slate-700 dark:bg-slate-900">
+            <SlidersHorizontal className="mr-2 h-4 w-4" />
+            {copy.filters}
+            {activeFilterCount > 0 && <span className="ml-auto bg-cyan-700 px-2 py-0.5 font-mono text-xs text-white">{activeFilterCount}</span>}
+          </Button>
+          <select
+            value={sortOrder}
+            onChange={(event) => applyFilters({ sortOrder: event.target.value as CatalogSortOption })}
+            aria-label="Sort products"
+            className="h-11 border border-slate-300 bg-white px-3 text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-cyan-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+          >
+            {sortOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
+          </select>
+        </div>
+
+        <aside
+          id="mobile-catalog-filters"
+          role={showMobileFilters ? "dialog" : undefined}
+          aria-modal={showMobileFilters ? true : undefined}
+          aria-label="Product filters"
+          className={`fixed inset-y-0 left-0 z-50 flex w-[92vw] max-w-md flex-col bg-white shadow-2xl transition-transform duration-200 dark:bg-slate-950 lg:hidden ${showMobileFilters ? "translate-x-0" : "-translate-x-full"}`}
+        >
+          <div className="flex h-16 shrink-0 items-center justify-between border-b border-slate-300 px-5 dark:border-slate-700">
+            <span className="text-sm font-black uppercase tracking-[0.15em]">{copy.filters}</span>
+            <button type="button" onClick={() => setShowMobileFilters(false)} aria-label="Close filters" className="flex h-11 w-11 items-center justify-center border border-slate-300 dark:border-slate-700">
+              <X className="h-5 w-5" />
+            </button>
+          </div>
+          <div className="min-h-0 flex-1 overflow-y-auto">{renderFilterPanel("mobile")}</div>
+          <div className="grid shrink-0 grid-cols-[auto_1fr] gap-2 border-t border-slate-300 bg-white p-4 dark:border-slate-700 dark:bg-slate-950">
+            <Button type="button" variant="outline" onClick={resetFilters} className="h-12 rounded-none px-4">{copy.clear}</Button>
+            <Button type="button" onClick={() => setShowMobileFilters(false)} className="h-12 rounded-none bg-cyan-800 text-white hover:bg-cyan-700">
+              {copy.showResults} · {sortedProducts.length}
+            </Button>
+          </div>
+        </aside>
+
+        <div className="grid gap-6 lg:grid-cols-[310px_minmax(0,1fr)]">
+          <aside className="hidden self-start border border-slate-300 bg-white dark:border-slate-700 dark:bg-slate-900 lg:sticky lg:top-24 lg:block lg:max-h-[calc(100dvh-7rem)] lg:overflow-y-auto lg:overscroll-contain lg:[scrollbar-gutter:stable]">{renderFilterPanel("desktop")}</aside>
+
+          <section aria-label="Catalog results" className="min-w-0">
+            <div className="mb-4 border border-slate-300 bg-white dark:border-slate-700 dark:bg-slate-900">
+              <div className="flex min-h-14 flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-5">
+                <p aria-live="polite" className="text-sm font-semibold text-slate-700 dark:text-slate-200">
+                  <span className="font-mono text-base font-black tabular-nums text-slate-950 dark:text-white">{sortedProducts.length}</span>{" "}{copy.results}
+                  {sortedProducts.length !== products.length && <span className="font-normal text-slate-500"> / {products.length} total</span>}
+                </p>
+                <div className="hidden items-center gap-3 lg:flex">
+                  <label htmlFor="catalog-sort" className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">Sort</label>
+                  <select
+                    id="catalog-sort"
+                    value={sortOrder}
+                    onChange={(event) => applyFilters({ sortOrder: event.target.value as CatalogSortOption })}
+                    className="h-10 border border-slate-300 bg-white px-3 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-cyan-600 dark:border-slate-700 dark:bg-slate-900"
                   >
-                    Category: {selectedCategoryPathLabel}
-                    <X className="h-3 w-3" />
-                  </Button>
-                )}
-                {selectedFeatures.map((feature) => (
-                  <Button
-                    key={feature}
-                    variant="outline"
-                    size="sm"
-                    onClick={() => removeFeature(feature)}
-                    className="shrink-0 gap-2 rounded-full"
-                  >
-                    {feature}
-                    <X className="h-3 w-3" />
-                  </Button>
-                ))}
-                {selectedBrands.map((brand) => (
-                  <Button
-                    key={brand}
-                    variant="outline"
-                    size="sm"
-                    onClick={() => removeBrand(brand)}
-                    className="shrink-0 gap-2 rounded-full"
-                  >
-                    Brand: {brand}
-                    <X className="h-3 w-3" />
-                  </Button>
-                ))}
+                    {sortOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
+                  </select>
+                </div>
               </div>
+
+              {hasActiveFilters && (
+                <div className="border-t border-slate-200 px-4 py-3 dark:border-slate-800 sm:px-5">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="mr-1 text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">{copy.activeFilters}</span>
+                    {searchTerm.trim() && (
+                      <button type="button" onClick={() => setSearchTerm("")} className="inline-flex min-h-8 items-center gap-2 border border-slate-300 bg-slate-50 px-3 text-xs font-semibold hover:border-slate-950 dark:border-slate-700 dark:bg-slate-800 dark:hover:border-white">“{searchTerm.trim()}” <X className="h-3.5 w-3.5" /></button>
+                    )}
+                    {selectedCategoryLabel && (
+                      <button type="button" onClick={() => applyFilters({ categorySlug: null })} className="inline-flex min-h-8 items-center gap-2 border border-cyan-700 bg-cyan-50 px-3 text-xs font-semibold text-cyan-950 hover:bg-cyan-100 dark:bg-cyan-950/30 dark:text-cyan-100">{selectedCategoryLabel} <X className="h-3.5 w-3.5" /></button>
+                    )}
+                    {selectedFeatures.map((feature) => (
+                      <button key={feature} type="button" onClick={() => toggleFeature(feature, false)} className="inline-flex min-h-8 items-center gap-2 border border-slate-300 bg-slate-50 px-3 text-xs font-semibold hover:border-slate-950 dark:border-slate-700 dark:bg-slate-800 dark:hover:border-white">{feature} <X className="h-3.5 w-3.5" /></button>
+                    ))}
+                    {selectedBrands.map((brand) => (
+                      <button key={brand} type="button" onClick={() => toggleBrand(brand, false)} className="inline-flex min-h-8 items-center gap-2 border border-slate-300 bg-slate-50 px-3 text-xs font-semibold hover:border-slate-950 dark:border-slate-700 dark:bg-slate-800 dark:hover:border-white">{brand} <X className="h-3.5 w-3.5" /></button>
+                    ))}
+                    <button type="button" onClick={resetFilters} className="min-h-8 px-2 text-xs font-bold text-cyan-800 underline-offset-4 hover:underline dark:text-cyan-300">{copy.clear}</button>
+                  </div>
+                </div>
+              )}
             </div>
 
             {sortedProducts.length === 0 ? (
-              <div className="rounded-lg border border-gray-200 bg-gray-50 p-12 text-center dark:border-gray-700 dark:bg-gray-800">
-                <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">
-                  {products.length === 0
-                    ? "No products available"
-                    : "No products found"}
-                </h2>
-                <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-                  {products.length === 0
-                    ? "Check back soon for new products."
-                    : "Try adjusting your filters or search terms."}
-                </p>
-                {products.length !== 0 && (
-                  <Button onClick={resetFilters} className="mt-4">
-                    Clear all filters
-                  </Button>
-                )}
+              <div className="border border-slate-300 bg-white px-6 py-16 text-center dark:border-slate-700 dark:bg-slate-900">
+                <PackageSearch className="mx-auto h-10 w-10 text-slate-400" />
+                <h2 className="mt-5 text-2xl font-black tracking-tight">{copy.noResults}</h2>
+                <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-slate-600 dark:text-slate-300">{copy.noResultsBody}</p>
+                <Button type="button" onClick={resetFilters} className="mt-6 rounded-none bg-slate-950 px-6 text-white hover:bg-cyan-800 dark:bg-white dark:text-slate-950">{copy.clear}</Button>
               </div>
             ) : (
-              <div className="divide-y divide-slate-200 border-y border-slate-200 bg-white dark:divide-gray-800 dark:border-gray-800 dark:bg-gray-900 sm:grid sm:grid-cols-2 sm:gap-4 sm:divide-y-0 sm:border-y-0 sm:bg-transparent lg:grid-cols-3 xl:grid-cols-4">
-                {sortedProducts.map((product) => {
-                  // Extract 3-level category hierarchy from categoryTrail
-                  const category = product.categoryTrail[0]?.title || product.primaryCategory || "General"
-                  const itemCategory = product.categoryTrail[2]?.title || product.leafCategory || category
-
-                  const baseFeatureList =
-                    product.features.length > 0 ? product.features : product.featureTokens
-                  const featureHighlights = baseFeatureList.slice(0, 3)
-                  const stockToneClass = product.isInStock ? "bg-emerald-500" : "bg-gray-400"
-                  const stockToneLabel = product.isInStock ? "Ready to ship" : "Stock refreshes soon"
+              <div className="grid border-l border-t border-slate-300 bg-transparent dark:border-slate-700 sm:grid-cols-2 xl:grid-cols-3">
+                {sortedProducts.map((product, index) => {
                   const productHref = `/${locale}/products/${product.slug}`
+                  const categoryLabel = product.categoryTrail.at(-1)?.title || product.leafCategory || product.primaryCategory || "Industrial product"
+                  const specHighlights = product.specs.slice(0, 3)
+                  const featureHighlights = product.features.slice(0, 3)
 
                   return (
-                    <NextLink
-                      key={product.id}
-                      href={productHref}
-                      aria-label={`Open ${product.title}`}
-                      onMouseDown={(event) => {
-                        if (
-                          event.defaultPrevented ||
-                          event.button !== 0 ||
-                          event.metaKey ||
-                          event.ctrlKey ||
-                          event.shiftKey ||
-                          event.altKey
-                        ) {
-                          return
-                        }
-                        event.preventDefault()
-                        router.push(productHref)
-                      }}
-                      onClick={(event) => {
-                        if (
-                          event.defaultPrevented ||
-                          event.button !== 0 ||
-                          event.metaKey ||
-                          event.ctrlKey ||
-                          event.shiftKey ||
-                          event.altKey
-                        ) {
-                          return
-                        }
-                        event.preventDefault()
-                        router.push(productHref)
-                      }}
-                      className="group grid cursor-pointer grid-cols-[112px_minmax(0,1fr)] gap-3 bg-white px-1 py-3 transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#0899b4] dark:bg-gray-900 dark:hover:bg-gray-800/70 sm:flex sm:h-full sm:flex-col sm:overflow-hidden sm:rounded-xl sm:border sm:border-slate-200 sm:p-0 sm:hover:border-slate-300 sm:hover:shadow-sm dark:sm:border-gray-800"
-                    >
-                      <div className="relative h-32 overflow-hidden bg-white p-2 dark:bg-gray-950 sm:aspect-square sm:h-auto sm:w-full sm:p-4">
-                        <Image
-                          src={product.imageSrc || "/logo-rakza.png"}
-                          alt={product.title}
-                          fill
-                          sizes="(max-width: 640px) 112px, (max-width: 1024px) 50vw, 25vw"
-                          className="object-contain transition-transform duration-300 group-hover:scale-105"
-                        />
-                      </div>
+                    <article key={product.id} className="group flex min-w-0 flex-col border-b border-r border-slate-300 bg-white dark:border-slate-700 dark:bg-slate-900">
+                      <Link href={productHref} className="relative block aspect-[4/3] overflow-hidden border-b border-slate-200 bg-[#fafafa] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-cyan-600 dark:border-slate-800 dark:bg-slate-950">
+                        <Image src={product.imageSrc || "/logo-rakza.png"} alt={product.title} fill priority={index < 3} sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw" className="object-contain p-6 transition-transform duration-300 group-hover:scale-[1.025]" />
+                        <span className={`absolute left-0 top-0 border-b border-r px-3 py-2 text-[10px] font-black uppercase tracking-[0.12em] ${product.isInStock ? "border-emerald-700 bg-emerald-50 text-emerald-900 dark:bg-emerald-950 dark:text-emerald-200" : "border-slate-400 bg-white text-slate-700 dark:bg-slate-900 dark:text-slate-300"}`}>
+                          {product.isInStock ? copy.available : copy.onRequest}
+                        </span>
+                      </Link>
 
-                      <div className="flex min-w-0 flex-1 flex-col py-0.5 pr-2 sm:p-4">
-                        <div className="mb-1 flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1">
-                          {product.brand && (
-                            <p className="truncate text-[11px] font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400 sm:text-xs">
-                              {product.brand}
-                            </p>
-                          )}
-                          <span className={`h-1.5 w-1.5 shrink-0 rounded-full ${stockToneClass}`} />
-                          <span className="truncate text-[11px] font-medium text-gray-500 dark:text-gray-400">
-                            {stockToneLabel}
-                          </span>
-                        </div>
-                
-                        <h3 className="line-clamp-2 text-[15px] font-medium leading-snug text-gray-950 transition-colors group-hover:text-[#08778c] dark:text-gray-100 dark:group-hover:text-[#35d2e9] sm:mb-2 sm:min-h-[2.5rem] sm:text-sm sm:font-normal sm:leading-tight">
-                          {product.title}
-                        </h3>
-
-                        <p className="mt-1 line-clamp-1 text-xs text-gray-500 dark:text-gray-400 sm:hidden">
-                          {itemCategory}
+                      <div className="flex flex-1 flex-col p-5">
+                        <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-cyan-800 dark:text-cyan-300">
+                          {product.brand || categoryLabel}
                         </p>
+                        <h2 className="mt-2 text-lg font-black leading-snug tracking-[-0.02em] text-slate-950 dark:text-white">
+                          <Link href={productHref} className="decoration-cyan-600 decoration-2 underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-600">{product.title}</Link>
+                        </h2>
+                        <p className="mt-2 line-clamp-2 text-sm leading-6 text-slate-600 dark:text-slate-300">{product.description}</p>
 
-                        {featureHighlights.length > 0 && (
-                          <div className="mt-2 text-xs text-gray-600 dark:text-gray-400 sm:mb-3">
-                            <ul className="space-y-0.5">
-                              {featureHighlights.slice(0, 2).map((feature) => (
-                                <li key={feature} className="line-clamp-1">
-                                  <span className="text-gray-300 sm:text-gray-500">•</span> {feature}
-                                </li>
-                              ))}
-                            </ul>
-                            </div>
-                          )}
+                        {(specHighlights.length > 0 || featureHighlights.length > 0) && (
+                          <dl className="mt-5 border-t border-slate-200 text-xs dark:border-slate-800">
+                            {specHighlights.length > 0
+                              ? specHighlights.map((spec) => (
+                                  <div key={spec.key} className="grid grid-cols-[minmax(90px,0.8fr)_minmax(0,1fr)] gap-3 border-b border-slate-200 py-2.5 dark:border-slate-800">
+                                    <dt className="font-semibold text-slate-500">{spec.key}</dt>
+                                    <dd className="text-right font-medium text-slate-900 dark:text-slate-100">{spec.values.join(", ")}</dd>
+                                  </div>
+                                ))
+                              : featureHighlights.map((feature, index) => (
+                                  <div key={feature} className="grid grid-cols-[28px_minmax(0,1fr)] gap-2 border-b border-slate-200 py-2.5 dark:border-slate-800">
+                                    <dt className="font-mono text-slate-400">{String(index + 1).padStart(2, "0")}</dt>
+                                    <dd className="font-medium text-slate-800 dark:text-slate-200">{feature}</dd>
+                                  </div>
+                                ))}
+                          </dl>
+                        )}
 
-                        <div className="flex-1" />
+                        <div className="mt-auto pt-5">
+                          <Link href={productHref} className="inline-flex min-h-11 w-full items-center justify-between border border-slate-950 bg-slate-950 px-4 text-sm font-bold text-white transition hover:border-cyan-800 hover:bg-cyan-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-600 focus-visible:ring-offset-2 dark:border-white dark:bg-white dark:text-slate-950 dark:hover:border-cyan-300 dark:hover:bg-cyan-300">
+                            {copy.viewProduct}
+                            <ArrowRight className={`h-4 w-4 ${isArabic ? "rotate-180" : ""}`} />
+                          </Link>
+                        </div>
                       </div>
-                    </NextLink>
+                    </article>
                   )
                 })}
               </div>

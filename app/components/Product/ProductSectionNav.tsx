@@ -9,9 +9,13 @@ interface SectionItem {
 
 interface ProductSectionNavProps {
   sections: SectionItem[];
+  label: string;
 }
 
-export default function ProductSectionNav({ sections }: ProductSectionNavProps) {
+export default function ProductSectionNav({
+  sections,
+  label,
+}: ProductSectionNavProps) {
   const [activeId, setActiveId] = useState<string>(sections[0]?.id ?? "");
 
   useEffect(() => {
@@ -52,10 +56,13 @@ export default function ProductSectionNav({ sections }: ProductSectionNavProps) 
   if (sections.length === 0) return null;
 
   return (
-    <div className="sticky top-16 z-20 -mx-4 mb-6 border-y border-gray-200 bg-white/90 px-4 py-2 backdrop-blur-md dark:border-gray-800 dark:bg-gray-900/90 sm:-mx-6 sm:px-6">
+    <div className="sticky top-16 z-[var(--z-sticky)] -mx-6 border-y border-[var(--color-rule)] bg-[var(--color-paper)] px-6 py-2 lg:top-24 lg:mx-0 lg:self-start lg:border-0 lg:bg-transparent lg:px-0 lg:py-0">
+      <p className="mb-4 hidden text-sm font-semibold text-[var(--color-ink)] lg:block">
+        {label}
+      </p>
       <nav
-        aria-label="Product details navigation"
-        className="flex gap-1 overflow-x-auto"
+        aria-label={label}
+        className="flex gap-1 overflow-x-auto lg:flex-col lg:gap-0 lg:overflow-visible lg:border-t lg:border-[var(--color-rule)]"
       >
         {sections.map((section) => {
           const isActive = section.id === activeId;
@@ -64,13 +71,21 @@ export default function ProductSectionNav({ sections }: ProductSectionNavProps) 
               key={section.id}
               href={`#${section.id}`}
               onClick={(e) => handleClick(e, section.id)}
-              className={`relative flex-shrink-0 whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition ${
+              className={`relative flex min-h-11 flex-shrink-0 items-center justify-between whitespace-nowrap border-b px-3 py-2 text-sm font-semibold transition-colors duration-[var(--dur-short)] active:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)] focus-visible:ring-offset-2 lg:w-full lg:border-[var(--color-rule)] lg:border-t-0 lg:px-0 ${
                 isActive
-                  ? "bg-[#08778c] text-white shadow-sm"
-                  : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white"
+                  ? "border-[var(--color-ink)] bg-[var(--color-ink)] text-[var(--color-paper)] lg:bg-transparent lg:text-[var(--color-accent-strong)]"
+                  : "border-transparent text-[var(--color-muted)] hover:text-[var(--color-ink)] lg:border-[var(--color-rule)]"
               }`}
             >
               {section.label}
+              <span
+                aria-hidden="true"
+                className={`ml-5 hidden text-base lg:inline ${
+                  isActive ? "text-[var(--color-accent)]" : "text-[var(--color-rule-strong)]"
+                }`}
+              >
+                →
+              </span>
             </a>
           );
         })}

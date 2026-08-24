@@ -1,0 +1,30 @@
+[
+  {
+    "date": "2026-08-25",
+    "macrostructure": "Catalogue",
+    "theme": "GulfRakza Technical Sheet",
+    "enrichment": "Sanity service photography",
+    "brief": "Square-edge services listing, category, and detail treatment"
+  },
+  {
+    "date": "2026-08-25",
+    "macrostructure": "Feature Stack",
+    "theme": "GulfRakza Technical Sheet",
+    "enrichment": "Sanity product photography with native image dialog",
+    "brief": "Research-led individual product-detail page redesign for industrial RFQ procurement"
+  },
+  {
+    "date": "2026-08-25",
+    "macrostructure": "Existing homepage structure preserved",
+    "theme": "GulfRakza industrial",
+    "enrichment": "existing photography",
+    "brief": "Square-edge homepage treatment and product mega-menu redesign"
+  },
+  {
+    "date": "2026-08-25",
+    "macrostructure": "Catalog filter rail + product result grid + server-rendered PDP",
+    "theme": "Industrial Procurement Desk",
+    "enrichment": "Sanity product imagery, specifications, categories, availability, and resources",
+    "brief": "Research-led PLP, category listing, and PDP redesign with same-page category filtering"
+  }
+]

@@ -80,7 +80,7 @@ export default function ServicesClient({ categories }: { categories: ServiceCate
               return (
                 <div key={category.id} className={layoutClass}>
                   <Link href={`/services#${category.id}`}>
-                    <GridPatternCard className="group h-full cursor-pointer transition-all duration-300 hover:shadow-lg">
+                    <GridPatternCard className="group h-full cursor-pointer !rounded-none transition-shadow duration-300 hover:shadow-lg">
                       <GridPatternCardBody className="h-full text-center">
                         <h3 className="mb-1 text-lg font-bold text-foreground transition-colors duration-300 group-hover:text-[#08778c]">
                           {category.title}
@@ -98,7 +98,7 @@ export default function ServicesClient({ categories }: { categories: ServiceCate
 
       <section className="bg-white py-20 lg:py-28">
         <div className="mx-auto max-w-7xl px-4 font-inter">
-          <div className="relative overflow-hidden rounded-[2rem] border border-slate-200 bg-[#f7f9fb] shadow-[0_24px_80px_rgba(15,23,42,0.07)]">
+          <div className="relative overflow-hidden border border-slate-200 bg-[#f7f9fb] shadow-[0_24px_80px_rgba(15,23,42,0.07)]">
             <div className="pointer-events-none absolute inset-0 opacity-[0.45] [background-image:linear-gradient(to_right,rgba(15,23,42,0.055)_1px,transparent_1px),linear-gradient(to_bottom,rgba(15,23,42,0.055)_1px,transparent_1px)] [background-size:48px_48px]" />
             <div className="pointer-events-none absolute right-0 top-0 h-full w-1/3 bg-gradient-to-l from-white/80 to-transparent" />
 
@@ -129,13 +129,13 @@ export default function ServicesClient({ categories }: { categories: ServiceCate
                     return (
                       <article
                         key={pillar.key}
-                        className="group relative rounded-2xl border border-slate-200 bg-white/95 p-5 shadow-sm transition-all duration-300 hover:border-[#a5f3fc] hover:bg-white hover:shadow-[0_18px_45px_rgba(15,23,42,0.08)] sm:ml-10 sm:p-6"
+                        className="group relative border border-slate-200 bg-white/95 p-5 shadow-sm transition-[border-color,background-color,box-shadow] duration-300 hover:border-[#a5f3fc] hover:bg-white hover:shadow-[0_18px_45px_rgba(15,23,42,0.08)] sm:ml-10 sm:p-6"
                       >
-                        <span className="absolute -left-[3.25rem] top-6 hidden h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 shadow-sm transition-colors group-hover:border-[#a5f3fc] group-hover:text-[#08778c] sm:flex">
+                        <span className="absolute -left-[3.25rem] top-6 hidden h-10 w-10 items-center justify-center border border-slate-200 bg-white text-slate-500 shadow-sm transition-colors group-hover:border-[#a5f3fc] group-hover:text-[#08778c] sm:flex">
                           <Icon className="h-4 w-4" />
                         </span>
                         <div className="flex items-start gap-4">
-                          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-slate-700 transition-colors group-hover:bg-[#eefcff] group-hover:text-[#08778c] sm:hidden">
+                          <span className="flex h-11 w-11 shrink-0 items-center justify-center bg-slate-100 text-slate-700 transition-colors group-hover:bg-[#eefcff] group-hover:text-[#08778c] sm:hidden">
                             <Icon className="h-5 w-5" />
                           </span>
                           <div className="min-w-0">
@@ -169,7 +169,7 @@ export default function ServicesClient({ categories }: { categories: ServiceCate
           <h3 className="mb-4 text-4xl font-bold text-white">{t("ctaHeading")}</h3>
           <p className="mb-6">{t("ctaDescription")}</p>
           <Button
-            className="rounded-full bg-white px-6 py-3 font-medium text-black hover:bg-gray-100"
+            className="whitespace-nowrap bg-white px-6 py-3 font-medium text-black hover:bg-gray-100"
             onClick={() => setIsQuoteModalOpen(true)}
           >
             {t("ctaButton")}

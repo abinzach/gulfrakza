@@ -45,12 +45,15 @@ export default defineType({
       type: 'array',
       title: 'Category path',
       group: 'content',
-      description: 'Select categories in order (Category > Subcategory > Item category).',
-      validation: (rule) => rule.required().min(1).max(4),
+      description: 'Select categories in order (Category > Subcategory). Products appear after the second level.',
+      validation: (rule) => rule.required().min(1).max(2),
       of: [
         {
           type: 'reference',
           to: [{ type: 'category' }],
+          options: {
+            filter: '!defined(parent->parent)',
+          },
         },
       ],
     }),

@@ -95,7 +95,7 @@ const OfferingsPage = async ({ locale }: { locale: Locale }) => {
                   ? `/${locale}/products/category/${liveCategory.path.map((segment) => encodeURIComponent(segment.slug)).join("/")}`
                   : `/${locale}/products`}
               >
-                <div className="group h-full cursor-pointer rounded border border-dashed border-gray-500 bg-white p-6 transition-shadow duration-300 hover:shadow-lg dark:bg-gray-950">
+                <div className="group h-full cursor-pointer border border-dashed border-gray-500 bg-white p-6 transition-shadow duration-300 hover:shadow-lg dark:bg-gray-950">
                   <Image
                     width={64}
                     height={64}

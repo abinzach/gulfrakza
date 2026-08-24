@@ -4,6 +4,7 @@ import type { PortableTextBlock } from "next-sanity"
 import { client } from "@/sanity/lib/client"
 import { urlFor } from "@/sanity/lib/image"
 import type { Locale } from "@/i18n/config"
+import { CATALOG_CACHE_TAG } from "@/lib/cache-tags"
 
 import type {
   CatalogCategoryNode,
@@ -244,10 +245,19 @@ const normalizeResources = (
   return normalized
 }
 
-const buildImageUrl = (source: unknown) => {
+interface ImageUrlOptions {
+  width?: number
+  height?: number
+  quality?: number
+}
+
+const buildImageUrl = (
+  source: unknown,
+  { width = 800, height = 600, quality = 80 }: ImageUrlOptions = {},
+) => {
   if (!source) return undefined
   try {
-    return urlFor(source).width(800).height(600).fit("max").quality(80).url()
+    return urlFor(source).width(width).height(height).fit("max").quality(quality).url()
   } catch {
     return undefined
   }
@@ -459,7 +469,6 @@ const normalizeProduct = (
       values: [value],
     })
     productFeatureTokens.add(value)
-    options.featureSet?.add(value)
   })
 
   const sizeVariants = (product.sizeVariants ?? [])
@@ -537,12 +546,12 @@ export const fetchCatalogData = async (locale: Locale = "en"): Promise<CatalogDa
     client.fetch<RawCategory[]>(
       categoriesQuery,
       {},
-      { cache: "force-cache", next: { revalidate: 300 } },
+      { cache: "force-cache", next: { revalidate: 300, tags: [CATALOG_CACHE_TAG] } },
     ),
     client.fetch<RawProduct[]>(
       productsQuery,
       {},
-      { cache: "force-cache", next: { revalidate: 300 } },
+      { cache: "force-cache", next: { revalidate: 300, tags: [CATALOG_CACHE_TAG] } },
     ),
   ])
 
@@ -607,7 +616,19 @@ export const fetchCatalogData = async (locale: Locale = "en"): Promise<CatalogDa
 
   const categoryTree = context.topLevelNodes.map((node) => buildTreeNode(node, []))
 
-  const featureFilters = Array.from(featureSet).sort((a, b) => a.localeCompare(b, locale))
+  const featureUsage = new Map<string, number>()
+  sortedProducts.forEach((product) => {
+    new Set(product.features).forEach((feature) => {
+      featureUsage.set(feature, (featureUsage.get(feature) ?? 0) + 1)
+    })
+  })
+  const featureFilters = Array.from(featureSet)
+    .filter((feature) => (featureUsage.get(feature) ?? 0) > 1)
+    .sort((a, b) => {
+      const usageDifference = (featureUsage.get(b) ?? 0) - (featureUsage.get(a) ?? 0)
+      return usageDifference || a.localeCompare(b, locale)
+    })
+    .slice(0, 40)
   const brandFilters = Array.from(brandSet).sort((a, b) => a.localeCompare(b, locale))
 
   return {
@@ -626,12 +647,12 @@ export const fetchProductDetail = async (
     client.fetch<RawCategory[]>(
       categoriesQuery,
       {},
-      { cache: "force-cache", next: { revalidate: 300 } },
+      { cache: "force-cache", next: { revalidate: 300, tags: [CATALOG_CACHE_TAG] } },
     ),
     client.fetch<RawProduct | null>(
       productDetailQuery,
       { slug },
-      { cache: "force-cache", next: { revalidate: 300 } },
+      { cache: "force-cache", next: { revalidate: 300, tags: [CATALOG_CACHE_TAG] } },
     ),
   ])
 
@@ -652,12 +673,15 @@ export const fetchProductDetail = async (
   const seoTitle = pickLocalizedString(rawProduct.seoTitle, locale) ?? null
   const seoDescription = pickLocalizedString(rawProduct.seoDescription, locale) ?? null
 
+  const detailImageOptions = { width: 1600, height: 1200, quality: 88 }
+  const detailHeroImage =
+    buildImageUrl(rawProduct.heroImage, detailImageOptions) || baseProduct.imageSrc
   const gallerySources = rawProduct.gallery ?? []
   const galleryUrls = gallerySources
-    .map((source) => buildImageUrl(source))
+    .map((source) => buildImageUrl(source, detailImageOptions))
     .filter((url): url is string => Boolean(url))
 
-  const heroFirst = baseProduct.imageSrc ? [baseProduct.imageSrc] : []
+  const heroFirst = detailHeroImage ? [detailHeroImage] : []
   const gallery = Array.from(new Set([...heroFirst, ...galleryUrls]))
 
   return {
@@ -668,7 +692,7 @@ export const fetchProductDetail = async (
     brand: baseProduct.brand,
     primaryCategory: baseProduct.primaryCategory,
     leafCategory: baseProduct.leafCategory,
-    imageSrc: baseProduct.imageSrc,
+    imageSrc: detailHeroImage,
     gallery,
     features: baseProduct.features,
     specs: baseProduct.specs,

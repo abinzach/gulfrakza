@@ -113,6 +113,18 @@ const nextConfig: NextConfig = {
 
   async redirects() {
     return [
+      // Third-level catalog pages were removed from Sanity. Preserve existing
+      // bookmarks and search equity by consolidating them into level two.
+      {
+        source: "/products/category/:category/:subcategory/:formerThirdLevel",
+        destination: "/products/category/:category/:subcategory",
+        permanent: true,
+      },
+      {
+        source: "/:locale(en|ar)/products/category/:category/:subcategory/:formerThirdLevel",
+        destination: "/:locale/products/category/:category/:subcategory",
+        permanent: true,
+      },
       // Catch the legacy single-segment category URLs that the homepage used to
       // link to (e.g. /products/safety) — these now correctly route to the
       // catalog page with a category filter applied via query string.

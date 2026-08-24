@@ -95,7 +95,7 @@ export default async function ServiceCategoryPage({ params }: ServiceCategoryPag
   }
 
   return (
-    <div className="bg-slate-50 text-slate-950">
+    <div className="bg-[var(--color-paper)] text-[var(--color-ink)]">
       <section className="border-b border-slate-200 bg-white">
         <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
           <nav aria-label="Breadcrumb" className="text-sm text-slate-600">
@@ -105,18 +105,18 @@ export default async function ServiceCategoryPage({ params }: ServiceCategoryPag
             <span className="mx-2" aria-hidden="true">/</span>
             <span aria-current="page">{category.title}</span>
           </nav>
-          <h1 className="mt-7 text-4xl font-bold tracking-tight sm:text-5xl">{category.title}</h1>
+          <h1 className="mt-7 min-w-0 text-4xl font-bold tracking-tight [overflow-wrap:anywhere] sm:text-5xl">{category.title}</h1>
           <p className="mt-5 max-w-3xl text-lg leading-8 text-slate-700">{category.description}</p>
         </div>
       </section>
       <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <h2 className="text-2xl font-bold">{activeLocale === "ar" ? "الخدمات المتاحة" : "Available services"}</h2>
-        <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-6 grid border-l border-t border-[var(--color-rule)] sm:grid-cols-2 lg:grid-cols-3">
           {category.services.map((service) => (
-            <article key={service.id} className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-              {service.imageSrc && <div className="relative aspect-[16/9]"><Image src={service.imageSrc} alt={service.title} fill sizes="(max-width: 640px) 100vw, 33vw" className="object-cover" /></div>}
+            <article key={service.id} className="group relative min-w-0 overflow-hidden border-b border-r border-[var(--color-rule)] bg-[var(--color-surface)] transition-colors hover:bg-[var(--color-paper-2)]">
+              {service.imageSrc && <div className="relative aspect-[16/9] border-b border-[var(--color-rule)]"><Image src={service.imageSrc} alt={service.title} fill sizes="(max-width: 640px) 100vw, 33vw" className="object-cover" /></div>}
               <div className="p-5">
-                <h3 className="text-lg font-semibold"><Link href={`/${activeLocale}/services/${service.slug}`} className="hover:text-cyan-800 hover:underline">{service.title}</Link></h3>
+                <h3 className="min-w-0 text-lg font-semibold [overflow-wrap:anywhere]"><Link href={`/${activeLocale}/services/${service.slug}`} className="after:absolute after:inset-0 hover:text-[var(--color-accent-strong)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[var(--color-focus)]">{service.title}</Link></h3>
                 <p className="mt-2 line-clamp-3 text-sm leading-6 text-slate-600">{service.description}</p>
               </div>
             </article>

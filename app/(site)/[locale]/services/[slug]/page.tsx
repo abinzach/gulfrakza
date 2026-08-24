@@ -141,7 +141,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
 
   return (
     <article className="bg-white text-slate-950">
-      <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
+      <div className="mx-auto max-w-6xl px-4 pb-12 pt-20 sm:px-6 lg:px-8 lg:py-16">
         <nav aria-label="Breadcrumb" className="mb-8 text-sm text-slate-600">
           <Link href={`/${activeLocale}`} className="hover:underline">{activeLocale === "ar" ? "الرئيسية" : "Home"}</Link>
           <span className="mx-2" aria-hidden="true">/</span>
@@ -153,19 +153,19 @@ export default async function ServicePage({ params }: ServicePageProps) {
         <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_.95fr]">
           <div>
             {service.category && <p className="text-sm font-semibold uppercase tracking-[0.16em] text-cyan-700">{service.category.title}</p>}
-            <h1 className="mt-3 text-4xl font-bold tracking-tight sm:text-5xl">{service.title}</h1>
+            <h1 className="mt-3 min-w-0 text-4xl font-bold tracking-tight [overflow-wrap:anywhere] sm:text-5xl">{service.title}</h1>
             <p className="mt-6 text-lg leading-8 text-slate-700">{service.description}</p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <a href={`mailto:${contact.emailSales}?subject=${encodeURIComponent(`Service enquiry: ${service.title}`)}`} className="rounded-full bg-cyan-800 px-6 py-3 font-semibold text-white hover:bg-cyan-900">
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+              <a href={`mailto:${contact.emailSales}?subject=${encodeURIComponent(`Service enquiry: ${service.title}`)}`} className="inline-flex min-h-12 items-center justify-center bg-[var(--color-accent-strong)] px-6 py-3 font-semibold text-[var(--color-accent-ink)] transition-colors hover:bg-[var(--color-accent)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)] active:opacity-80 whitespace-nowrap">
                 {activeLocale === "ar" ? "اطلب عرضًا" : "Request a proposal"}
               </a>
-              <a href={`tel:${contact.phoneMobileE164}`} className="rounded-full border border-slate-300 px-6 py-3 font-semibold hover:border-cyan-800 hover:text-cyan-800">
+              <a href={`tel:${contact.phoneMobileE164}`} className="inline-flex min-h-12 items-center justify-center border border-[var(--color-rule-strong)] px-6 py-3 font-semibold transition-colors hover:border-[var(--color-accent-strong)] hover:text-[var(--color-accent-strong)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)] active:bg-[var(--color-paper-2)] whitespace-nowrap">
                 {activeLocale === "ar" ? "اتصل بنا" : "Call our team"}
               </a>
             </div>
           </div>
           {service.imageSrc && (
-            <div className="relative aspect-[4/3] overflow-hidden rounded-3xl bg-slate-100">
+            <div className="relative aspect-[4/3] overflow-hidden border border-[var(--color-rule)] bg-[var(--color-paper-2)]">
               <Image src={service.imageSrc} alt={service.title} fill priority sizes="(max-width: 1024px) 100vw, 45vw" className="object-cover" />
             </div>
           )}
@@ -186,7 +186,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
             </>
           )}
           {(service.reviewedBy || service.lastReviewedAt) && (
-            <div className="mt-10 rounded-xl border border-slate-200 bg-slate-50 px-5 py-4 text-sm text-slate-600">
+            <div className="mt-10 border border-[var(--color-rule)] bg-[var(--color-paper-2)] px-5 py-4 text-sm text-[var(--color-muted)]">
               {service.reviewedBy && <span>{activeLocale === "ar" ? "راجعه فنيًا: " : "Technically reviewed by: "}<strong>{service.reviewedBy}</strong></span>}
               {service.reviewedBy && service.lastReviewedAt && <span aria-hidden="true"> · </span>}
               {service.lastReviewedAt && <time dateTime={service.lastReviewedAt}>{activeLocale === "ar" ? "آخر مراجعة: " : "Last reviewed: "}{new Intl.DateTimeFormat(activeLocale === "ar" ? "ar-SA" : "en-SA", { dateStyle: "medium" }).format(new Date(service.lastReviewedAt))}</time>}

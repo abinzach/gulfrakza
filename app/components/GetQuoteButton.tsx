@@ -33,7 +33,7 @@ export default function GetQuoteButton({
           setIsModalOpen(true);
         }}
         variant="default"
-        className="w-full bg-[#08778c] text-sm font-medium text-white hover:bg-[#0f5f70]"
+        className="min-h-12 w-full whitespace-nowrap rounded-none border border-[var(--color-accent-strong)] bg-[var(--color-accent-strong)] px-5 text-sm font-semibold text-[var(--color-accent-ink)] transition-colors duration-[var(--dur-short)] hover:bg-[var(--color-ink)] active:bg-[var(--color-ink-2)] focus-visible:ring-2 focus-visible:ring-[var(--color-focus)] focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-55"
       >
         {t("getQuote")}
       </Button>

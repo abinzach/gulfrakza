@@ -1,3 +1,5 @@
+@import "../tokens.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -59,6 +61,11 @@
 }
 
 @layer base {
+  html,
+  body {
+    overflow-x: clip;
+  }
+
   :root {
     --background: 0 0% 100%;
     --foreground: 0 0% 3.9%;
@@ -168,5 +175,23 @@
   .marquee-right {
     animation: marquee-right 50s linear infinite;
     will-change: transform;
+  }
+}
+
+.pdp-image-dialog::backdrop {
+  background: color-mix(in oklch, var(--color-ink) 82%, transparent);
+}
+
+.pdp-image-dialog {
+  max-height: calc(100dvh - 2rem);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pdp-motion,
+  .pdp-motion::before,
+  .pdp-motion::after {
+    animation-duration: 150ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 150ms !important;
   }
 }
