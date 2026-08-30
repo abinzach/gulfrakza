@@ -1,8 +1,9 @@
 "use client";
 
-import Image from "next/image";
 import { useRef, useState } from "react";
 import { ChevronLeft, ChevronRight, Expand, X } from "lucide-react";
+
+import SanityImage from "@/app/components/SanityImage";
 
 interface ProductGalleryLabels {
   openImage: string;
@@ -59,7 +60,7 @@ export default function ProductGallery({
             aria-label={`${labels.openImage}: ${title}`}
             className="group relative block aspect-[4/3] w-full min-w-0 overflow-hidden border border-[var(--color-rule)] bg-[var(--color-surface)] text-[var(--color-ink)] active:bg-[var(--color-paper-2)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)] focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-55"
           >
-            <Image
+            <SanityImage
               src={activeImage}
               alt={`${title} — ${labels.image} ${activeIndex + 1}`}
               fill
@@ -116,7 +117,7 @@ export default function ProductGallery({
                     : "border-[var(--color-rule)] hover:border-[var(--color-rule-strong)]"
                 }`}
               >
-                <Image
+                <SanityImage
                   src={image}
                   alt=""
                   fill
@@ -144,7 +145,7 @@ export default function ProductGallery({
                   : "border-[var(--color-rule)]"
               }`}
             >
-              <Image
+              <SanityImage
                 src={image}
                 alt=""
                 fill
@@ -181,7 +182,7 @@ export default function ProductGallery({
           </button>
         </div>
         <div className="relative h-[min(72dvh,52rem)] min-h-[18rem] bg-[var(--color-surface)]">
-          <Image
+          <SanityImage
             src={activeImage}
             alt={`${title} — ${labels.image} ${activeIndex + 1}`}
             fill

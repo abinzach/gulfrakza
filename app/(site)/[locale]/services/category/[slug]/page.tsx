@@ -1,8 +1,8 @@
 import type { Metadata } from "next"
-import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 
+import SanityImage from "@/app/components/SanityImage"
 import { defaultLocale, isLocale, locales, type Locale } from "@/i18n/config"
 import { getCategories as getLocalCategories } from "@/lib/services"
 import { fetchServiceCategories, type ServiceCategory } from "@/lib/services-sanity"
@@ -114,7 +114,7 @@ export default async function ServiceCategoryPage({ params }: ServiceCategoryPag
         <div className="mt-6 grid border-l border-t border-[var(--color-rule)] sm:grid-cols-2 lg:grid-cols-3">
           {category.services.map((service) => (
             <article key={service.id} className="group relative min-w-0 overflow-hidden border-b border-r border-[var(--color-rule)] bg-[var(--color-surface)] transition-colors hover:bg-[var(--color-paper-2)]">
-              {service.imageSrc && <div className="relative aspect-[16/9] border-b border-[var(--color-rule)]"><Image src={service.imageSrc} alt={service.title} fill sizes="(max-width: 640px) 100vw, 33vw" className="object-cover" /></div>}
+              {service.imageSrc && <div className="relative aspect-[16/9] border-b border-[var(--color-rule)]"><SanityImage src={service.imageSrc} alt={service.title} fill sizes="(max-width: 640px) 100vw, 33vw" className="object-cover" /></div>}
               <div className="p-5">
                 <h3 className="min-w-0 text-lg font-semibold [overflow-wrap:anywhere]"><Link href={`/${activeLocale}/services/${service.slug}`} className="after:absolute after:inset-0 hover:text-[var(--color-accent-strong)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[var(--color-focus)]">{service.title}</Link></h3>
                 <p className="mt-2 line-clamp-3 text-sm leading-6 text-slate-600">{service.description}</p>

@@ -2,15 +2,25 @@ import { revalidatePath, revalidateTag } from "next/cache";
 import { NextResponse, type NextRequest } from "next/server";
 import { parseBody } from "next-sanity/webhook";
 
-import { CATALOG_CACHE_TAG } from "@/lib/cache-tags";
+import { locales } from "@/i18n/config";
+import {
+  CATALOG_CATEGORIES_CACHE_TAG,
+  CATALOG_PRODUCTS_CACHE_TAG,
+  productCacheTag,
+} from "@/lib/cache-tags";
 
 type SanityWebhookPayload = {
   _id?: string;
   _type?: string;
-  slug?: string | null;
+  slug?: string | { current?: string | null } | null;
 };
 
 const catalogDocumentTypes = new Set(["category", "product"]);
+
+const getSlug = (slug: SanityWebhookPayload["slug"]) => {
+  if (typeof slug === "string") return slug.trim() || null;
+  return slug?.current?.trim() || null;
+};
 
 export async function POST(request: NextRequest) {
   const secret = process.env.SANITY_REVALIDATE_SECRET;
@@ -43,21 +53,44 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Webhooks represent an external write that has already completed, so expire
-    // the catalog immediately instead of serving one more stale response.
-    revalidateTag(CATALOG_CACHE_TAG, { expire: 0 });
-    revalidatePath("/[locale]", "layout");
-    revalidatePath("/sitemap.xml");
+    const slug = getSlug(body.slug);
+    const tags = new Set<string>();
+    const paths = new Set<string>(["/sitemap.xml"]);
+
+    if (body._type === "product") {
+      tags.add(CATALOG_PRODUCTS_CACHE_TAG);
+      if (slug) tags.add(productCacheTag(slug));
+
+      for (const locale of locales) {
+        paths.add(`/${locale}`);
+        paths.add(`/${locale}/products`);
+        if (slug) paths.add(`/${locale}/products/${encodeURIComponent(slug)}`);
+      }
+    } else {
+      // Category changes affect navigation, catalog grouping, and product paths.
+      tags.add(CATALOG_CATEGORIES_CACHE_TAG);
+      tags.add(CATALOG_PRODUCTS_CACHE_TAG);
+
+      for (const locale of locales) {
+        paths.add(`/${locale}`);
+        paths.add(`/${locale}/products`);
+      }
+    }
+
+    // A signed Sanity webhook represents a completed external write, so expire
+    // only the affected data and routes instead of the entire locale layout.
+    for (const tag of tags) revalidateTag(tag, { expire: 0 });
+    for (const path of paths) revalidatePath(path);
 
     return NextResponse.json({
       revalidated: true,
       document: {
         id: body._id ?? null,
         type: body._type,
-        slug: body.slug ?? null,
+        slug,
       },
-      paths: ["/[locale] (layout)", "/sitemap.xml"],
-      tags: [CATALOG_CACHE_TAG],
+      paths: Array.from(paths),
+      tags: Array.from(tags),
     });
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : "Unknown revalidation error.";

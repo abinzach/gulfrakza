@@ -1,11 +1,11 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTranslations } from "@/i18n/provider";
+import SanityImage from "@/app/components/SanityImage";
 
 interface ServiceCardProps {
   id: string;
@@ -35,7 +35,7 @@ export default function ServiceCard({
     >
       <div className="relative h-56 w-full md:h-auto md:w-[35%] overflow-hidden bg-gray-100 dark:bg-gray-800">
         {imageSrc ? (
-          <Image
+          <SanityImage
             src={imageSrc}
             alt={title}
             fill

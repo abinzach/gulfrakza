@@ -4,7 +4,11 @@ import type { PortableTextBlock } from "next-sanity"
 import { client } from "@/sanity/lib/client"
 import { urlFor } from "@/sanity/lib/image"
 import type { Locale } from "@/i18n/config"
-import { CATALOG_CACHE_TAG } from "@/lib/cache-tags"
+import {
+  CATALOG_CATEGORIES_CACHE_TAG,
+  CATALOG_PRODUCTS_CACHE_TAG,
+  productCacheTag,
+} from "@/lib/cache-tags"
 
 import type {
   CatalogCategoryNode,
@@ -546,12 +550,12 @@ export const fetchCatalogData = async (locale: Locale = "en"): Promise<CatalogDa
     client.fetch<RawCategory[]>(
       categoriesQuery,
       {},
-      { cache: "force-cache", next: { revalidate: 300, tags: [CATALOG_CACHE_TAG] } },
+      { cache: "force-cache", next: { tags: [CATALOG_CATEGORIES_CACHE_TAG] } },
     ),
     client.fetch<RawProduct[]>(
       productsQuery,
       {},
-      { cache: "force-cache", next: { revalidate: 300, tags: [CATALOG_CACHE_TAG] } },
+      { cache: "force-cache", next: { tags: [CATALOG_PRODUCTS_CACHE_TAG] } },
     ),
   ])
 
@@ -647,12 +651,12 @@ export const fetchProductDetail = async (
     client.fetch<RawCategory[]>(
       categoriesQuery,
       {},
-      { cache: "force-cache", next: { revalidate: 300, tags: [CATALOG_CACHE_TAG] } },
+      { cache: "force-cache", next: { tags: [CATALOG_CATEGORIES_CACHE_TAG] } },
     ),
     client.fetch<RawProduct | null>(
       productDetailQuery,
       { slug },
-      { cache: "force-cache", next: { revalidate: 300, tags: [CATALOG_CACHE_TAG] } },
+      { cache: "force-cache", next: { tags: [productCacheTag(slug)] } },
     ),
   ])
 

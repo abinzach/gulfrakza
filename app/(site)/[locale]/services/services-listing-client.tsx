@@ -3,8 +3,8 @@
 /* Hallmark · genre: modern-minimal · macrostructure: Catalogue · theme: GulfRakza Technical Sheet · enrichment: Sanity service photography · nav: inherited · footer: inherited */
 /* Hallmark · pre-emit critique: P4 H5 E5 S5 R5 V4 */
 
-import Image from "next/image";
 import React, { useEffect, useMemo, useState } from "react";
+import SanityImage from "@/app/components/SanityImage";
 import QuoteModal from "@/app/components/GetQuote";
 import { cn } from "@/lib/utils";
 import type { ServiceCategory } from "@/lib/services-sanity";
@@ -153,7 +153,7 @@ export default function ServicesListingClient({
             )}
             aria-hidden={i !== activeSlide}
           >
-            <Image
+            <SanityImage
               src={slide.imageSrc}
               alt={slide.title}
               fill
@@ -298,7 +298,7 @@ export default function ServicesListingClient({
                   >
                     {/* Category banner — quote CTA always inside */}
                     <div className="relative mb-4 h-40 overflow-hidden border border-[var(--color-rule)] sm:mb-5 sm:h-48 md:h-56">
-                      <Image
+                      <SanityImage
                         src={catImage}
                         alt={category.title}
                         fill

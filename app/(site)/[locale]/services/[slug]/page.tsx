@@ -1,9 +1,9 @@
 import { PortableText, type PortableTextComponents } from "@portabletext/react"
 import type { Metadata } from "next"
-import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 
+import SanityImage from "@/app/components/SanityImage"
 import { defaultLocale, isLocale, locales, type Locale } from "@/i18n/config"
 import { contact, siteUrl } from "@/lib/constants"
 import { fetchServiceCategories, fetchServiceDetail } from "@/lib/services-sanity"
@@ -166,7 +166,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
           </div>
           {service.imageSrc && (
             <div className="relative aspect-[4/3] overflow-hidden border border-[var(--color-rule)] bg-[var(--color-paper-2)]">
-              <Image src={service.imageSrc} alt={service.title} fill priority sizes="(max-width: 1024px) 100vw, 45vw" className="object-cover" />
+              <SanityImage src={service.imageSrc} alt={service.title} fill priority sizes="(max-width: 1024px) 100vw, 45vw" className="object-cover" />
             </div>
           )}
         </div>

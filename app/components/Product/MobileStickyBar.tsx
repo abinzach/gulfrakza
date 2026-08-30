@@ -1,8 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import GetQuoteButton from "@/app/components/GetQuoteButton";
+import SanityImage from "@/app/components/SanityImage";
 
 interface MobileStickyBarProps {
   imageSrc: string;
@@ -66,7 +66,7 @@ export default function MobileStickyBar({
       <div className="flex items-center gap-3">
         <div className="relative h-12 w-12 flex-shrink-0 overflow-hidden border border-[var(--color-rule)] bg-[var(--color-surface)]">
           {imageSrc && (
-            <Image
+            <SanityImage
               src={imageSrc}
               alt={title}
               fill

@@ -77,15 +77,6 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
-        source: "/:locale(en|ar)/:path*",
-        headers: [
-          {
-            key: "Cache-Control",
-            value: "public, s-maxage=300, stale-while-revalidate=86400",
-          },
-        ],
-      },
-      {
         source: "/:path*",
         headers: securityHeaders,
       },

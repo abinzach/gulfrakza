@@ -1,7 +1,6 @@
 "use client"
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
-import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import {
@@ -14,6 +13,7 @@ import {
   X,
 } from "lucide-react"
 
+import SanityImage from "@/app/components/SanityImage"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
@@ -639,7 +639,7 @@ export default function CatalogPageClient({
                   return (
                     <article key={product.id} className="group flex min-w-0 flex-col border-b border-r border-slate-300 bg-white dark:border-slate-700 dark:bg-slate-900">
                       <Link href={productHref} className="relative block aspect-[4/3] overflow-hidden border-b border-slate-200 bg-[#fafafa] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-cyan-600 dark:border-slate-800 dark:bg-slate-950">
-                        <Image src={product.imageSrc || "/logo-rakza.png"} alt={product.title} fill priority={index < 3} sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw" className="object-contain p-6 transition-transform duration-300 group-hover:scale-[1.025]" />
+                        <SanityImage src={product.imageSrc || "/logo-rakza.png"} alt={product.title} fill priority={index < 3} sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw" className="object-contain p-6 transition-transform duration-300 group-hover:scale-[1.025]" />
                         <span className={`absolute left-0 top-0 border-b border-r px-3 py-2 text-[10px] font-black uppercase tracking-[0.12em] ${product.isInStock ? "border-emerald-700 bg-emerald-50 text-emerald-900 dark:bg-emerald-950 dark:text-emerald-200" : "border-slate-400 bg-white text-slate-700 dark:bg-slate-900 dark:text-slate-300"}`}>
                           {product.isInStock ? copy.available : copy.onRequest}
                         </span>

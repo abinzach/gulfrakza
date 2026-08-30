@@ -2,7 +2,6 @@ import { Fragment } from "react"
 import { PortableText, type PortableTextComponents } from "@portabletext/react"
 import { ArrowRight, CheckCircle2, Download, FileText, Package } from "lucide-react"
 import type { Metadata } from "next"
-import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 
@@ -11,6 +10,7 @@ import MobileStickyBar from "@/app/components/Product/MobileStickyBar"
 import ProductGallery from "@/app/components/Product/ProductGallery"
 import ProductQuickActions from "@/app/components/Product/ProductQuickActions"
 import ProductSectionNav from "@/app/components/Product/ProductSectionNav"
+import SanityImage from "@/app/components/SanityImage"
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -167,7 +167,7 @@ const portableTextComponents: PortableTextComponents = {
       if (!imageUrl) return null
       return (
         <figure className="relative my-8 aspect-video overflow-hidden border border-[var(--color-rule)] bg-[var(--color-surface)]">
-          <Image
+          <SanityImage
             src={imageUrl}
             alt={imageValue.alt || "Product media"}
             fill
@@ -658,7 +658,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
                       className="group flex min-w-0 flex-col overflow-hidden border-b border-r border-[var(--color-rule)] bg-[var(--color-surface)] active:bg-[var(--color-paper)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)] focus-visible:ring-inset"
                     >
                       <div className="relative aspect-[4/3] min-w-0 overflow-hidden border-b border-[var(--color-rule)] bg-[var(--color-paper)]">
-                        <Image
+                        <SanityImage
                           src={relatedProduct.imageSrc || "/logo-rakza.png"}
                           alt={relatedProduct.title}
                           fill
