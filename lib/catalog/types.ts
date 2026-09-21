@@ -63,6 +63,33 @@ export interface CatalogProduct {
   isArabicIndexable: boolean
 }
 
+/**
+ * The subset of `CatalogProduct` the catalog grid actually renders or filters
+ * on. Everything the listing does not read — stock variants, review metadata,
+ * the Arabic indexability flags, the precomputed href — is dropped before the
+ * array crosses into the client component, because every retained field is
+ * serialised into the HTML once per product.
+ */
+export type CatalogListingProduct = Pick<
+  CatalogProduct,
+  | "id"
+  | "slug"
+  | "title"
+  | "description"
+  | "brand"
+  | "imageSrc"
+  | "features"
+  | "featureTokens"
+  | "specs"
+  | "categoryTrail"
+  | "categorySlugs"
+  | "primaryCategory"
+  | "leafCategory"
+  | "isInStock"
+  // Backs the default "Recommended" sort order.
+  | "position"
+>
+
 export interface CatalogProductDetail {
   id: string
   slug: string

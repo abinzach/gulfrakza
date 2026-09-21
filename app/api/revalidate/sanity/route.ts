@@ -16,6 +16,11 @@ type SanityWebhookPayload = {
 };
 
 const catalogDocumentTypes = new Set(["category", "product"]);
+// Services render from a token-authenticated Sanity client whose reads are
+// never cached, so they carry no cache tags to expire — the prerendered routes
+// have to be revalidated by path instead. Without this the webhook rejected
+// every service edit with a 400 and the pages stayed stale until a redeploy.
+const serviceDocumentTypes = new Set(["service", "serviceCategory"]);
 
 const getSlug = (slug: SanityWebhookPayload["slug"]) => {
   if (typeof slug === "string") return slug.trim() || null;
@@ -46,7 +51,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (!body?._type || !catalogDocumentTypes.has(body._type)) {
+    if (
+      !body?._type ||
+      (!catalogDocumentTypes.has(body._type) && !serviceDocumentTypes.has(body._type))
+    ) {
       return NextResponse.json(
         { revalidated: false, message: "Unsupported Sanity document type." },
         { status: 400 },
@@ -57,7 +65,19 @@ export async function POST(request: NextRequest) {
     const tags = new Set<string>();
     const paths = new Set<string>(["/sitemap.xml"]);
 
-    if (body._type === "product") {
+    if (serviceDocumentTypes.has(body._type)) {
+      for (const locale of locales) {
+        paths.add(`/${locale}`);
+        paths.add(`/${locale}/services`);
+        if (slug) {
+          const segment =
+            body._type === "serviceCategory"
+              ? `category/${encodeURIComponent(slug)}`
+              : encodeURIComponent(slug);
+          paths.add(`/${locale}/services/${segment}`);
+        }
+      }
+    } else if (body._type === "product") {
       tags.add(CATALOG_PRODUCTS_CACHE_TAG);
       if (slug) tags.add(productCacheTag(slug));
 

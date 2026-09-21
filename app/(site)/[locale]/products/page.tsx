@@ -1,11 +1,10 @@
 import type { Metadata } from "next"
 
-import { fetchCatalogData } from "@/lib/catalog"
+import { fetchCatalogData, toCatalogListingProduct } from "@/lib/catalog"
 import { defaultLocale, isLocale, locales, type Locale } from "@/i18n/config"
 import { siteUrl } from "@/lib/constants"
 
 import CatalogPageClient from "./catalog-client"
-import { parseFiltersFromSearchParams } from "./filter-helpers"
 
 const catalogMeta = {
   title: "Industrial Products Catalog | PPE, Safety & Lifting Equipment | GulfRakza",
@@ -50,19 +49,19 @@ const arabicCatalogMeta = {
   twitterImage: `${siteUrl}/twitter-og-image.jpg`,
 }
 
+// Deliberately no `searchParams` here or in `generateMetadata`: reading it
+// opts the route into dynamic rendering, which made every filter permutation a
+// fresh ~2.3 MB origin render instead of an edge-cache hit. Filters are parsed
+// on the client in `CatalogPageClient`. Crawlers are kept off the filtered URLs
+// by the canonical below plus the `Disallow` rules in `app/robots.ts`.
 type CatalogPageProps = {
   params: Promise<{ locale: string }>
-  searchParams?: Promise<Record<string, string | string[] | undefined>>
 }
 
-export async function generateMetadata({ params, searchParams }: CatalogPageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: CatalogPageProps): Promise<Metadata> {
   const { locale } = await params
   const activeLocale: Locale = isLocale(locale) ? locale : defaultLocale
   const localizedMeta = activeLocale === "ar" ? arabicCatalogMeta : catalogMeta
-  const resolvedSearchParams = searchParams ? await searchParams : undefined
-  const hasFilters = Boolean(resolvedSearchParams && Object.values(resolvedSearchParams).some((value) =>
-    Array.isArray(value) ? value.some(Boolean) : Boolean(value),
-  ))
 
   const canonicalPath = `/${activeLocale}/products`
   const canonicalUrl = `${siteUrl}${canonicalPath}`
@@ -77,7 +76,6 @@ export async function generateMetadata({ params, searchParams }: CatalogPageProp
   return {
     title: localizedMeta.title,
     description: localizedMeta.description,
-    robots: hasFilters ? { index: false, follow: true } : undefined,
     keywords: localizedMeta.keywords,
     alternates: {
       canonical: canonicalUrl,
@@ -108,46 +106,19 @@ export async function generateMetadata({ params, searchParams }: CatalogPageProp
   }
 }
 
-const buildURLSearchParams = (params?: Record<string, string | string[] | undefined>) => {
-  const searchParams = new URLSearchParams()
-  if (!params) {
-    return searchParams
-  }
-
-  Object.entries(params).forEach(([key, value]) => {
-    if (typeof value === "undefined") return
-    if (Array.isArray(value)) {
-      value.forEach((entry) => {
-        if (typeof entry === "string") {
-          searchParams.append(key, entry)
-        }
-      })
-    } else {
-      searchParams.append(key, value)
-    }
-  })
-
-  return searchParams
-}
-
-export default async function ProductsPage({ params, searchParams }: CatalogPageProps) {
+export default async function ProductsPage({ params }: CatalogPageProps) {
   const { locale } = await params
   const activeLocale: Locale = isLocale(locale) ? locale : defaultLocale
 
   const { products, categoryTree, featureFilters, brandFilters } =
     await fetchCatalogData(activeLocale)
 
-  const resolvedSearchParams = searchParams ? await searchParams : undefined
-
-  const initialFilters = parseFiltersFromSearchParams(buildURLSearchParams(resolvedSearchParams))
-
   return (
     <CatalogPageClient
-      products={products}
+      products={products.map(toCatalogListingProduct)}
       categoryTree={categoryTree}
       featureFilters={featureFilters}
       brandFilters={brandFilters}
-      initialFilters={initialFilters}
     />
   )
 }

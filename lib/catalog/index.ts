@@ -13,6 +13,7 @@ import {
 import type {
   CatalogCategoryNode,
   CatalogData,
+  CatalogListingProduct,
   CatalogProduct,
   CatalogProductDetail,
   CatalogSpec,
@@ -544,6 +545,30 @@ const normalizeProduct = (
     ),
   }
 }
+
+/**
+ * Narrow a full catalog product to the fields the listing grid needs before
+ * handing it to a client component. `features` is capped because the card only
+ * ever renders the first three; `specs` is kept whole because client-side
+ * search matches against every spec value.
+ */
+export const toCatalogListingProduct = (product: CatalogProduct): CatalogListingProduct => ({
+  id: product.id,
+  slug: product.slug,
+  title: product.title,
+  description: product.description,
+  brand: product.brand,
+  imageSrc: product.imageSrc,
+  features: product.features.slice(0, 3),
+  featureTokens: product.featureTokens,
+  specs: product.specs,
+  categoryTrail: product.categoryTrail,
+  categorySlugs: product.categorySlugs,
+  primaryCategory: product.primaryCategory,
+  leafCategory: product.leafCategory,
+  isInStock: product.isInStock,
+  position: product.position,
+})
 
 export const fetchCatalogData = async (locale: Locale = "en"): Promise<CatalogData> => {
   const [rawCategories, rawProducts] = await Promise.all([

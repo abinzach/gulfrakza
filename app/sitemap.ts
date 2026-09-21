@@ -7,6 +7,12 @@ import { getAllServiceSlugs, getCategories as getLocalServiceCategories } from "
 
 const baseUrl = "https://www.gulfrakza.com";
 
+// `fetchServiceCategories` reads through a token-authenticated Sanity client,
+// which is never stored in the data cache, so without this the whole sitemap
+// was rebuilt from the full catalog on every crawler request. One rebuild a day
+// is plenty for a catalog that changes through the Studio.
+export const revalidate = 86400;
+
 const ensureLeadingSlash = (path: string) => (path.startsWith("/") ? path : `/${path}`);
 
 const stripLocalePrefix = (path: string) => {

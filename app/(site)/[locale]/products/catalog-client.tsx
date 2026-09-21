@@ -19,7 +19,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { useLocale } from "@/i18n/provider"
 
-import type { CatalogCategoryNode, CatalogProduct } from "@/lib/catalog/types"
+import type { CatalogCategoryNode, CatalogListingProduct } from "@/lib/catalog/types"
 import {
   buildSearchParamsFromFilters,
   parseFiltersFromSearchParams,
@@ -28,11 +28,10 @@ import {
 } from "./filter-helpers"
 
 interface CatalogPageClientProps {
-  products: CatalogProduct[]
+  products: CatalogListingProduct[]
   categoryTree: CatalogCategoryNode[]
   featureFilters: string[]
   brandFilters: string[]
-  initialFilters: CatalogFilterState
 }
 
 const sortOptions: Array<{ label: string; value: CatalogSortOption }> = [
@@ -163,20 +162,24 @@ export default function CatalogPageClient({
   categoryTree,
   featureFilters,
   brandFilters,
-  initialFilters,
 }: CatalogPageClientProps) {
   const locale = useLocale()
   const pathname = usePathname()
-  const [searchTerm, setSearchTerm] = useState(initialFilters.searchTerm)
-  const [selectedCategorySlug, setSelectedCategorySlug] = useState<string | null>(initialFilters.categorySlug)
-  const [selectedFeatures, setSelectedFeatures] = useState<string[]>(initialFilters.features)
-  const [selectedBrands, setSelectedBrands] = useState<string[]>(initialFilters.brands)
-  const [sortOrder, setSortOrder] = useState<CatalogSortOption>(initialFilters.sortOrder)
+  // Filters start at their defaults so the server-rendered markup is identical
+  // for every visitor — that is what keeps this page in the edge cache instead
+  // of re-rendering on the origin for each query string. The URL is read on
+  // mount below and applied client-side.
+  const [searchTerm, setSearchTerm] = useState(defaultFilters.searchTerm)
+  const [selectedCategorySlug, setSelectedCategorySlug] = useState<string | null>(defaultFilters.categorySlug)
+  const [selectedFeatures, setSelectedFeatures] = useState<string[]>(defaultFilters.features)
+  const [selectedBrands, setSelectedBrands] = useState<string[]>(defaultFilters.brands)
+  const [sortOrder, setSortOrder] = useState<CatalogSortOption>(defaultFilters.sortOrder)
   const [expandedNodes, setExpandedNodes] = useState<Set<string>>(
     () => new Set(categoryTree.map((node) => node.slug)),
   )
   const [showMobileFilters, setShowMobileFilters] = useState(false)
   const searchInputRef = useRef<HTMLInputElement | null>(null)
+
 
   const isArabic = locale === "ar"
   const copy = isArabic
@@ -275,6 +278,10 @@ export default function CatalogPageClient({
       setSelectedBrands(restored.brands)
       setSortOrder(restored.sortOrder)
     }
+    // Also run once on mount: the page is prerendered without filters so that a
+    // single cached copy serves every query string, which means the incoming
+    // `?category=`/`?brands=`/… has to be applied here on the client.
+    restoreFromUrl()
     window.addEventListener("popstate", restoreFromUrl)
     return () => window.removeEventListener("popstate", restoreFromUrl)
   }, [])
@@ -305,7 +312,7 @@ export default function CatalogPageClient({
   const normalizedSearch = searchTerm.trim().toLowerCase()
 
   const matchesSearch = useCallback(
-    (product: CatalogProduct) => {
+    (product: CatalogListingProduct) => {
       if (!normalizedSearch) return true
       const haystack = [
         product.title,
